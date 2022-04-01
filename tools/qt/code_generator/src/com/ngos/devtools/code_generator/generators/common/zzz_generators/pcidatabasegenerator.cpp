@@ -1,1956 +1,1978 @@
-#include "pcidatabasegenerator.h"
-
-#include <QEventLoop>
-#include <QFile>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QNetworkRequest>
-#include <QProcess>
-#include <QTemporaryFile>
-
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-#define FOLDER_PATH "/src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/"
-
-#define DATABASE_URL "https://pci-ids.ucw.cz/v2.2/pci.ids"
-
-
-
-PciDatabaseGenerator::PciDatabaseGenerator()
-    : CommonGenerator()
-{
-    // Nothing
-}
-
-bool PciDatabaseGenerator::generate(const QString &path)
-{
-    QStringList lines;
-
-    if (!prepareDatabase(lines))
-    {
-        return false;
-    }
-
-
-
-    PciBaseClasses baseClasses;
-    PciVendors     vendors;
-
-    if (!parseDatabase(lines, baseClasses, vendors))
-    {
-        return false;
-    }
-
-
-
-    if (!generateBaseClasses(path, baseClasses))
-    {
-        return false;
-    }
-
-    if (!generateVendors(path, vendors))
-    {
-        return false;
-    }
-
-
-
-    return true;
-}
-
-bool PciDatabaseGenerator::prepareDatabase(QStringList &lines)
-{
-    QNetworkRequest request;
-    request.setUrl(QUrl(DATABASE_URL));
-
-    QNetworkAccessManager  manager;
-    QNetworkReply         *reply = manager.get(request);
-
-
-
-    QEventLoop waitLoop;
-
-    QObject::connect(reply, SIGNAL(finished()),                                 &waitLoop, SLOT(quit()));
-    QObject::connect(reply, SIGNAL(errorOccurred(QNetworkReply::NetworkError)), &waitLoop, SLOT(quit()));
-
-    waitLoop.exec();
-
-
-
-    QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-
-    if (statusCode.toInt() != 200)
-    {
-        Console::err(QString("Failed to get PCI database from: %1")
-                                .arg(DATABASE_URL)
-        );
-
-        delete reply;
-
-        return false;
-    }
-
-
-
-    QString content = QString::fromUtf8(reply->readAll());
-    delete reply;
-
-
-
-    lines = content.split('\n');
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString &line = lines[i];
-
-        if (line.endsWith('\r'))
-        {
-            line.remove(line.length() - 1, 1);
-        }
-    }
-
-
-
-    return true;
-}
-
-bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasses &baseClasses, PciVendors &vendors)
-{
-    qint64 i = 0;
-
-
-
-    // Parse vendors and devices
-    {
-        PciVendor *vendor = nullptr;
-        PciDevice *device = nullptr;
-
-        while (i < lines.size())
-        {
-            QString line = lines.at(i);
-
-
-
-            if (line == "# List of known device classes, subclasses and programming interfaces")
-            {
-                break;
-            }
-
-
-
-            if (
-                line.startsWith('#')
-                ||
-                line == ""
-               )
-            {
-                ++i;
-
-                continue;
-            }
-
-
-
-            bool isVendor    = false;
-            bool isDevice    = false;
-            bool isSubDevice = false;
-
-            bool    ok;
-            quint32 id = 0;
-
-
-
-            // Try to get type of the line
-            {
-                if (line.startsWith("\t\t"))
-                {
-                    isSubDevice = true;
-
-                    line.remove(0, 2);
-
-
-
-                    id = line.left(4).toUShort(&ok, 16) << 16;
-
-                    if (!ok)
-                    {
-                        Console::err("Failed to parse line in PCI database: " + lines.at(i));
-
-                        return false;
-                    }
-
-                    line.remove(0, 5);
-                }
-                else
-                if (line.startsWith('\t'))
-                {
-                    isDevice = true;
-
-                    line.remove(0, 1);
-                }
-                else
-                {
-                    isVendor = true;
-                }
-            }
-
-
-
-            id |= line.left(4).toUShort(&ok, 16);
-
-            if (!ok)
-            {
-                Console::err("Failed to parse line in PCI database: " + lines.at(i));
-
-                return false;
-            }
-
-
-
-            line.remove(0, 6);
-            line.replace(QChar(0x2010), QChar('-')); // Replace hyphen character
-            line.replace(QChar(0x2013), QChar('-')); // Replace en dash character
-            line.replace(QChar(0x00AE), "(R)");      // Replace registered sign character
-            line.replace(QChar(0x00D7), QChar('x')); // Replace multiplication sign 'x' character
-            line.replace(QChar(0x00B2), "^2");       // Replace superscript two character
-            line.replace(QChar(0x2076), "^6");       // Replace superscript six character
-            line.replace("\"", "\\\"");              // Ignore CppSingleCharVerifier
-            line.replace(",", ", ");                 // Ignore CppSingleCharVerifier
-            line.replace(":", ": ");                 // Ignore CppSingleCharVerifier
-            line = line.simplified();
-
-
-
-            if (isVendor)
-            {
-                vendor              = &vendors[id];
-                vendor->description = line;
-            }
-            else
-            if (isDevice)
-            {
-                device              = &vendor->devices[id];
-                device->description = line;
-            }
-            else
-            if (isSubDevice)
-            {
-                device->subdevices[id].description = line;
-            }
-            else
-            {
-                Console::err("Failed to parse line in PCI database: " + lines.at(i));
-
-                return false;
-            }
-
-
-
-            ++i;
-        }
-    }
-
-
-
-    if (i >= lines.size())
-    {
-        Console::err("Failed to parse PCI database");
-
-        return false;
-    }
-
-
-
-    // Parse base classes, subclasses and interfaces
-    {
-        PciBaseClass *baseClass = nullptr;
-        PciSubClass  *subClass  = nullptr;
-
-        while (i < lines.size())
-        {
-            QString line = lines.at(i);
-
-
-
-            if (
-                line.startsWith('#')
-                ||
-                line == ""
-               )
-            {
-                ++i;
-
-                continue;
-            }
-
-
-
-            bool isBaseClass = false;
-            bool isSubClass  = false;
-            bool isInterface = false;
-
-
-
-            // Try to get type of the line
-            {
-                if (line.startsWith("C "))
-                {
-                    isBaseClass = true;
-
-                    line.remove(0, 2);
-                }
-                else
-                if (line.startsWith("\t\t"))
-                {
-                    isInterface = true;
-
-                    line.remove(0, 2);
-                }
-                else
-                if (line.startsWith('\t'))
-                {
-                    isSubClass = true;
-
-                    line.remove(0, 1);
-                }
-                else
-                {
-                    Console::err("Failed to parse line in PCI database: " + lines.at(i));
-
-                    return false;
-                }
-            }
-
-
-
-            bool   ok;
-            quint8 id = line.left(2).toUShort(&ok, 16);
-
-            if (!ok)
-            {
-                Console::err("Failed to parse line in PCI database: " + lines.at(i));
-
-                return false;
-            }
-
-
-
-            line.remove(0, 4);
-            line.replace(QChar(0x2010), QChar('-')); // Replace some strange '-' character
-            line.replace("\"", "\\\""); // Ignore CppSingleCharVerifier
-            line.replace(",", ", "); // Ignore CppSingleCharVerifier
-            line.replace(":", ": "); // Ignore CppSingleCharVerifier
-            line = line.simplified();
-
-
-
-            if (isBaseClass)
-            {
-                baseClass              = &baseClasses[id];
-                baseClass->description = line;
-            }
-            else
-            if (isSubClass)
-            {
-                subClass              = &baseClass->subClasses[id];
-                subClass->description = line;
-            }
-            else
-            if (isInterface)
-            {
-                subClass->interfaces[id].description = line;
-            }
-            else
-            {
-                Console::err("Failed to parse line in PCI database: " + lines.at(i));
-
-                return false;
-            }
-
-
-
-            ++i;
-        }
-    }
-
-
-
-    return true;
-}
-
-bool PciDatabaseGenerator::generateBaseClasses(const QString &path, const PciBaseClasses &baseClasses)
-{
-    // Iterate over base classes and generate subclasses
-    {
-        QMapIterator<quint8, PciBaseClass> it(baseClasses);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint8              baseClassId = it.key();
-            const PciBaseClass &baseClass   = it.value();
-
-            if (!baseClass.subClasses.isEmpty())
-            {
-                if (!generateSubClasses(path, baseClassId, baseClass))
-                {
-                    return false;
-                }
-            }
-        }
-    }
-
-    return generateBaseClassesFile(path, baseClasses);
-}
-
-bool PciDatabaseGenerator::generateSubClasses(const QString &path, quint8 baseClassId, const PciBaseClass &baseClass)
-{
-    // Iterate over subclasses and generate interfaces
-    {
-        QMapIterator<quint8, PciSubClass> it(baseClass.subClasses);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint8             subClassId = it.key();
-            const PciSubClass &subClass   = it.value();
-
-            if (!subClass.interfaces.isEmpty())
-            {
-                if (!generateInterfacesFile(path, baseClassId, baseClass.description, subClassId, subClass))
-                {
-                    return false;
-                }
-            }
-        }
-    }
-
-    return generateSubClassesFile(path, baseClassId, baseClass);
-}
-
-bool PciDatabaseGenerator::generateVendors(const QString &path, const PciVendors &vendors)
-{
-    // Iterate over vendors and generate devices
-    {
-        QMapIterator<quint16, PciVendor> it(vendors);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint16          vendorId = it.key();
-            const PciVendor &vendor   = it.value();
-
-            if (!vendor.devices.isEmpty())
-            {
-                if (!generateDevices(path, vendorId, vendor))
-                {
-                    return false;
-                }
-            }
-        }
-    }
-
-    return generateVendorsFile(path, vendors);
-}
-
-bool PciDatabaseGenerator::generateDevices(const QString &path, quint16 vendorId, const PciVendor &vendor)
-{
-    // Iterate over subclasses and generate interfaces
-    {
-        QMapIterator<quint16, PciDevice> it(vendor.devices);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint16          deviceId = it.key();
-            const PciDevice &device   = it.value();
-
-            if (!device.subdevices.isEmpty())
-            {
-                if (!generateSubDevicesFile(path, vendorId, deviceId, device))
-                {
-                    return false;
-                }
-            }
-        }
-    }
-
-    return generateDevicesFile(path, vendorId, vendor);
-}
-
-bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const PciBaseClasses &baseClasses)
-{
-    QStringList lines;
-
-
-
-    // Headers
-    {
-        lines.append("#include <com/ngos/shared/common/ngos/types.h>");
-
-        QMapIterator<quint8, PciBaseClass> it(baseClasses);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint8              baseClassId = it.key();
-            const PciBaseClass &baseClass   = it.value();
-
-            if (!baseClass.subClasses.isEmpty())
-            {
-                lines.append(QString("#include <com/ngos/shared/common/pci/database/generated/baseclass%1/pcisubclass%1.h>")
-                                        .arg(baseClassId, 2, 16, QChar('0'))
-                );
-            }
-        }
-
-        lines.append("#include <com/ngos/shared/common/printf/printf.h>");
-    }
-
-
-
-    // enum class PciBaseClass
-    {
-        addThreeBlankLines(lines);
-
-
-
-        lines.append("enum class PciBaseClass: u8");
-        lines.append("{"); // Ignore CppSingleCharVerifier
-
-        if (!baseClasses.contains(0))
-        {
-            lines.append("    NONE          = 0,");
-        }
-
-        QMapIterator<quint8, PciBaseClass> it(baseClasses);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint8  baseClassId    = it.key();
-            QString baseClassIdStr = QString::number(baseClassId, 16).toUpper();
-
-            lines.append(QString("    BASE_CLASS_%1 = 0x%1,")
-                                    .arg(baseClassIdStr, 2, QChar('0'))
-            );
-        }
-
-        // Remove ',' from the previous line
-        {
-            QString &previousLine = lines.last();
-            previousLine.remove(previousLine.length() - 1, 1);
-        }
-
-        lines.append("};");
-    }
-
-
-
-    // inline const char8* enumToString(PciBaseClass baseClass)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append("inline const char8* enumToString(PciBaseClass baseClass) // TEST: NO");
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | baseClass = %u\", baseClass)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    switch (baseClass)");
-        lines.append("    {");
-
-        if (!baseClasses.contains(0))
-        {
-            lines.append("        case PciBaseClass::NONE:          return \"NONE\";");
-        }
-
-        QMapIterator<quint8, PciBaseClass> it(baseClasses);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint8  baseClassId    = it.key();
-            QString baseClassIdStr = QString::number(baseClassId, 16).toUpper();
-
-            lines.append(QString("        case PciBaseClass::BASE_CLASS_%1: return \"BASE_CLASS_%1\";")
-                                    .arg(baseClassIdStr, 2, QChar('0'))
-            );
-        }
-
-        lines.append("");
-        lines.append("        default: return \"UNKNOWN\";");
-        lines.append("    }");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToFullString(PciBaseClass baseClass)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append("inline const char8* enumToFullString(PciBaseClass baseClass) // TEST: NO");
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | baseClass = %u\", baseClass)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    static char8 res[21];");
-        lines.append("");
-        lines.append("    sprintf(res, \"0x%02X (%s)\", (u8)baseClass, enumToString(baseClass));");
-        lines.append("");
-        lines.append("    return res;");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToHumanString(PciBaseClass baseClass, u8 subClassId, u8 interfaceId)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append("inline const char8* enumToHumanString(PciBaseClass baseClass, u8 subClassId, u8 interfaceId) // TEST: NO");
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | baseClass = %u, subClassId = %u, interfaceId = %u\", baseClass, subClassId, interfaceId)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    switch (baseClass)");
-        lines.append("    {");
-
-        QMapIterator<quint8, PciBaseClass> it(baseClasses);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint8              baseClassId = it.key();
-            const PciBaseClass &baseClass   = it.value();
-
-            QString baseClassIdStr = QString::number(baseClassId, 16).toUpper();
-
-
-
-            if (!baseClass.subClasses.isEmpty())
-            {
-                bool interfaceIdUsed = false;
-
-                // Check that interfaceId used
-                {
-                    QMapIterator<quint8, PciSubClass> it(baseClass.subClasses);
-
-                    while (it.hasNext())
-                    {
-                        it.next();
-
-                        const PciSubClass &subClass = it.value();
-
-                        if (!subClass.interfaces.isEmpty())
-                        {
-                            interfaceIdUsed = true;
-
-                            break;
-                        }
-                    }
-                }
-
-
-
-                if (interfaceIdUsed)
-                {
-                    lines.append(QString("        case PciBaseClass::BASE_CLASS_%1: return enumToHumanString((PciSubClass%1)subClassId, interfaceId);")
-                                            .arg(baseClassIdStr, 2, QChar('0'))
-                    );
-                }
-                else
-                {
-                    lines.append(QString("        case PciBaseClass::BASE_CLASS_%1: return enumToHumanString((PciSubClass%1)subClassId);")
-                                            .arg(baseClassIdStr, 2, QChar('0'))
-                    );
-                }
-            }
-            else
-            {
-                lines.append(QString("        case PciBaseClass::BASE_CLASS_%1: return \"%2\";")
-                                        .arg(baseClassIdStr, 2, QChar('0'))
-                                        .arg(baseClass.description)
-                );
-            }
-        }
-
-        lines.append("");
-        lines.append("        default: return \"Unknown device\";");
-        lines.append("    }");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    return save(path + FOLDER_PATH + "pcibaseclass.h", lines);
-}
-
-bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint8 baseClassId, const PciBaseClass &baseClass)
-{
-    QString baseClassIdStr = QString("%1")
-                                        .arg(baseClassId, 2, 16, QChar('0'))
-                                        .toUpper();
-
-
-
-    QStringList lines;
-
-
-
-    // Headers
-    {
-        lines.append("#include <com/ngos/shared/common/ngos/types.h>");
-
-        QMapIterator<quint8, PciSubClass> it(baseClass.subClasses);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint8             subClassId = it.key();
-            const PciSubClass &subClass   = it.value();
-
-            if (!subClass.interfaces.isEmpty())
-            {
-                lines.append(QString("#include <com/ngos/shared/common/pci/database/generated/baseclass%1/pciinterface%1%2.h>")
-                                        .arg(baseClassId, 2, 16, QChar('0'))
-                                        .arg(subClassId, 2, 16, QChar('0'))
-                );
-            }
-        }
-
-        lines.append("#include <com/ngos/shared/common/printf/printf.h>");
-    }
-
-
-
-    // enum class PciSubClass
-    {
-        addThreeBlankLines(lines);
-
-
-
-        lines.append(QString("enum class PciSubClass%1: u8 // Ignore CppEnumVerifier")
-                                .arg(baseClassIdStr, 2, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-
-        if (!baseClass.subClasses.contains(0))
-        {
-            lines.append("    NONE         = 0,");
-        }
-
-        QMapIterator<quint8, PciSubClass> it(baseClass.subClasses);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint8  subClassId    = it.key();
-            QString subClassIdStr = QString::number(subClassId, 16).toUpper();
-
-            lines.append(QString("    SUB_CLASS_%1 = 0x%1,")
-                                    .arg(subClassIdStr, 2, QChar('0'))
-            );
-        }
-
-        // Remove ',' from the previous line
-        {
-            QString &previousLine = lines.last();
-            previousLine.remove(previousLine.length() - 1, 1);
-        }
-
-        lines.append("};");
-    }
-
-
-
-    // inline const char8* enumToString(PciSubClass subClass)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append(QString("inline const char8* enumToString(PciSubClass%1 subClass) // TEST: NO")
-                                .arg(baseClassIdStr, 2, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | subClass = %u\", subClass)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    switch (subClass)");
-        lines.append("    {");
-
-        if (!baseClass.subClasses.contains(0))
-        {
-            lines.append(QString("        case PciSubClass%1::NONE:         return \"NONE\";")
-                                    .arg(baseClassIdStr, 2, QChar('0'))
-            );
-        }
-
-        QMapIterator<quint8, PciSubClass> it(baseClass.subClasses);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint8  subClassId    = it.key();
-            QString subClassIdStr = QString::number(subClassId, 16).toUpper();
-
-            lines.append(QString("        case PciSubClass%1::SUB_CLASS_%2: return \"SUB_CLASS_%2\";")
-                                    .arg(baseClassIdStr, 2, QChar('0'))
-                                    .arg(subClassIdStr,  2, QChar('0'))
-            );
-        }
-
-        lines.append("");
-        lines.append("        default: return \"UNKNOWN\";");
-        lines.append("    }");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToFullString(PciSubClass subClass)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append(QString("inline const char8* enumToFullString(PciSubClass%1 subClass) // TEST: NO")
-                                .arg(baseClassIdStr, 2, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | subClass = %u\", subClass)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    static char8 res[20];");
-        lines.append("");
-        lines.append("    sprintf(res, \"0x%02X (%s)\", (u8)subClass, enumToString(subClass));");
-        lines.append("");
-        lines.append("    return res;");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToHumanString(PciSubClass subClass, u8 interfaceId)
-    {
-        QString unknownValue = baseClass.description;
-
-
-
-        addThreeBlankLines(lines);
-
-
-
-        bool interfaceIdUsed = false;
-
-        // Check that interfaceId used
-        {
-            QMapIterator<quint8, PciSubClass> it(baseClass.subClasses);
-
-            while (it.hasNext())
-            {
-                it.next();
-
-                const PciSubClass &subClass = it.value();
-
-                if (!subClass.interfaces.isEmpty())
-                {
-                    interfaceIdUsed = true;
-
-                    break;
-                }
-            }
-        }
-
-
-
-        if (interfaceIdUsed)
-        {
-            // Ignore CppAlignmentVerifier [BEGIN]
-            lines.append(QString("inline const char8* enumToHumanString(PciSubClass%1 subClass, u8 interfaceId) // TEST: NO")
-                                    .arg(baseClassIdStr, 2, QChar('0'))
-            );
-            lines.append("{"); // Ignore CppSingleCharVerifier
-            lines.append("    // COMMON_LT((\" | subClass = %u, interfaceId = %u\", subClass, interfaceId)); // Commented to avoid bad looking logs");
-        }
-        else
-        {
-            // Ignore CppAlignmentVerifier [BEGIN]
-            lines.append(QString("inline const char8* enumToHumanString(PciSubClass%1 subClass) // TEST: NO")
-                                    .arg(baseClassIdStr, 2, QChar('0'))
-            );
-            lines.append("{"); // Ignore CppSingleCharVerifier
-            lines.append("    // COMMON_LT((\" | subClass = %u\", subClass)); // Commented to avoid bad looking logs");
-        }
-
-
-
-        addThreeBlankLines(lines);
-
-        lines.append("    switch (subClass)");
-        lines.append("    {");
-
-        QMapIterator<quint8, PciSubClass> it(baseClass.subClasses);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint8             subClassId = it.key();
-            const PciSubClass &subClass   = it.value();
-
-            QString subClassIdStr = QString::number(subClassId, 16).toUpper();
-
-            if (!subClass.interfaces.isEmpty())
-            {
-                lines.append(QString("        case PciSubClass%1::SUB_CLASS_%2: return enumToHumanString((PciInterface%1%2)interfaceId);")
-                                        .arg(baseClassIdStr, 2, QChar('0'))
-                                        .arg(subClassIdStr,  2, QChar('0'))
-                );
-            }
-            else
-            {
-                lines.append(QString("        case PciSubClass%1::SUB_CLASS_%2: return \"%3 - %4\";")
-                                        .arg(baseClassIdStr, 2, QChar('0'))
-                                        .arg(subClassIdStr,  2, QChar('0'))
-                                        .arg(unknownValue)
-                                        .arg(subClass.description)
-                );
-            }
-        }
-
-        lines.append("");
-        lines.append(QString("        default: return \"%1\";")
-                                .arg(unknownValue)
-        );
-        lines.append("    }");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    QString targetFile = QString(path + FOLDER_PATH + "baseclass%1/pcisubclass%1.h")
-                                    .arg(baseClassId, 2, 16, QChar('0'));
-
-    return save(targetFile, lines);
-}
-
-bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint8 baseClassId, const QString &baseClassDescription, quint8 subClassId, const PciSubClass &subClass)
-{
-    QString baseClassIdStr = QString("%1")
-                                        .arg(baseClassId, 2, 16, QChar('0'))
-                                        .toUpper();
-    QString subClassIdStr  = QString("%1")
-                                        .arg(subClassId,  2, 16, QChar('0'))
-                                        .toUpper();
-
-
-
-    QStringList lines;
-
-
-
-    // Headers
-    {
-        lines.append("#include <com/ngos/shared/common/ngos/types.h>");
-        lines.append("#include <com/ngos/shared/common/printf/printf.h>");
-    }
-
-
-
-    // enum class PciInterface
-    {
-        addThreeBlankLines(lines);
-
-
-
-        lines.append(QString("enum class PciInterface%1%2: u8 // Ignore CppEnumVerifier")
-                                .arg(baseClassIdStr, 2, QChar('0'))
-                                .arg(subClassIdStr,  2, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-
-        if (!subClass.interfaces.contains(0))
-        {
-            lines.append("    NONE         = 0,");
-        }
-
-        QMapIterator<quint8, PciInterface> it(subClass.interfaces);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint8  interfaceId    = it.key();
-            QString interfaceIdStr = QString::number(interfaceId, 16).toUpper();
-
-            lines.append(QString("    INTERFACE_%1 = 0x%1,")
-                                    .arg(interfaceIdStr, 2, QChar('0'))
-            );
-        }
-
-        // Remove ',' from the previous line
-        {
-            QString &previousLine = lines.last();
-            previousLine.remove(previousLine.length() - 1, 1);
-        }
-
-        lines.append("};");
-    }
-
-
-
-    // inline const char8* enumToString(PciInterface interface)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append(QString("inline const char8* enumToString(PciInterface%1%2 interface) // TEST: NO")
-                                .arg(baseClassIdStr, 2, QChar('0'))
-                                .arg(subClassIdStr,  2, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | interface = %u\", interface)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    switch (interface)");
-        lines.append("    {");
-
-        if (!subClass.interfaces.contains(0))
-        {
-            lines.append(QString("        case PciInterface%1%2::NONE:         return \"NONE\";")
-                                    .arg(baseClassIdStr, 2, QChar('0'))
-                                    .arg(subClassIdStr,  2, QChar('0'))
-            );
-        }
-
-        QMapIterator<quint8, PciInterface> it(subClass.interfaces);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint8  interfaceId    = it.key();
-            QString interfaceIdStr = QString::number(interfaceId, 16).toUpper();
-
-            lines.append(QString("        case PciInterface%1%2::INTERFACE_%3: return \"INTERFACE_%3\";")
-                                    .arg(baseClassIdStr, 2, QChar('0'))
-                                    .arg(subClassIdStr,  2, QChar('0'))
-                                    .arg(interfaceIdStr, 2, QChar('0'))
-            );
-        }
-
-        lines.append("");
-        lines.append("        default: return \"UNKNOWN\";");
-        lines.append("    }");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToFullString(PciInterface interface)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append(QString("inline const char8* enumToFullString(PciInterface%1%2 interface) // TEST: NO")
-                                .arg(baseClassIdStr, 2, QChar('0'))
-                                .arg(subClassIdStr,  2, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | interface = %u\", interface)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    static char8 res[20];");
-        lines.append("");
-        lines.append("    sprintf(res, \"0x%02X (%s)\", (u8)interface, enumToString(interface));");
-        lines.append("");
-        lines.append("    return res;");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToHumanString(PciInterface interface)
-    {
-        QString unknownValue = baseClassDescription + " - " + subClass.description;
-
-
-
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append(QString("inline const char8* enumToHumanString(PciInterface%1%2 interface) // TEST: NO")
-                                .arg(baseClassIdStr, 2, QChar('0'))
-                                .arg(subClassIdStr,  2, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | interface = %u\", interface)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    switch (interface)");
-        lines.append("    {");
-
-        QMapIterator<quint8, PciInterface> it(subClass.interfaces);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint8              interfaceId = it.key();
-            const PciInterface &interface   = it.value();
-
-            QString interfaceIdStr = QString::number(interfaceId, 16).toUpper();
-
-            lines.append(QString("        case PciInterface%1%2::INTERFACE_%3: return \"%4 - %5\";")
-                                    .arg(baseClassIdStr, 2, QChar('0'))
-                                    .arg(subClassIdStr,  2, QChar('0'))
-                                    .arg(interfaceIdStr, 2, QChar('0'))
-                                    .arg(unknownValue)
-                                    .arg(interface.description)
-            );
-        }
-
-        lines.append("");
-        lines.append(QString("        default: return \"%1\";")
-                                .arg(unknownValue)
-        );
-        lines.append("    }");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    QString targetFile = QString(path + FOLDER_PATH + "baseclass%1/pciinterface%1%2.h")
-                                    .arg(baseClassId, 2, 16, QChar('0'))
-                                    .arg(subClassId,  2, 16, QChar('0'));
-
-    return save(targetFile, lines);
-}
-
-bool PciDatabaseGenerator::generateVendorsFile(const QString &path, const PciVendors &vendors)
-{
-    QStringList lines;
-
-
-
-    // Headers
-    {
-        lines.append("#include <com/ngos/shared/common/ngos/types.h>");
-
-        QMapIterator<quint16, PciVendor> it(vendors);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint16          vendorId = it.key();
-            const PciVendor &vendor   = it.value();
-
-            if (!vendor.devices.isEmpty())
-            {
-                lines.append(QString("#include <com/ngos/shared/common/pci/database/generated/vendor%1/pcidevice%1.h>")
-                                        .arg(vendorId, 4, 16, QChar('0'))
-                );
-            }
-        }
-
-        lines.append("#include <com/ngos/shared/common/printf/printf.h>");
-    }
-
-
-
-    // enum class PciVendor
-    {
-        addThreeBlankLines(lines);
-
-
-
-        lines.append("enum class PciVendor: u16");
-        lines.append("{"); // Ignore CppSingleCharVerifier
-
-        if (!vendors.contains(0))
-        {
-            lines.append("    NONE        = 0,");
-        }
-
-        QMapIterator<quint16, PciVendor> it(vendors);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint16 vendorId    = it.key();
-            QString vendorIdStr = QString::number(vendorId, 16).toUpper();
-
-            lines.append(QString("    VENDOR_%1 = 0x%1,")
-                                    .arg(vendorIdStr, 4, QChar('0'))
-            );
-        }
-
-        // Remove ',' from the previous line
-        {
-            QString &previousLine = lines.last();
-            previousLine.remove(previousLine.length() - 1, 1);
-        }
-
-        lines.append("};");
-    }
-
-
-
-    // inline const char8* enumToString(PciVendor vendor)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append("inline const char8* enumToString(PciVendor vendor) // TEST: NO");
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | vendor = %u\", vendor)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    switch (vendor)");
-        lines.append("    {");
-
-        if (!vendors.contains(0))
-        {
-            lines.append("        case PciVendor::NONE:        return \"NONE\";");
-        }
-
-        QMapIterator<quint16, PciVendor> it(vendors);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint16 vendorId    = it.key();
-            QString vendorIdStr = QString::number(vendorId, 16).toUpper();
-
-            lines.append(QString("        case PciVendor::VENDOR_%1: return \"VENDOR_%1\";")
-                                    .arg(vendorIdStr, 4, QChar('0'))
-            );
-        }
-
-        lines.append("");
-        lines.append("        default: return \"UNKNOWN\";");
-        lines.append("    }");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToFullString(PciVendor vendor)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append("inline const char8* enumToFullString(PciVendor vendor) // TEST: NO");
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | vendor = %u\", vendor)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    static char8 res[21];");
-        lines.append("");
-        lines.append("    sprintf(res, \"0x%04X (%s)\", (u16)vendor, enumToString(vendor));");
-        lines.append("");
-        lines.append("    return res;");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToHumanString(PciVendor vendor)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append("inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO");
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | vendor = %u\", vendor)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    switch (vendor)");
-        lines.append("    {");
-
-        QMapIterator<quint16, PciVendor> it(vendors);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint16          vendorId = it.key();
-            const PciVendor &vendor   = it.value();
-
-            QString vendorIdStr = QString::number(vendorId, 16).toUpper();
-
-            lines.append(QString("        case PciVendor::VENDOR_%1: return \"%2\";")
-                                    .arg(vendorIdStr, 4, QChar('0'))
-                                    .arg(vendor.description)
-            );
-        }
-
-        lines.append("");
-        lines.append("        default: return \"Unknown vendor\";");
-        lines.append("    }");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append("inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId) // TEST: NO");
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | vendor = %u, deviceId = %u\", vendor, deviceId)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    switch (vendor)");
-        lines.append("    {");
-
-        QMapIterator<quint16, PciVendor> it(vendors);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint16          vendorId = it.key();
-            const PciVendor &vendor   = it.value();
-
-            QString vendorIdStr = QString::number(vendorId, 16).toUpper();
-
-
-
-            if (!vendor.devices.isEmpty())
-            {
-                lines.append(QString("        case PciVendor::VENDOR_%1: return enumToHumanString((PciDevice%1)deviceId);")
-                                        .arg(vendorIdStr, 4, QChar('0'))
-                );
-            }
-            else
-            {
-                lines.append(QString("        case PciVendor::VENDOR_%1: return \"Unknown device\";")
-                                        .arg(vendorIdStr, 4, QChar('0'))
-                );
-            }
-        }
-
-        lines.append("");
-        lines.append("        default: return \"Unknown device\";");
-        lines.append("    }");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId, PciVendor subsystemVendorID, u16 subDeviceId)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append("inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId, PciVendor subsystemVendorID, u16 subDeviceId) // TEST: NO");
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | vendor = %u, deviceId = %u, subsystemVendorID = %u, subDeviceId = %u\", vendor, deviceId, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    switch (vendor)");
-        lines.append("    {");
-
-        QMapIterator<quint16, PciVendor> it(vendors);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint16          vendorId = it.key();
-            const PciVendor &vendor   = it.value();
-
-            QString vendorIdStr = QString::number(vendorId, 16).toUpper();
-
-
-
-            bool subDevicesExists = false;
-
-            QMapIterator<quint16, PciDevice> it2(vendor.devices);
-
-            while (it2.hasNext())
-            {
-                it2.next();
-
-                const PciDevice &device = it2.value();
-
-                if (!device.subdevices.isEmpty())
-                {
-                    subDevicesExists = true;
-
-                    break;
-                }
-            }
-
-
-
-            if (subDevicesExists)
-            {
-                lines.append(QString("        case PciVendor::VENDOR_%1: return enumToHumanString((PciDevice%1)deviceId, (u16)subsystemVendorID, subDeviceId);")
-                                        .arg(vendorIdStr, 4, QChar('0'))
-                );
-            }
-            else
-            {
-                lines.append(QString("        case PciVendor::VENDOR_%1: return \"Unknown device\";")
-                                        .arg(vendorIdStr, 4, QChar('0'))
-                );
-            }
-        }
-
-        lines.append("");
-        lines.append("        default: return \"Unknown device\";");
-        lines.append("    }");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    return save(path + FOLDER_PATH + "pcivendor.h", lines);
-}
-
-bool PciDatabaseGenerator::generateDevicesFile(const QString &path, quint16 vendorId, const PciVendor &vendor)
-{
-    QString vendorIdStr = QString("%1")
-                                    .arg(vendorId, 4, 16, QChar('0'))
-                                    .toUpper();
-
-
-
-    QStringList lines;
-
-    bool subDevicesExists = false;
-
-
-
-    // Headers
-    {
-        lines.append("#include <com/ngos/shared/common/ngos/types.h>");
-
-        QMapIterator<quint16, PciDevice> it(vendor.devices);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint16          deviceId = it.key();
-            const PciDevice &device   = it.value();
-
-            if (!device.subdevices.isEmpty())
-            {
-                subDevicesExists = true;
-
-                lines.append(QString("#include <com/ngos/shared/common/pci/database/generated/vendor%1/pcisubdevice%1%2.h>")
-                                        .arg(vendorId, 4, 16, QChar('0'))
-                                        .arg(deviceId, 4, 16, QChar('0'))
-                );
-            }
-        }
-
-        lines.append("#include <com/ngos/shared/common/printf/printf.h>");
-    }
-
-
-
-    // enum class PciDevice
-    {
-        addThreeBlankLines(lines);
-
-
-
-        lines.append(QString("enum class PciDevice%1: u16 // Ignore CppEnumVerifier")
-                                .arg(vendorIdStr, 4, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-
-        if (!vendor.devices.contains(0))
-        {
-            lines.append("    NONE        = 0,");
-        }
-
-        QMapIterator<quint16, PciDevice> it(vendor.devices);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint16 deviceId    = it.key();
-            QString deviceIdStr = QString::number(deviceId, 16).toUpper();
-
-            lines.append(QString("    DEVICE_%1 = 0x%1,")
-                                    .arg(deviceIdStr, 4, QChar('0'))
-            );
-        }
-
-        // Remove ',' from the previous line
-        {
-            QString &previousLine = lines.last();
-            previousLine.remove(previousLine.length() - 1, 1);
-        }
-
-        lines.append("};");
-    }
-
-
-
-    // inline const char8* enumToString(PciDevice device)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append(QString("inline const char8* enumToString(PciDevice%1 device) // TEST: NO")
-                                .arg(vendorIdStr, 4, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | device = %u\", device)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    switch (device)");
-        lines.append("    {");
-
-        if (!vendor.devices.contains(0))
-        {
-            lines.append(QString("        case PciDevice%1::NONE:        return \"NONE\";")
-                                    .arg(vendorIdStr, 4, QChar('0'))
-            );
-        }
-
-        QMapIterator<quint16, PciDevice> it(vendor.devices);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint16 deviceId    = it.key();
-            QString deviceIdStr = QString::number(deviceId, 16).toUpper();
-
-            lines.append(QString("        case PciDevice%1::DEVICE_%2: return \"DEVICE_%2\";")
-                                    .arg(vendorIdStr, 4, QChar('0'))
-                                    .arg(deviceIdStr, 4, QChar('0'))
-            );
-        }
-
-        lines.append("");
-        lines.append("        default: return \"UNKNOWN\";");
-        lines.append("    }");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToFullString(PciDevice device)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append(QString("inline const char8* enumToFullString(PciDevice%1 device) // TEST: NO")
-                                .arg(vendorIdStr, 4, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | device = %u\", device)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    static char8 res[23];");
-        lines.append("");
-        lines.append("    sprintf(res, \"0x%04X (%s)\", (u16)device, enumToString(device));");
-        lines.append("");
-        lines.append("    return res;");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToHumanString(PciDevice device)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append(QString("inline const char8* enumToHumanString(PciDevice%1 device) // TEST: NO")
-                                .arg(vendorIdStr, 4, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | device = %u\", device)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    switch (device)");
-        lines.append("    {");
-
-        QMapIterator<quint16, PciDevice> it(vendor.devices);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint16          deviceId = it.key();
-            const PciDevice &device   = it.value();
-
-            QString deviceIdStr = QString::number(deviceId, 16).toUpper();
-
-            lines.append(QString("        case PciDevice%1::DEVICE_%2: return \"%3\";")
-                                    .arg(vendorIdStr, 4, QChar('0'))
-                                    .arg(deviceIdStr, 4, QChar('0'))
-                                    .arg(device.description)
-            );
-        }
-
-        lines.append("");
-        lines.append("        default: return \"Unknown device\";");
-        lines.append("    }");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToHumanString(PciDevice device, u16 subsystemVendorID, u16 subDeviceId)
-    {
-        if (subDevicesExists)
-        {
-            addThreeBlankLines(lines);
-
-
-
-            // Ignore CppAlignmentVerifier [BEGIN]
-            lines.append(QString("inline const char8* enumToHumanString(PciDevice%1 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO")
-                                    .arg(vendorIdStr, 4, QChar('0'))
-            );
-            lines.append("{"); // Ignore CppSingleCharVerifier
-            lines.append("    // COMMON_LT((\" | device = %u, subsystemVendorID = %u, subDeviceId = %u\", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs");
-
-            addThreeBlankLines(lines);
-
-            lines.append("    switch (device)");
-            lines.append("    {");
-
-            QMapIterator<quint16, PciDevice> it(vendor.devices);
-
-            while (it.hasNext())
-            {
-                it.next();
-
-                quint16          deviceId = it.key();
-                const PciDevice &device   = it.value();
-
-                QString deviceIdStr = QString::number(deviceId, 16).toUpper();
-
-
-
-                if (!device.subdevices.isEmpty())
-                {
-                    lines.append(QString("        case PciDevice%1::DEVICE_%2: return enumToHumanString((PciSubDevice%1%2)(subsystemVendorID << 16 | subDeviceId));")
-                                            .arg(vendorIdStr, 4, QChar('0'))
-                                            .arg(deviceIdStr, 4, QChar('0'))
-                    );
-                }
-                else
-                {
-                    lines.append(QString("        case PciDevice%1::DEVICE_%2: return \"Unknown device\";")
-                                            .arg(vendorIdStr, 4, QChar('0'))
-                                            .arg(deviceIdStr, 4, QChar('0'))
-                    );
-                }
-            }
-
-            lines.append("");
-            lines.append("        default: return \"Unknown device\";");
-            lines.append("    }");
-            lines.append("}"); // Ignore CppSingleCharVerifier
-            // Ignore CppAlignmentVerifier [END]
-        }
-    }
-
-
-
-    QString targetFile = QString(path + FOLDER_PATH + "vendor%1/pcidevice%1.h")
-                                    .arg(vendorId, 4, 16, QChar('0'));
-
-    return save(targetFile, lines);
-}
-
-bool PciDatabaseGenerator::generateSubDevicesFile(const QString &path, quint16 vendorId, quint16 deviceId, const PciDevice &device)
-{
-    QString vendorIdStr = QString("%1")
-                                    .arg(vendorId, 4, 16, QChar('0'))
-                                    .toUpper();
-    QString deviceIdStr = QString("%1")
-                                    .arg(deviceId, 4, 16, QChar('0'))
-                                    .toUpper();
-
-
-
-    QStringList lines;
-
-
-
-    // Headers
-    {
-        lines.append("#include <com/ngos/shared/common/ngos/types.h>");
-        lines.append("#include <com/ngos/shared/common/printf/printf.h>");
-    }
-
-
-
-    // enum class PciSubDevice
-    {
-        addThreeBlankLines(lines);
-
-
-
-        lines.append(QString("enum class PciSubDevice%1%2: u32 // Ignore CppEnumVerifier")
-                                .arg(vendorIdStr, 4, QChar('0'))
-                                .arg(deviceIdStr, 4, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-
-        if (!device.subdevices.contains(0))
-        {
-            lines.append("    NONE               = 0,");
-        }
-
-        QMapIterator<quint32, PciSubDevice> it(device.subdevices);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint32 subDeviceId    = it.key();
-            QString subDeviceIdStr = QString::number(subDeviceId, 16).toUpper();
-
-            lines.append(QString("    SUBDEVICE_%1 = 0x%1,")
-                                    .arg(subDeviceIdStr, 8, QChar('0'))
-            );
-        }
-
-        // Remove ',' from the previous line
-        {
-            QString &previousLine = lines.last();
-            previousLine.remove(previousLine.length() - 1, 1);
-        }
-
-        lines.append("};");
-    }
-
-
-
-    // inline const char8* enumToString(PciSubDevice subDevice)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append(QString("inline const char8* enumToString(PciSubDevice%1%2 subDevice) // TEST: NO")
-                                .arg(vendorIdStr, 4, QChar('0'))
-                                .arg(deviceIdStr, 4, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | subDevice = %u\", subDevice)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    switch (subDevice)");
-        lines.append("    {");
-
-        if (!device.subdevices.contains(0))
-        {
-            lines.append(QString("        case PciSubDevice%1%2::NONE:               return \"NONE\";")
-                                    .arg(vendorIdStr, 4, QChar('0'))
-                                    .arg(deviceIdStr, 4, QChar('0'))
-            );
-        }
-
-        QMapIterator<quint32, PciSubDevice> it(device.subdevices);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint32 subDeviceId    = it.key();
-            QString subDeviceIdStr = QString::number(subDeviceId, 16).toUpper();
-
-            lines.append(QString("        case PciSubDevice%1%2::SUBDEVICE_%3: return \"SUBDEVICE_%3\";")
-                                    .arg(vendorIdStr,    4, QChar('0'))
-                                    .arg(deviceIdStr ,   4, QChar('0'))
-                                    .arg(subDeviceIdStr, 8, QChar('0'))
-            );
-        }
-
-        lines.append("");
-        lines.append("        default: return \"UNKNOWN\";");
-        lines.append("    }");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToFullString(PciSubDevice subDevice)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append(QString("inline const char8* enumToFullString(PciSubDevice%1%2 subDevice) // TEST: NO")
-                                .arg(vendorIdStr, 4, QChar('0'))
-                                .arg(deviceIdStr, 4, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | subDevice = %u\", subDevice)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    static char8 res[32];");
-        lines.append("");
-        lines.append("    sprintf(res, \"0x%08X (%s)\", (u32)subDevice, enumToString(subDevice));");
-        lines.append("");
-        lines.append("    return res;");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    // inline const char8* enumToHumanString(PciSubDevice subDevice)
-    {
-        addThreeBlankLines(lines);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append(QString("inline const char8* enumToHumanString(PciSubDevice%1%2 subDevice) // TEST: NO")
-                                .arg(vendorIdStr, 4, QChar('0'))
-                                .arg(deviceIdStr, 4, QChar('0'))
-        );
-        lines.append("{"); // Ignore CppSingleCharVerifier
-        lines.append("    // COMMON_LT((\" | subDevice = %u\", subDevice)); // Commented to avoid bad looking logs");
-
-        addThreeBlankLines(lines);
-
-        lines.append("    switch (subDevice)");
-        lines.append("    {");
-
-        QMapIterator<quint32, PciSubDevice> it(device.subdevices);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            quint32             subDeviceId = it.key();
-            const PciSubDevice &subDevice   = it.value();
-
-            QString subDeviceIdStr = QString::number(subDeviceId, 16).toUpper();
-
-            lines.append(QString("        case PciSubDevice%1%2::SUBDEVICE_%3: return \"%4\";")
-                                    .arg(vendorIdStr,    4, QChar('0'))
-                                    .arg(deviceIdStr,    4, QChar('0'))
-                                    .arg(subDeviceIdStr, 8, QChar('0'))
-                                    .arg(subDevice.description)
-            );
-        }
-
-        lines.append("");
-        lines.append("        default: return \"Unknown device\";");
-        lines.append("    }");
-        lines.append("}"); // Ignore CppSingleCharVerifier
-        // Ignore CppAlignmentVerifier [END]
-    }
-
-
-
-    QString targetFile = QString(path + FOLDER_PATH + "vendor%1/pcisubdevice%1%2.h")
-                                    .arg(vendorId, 4, 16, QChar('0'))
-                                    .arg(deviceId, 4, 16, QChar('0'));
-
-    return save(targetFile, lines);
-}
-
-
-
-PciDatabaseGenerator pciDatabaseGeneratorInstance;
+#include "pcidatabasegenerator.h"                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QEventLoop>                                                                                                                                                                                    // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+#include <QNetworkAccessManager>                                                                                                                                                                         // Colorize: green
+#include <QNetworkReply>                                                                                                                                                                                 // Colorize: green
+#include <QNetworkRequest>                                                                                                                                                                               // Colorize: green
+#include <QProcess>                                                                                                                                                                                      // Colorize: green
+#include <QTemporaryFile>                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define FOLDER_PATH "/src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/"                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define DATABASE_URL "https://pci-ids.ucw.cz/v2.2/pci.ids"                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+PciDatabaseGenerator::PciDatabaseGenerator()                                                                                                                                                             // Colorize: green
+    : CommonGenerator()                                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::generate(const QString &path)                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Download database                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!prepareDatabase(lines))                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    PciBaseClasses baseClasses;                                                                                                                                                                          // Colorize: green
+    PciVendors     vendors;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Parse downloaded database to internal structure                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!parseDatabase(lines, baseClasses, vendors))                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Generate files                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!generateBaseClasses(path, baseClasses))                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!generateVendors(path, vendors))                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::isInterfacesExists(const QMap<quint8, PciSubClass> &subClasses)                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QMapIterator<quint8, PciSubClass> it(subClasses);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (it.hasNext())                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        it.next();                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        const PciSubClass &subClass = it.value();                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!subClass.interfaces.isEmpty())                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return true;                                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return false;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::isSubDevicesExists(const QMap<quint16, PciDevice> &devices)                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QMapIterator<quint16, PciDevice> it(devices);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (it.hasNext())                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        it.next();                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        const PciDevice &device = it.value();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!device.subdevices.isEmpty())                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return true;                                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return false;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::prepareDatabase(QStringList &lines)                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QNetworkAccessManager  manager;                                                                                                                                                                      // Colorize: green
+    QNetworkReply         *reply;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Send network request                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QNetworkRequest request;                                                                                                                                                                         // Colorize: green
+        request.setUrl(QUrl(DATABASE_URL));                                                                                                                                                              // Colorize: green
+        reply = manager.get(request);                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Wait for finish                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QEventLoop waitLoop;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QObject::connect(reply, SIGNAL(finished()),                                 &waitLoop, SLOT(quit()));                                                                                            // Colorize: green
+        QObject::connect(reply, SIGNAL(errorOccurred(QNetworkReply::NetworkError)), &waitLoop, SLOT(quit()));                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        waitLoop.exec();                                                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check status code                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (statusCode.toInt() != 200)                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Failed to get PCI database from: %1")                                                                                                                                  // Colorize: green
+                                    .arg(DATABASE_URL)                                                                                                                                                   // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            delete reply;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString content = QString::fromUtf8(reply->readAll());                                                                                                                                               // Colorize: green
+    delete reply;                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get lines of content                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines = content.split('\n');                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString &line = lines[i];                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (line.endsWith('\r'))                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                line.remove(line.length() - 1, 1);                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasses &baseClasses, PciVendors &vendors)                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    qint64 i = 0;                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Parse vendors and devices                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        PciVendor *vendor = nullptr;                                                                                                                                                                     // Colorize: green
+        PciDevice *device = nullptr;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (i < lines.size())                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = lines.at(i);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (line == "# List of known device classes, subclasses and programming interfaces")                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                break;                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Skip comment lines                                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (                                                                                                                                                                                     // Colorize: green
+                    line.startsWith('#')                                                                                                                                                                 // Colorize: green
+                    ||                                                                                                                                                                                   // Colorize: green
+                    line == ""                                                                                                                                                                           // Colorize: green
+                   )                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            bool isVendor    = false;                                                                                                                                                                    // Colorize: green
+            bool isDevice    = false;                                                                                                                                                                    // Colorize: green
+            bool isSubDevice = false;                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            bool    ok;                                                                                                                                                                                  // Colorize: green
+            quint32 id = 0;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Try to get type of the line                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line.startsWith("\t\t"))                                                                                                                                                             // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    isSubDevice = true;                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    line.remove(0, 2);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    // Parse vendor ID                                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        id = line.left(4).toUShort(&ok, 16) << 16;                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (!ok)                                                                                                                                                                         // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            Console::err("Failed to parse line in PCI database: " + lines.at(i));                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            return false;                                                                                                                                                                // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        line = line.mid(4).trimmed();                                                                                                                                                    // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (line.startsWith('\t'))                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    isDevice = true;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    line.remove(0, 1);                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    isVendor = true;                                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Parse vendor ID | device ID | subdevice ID                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                id |= line.left(4).toUShort(&ok, 16);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (!ok)                                                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err("Failed to parse line in PCI database: " + lines.at(i));                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                line = line.mid(4).trimmed();                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Replace some special characters                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                line.replace(QChar(0x2010), QChar('-')); // Replace hyphen character                  // https://www.compart.com/en/unicode/U+2010                                                       // Colorize: green
+                line.replace(QChar(0x2013), QChar('-')); // Replace en dash character                 // https://www.compart.com/en/unicode/U+2013                                                       // Colorize: green
+                line.replace(QChar(0x00AE), "(R)");      // Replace registered sign character         // https://www.compart.com/en/unicode/U+00AE                                                       // Colorize: green
+                line.replace(QChar(0x00D7), QChar('x')); // Replace multiplication sign 'x' character // https://www.compart.com/en/unicode/U+00D7                                                       // Colorize: green
+                line.replace(QChar(0x00B2), "^2");       // Replace superscript two character         // https://www.compart.com/en/unicode/U+00B2                                                       // Colorize: green
+                line.replace(QChar(0x2076), "^6");       // Replace superscript six character         // https://www.compart.com/en/unicode/U+2076                                                       // Colorize: green
+                line.replace("\"", "\\\"");              // Ignore CppSingleCharVerifier                                                                                                                 // Colorize: green
+                line.replace(",", ", ");                 // Ignore CppSingleCharVerifier                                                                                                                 // Colorize: green
+                line.replace(":", ": ");                 // Ignore CppSingleCharVerifier                                                                                                                 // Colorize: green
+                line = line.simplified();                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Create structure of vendors -> devices -> subdevices                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (isVendor)                                                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    vendor              = &vendors[id];                                                                                                                                                  // Colorize: green
+                    vendor->description = line;                                                                                                                                                          // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (isDevice)                                                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    device              = &vendor->devices[id];                                                                                                                                          // Colorize: green
+                    device->description = line;                                                                                                                                                          // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (isSubDevice)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    device->subdevices[id].description = line;                                                                                                                                           // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err("Failed to parse line in PCI database: " + lines.at(i));                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ++i;                                                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (i >= lines.size())                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Console::err("Failed to parse PCI database");                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return false;                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Parse base classes, subclasses and interfaces                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        PciBaseClass *baseClass = nullptr;                                                                                                                                                               // Colorize: green
+        PciSubClass  *subClass  = nullptr;                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (i < lines.size())                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = lines.at(i);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Skip comment lines                                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (                                                                                                                                                                                     // Colorize: green
+                    line.startsWith('#')                                                                                                                                                                 // Colorize: green
+                    ||                                                                                                                                                                                   // Colorize: green
+                    line == ""                                                                                                                                                                           // Colorize: green
+                   )                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            bool isBaseClass = false;                                                                                                                                                                    // Colorize: green
+            bool isSubClass  = false;                                                                                                                                                                    // Colorize: green
+            bool isInterface = false;                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Try to get type of the line                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line.startsWith("C "))                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    isBaseClass = true;                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    line.remove(0, 2);                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (line.startsWith("\t\t"))                                                                                                                                                             // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    isInterface = true;                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    line.remove(0, 2);                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (line.startsWith('\t'))                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    isSubClass = true;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    line.remove(0, 1);                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err("Failed to parse line in PCI database: " + lines.at(i));                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint8 id;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Parse base class ID | subclass ID | interface ID                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                bool ok;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                id = line.left(2).toUShort(&ok, 16);                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (!ok)                                                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err("Failed to parse line in PCI database: " + lines.at(i));                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                line = line.mid(2).trimmed();                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Replace some special characters                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                line.replace(QChar(0x2010), QChar('-')); // Replace hyphen character // https://www.compart.com/en/unicode/U+2010                                                                        // Colorize: green
+                line.replace("\"", "\\\""); // Ignore CppSingleCharVerifier                                                                                                                              // Colorize: green
+                line.replace(",", ", "); // Ignore CppSingleCharVerifier                                                                                                                                 // Colorize: green
+                line.replace(":", ": "); // Ignore CppSingleCharVerifier                                                                                                                                 // Colorize: green
+                line = line.simplified();                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Create structure of base classes -> subclasses -> interfaces                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (isBaseClass)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    baseClass              = &baseClasses[id];                                                                                                                                           // Colorize: green
+                    baseClass->description = line;                                                                                                                                                       // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (isSubClass)                                                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    subClass              = &baseClass->subClasses[id];                                                                                                                                  // Colorize: green
+                    subClass->description = line;                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (isInterface)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    subClass->interfaces[id].description = line;                                                                                                                                         // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err("Failed to parse line in PCI database: " + lines.at(i));                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ++i;                                                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::generateBaseClasses(const QString &path, const PciBaseClasses &baseClasses)                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Iterate over base classes and generate subclasses                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QMapIterator<quint8, PciBaseClass> it(baseClasses);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint8              baseClassId = it.key();                                                                                                                                                  // Colorize: green
+            const PciBaseClass &baseClass   = it.value();                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!baseClass.subClasses.isEmpty())                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (!generateSubClasses(path, baseClassId, baseClass))                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return generateBaseClassesFile(path, baseClasses);                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::generateSubClasses(const QString &path, quint8 baseClassId, const PciBaseClass &baseClass)                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Iterate over subclasses and generate interfaces                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QMapIterator<quint8, PciSubClass> it(baseClass.subClasses);                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint8             subClassId = it.key();                                                                                                                                                    // Colorize: green
+            const PciSubClass &subClass   = it.value();                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!subClass.interfaces.isEmpty())                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (!generateInterfacesFile(path, baseClassId, baseClass.description, subClassId, subClass))                                                                                             // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return generateSubClassesFile(path, baseClassId, baseClass);                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::generateVendors(const QString &path, const PciVendors &vendors)                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Iterate over vendors and generate devices                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QMapIterator<quint16, PciVendor> it(vendors);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint16          vendorId = it.key();                                                                                                                                                        // Colorize: green
+            const PciVendor &vendor   = it.value();                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!vendor.devices.isEmpty())                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (!generateDevices(path, vendorId, vendor))                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return generateVendorsFile(path, vendors);                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::generateDevices(const QString &path, quint16 vendorId, const PciVendor &vendor)                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Iterate over subclasses and generate interfaces                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QMapIterator<quint16, PciDevice> it(vendor.devices);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint16          deviceId = it.key();                                                                                                                                                        // Colorize: green
+            const PciDevice &device   = it.value();                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!device.subdevices.isEmpty())                                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (!generateSubDevicesFile(path, vendorId, deviceId, device))                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return generateDevicesFile(path, vendorId, vendor);                                                                                                                                                  // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const PciBaseClasses &baseClasses)                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Headers                                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append("#include <com/ngos/shared/common/ngos/types.h>");                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QMapIterator<quint8, PciBaseClass> it(baseClasses);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint8              baseClassId = it.key();                                                                                                                                                  // Colorize: green
+            const PciBaseClass &baseClass   = it.value();                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!baseClass.subClasses.isEmpty())                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                lines.append(QString("#include <com/ngos/shared/common/pci/database/generated/baseclass%1/pcisubclass%1.h>")                                                                             // Colorize: green
+                                        .arg(baseClassId, 2, 16, QChar('0'))                                                                                                                             // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("#include <com/ngos/shared/common/printf/printf.h>");                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // enum class PciBaseClass                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append("enum class PciBaseClass: u8");                                                                                                                                                     // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!baseClasses.contains(0))                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            lines.append("    NONE          = 0,");                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QMapIterator<quint8, PciBaseClass> it(baseClasses);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint8  baseClassId    = it.key();                                                                                                                                                           // Colorize: green
+            QString baseClassIdStr = QString::number(baseClassId, 16).toUpper();                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append(QString("    BASE_CLASS_%1 = 0x%1,")                                                                                                                                            // Colorize: green
+                                    .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                                  // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Remove ',' from the previous line                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString &previousLine = lines.last();                                                                                                                                                        // Colorize: green
+            previousLine.remove(previousLine.length() - 1, 1);                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("};");                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToString(PciBaseClass baseClass)                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append("inline const char8* enumToString(PciBaseClass baseClass) // TEST: NO");                                                                                                            // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | baseClass = %u\", baseClass)); // Commented to avoid bad looking logs");                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    switch (baseClass)");                                                                                                                                                          // Colorize: green
+        lines.append("    {");                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add switch cases                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!baseClasses.contains(0))                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                lines.append("        case PciBaseClass::NONE:          return \"NONE\";");                                                                                                              // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QMapIterator<quint8, PciBaseClass> it(baseClasses);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (it.hasNext())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                it.next();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint8  baseClassId    = it.key();                                                                                                                                                       // Colorize: green
+                QString baseClassIdStr = QString::number(baseClassId, 16).toUpper();                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append(QString("        case PciBaseClass::BASE_CLASS_%1: return \"BASE_CLASS_%1\";")                                                                                              // Colorize: green
+                                        .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                              // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+            lines.append("        default: return \"UNKNOWN\";");                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    }");                                                                                                                                                                           // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToFullString(PciBaseClass baseClass)                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append("inline const char8* enumToFullString(PciBaseClass baseClass) // TEST: NO");                                                                                                        // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | baseClass = %u\", baseClass)); // Commented to avoid bad looking logs");                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    static char8 res[21];");                                                                                                                                                       // Colorize: green
+        lines.append("");                                                                                                                                                                                // Colorize: green
+        lines.append("    sprintf(res, \"0x%02X (%s)\", (u8)baseClass, enumToString(baseClass));");                                                                                                      // Colorize: green
+        lines.append("");                                                                                                                                                                                // Colorize: green
+        lines.append("    return res;");                                                                                                                                                                 // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToHumanString(PciBaseClass baseClass, u8 subClassId, u8 interfaceId)                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append("inline const char8* enumToHumanString(PciBaseClass baseClass, u8 subClassId, u8 interfaceId) // TEST: NO");                                                                        // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | baseClass = %u, subClassId = %u, interfaceId = %u\", baseClass, subClassId, interfaceId)); // Commented to avoid bad looking logs");                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    switch (baseClass)");                                                                                                                                                          // Colorize: green
+        lines.append("    {");                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add switch cases                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QMapIterator<quint8, PciBaseClass> it(baseClasses);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (it.hasNext())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                it.next();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint8              baseClassId = it.key();                                                                                                                                              // Colorize: green
+                const PciBaseClass &baseClass   = it.value();                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                QString baseClassIdStr = QString::number(baseClassId, 16).toUpper();                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Add case for base class                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (!baseClass.subClasses.isEmpty())                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (isInterfacesExists(baseClass.subClasses))                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            lines.append(QString("        case PciBaseClass::BASE_CLASS_%1: return enumToHumanString((PciSubClass%1)subClassId, interfaceId);")                                          // Colorize: green
+                                                    .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                  // Colorize: green
+                            );                                                                                                                                                                           // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            lines.append(QString("        case PciBaseClass::BASE_CLASS_%1: return enumToHumanString((PciSubClass%1)subClassId);")                                                       // Colorize: green
+                                                    .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                  // Colorize: green
+                            );                                                                                                                                                                           // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        lines.append(QString("        case PciBaseClass::BASE_CLASS_%1: return \"%2\";")                                                                                                 // Colorize: green
+                                                .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                      // Colorize: green
+                                                .arg(baseClass.description)                                                                                                                              // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+            lines.append("        default: return \"Unknown device\";");                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    }");                                                                                                                                                                           // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return save(path + FOLDER_PATH + "pcibaseclass.h", lines);                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint8 baseClassId, const PciBaseClass &baseClass)                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString baseClassIdStr = QString::number(baseClassId, 16).toUpper();                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Headers                                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append("#include <com/ngos/shared/common/ngos/types.h>");                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QMapIterator<quint8, PciSubClass> it(baseClass.subClasses);                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint8             subClassId = it.key();                                                                                                                                                    // Colorize: green
+            const PciSubClass &subClass   = it.value();                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!subClass.interfaces.isEmpty())                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                lines.append(QString("#include <com/ngos/shared/common/pci/database/generated/baseclass%1/pciinterface%1%2.h>")                                                                          // Colorize: green
+                                        .arg(baseClassId, 2, 16, QChar('0'))                                                                                                                             // Colorize: green
+                                        .arg(subClassId,  2, 16, QChar('0'))                                                                                                                             // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("#include <com/ngos/shared/common/printf/printf.h>");                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // enum class PciSubClass                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append(QString("enum class PciSubClass%1: u8 // Ignore CppEnumVerifier")                                                                                                                   // Colorize: green
+                                .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                                      // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!baseClass.subClasses.contains(0))                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            lines.append("    NONE         = 0,");                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QMapIterator<quint8, PciSubClass> it(baseClass.subClasses);                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint8  subClassId    = it.key();                                                                                                                                                            // Colorize: green
+            QString subClassIdStr = QString::number(subClassId, 16).toUpper();                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append(QString("    SUB_CLASS_%1 = 0x%1,")                                                                                                                                             // Colorize: green
+                                    .arg(subClassIdStr, 2, QChar('0'))                                                                                                                                   // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Remove ',' from the previous line                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString &previousLine = lines.last();                                                                                                                                                        // Colorize: green
+            previousLine.remove(previousLine.length() - 1, 1);                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("};");                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToString(PciSubClass subClass)                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append(QString("inline const char8* enumToString(PciSubClass%1 subClass) // TEST: NO")                                                                                                     // Colorize: green
+                                .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                                      // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | subClass = %u\", subClass)); // Commented to avoid bad looking logs");                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    switch (subClass)");                                                                                                                                                           // Colorize: green
+        lines.append("    {");                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add switch cases                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!baseClass.subClasses.contains(0))                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                lines.append(QString("        case PciSubClass%1::NONE:         return \"NONE\";")                                                                                                       // Colorize: green
+                                        .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                              // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QMapIterator<quint8, PciSubClass> it(baseClass.subClasses);                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (it.hasNext())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                it.next();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint8  subClassId    = it.key();                                                                                                                                                        // Colorize: green
+                QString subClassIdStr = QString::number(subClassId, 16).toUpper();                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append(QString("        case PciSubClass%1::SUB_CLASS_%2: return \"SUB_CLASS_%2\";")                                                                                               // Colorize: green
+                                        .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                              // Colorize: green
+                                        .arg(subClassIdStr,  2, QChar('0'))                                                                                                                              // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+            lines.append("        default: return \"UNKNOWN\";");                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    }");                                                                                                                                                                           // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToFullString(PciSubClass subClass)                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append(QString("inline const char8* enumToFullString(PciSubClass%1 subClass) // TEST: NO")                                                                                                 // Colorize: green
+                                .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                                      // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | subClass = %u\", subClass)); // Commented to avoid bad looking logs");                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    static char8 res[20];");                                                                                                                                                       // Colorize: green
+        lines.append("");                                                                                                                                                                                // Colorize: green
+        lines.append("    sprintf(res, \"0x%02X (%s)\", (u8)subClass, enumToString(subClass));");                                                                                                        // Colorize: green
+        lines.append("");                                                                                                                                                                                // Colorize: green
+        lines.append("    return res;");                                                                                                                                                                 // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToHumanString(PciSubClass subClass, u8 interfaceId)                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString defaultValue = baseClass.description;                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add function start lines                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (isInterfacesExists(baseClass.subClasses))                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                   // Colorize: green
+                lines.append(QString("inline const char8* enumToHumanString(PciSubClass%1 subClass, u8 interfaceId) // TEST: NO")                                                                        // Colorize: green
+                                        .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                              // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+                lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                       // Colorize: green
+                lines.append("    // COMMON_LT((\" | subClass = %u, interfaceId = %u\", subClass, interfaceId)); // Commented to avoid bad looking logs");                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                   // Colorize: green
+                lines.append(QString("inline const char8* enumToHumanString(PciSubClass%1 subClass) // TEST: NO")                                                                                        // Colorize: green
+                                        .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                              // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+                lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                       // Colorize: green
+                lines.append("    // COMMON_LT((\" | subClass = %u\", subClass)); // Commented to avoid bad looking logs");                                                                              // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            addThreeBlankLines(lines);                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    switch (subClass)");                                                                                                                                                           // Colorize: green
+        lines.append("    {");                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add switch cases                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QMapIterator<quint8, PciSubClass> it(baseClass.subClasses);                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (it.hasNext())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                it.next();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint8             subClassId = it.key();                                                                                                                                                // Colorize: green
+                const PciSubClass &subClass   = it.value();                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                QString subClassIdStr = QString::number(subClassId, 16).toUpper();                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (!subClass.interfaces.isEmpty())                                                                                                                                                      // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    lines.append(QString("        case PciSubClass%1::SUB_CLASS_%2: return enumToHumanString((PciInterface%1%2)interfaceId);")                                                           // Colorize: green
+                                            .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                          // Colorize: green
+                                            .arg(subClassIdStr,  2, QChar('0'))                                                                                                                          // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    lines.append(QString("        case PciSubClass%1::SUB_CLASS_%2: return \"%3 - %4\";")                                                                                                // Colorize: green
+                                            .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                          // Colorize: green
+                                            .arg(subClassIdStr,  2, QChar('0'))                                                                                                                          // Colorize: green
+                                            .arg(defaultValue)                                                                                                                                           // Colorize: green
+                                            .arg(subClass.description)                                                                                                                                   // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+            lines.append(QString("        default: return \"%1\";")                                                                                                                                      // Colorize: green
+                                    .arg(defaultValue)                                                                                                                                                   // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    }");                                                                                                                                                                           // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString targetFile = QString(path + FOLDER_PATH + "baseclass%1/pcisubclass%1.h")                                                                                                                     // Colorize: green
+                                    .arg(baseClassId, 2, 16, QChar('0'));                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return save(targetFile, lines);                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint8 baseClassId, const QString &baseClassDescription, quint8 subClassId, const PciSubClass &subClass)                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString baseClassIdStr = QString::number(baseClassId, 16).toUpper();                                                                                                                                 // Colorize: green
+    QString subClassIdStr  = QString::number(subClassId,  16).toUpper();                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Headers                                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append("#include <com/ngos/shared/common/ngos/types.h>");                                                                                                                                  // Colorize: green
+        lines.append("#include <com/ngos/shared/common/printf/printf.h>");                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // enum class PciInterface                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append(QString("enum class PciInterface%1%2: u8 // Ignore CppEnumVerifier")                                                                                                                // Colorize: green
+                                .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                                      // Colorize: green
+                                .arg(subClassIdStr,  2, QChar('0'))                                                                                                                                      // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!subClass.interfaces.contains(0))                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            lines.append("    NONE         = 0,");                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QMapIterator<quint8, PciInterface> it(subClass.interfaces);                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint8  interfaceId    = it.key();                                                                                                                                                           // Colorize: green
+            QString interfaceIdStr = QString::number(interfaceId, 16).toUpper();                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append(QString("    INTERFACE_%1 = 0x%1,")                                                                                                                                             // Colorize: green
+                                    .arg(interfaceIdStr, 2, QChar('0'))                                                                                                                                  // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Remove ',' from the previous line                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString &previousLine = lines.last();                                                                                                                                                        // Colorize: green
+            previousLine.remove(previousLine.length() - 1, 1);                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("};");                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToString(PciInterface interface)                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append(QString("inline const char8* enumToString(PciInterface%1%2 interface) // TEST: NO")                                                                                                 // Colorize: green
+                                .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                                      // Colorize: green
+                                .arg(subClassIdStr,  2, QChar('0'))                                                                                                                                      // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | interface = %u\", interface)); // Commented to avoid bad looking logs");                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    switch (interface)");                                                                                                                                                          // Colorize: green
+        lines.append("    {");                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add switch cases                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!subClass.interfaces.contains(0))                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                lines.append(QString("        case PciInterface%1%2::NONE:         return \"NONE\";")                                                                                                    // Colorize: green
+                                        .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                              // Colorize: green
+                                        .arg(subClassIdStr,  2, QChar('0'))                                                                                                                              // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QMapIterator<quint8, PciInterface> it(subClass.interfaces);                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (it.hasNext())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                it.next();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint8  interfaceId    = it.key();                                                                                                                                                       // Colorize: green
+                QString interfaceIdStr = QString::number(interfaceId, 16).toUpper();                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append(QString("        case PciInterface%1%2::INTERFACE_%3: return \"INTERFACE_%3\";")                                                                                            // Colorize: green
+                                        .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                              // Colorize: green
+                                        .arg(subClassIdStr,  2, QChar('0'))                                                                                                                              // Colorize: green
+                                        .arg(interfaceIdStr, 2, QChar('0'))                                                                                                                              // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+            lines.append("        default: return \"UNKNOWN\";");                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    }");                                                                                                                                                                           // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToFullString(PciInterface interface)                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append(QString("inline const char8* enumToFullString(PciInterface%1%2 interface) // TEST: NO")                                                                                             // Colorize: green
+                                .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                                      // Colorize: green
+                                .arg(subClassIdStr,  2, QChar('0'))                                                                                                                                      // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | interface = %u\", interface)); // Commented to avoid bad looking logs");                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    static char8 res[20];");                                                                                                                                                       // Colorize: green
+        lines.append("");                                                                                                                                                                                // Colorize: green
+        lines.append("    sprintf(res, \"0x%02X (%s)\", (u8)interface, enumToString(interface));");                                                                                                      // Colorize: green
+        lines.append("");                                                                                                                                                                                // Colorize: green
+        lines.append("    return res;");                                                                                                                                                                 // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToHumanString(PciInterface interface)                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString defaultValue = baseClassDescription + " - " + subClass.description;                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append(QString("inline const char8* enumToHumanString(PciInterface%1%2 interface) // TEST: NO")                                                                                            // Colorize: green
+                                .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                                      // Colorize: green
+                                .arg(subClassIdStr,  2, QChar('0'))                                                                                                                                      // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | interface = %u\", interface)); // Commented to avoid bad looking logs");                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    switch (interface)");                                                                                                                                                          // Colorize: green
+        lines.append("    {");                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add switch cases                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QMapIterator<quint8, PciInterface> it(subClass.interfaces);                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (it.hasNext())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                it.next();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint8              interfaceId = it.key();                                                                                                                                              // Colorize: green
+                const PciInterface &interface   = it.value();                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                QString interfaceIdStr = QString::number(interfaceId, 16).toUpper();                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append(QString("        case PciInterface%1%2::INTERFACE_%3: return \"%4 - %5\";")                                                                                                 // Colorize: green
+                                        .arg(baseClassIdStr, 2, QChar('0'))                                                                                                                              // Colorize: green
+                                        .arg(subClassIdStr,  2, QChar('0'))                                                                                                                              // Colorize: green
+                                        .arg(interfaceIdStr, 2, QChar('0'))                                                                                                                              // Colorize: green
+                                        .arg(defaultValue)                                                                                                                                               // Colorize: green
+                                        .arg(interface.description)                                                                                                                                      // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+            lines.append(QString("        default: return \"%1\";")                                                                                                                                      // Colorize: green
+                                    .arg(defaultValue)                                                                                                                                                   // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    }");                                                                                                                                                                           // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString targetFile = QString(path + FOLDER_PATH + "baseclass%1/pciinterface%1%2.h")                                                                                                                  // Colorize: green
+                                    .arg(baseClassId, 2, 16, QChar('0'))                                                                                                                                 // Colorize: green
+                                    .arg(subClassId,  2, 16, QChar('0'));                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return save(targetFile, lines);                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::generateVendorsFile(const QString &path, const PciVendors &vendors)                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Headers                                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append("#include <com/ngos/shared/common/ngos/types.h>");                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QMapIterator<quint16, PciVendor> it(vendors);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint16          vendorId = it.key();                                                                                                                                                        // Colorize: green
+            const PciVendor &vendor   = it.value();                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!vendor.devices.isEmpty())                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                lines.append(QString("#include <com/ngos/shared/common/pci/database/generated/vendor%1/pcidevice%1.h>")                                                                                  // Colorize: green
+                                        .arg(vendorId, 4, 16, QChar('0'))                                                                                                                                // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("#include <com/ngos/shared/common/printf/printf.h>");                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // enum class PciVendor                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append("enum class PciVendor: u16");                                                                                                                                                       // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!vendors.contains(0))                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            lines.append("    NONE        = 0,");                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QMapIterator<quint16, PciVendor> it(vendors);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint16 vendorId    = it.key();                                                                                                                                                              // Colorize: green
+            QString vendorIdStr = QString::number(vendorId, 16).toUpper();                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append(QString("    VENDOR_%1 = 0x%1,")                                                                                                                                                // Colorize: green
+                                    .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                     // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Remove ',' from the previous line                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString &previousLine = lines.last();                                                                                                                                                        // Colorize: green
+            previousLine.remove(previousLine.length() - 1, 1);                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("};");                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToString(PciVendor vendor)                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append("inline const char8* enumToString(PciVendor vendor) // TEST: NO");                                                                                                                  // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | vendor = %u\", vendor)); // Commented to avoid bad looking logs");                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    switch (vendor)");                                                                                                                                                             // Colorize: green
+        lines.append("    {");                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add switch cases                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!vendors.contains(0))                                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                lines.append("        case PciVendor::NONE:        return \"NONE\";");                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QMapIterator<quint16, PciVendor> it(vendors);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (it.hasNext())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                it.next();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint16 vendorId    = it.key();                                                                                                                                                          // Colorize: green
+                QString vendorIdStr = QString::number(vendorId, 16).toUpper();                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append(QString("        case PciVendor::VENDOR_%1: return \"VENDOR_%1\";")                                                                                                         // Colorize: green
+                                        .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                 // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+            lines.append("        default: return \"UNKNOWN\";");                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    }");                                                                                                                                                                           // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToFullString(PciVendor vendor)                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append("inline const char8* enumToFullString(PciVendor vendor) // TEST: NO");                                                                                                              // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | vendor = %u\", vendor)); // Commented to avoid bad looking logs");                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    static char8 res[21];");                                                                                                                                                       // Colorize: green
+        lines.append("");                                                                                                                                                                                // Colorize: green
+        lines.append("    sprintf(res, \"0x%04X (%s)\", (u16)vendor, enumToString(vendor));");                                                                                                           // Colorize: green
+        lines.append("");                                                                                                                                                                                // Colorize: green
+        lines.append("    return res;");                                                                                                                                                                 // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToHumanString(PciVendor vendor)                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append("inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO");                                                                                                             // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | vendor = %u\", vendor)); // Commented to avoid bad looking logs");                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    switch (vendor)");                                                                                                                                                             // Colorize: green
+        lines.append("    {");                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add switch cases                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QMapIterator<quint16, PciVendor> it(vendors);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (it.hasNext())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                it.next();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint16          vendorId = it.key();                                                                                                                                                    // Colorize: green
+                const PciVendor &vendor   = it.value();                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                QString vendorIdStr = QString::number(vendorId, 16).toUpper();                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append(QString("        case PciVendor::VENDOR_%1: return \"%2\";")                                                                                                                // Colorize: green
+                                        .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                 // Colorize: green
+                                        .arg(vendor.description)                                                                                                                                         // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+            lines.append("        default: return \"Unknown vendor\";");                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    }");                                                                                                                                                                           // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId)                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append("inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId) // TEST: NO");                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | vendor = %u, deviceId = %u\", vendor, deviceId)); // Commented to avoid bad looking logs");                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    switch (vendor)");                                                                                                                                                             // Colorize: green
+        lines.append("    {");                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add switch cases                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QMapIterator<quint16, PciVendor> it(vendors);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (it.hasNext())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                it.next();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint16          vendorId = it.key();                                                                                                                                                    // Colorize: green
+                const PciVendor &vendor   = it.value();                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                QString vendorIdStr = QString::number(vendorId, 16).toUpper();                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (!vendor.devices.isEmpty())                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    lines.append(QString("        case PciVendor::VENDOR_%1: return enumToHumanString((PciDevice%1)deviceId);")                                                                          // Colorize: green
+                                            .arg(vendorIdStr, 4, QChar('0'))                                                                                                                             // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    lines.append(QString("        case PciVendor::VENDOR_%1: return \"Unknown device\";")                                                                                                // Colorize: green
+                                            .arg(vendorIdStr, 4, QChar('0'))                                                                                                                             // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+            lines.append("        default: return \"Unknown device\";");                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    }");                                                                                                                                                                           // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId, PciVendor subsystemVendorID, u16 subDeviceId)                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append("inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId, PciVendor subsystemVendorID, u16 subDeviceId) // TEST: NO");                                                 // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | vendor = %u, deviceId = %u, subsystemVendorID = %u, subDeviceId = %u\", vendor, deviceId, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs"); // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    switch (vendor)");                                                                                                                                                             // Colorize: green
+        lines.append("    {");                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add switch cases                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QMapIterator<quint16, PciVendor> it(vendors);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (it.hasNext())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                it.next();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint16          vendorId = it.key();                                                                                                                                                    // Colorize: green
+                const PciVendor &vendor   = it.value();                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                QString vendorIdStr = QString::number(vendorId, 16).toUpper();                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (isSubDevicesExists(vendor.devices))                                                                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    lines.append(QString("        case PciVendor::VENDOR_%1: return enumToHumanString((PciDevice%1)deviceId, (u16)subsystemVendorID, subDeviceId);")                                     // Colorize: green
+                                            .arg(vendorIdStr, 4, QChar('0'))                                                                                                                             // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    lines.append(QString("        case PciVendor::VENDOR_%1: return \"Unknown device\";")                                                                                                // Colorize: green
+                                            .arg(vendorIdStr, 4, QChar('0'))                                                                                                                             // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+            lines.append("        default: return \"Unknown device\";");                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    }");                                                                                                                                                                           // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return save(path + FOLDER_PATH + "pcivendor.h", lines);                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::generateDevicesFile(const QString &path, quint16 vendorId, const PciVendor &vendor)                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString vendorIdStr = QString::number(vendorId, 16).toUpper();                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Headers                                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append("#include <com/ngos/shared/common/ngos/types.h>");                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QMapIterator<quint16, PciDevice> it(vendor.devices);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint16          deviceId = it.key();                                                                                                                                                        // Colorize: green
+            const PciDevice &device   = it.value();                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!device.subdevices.isEmpty())                                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                lines.append(QString("#include <com/ngos/shared/common/pci/database/generated/vendor%1/pcisubdevice%1%2.h>")                                                                             // Colorize: green
+                                        .arg(vendorId, 4, 16, QChar('0'))                                                                                                                                // Colorize: green
+                                        .arg(deviceId, 4, 16, QChar('0'))                                                                                                                                // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("#include <com/ngos/shared/common/printf/printf.h>");                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // enum class PciDevice                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append(QString("enum class PciDevice%1: u16 // Ignore CppEnumVerifier")                                                                                                                    // Colorize: green
+                                .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                         // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!vendor.devices.contains(0))                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            lines.append("    NONE        = 0,");                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QMapIterator<quint16, PciDevice> it(vendor.devices);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint16 deviceId    = it.key();                                                                                                                                                              // Colorize: green
+            QString deviceIdStr = QString::number(deviceId, 16).toUpper();                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append(QString("    DEVICE_%1 = 0x%1,")                                                                                                                                                // Colorize: green
+                                    .arg(deviceIdStr, 4, QChar('0'))                                                                                                                                     // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Remove ',' from the previous line                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString &previousLine = lines.last();                                                                                                                                                        // Colorize: green
+            previousLine.remove(previousLine.length() - 1, 1);                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("};");                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToString(PciDevice device)                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append(QString("inline const char8* enumToString(PciDevice%1 device) // TEST: NO")                                                                                                         // Colorize: green
+                                .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                         // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | device = %u\", device)); // Commented to avoid bad looking logs");                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    switch (device)");                                                                                                                                                             // Colorize: green
+        lines.append("    {");                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add switch cases                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!vendor.devices.contains(0))                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                lines.append(QString("        case PciDevice%1::NONE:        return \"NONE\";")                                                                                                          // Colorize: green
+                                        .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                 // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QMapIterator<quint16, PciDevice> it(vendor.devices);                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (it.hasNext())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                it.next();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint16 deviceId    = it.key();                                                                                                                                                          // Colorize: green
+                QString deviceIdStr = QString::number(deviceId, 16).toUpper();                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append(QString("        case PciDevice%1::DEVICE_%2: return \"DEVICE_%2\";")                                                                                                       // Colorize: green
+                                        .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                 // Colorize: green
+                                        .arg(deviceIdStr, 4, QChar('0'))                                                                                                                                 // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+            lines.append("        default: return \"UNKNOWN\";");                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    }");                                                                                                                                                                           // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToFullString(PciDevice device)                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append(QString("inline const char8* enumToFullString(PciDevice%1 device) // TEST: NO")                                                                                                     // Colorize: green
+                                .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                         // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | device = %u\", device)); // Commented to avoid bad looking logs");                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    static char8 res[23];");                                                                                                                                                       // Colorize: green
+        lines.append("");                                                                                                                                                                                // Colorize: green
+        lines.append("    sprintf(res, \"0x%04X (%s)\", (u16)device, enumToString(device));");                                                                                                           // Colorize: green
+        lines.append("");                                                                                                                                                                                // Colorize: green
+        lines.append("    return res;");                                                                                                                                                                 // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToHumanString(PciDevice device)                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append(QString("inline const char8* enumToHumanString(PciDevice%1 device) // TEST: NO")                                                                                                    // Colorize: green
+                                .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                         // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | device = %u\", device)); // Commented to avoid bad looking logs");                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    switch (device)");                                                                                                                                                             // Colorize: green
+        lines.append("    {");                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add switch cases                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QMapIterator<quint16, PciDevice> it(vendor.devices);                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (it.hasNext())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                it.next();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint16          deviceId = it.key();                                                                                                                                                    // Colorize: green
+                const PciDevice &device   = it.value();                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                QString deviceIdStr = QString::number(deviceId, 16).toUpper();                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append(QString("        case PciDevice%1::DEVICE_%2: return \"%3\";")                                                                                                              // Colorize: green
+                                        .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                 // Colorize: green
+                                        .arg(deviceIdStr, 4, QChar('0'))                                                                                                                                 // Colorize: green
+                                        .arg(device.description)                                                                                                                                         // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+            lines.append("        default: return \"Unknown device\";");                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    }");                                                                                                                                                                           // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToHumanString(PciDevice device, u16 subsystemVendorID, u16 subDeviceId)                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (isSubDevicesExists(vendor.devices))                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addThreeBlankLines(lines);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            lines.append(QString("inline const char8* enumToHumanString(PciDevice%1 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO")                                                        // Colorize: green
+                                    .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                     // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                           // Colorize: green
+            lines.append("    // COMMON_LT((\" | device = %u, subsystemVendorID = %u, subDeviceId = %u\", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs");            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            addThreeBlankLines(lines);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("    switch (device)");                                                                                                                                                         // Colorize: green
+            lines.append("    {");                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Add switch cases                                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QMapIterator<quint16, PciDevice> it(vendor.devices);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                while (it.hasNext())                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    it.next();                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    quint16          deviceId = it.key();                                                                                                                                                // Colorize: green
+                    const PciDevice &device   = it.value();                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    QString deviceIdStr = QString::number(deviceId, 16).toUpper();                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (!device.subdevices.isEmpty())                                                                                                                                                    // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        lines.append(QString("        case PciDevice%1::DEVICE_%2: return enumToHumanString((PciSubDevice%1%2)(subsystemVendorID << 16 | subDeviceId));")                                // Colorize: green
+                                                .arg(vendorIdStr, 4, QChar('0'))                                                                                                                         // Colorize: green
+                                                .arg(deviceIdStr, 4, QChar('0'))                                                                                                                         // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        lines.append(QString("        case PciDevice%1::DEVICE_%2: return \"Unknown device\";")                                                                                          // Colorize: green
+                                                .arg(vendorIdStr, 4, QChar('0'))                                                                                                                         // Colorize: green
+                                                .arg(deviceIdStr, 4, QChar('0'))                                                                                                                         // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append("");                                                                                                                                                                        // Colorize: green
+                lines.append("        default: return \"Unknown device\";");                                                                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("    }");                                                                                                                                                                       // Colorize: green
+            lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString targetFile = QString(path + FOLDER_PATH + "vendor%1/pcidevice%1.h")                                                                                                                          // Colorize: green
+                                    .arg(vendorId, 4, 16, QChar('0'));                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return save(targetFile, lines);                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PciDatabaseGenerator::generateSubDevicesFile(const QString &path, quint16 vendorId, quint16 deviceId, const PciDevice &device)                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString vendorIdStr = QString::number(vendorId, 16).toUpper();                                                                                                                                       // Colorize: green
+    QString deviceIdStr = QString::number(deviceId, 16).toUpper();                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Headers                                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append("#include <com/ngos/shared/common/ngos/types.h>");                                                                                                                                  // Colorize: green
+        lines.append("#include <com/ngos/shared/common/printf/printf.h>");                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // enum class PciSubDevice                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append(QString("enum class PciSubDevice%1%2: u32 // Ignore CppEnumVerifier")                                                                                                               // Colorize: green
+                                .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                         // Colorize: green
+                                .arg(deviceIdStr, 4, QChar('0'))                                                                                                                                         // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!device.subdevices.contains(0))                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            lines.append("    NONE               = 0,");                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QMapIterator<quint32, PciSubDevice> it(device.subdevices);                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint32 subDeviceId    = it.key();                                                                                                                                                           // Colorize: green
+            QString subDeviceIdStr = QString::number(subDeviceId, 16).toUpper();                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append(QString("    SUBDEVICE_%1 = 0x%1,")                                                                                                                                             // Colorize: green
+                                    .arg(subDeviceIdStr, 8, QChar('0'))                                                                                                                                  // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Remove ',' from the previous line                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString &previousLine = lines.last();                                                                                                                                                        // Colorize: green
+            previousLine.remove(previousLine.length() - 1, 1);                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("};");                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToString(PciSubDevice subDevice)                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append(QString("inline const char8* enumToString(PciSubDevice%1%2 subDevice) // TEST: NO")                                                                                                 // Colorize: green
+                                .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                         // Colorize: green
+                                .arg(deviceIdStr, 4, QChar('0'))                                                                                                                                         // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | subDevice = %u\", subDevice)); // Commented to avoid bad looking logs");                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    switch (subDevice)");                                                                                                                                                          // Colorize: green
+        lines.append("    {");                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add switch cases                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!device.subdevices.contains(0))                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                lines.append(QString("        case PciSubDevice%1%2::NONE:               return \"NONE\";")                                                                                              // Colorize: green
+                                        .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                 // Colorize: green
+                                        .arg(deviceIdStr, 4, QChar('0'))                                                                                                                                 // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QMapIterator<quint32, PciSubDevice> it(device.subdevices);                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (it.hasNext())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                it.next();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint32 subDeviceId    = it.key();                                                                                                                                                       // Colorize: green
+                QString subDeviceIdStr = QString::number(subDeviceId, 16).toUpper();                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append(QString("        case PciSubDevice%1%2::SUBDEVICE_%3: return \"SUBDEVICE_%3\";")                                                                                            // Colorize: green
+                                        .arg(vendorIdStr,    4, QChar('0'))                                                                                                                              // Colorize: green
+                                        .arg(deviceIdStr ,   4, QChar('0'))                                                                                                                              // Colorize: green
+                                        .arg(subDeviceIdStr, 8, QChar('0'))                                                                                                                              // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+            lines.append("        default: return \"UNKNOWN\";");                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    }");                                                                                                                                                                           // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToFullString(PciSubDevice subDevice)                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append(QString("inline const char8* enumToFullString(PciSubDevice%1%2 subDevice) // TEST: NO")                                                                                             // Colorize: green
+                                .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                         // Colorize: green
+                                .arg(deviceIdStr, 4, QChar('0'))                                                                                                                                         // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | subDevice = %u\", subDevice)); // Commented to avoid bad looking logs");                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    static char8 res[32];");                                                                                                                                                       // Colorize: green
+        lines.append("");                                                                                                                                                                                // Colorize: green
+        lines.append("    sprintf(res, \"0x%08X (%s)\", (u32)subDevice, enumToString(subDevice));");                                                                                                     // Colorize: green
+        lines.append("");                                                                                                                                                                                // Colorize: green
+        lines.append("    return res;");                                                                                                                                                                 // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // inline const char8* enumToHumanString(PciSubDevice subDevice)                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        lines.append(QString("inline const char8* enumToHumanString(PciSubDevice%1%2 subDevice) // TEST: NO")                                                                                            // Colorize: green
+                                .arg(vendorIdStr, 4, QChar('0'))                                                                                                                                         // Colorize: green
+                                .arg(deviceIdStr, 4, QChar('0'))                                                                                                                                         // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("    // COMMON_LT((\" | subDevice = %u\", subDevice)); // Commented to avoid bad looking logs");                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    switch (subDevice)");                                                                                                                                                          // Colorize: green
+        lines.append("    {");                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add switch cases                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QMapIterator<quint32, PciSubDevice> it(device.subdevices);                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (it.hasNext())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                it.next();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint32             subDeviceId = it.key();                                                                                                                                              // Colorize: green
+                const PciSubDevice &subDevice   = it.value();                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                QString subDeviceIdStr = QString::number(subDeviceId, 16).toUpper();                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append(QString("        case PciSubDevice%1%2::SUBDEVICE_%3: return \"%4\";")                                                                                                      // Colorize: green
+                                        .arg(vendorIdStr,    4, QChar('0'))                                                                                                                              // Colorize: green
+                                        .arg(deviceIdStr,    4, QChar('0'))                                                                                                                              // Colorize: green
+                                        .arg(subDeviceIdStr, 8, QChar('0'))                                                                                                                              // Colorize: green
+                                        .arg(subDevice.description)                                                                                                                                      // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+            lines.append("        default: return \"Unknown device\";");                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("    }");                                                                                                                                                                           // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString targetFile = QString(path + FOLDER_PATH + "vendor%1/pcisubdevice%1%2.h")                                                                                                                     // Colorize: green
+                                    .arg(vendorId, 4, 16, QChar('0'))                                                                                                                                    // Colorize: green
+                                    .arg(deviceId, 4, 16, QChar('0'));                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return save(targetFile, lines);                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+PciDatabaseGenerator pciDatabaseGeneratorInstance;                                                                                                                                                       // Colorize: green
