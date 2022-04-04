@@ -1037,7 +1037,7 @@ qint64 QMake::addResourcesBuildTargets(const QString &workingDirectory, QStringL
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-        // TODO: Store lines to list
+        // TODO: Store lines to list                                                                                                                                                                     // Colorize: green
         QFile assetsFile(workingDirectory + "/build/assets/assets.S");                                                                                                                                   // Colorize: green
                                                                                                                                                                                                          // Colorize: green
         if (!assetsFile.open(QIODevice::WriteOnly))                                                                                                                                                      // Colorize: green
@@ -1192,7 +1192,7 @@ qint64 QMake::addResourcesBuildTargets(const QString &workingDirectory, QStringL
                                                                                                                                                                                                          // Colorize: green
 qint64 QMake::save(const QString &workingDirectory, const QStringList &lines, const QString &phony)                                                                                                      // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
-    // TODO: Store to list
+    // TODO: Store to list                                                                                                                                                                               // Colorize: green
     QFile file(workingDirectory + "/Makefile");                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
     if (!file.open(QIODevice::WriteOnly))                                                                                                                                                                // Colorize: green

@@ -797,7 +797,7 @@ void PeSpecVerifier::checkPeCoffHeaderMachine(SpecVerifyThread *thread, const QS
                                                                                                                                                                                                          // Colorize: green
             machinesLines.append(QString("    %1 = %2,")                                                                                                                                                 // Colorize: green
                                         .arg(field, -35, QChar(' '))                                                                                                                                     // Colorize: green
-                                        .arg(value)
+                                        .arg(value)                                                                                                                                                      // Colorize: green
             );                                                                                                                                                    // Colorize: green
         }                                                                                                                                                                                                // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -2476,7 +2476,7 @@ void PeSpecVerifier::checkPeSectionHeader(SpecVerifyThread *thread, const QStrin
                                                                                                                                                                                                          // Colorize: green
             headerLines.append(QString("    %1 %2;")                                                                                                                                                     // Colorize: green
                                         .arg(type, -33, QChar(' '))                                                                                                                                       // Colorize: green
-                                        .arg(name)
+                                        .arg(name)                                                                                                                                                       // Colorize: green
             );                                                                                                                                                      // Colorize: green
         }                                                                                                                                                                                                // Colorize: green
                                                                                                                                                                                                          // Colorize: green
