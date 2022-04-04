@@ -1,717 +1,766 @@
-#include "mainwindow.h"
-#include "build_config_gui/ui/ui_mainwindow.h"
-
-#include <QDebug>
-#include <QFile>
-#include <QMessageBox>
-#include <QQueue>
-#include <QSettings>
-
-#include <com/ngos/devtools/build_config_gui/main/aboutdialog.h>
-#include <com/ngos/devtools/build_config_gui/other/global.h>
-#include <com/ngos/devtools/build_config_gui/widgets/categorytreewidgetitem.h>
-#include <com/ngos/devtools/build_config_gui/widgets/parameters/booleanparameterwidget.h>
-#include <com/ngos/devtools/build_config_gui/widgets/parameters/comboboxparameterwidget.h>
-#include <com/ngos/devtools/build_config_gui/widgets/parameters/integerpowerof2parameterwidget.h>
-#include <com/ngos/devtools/build_config_gui/widgets/parameters/textparameterwidget.h>
-
-
-
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow())
-    , mOptions()
-    , mParameters()
-{
-    ui->setupUi(this);
-
-    ui->splitter->setSizes(QList<qint32>() << 160 << 360 << 480);
-
-    loadWindowState();
-}
-
-MainWindow::~MainWindow()
-{
-    saveWindowState();
-
-    delete ui;
-}
-
-void MainWindow::loadBuildConfigFile()
-{
-    QString filePath = Global::sProjectDir + "/include/buildconfig.h";
-
-
-
-    QFile file(filePath);
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        qCritical() << "Failed to read file:" << filePath;
-
-        return;
-    }
-
-    QString content = QString::fromUtf8(file.readAll());
-    file.close();
-
-
-
-    QStringList lines = content.split('\n');
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString &line = lines[i];
-
-        if (line.endsWith('\r'))
-        {
-            line.remove(line.length() - 1, 1);
-        }
-    }
-
-    parseBuildConfigFile(lines);
-}
-
-void MainWindow::closeEvent(QCloseEvent *event)
-{
-    if (ui->actionSave->isEnabled())
-    {
-        qint64 pressedButton = QMessageBox::question(this, tr("Save changes"), tr("Do you want to save changes before exit?"), QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
-
-        if (pressedButton == QMessageBox::Yes)
-        {
-            on_actionSave_triggered();
-
-            event->accept();
-        }
-        else
-        if (pressedButton == QMessageBox::No)
-        {
-            event->accept();
-        }
-        else
-        if (pressedButton == QMessageBox::Cancel)
-        {
-            event->ignore();
-        }
-        else
-        {
-            qCritical() << "Unexpected pressed button" << pressedButton;
-        }
-    }
-    else
-    {
-        event->accept();
-    }
-}
-
-void MainWindow::on_actionReload_triggered()
-{
-    mOptions.clear();
-    mParameters.clear();
-
-
-
-    QQueue<CategoryTreeWidgetItem *> categories;
-
-    for (qint64 i = 0; i < ui->categoriesTreeWidget->topLevelItemCount(); ++i)
-    {
-        categories.enqueue((CategoryTreeWidgetItem *)ui->categoriesTreeWidget->topLevelItem(i));
-    }
-
-
-
-    while (!categories.isEmpty())
-    {
-        CategoryTreeWidgetItem *treeItem = categories.dequeue();
-
-        for (qint64 i = 0; i < treeItem->childCount(); ++i)
-        {
-            categories.enqueue((CategoryTreeWidgetItem *)treeItem->child(i));
-        }
-
-        delete treeItem->getPage(); // TODO: Try to use destructor
-    }
-
-    ui->categoriesTreeWidget->clear();
-
-
-
-    loadBuildConfigFile();
-}
-
-void MainWindow::on_actionSave_triggered()
-{
-    QString filePath = Global::sProjectDir + "/include/buildconfig.h";
-
-
-
-    QFile file(filePath);
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        qCritical() << "Failed to read file:" << filePath;
-
-        return;
-    }
-
-    QString content = QString::fromUtf8(file.readAll());
-    file.close();
-
-
-
-    QStringList lines = content.split('\n');
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString &line = lines[i];
-
-        if (line.endsWith('\r'))
-        {
-            line.remove(line.length() - 1, 1);
-        }
-    }
-
-
-
-    QHashIterator<QString, ParameterWidget *> it(mParameters);
-
-    while (it.hasNext())
-    {
-        it.next();
-
-        QString parameter = it.key();
-        QString value     = it.value()->value();
-
-
-
-        bool found = false;
-
-        for (qint64 i = 0; i < lines.size(); ++i)
-        {
-            QString &line = lines[i];
-
-            if (line.startsWith("#define " + parameter + ' '))
-            {
-                found = true;
-
-                qint64 index = parameter.length() + 9;
-
-                while (index < line.length() && line.at(index) == ' ')
-                {
-                    ++index;
-                }
-
-                line = line.left(index) + value;
-
-                break;
-            }
-        }
-
-        if (!found)
-        {
-            qCritical() << "Parameter" << parameter << "not found";
-        }
-    }
-
-
-
-    QString newContent = lines.join('\n');
-
-    if (newContent != content)
-    {
-        if (!file.open(QIODevice::WriteOnly))
-        {
-            qCritical() << "Failed to write file:" << filePath;
-
-            return;
-        }
-
-        file.write(newContent.toUtf8());
-        file.close();
-    }
-
-
-
-    ui->actionSave->setEnabled(false);
-}
-
-void MainWindow::on_actionExit_triggered()
-{
-    close();
-}
-
-void MainWindow::on_actionAbout_triggered()
-{
-    AboutDialog dialog(this);
-    dialog.exec();
-}
-
-void MainWindow::on_actionReset_triggered()
-{
-    QHashIterator<QString, ParameterWidget *> it(mParameters);
-
-    while (it.hasNext())
-    {
-        it.next();
-
-        it.value()->reset();
-    }
-}
-
-void MainWindow::on_categoriesTreeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem * /*previous*/)
-{
-    if (current)
-    {
-        CategoryTreeWidgetItem *categoryItem = (CategoryTreeWidgetItem *)current;
-
-        ui->parametersStackedWidget->setCurrentWidget(categoryItem->getPage());
-    }
-}
-
-void MainWindow::parameterValueChanged()
-{
-    QHashIterator<QString, ParameterWidget *> it(mParameters);
-
-    while (it.hasNext())
-    {
-        it.next();
-
-        it.value()->handleValueChanged(mParameters);
-    }
-
-    ui->actionSave->setEnabled(true);
-}
-
-void MainWindow::parameterDetailsUpdated(const QString &details)
-{
-    ui->detailsLabel->setText(details);
-}
-
-void MainWindow::parseBuildConfigFile(const QStringList &lines)
-{
-    QHash<QString, QHash<QString, QString>> parameters;
-    QStringList                             parametersIds;
-
-
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-
-        if (line.startsWith("#define "))
-        {
-            QString rightPart = line.mid(8).trimmed();
-
-            qint64 index = rightPart.indexOf(' ');
-
-            if (index >= 0)
-            {
-                QString id    = rightPart.left(index).trimmed();
-                QString value = rightPart.mid(index + 1).trimmed();
-
-                if (id.startsWith("OPTION_"))
-                {
-                    QString description;
-
-
-
-                    qint64 index2 = value.indexOf("//");
-
-                    if (index2 >= 0)
-                    {
-                        description = value.mid(index2 + 2).trimmed();
-                        value       = value.left(index2).trimmed();
-                    }
-
-
-
-                    mOptions.insert(id, OptionInfo(id, value, description));
-                }
-                else
-                if (id.startsWith("NGOS_BUILD_"))
-                {
-                    if (
-                        i > 0
-                        &&
-                        lines.at(i - 1).trimmed() == "***/"
-                       )
-                    {
-                        QStringList metaData;
-
-
-
-                        qint64 position = i - 2;
-
-                        while (position >= 0)
-                        {
-                            QString metaLine = lines.at(position).trimmed();
-
-                            if (metaLine == "/***")
-                            {
-                                break;
-                            }
-
-
-
-                            if (metaLine.startsWith("***"))
-                            {
-                                metaLine = metaLine.mid(3).trimmed();
-                            }
-                            else
-                            {
-                                qCritical() << "Meta information should start with ***:" << metaLine;
-                            }
-
-
-
-                            if (metaLine != "")
-                            {
-                                metaData.prepend(metaLine);
-                            }
-
-
-
-                            --position;
-                        }
-
-
-
-                        QHash<QString, QString> metaInformation;
-
-                        for (qint64 j = 0; j < metaData.size(); ++j)
-                        {
-                            QString metaLine = metaData.at(j);
-
-                            qint64 index2 = metaLine.indexOf(':');
-
-                            if (index2 >= 0)
-                            {
-                                QString metaName  = metaLine.left(index2).trimmed();
-                                QString metaValue = metaLine.mid(index2 + 1).trimmed();
-
-                                if (metaValue.endsWith('\\'))
-                                {
-                                    metaValue = metaValue.remove(metaValue.length() - 1, 1).trimmed();
-
-                                    do
-                                    {
-                                        ++j;
-
-                                        if (j >= metaData.size())
-                                        {
-                                            break;
-                                        }
-
-
-
-                                        QString metaNextValue = metaData.at(j);
-
-                                        if (metaNextValue.endsWith('\\'))
-                                        {
-                                            metaNextValue = metaNextValue.remove(metaNextValue.length() - 1, 1).trimmed();
-
-                                            metaValue.append('\n');
-                                            metaValue.append(metaNextValue);
-                                        }
-                                        else
-                                        {
-                                            metaValue.append('\n');
-                                            metaValue.append(metaNextValue);
-
-                                            break;
-                                        }
-                                    } while(true);
-                                }
-
-                                metaInformation.insert(metaName, metaValue);
-                            }
-                            else
-                            {
-                                qCritical() << "Failed to parse attribute name in meta information:" << metaLine;
-                            }
-                        }
-
-
-
-                        if (!metaInformation.contains("Category"))
-                        {
-                            qCritical() << "Meta information \"Category\" not found for parameter:" << id;
-
-                            continue;
-                        }
-
-                        if (!metaInformation.contains("Name"))
-                        {
-                            qCritical() << "Meta information \"Name\" not found for parameter:" << id;
-
-                            continue;
-                        }
-
-                        if (!metaInformation.contains("Description"))
-                        {
-                            qCritical() << "Meta information \"Description\" not found for parameter:" << id;
-
-                            continue;
-                        }
-
-                        if (!metaInformation.contains("Type"))
-                        {
-                            qCritical() << "Meta information \"Type\" not found for parameter:" << id;
-
-                            continue;
-                        }
-
-                        if (!metaInformation.contains("Default"))
-                        {
-                            qCritical() << "Meta information \"Default\" not found for parameter:" << id;
-
-                            continue;
-                        }
-
-                        if (metaInformation.contains("Value"))
-                        {
-                            qCritical() << "Meta information \"Value\" was specified for parameter:" << id;
-
-                            continue;
-                        }
-
-
-
-                        QString metaType = metaInformation.value("Type");
-
-                        if (metaType == "Boolean")
-                        {
-                            if (!metaInformation.contains("Values"))
-                            {
-                                qCritical() << "Meta information \"Values\" not found for parameter:" << id;
-
-                                continue;
-                            }
-
-                            if (!metaInformation.contains("Value description"))
-                            {
-                                qCritical() << "Meta information \"Value description\" not found for parameter:" << id;
-
-                                continue;
-                            }
-                        }
-                        else
-                        if (metaType == "Combobox")
-                        {
-                            if (!metaInformation.contains("Values"))
-                            {
-                                qCritical() << "Meta information \"Values\" not found for parameter:" << id;
-
-                                continue;
-                            }
-                        }
-                        else
-                        if (metaType.startsWith("Integer"))
-                        {
-                            if (!metaInformation.contains("Minimum"))
-                            {
-                                qCritical() << "Meta information \"Minimum\" not found for parameter:" << id;
-
-                                continue;
-                            }
-
-                            if (!metaInformation.contains("Maximum"))
-                            {
-                                qCritical() << "Meta information \"Maximum\" not found for parameter:" << id;
-
-                                continue;
-                            }
-                        }
-                        else
-                        if (metaType == "Text")
-                        {
-                            // Nothing
-                        }
-                        else
-                        {
-                            qCritical() << "Unexpected meta information \"Type\" (" << metaType << ") was specified for parameter:" << id;
-
-                            continue;
-                        }
-
-
-
-                        metaInformation.insert("Value", value);
-
-                        parameters.insert(id, metaInformation);
-                        parametersIds.append(id);
-                    }
-                    else
-                    {
-                        if (!parameters.contains(id))
-                        {
-                            qCritical() << "Parameter without meta information:" << id;
-                        }
-                    }
-                }
-                else
-                {
-                    qCritical() << "Unexpected ID found:" << id;
-                }
-            }
-            else
-            {
-                if (line != "#define BUILDCONFIG_H")
-                {
-                    qCritical() << "Failed to parse line:" << line;
-                }
-            }
-        }
-    }
-
-
-
-    buildParameters(parameters, parametersIds);
-}
-
-void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &parameters, const QStringList &parametersIds)
-{
-    for (qint64 i = 0; i < parametersIds.size(); ++i)
-    {
-        QString                 id              = parametersIds.at(i);
-        QHash<QString, QString> metaInformation = parameters.value(id);
-
-
-
-        QString metaCategory = metaInformation.value("Category");
-        QString metaType     = metaInformation.value("Type");
-
-        QStringList categories  = metaCategory.split("->");
-        QString     topCategory = categories.constFirst().trimmed();
-
-
-
-        CategoryTreeWidgetItem *categoryItem = nullptr;
-
-        for (qint64 j = 0; j < ui->categoriesTreeWidget->topLevelItemCount(); ++j)
-        {
-            CategoryTreeWidgetItem *treeItem = (CategoryTreeWidgetItem *)ui->categoriesTreeWidget->topLevelItem(j);
-
-            if (treeItem->text(0) == topCategory)
-            {
-                categoryItem = treeItem;
-
-                break;
-            }
-        }
-
-        if (categoryItem == nullptr)
-        {
-            categoryItem = new CategoryTreeWidgetItem(topCategory, this);
-
-            ui->parametersStackedWidget->addWidget(categoryItem->getPage());
-
-            ui->categoriesTreeWidget->addTopLevelItem(categoryItem);
-        }
-
-
-
-        for (qint64 j = 1; j < categories.size(); ++j)
-        {
-            QString subCategory = categories.at(j).trimmed();
-
-
-
-            CategoryTreeWidgetItem *subCategoryItem = nullptr;
-
-            for (qint64 k = 0; k < categoryItem->childCount(); ++k)
-            {
-                CategoryTreeWidgetItem *treeItem = (CategoryTreeWidgetItem *)categoryItem->child(k);
-
-                if (treeItem->text(0) == subCategory)
-                {
-                    subCategoryItem = treeItem;
-
-                    break;
-                }
-            }
-
-            if (subCategoryItem == nullptr)
-            {
-                subCategoryItem = new CategoryTreeWidgetItem(subCategory, this);
-
-                ui->parametersStackedWidget->addWidget(subCategoryItem->getPage());
-
-                categoryItem->addChild(subCategoryItem);
-            }
-
-
-
-            categoryItem = subCategoryItem;
-        }
-
-
-
-        ParameterWidget *parameterWidget = nullptr;
-
-        if (metaType == "Boolean")
-        {
-            parameterWidget = new BooleanParameterWidget(id, metaInformation, categoryItem->getPage());
-        }
-        else
-        if (metaType == "Combobox")
-        {
-            parameterWidget = new ComboboxParameterWidget(id, metaInformation, mOptions, categoryItem->getPage());
-        }
-        else
-        if (metaType == "Integer (Power of 2)")
-        {
-            parameterWidget = new IntegerPowerOf2ParameterWidget(id, metaInformation, categoryItem->getPage());
-        }
-        else
-        if (metaType == "Text")
-        {
-            parameterWidget = new TextParameterWidget(id, metaInformation, categoryItem->getPage());
-        }
-        else
-        {
-            qCritical() << "Unexpected meta information \"Type\" (" << metaType << ") was specified for parameter:" << id;
-
-            continue;
-        }
-
-
-
-        categoryItem->getLayout()->addWidget(parameterWidget);
-
-        connect(parameterWidget, SIGNAL(valueChanged()),                  this, SLOT(parameterValueChanged()));
-        connect(parameterWidget, SIGNAL(detailsUpdated(const QString &)), this, SLOT(parameterDetailsUpdated(const QString &)));
-
-        mParameters.insert(id, parameterWidget);
-    }
-
-
-
-    parameterValueChanged();
-    ui->actionSave->setEnabled(false);
-
-
-
-    ui->categoriesTreeWidget->expandAll();
-}
-
-void MainWindow::saveWindowState()
-{
-    QSettings settings("NGOS", "build_config_gui");
-
-    settings.setValue("MainWindow/geometry",      saveGeometry());
-    settings.setValue("MainWindow/windowState",   saveState());
-    settings.setValue("MainWindow/splitterState", ui->splitter->saveState());
-}
-
-void MainWindow::loadWindowState()
-{
-    QSettings settings("NGOS", "build_config_gui");
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    restoreGeometry(           settings.value("MainWindow/geometry").toByteArray());
-    restoreState(              settings.value("MainWindow/windowState").toByteArray());
-    ui->splitter->restoreState(settings.value("MainWindow/splitterState").toByteArray());
-    // Ignore CppAlignmentVerifier [END]
-}
+#include "mainwindow.h"                                                                                                                                                                                  // Colorize: green
+#include "build_config_gui/ui/ui_mainwindow.h"                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDebug>                                                                                                                                                                                        // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+#include <QMessageBox>                                                                                                                                                                                   // Colorize: green
+#include <QQueue>                                                                                                                                                                                        // Colorize: green
+#include <QSettings>                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/build_config_gui/main/aboutdialog.h>                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/build_config_gui/other/global.h>                                                                                                                                             // Colorize: green
+#include <com/ngos/devtools/build_config_gui/widgets/parameters/booleanparameterwidget.h>                                                                                                                // Colorize: green
+#include <com/ngos/devtools/build_config_gui/widgets/parameters/comboboxparameterwidget.h>                                                                                                               // Colorize: green
+#include <com/ngos/devtools/build_config_gui/widgets/parameters/integerpowerof2parameterwidget.h>                                                                                                        // Colorize: green
+#include <com/ngos/devtools/build_config_gui/widgets/parameters/textparameterwidget.h>                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+MainWindow::MainWindow(QWidget *parent)                                                                                                                                                                  // Colorize: green
+    : QMainWindow(parent)                                                                                                                                                                                // Colorize: green
+    , ui(new Ui::MainWindow())                                                                                                                                                                           // Colorize: green
+    , mOptions()                                                                                                                                                                                         // Colorize: green
+    , mParameters()                                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    ui->setupUi(this);                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ui->splitter->setSizes(QList<qint32>() << 160 << 360 << 480);                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    loadBuildConfigFile();                                                                                                                                                                               // Colorize: green
+    loadWindowState();                                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+MainWindow::~MainWindow()                                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    saveWindowState();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    delete ui;                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::closeEvent(QCloseEvent *event)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (ui->actionSave->isEnabled())                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qint64 pressedButton = QMessageBox::question(this, tr("Save changes"), tr("Do you want to save changes before exit?"), QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (pressedButton == QMessageBox::Yes)                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            on_actionSave_triggered();                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            event->accept();                                                                                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (pressedButton == QMessageBox::No)                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            event->accept();                                                                                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (pressedButton == QMessageBox::Cancel)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            event->ignore();                                                                                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Unexpected pressed button" << pressedButton;                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        event->accept();                                                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::on_actionReload_triggered()                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Clear options and parameters                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        mOptions.clear();                                                                                                                                                                                // Colorize: green
+        mParameters.clear();                                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Clear categories                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QQueue<CategoryTreeWidgetItem *> categories;                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < ui->categoriesTreeWidget->topLevelItemCount(); ++i)                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            categories.enqueue((CategoryTreeWidgetItem *)ui->categoriesTreeWidget->topLevelItem(i));                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (!categories.isEmpty())                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            CategoryTreeWidgetItem *treeItem = categories.dequeue();                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            for (qint64 i = 0; i < treeItem->childCount(); ++i)                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                categories.enqueue((CategoryTreeWidgetItem *)treeItem->child(i));                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            delete treeItem->getPage(); // TODO: Try to use destructor                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ui->categoriesTreeWidget->clear();                                                                                                                                                               // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    loadBuildConfigFile();                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::on_actionSave_triggered()                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString filePath = Global::sProjectDir + "/include/buildconfig.h";                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString content;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read file content                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFile file(filePath);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!file.open(QIODevice::ReadOnly))                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Failed to read file:" << filePath;                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        content = QString::fromUtf8(file.readAll());                                                                                                                                                     // Colorize: green
+        file.close();                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get file lines                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines = content.split('\n');                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString &line = lines[i];                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (line.endsWith('\r'))                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                line.remove(line.length() - 1, 1);                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Update parameters                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QHashIterator<QString, ParameterWidget *> it(mParameters);                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString parameter = it.key();                                                                                                                                                                // Colorize: green
+            QString value     = it.value()->value();                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            bool found = false;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Search for parameter and update it                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString &line = lines[i];                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (line.startsWith("#define " + parameter + ' '))                                                                                                                                   // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        found = true;                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        qint64 index = parameter.length() + 9;                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        while (index < line.length() && line.at(index) == ' ')                                                                                                                           // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            ++index;                                                                                                                                                                     // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        line = line.left(index) + value;                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!found)                                                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qCritical() << "Parameter" << parameter << "not found";                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Write new content to file                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString newContent = lines.join('\n');                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (newContent != content)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QFile file(filePath);                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!file.open(QIODevice::WriteOnly))                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qCritical() << "Failed to write file:" << filePath;                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return;                                                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            file.write(newContent.toUtf8());                                                                                                                                                             // Colorize: green
+            file.close();                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ui->actionSave->setEnabled(false);                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::on_actionExit_triggered()                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    close();                                                                                                                                                                                             // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::on_actionAbout_triggered()                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    AboutDialog dialog(this);                                                                                                                                                                            // Colorize: green
+    dialog.exec();                                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::on_actionReset_triggered()                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QHashIterator<QString, ParameterWidget *> it(mParameters);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (it.hasNext())                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        it.next();                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        it.value()->reset();                                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::on_categoriesTreeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem * /*previous*/)                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (current != nullptr)                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        CategoryTreeWidgetItem *categoryItem = reinterpret_cast<CategoryTreeWidgetItem *>(current);                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ui->parametersStackedWidget->setCurrentWidget(categoryItem->getPage());                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::parameterValueChanged()                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QHashIterator<QString, ParameterWidget *> it(mParameters);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (it.hasNext())                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        it.next();                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        it.value()->handleValueChanged(mParameters);                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ui->actionSave->setEnabled(true);                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::parameterDetailsUpdated(const QString &details)                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    ui->detailsLabel->setText(details);                                                                                                                                                                  // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::loadBuildConfigFile()                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString filePath = Global::sProjectDir + "/include/buildconfig.h";                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString content;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read file content                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFile file(filePath);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!file.open(QIODevice::ReadOnly))                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Failed to read file:" << filePath;                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        content = QString::fromUtf8(file.readAll());                                                                                                                                                     // Colorize: green
+        file.close();                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get file lines                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QStringList lines = content.split('\n');                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString &line = lines[i];                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (line.endsWith('\r'))                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                line.remove(line.length() - 1, 1);                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    parseBuildConfigFile(lines);                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::parseBuildConfigFile(const QStringList &lines)                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QHash<QString, QHash<QString, QString>> parameters;     // Parameter ID => Meta Information (Option => Value)                                                                                        // Colorize: green
+    QStringList                             parametersIds;                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Parse lines and search for parameters                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = lines.at(i);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (line.startsWith("#define "))                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString rightPart = line.mid(8).trimmed();                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                qint64 index = rightPart.indexOf(' ');                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (index >= 0)                                                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString id    = rightPart.left(index).trimmed();                                                                                                                                     // Colorize: green
+                    QString value = rightPart.mid(index + 1).trimmed();                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (id.startsWith("OPTION_"))                                                                                                                                                        // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        // Parse option                                                                                                                                                                  // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            QString description;                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            qint64 index2 = value.indexOf("//");                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            if (index2 >= 0)                                                                                                                                                             // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                description = value.mid(index2 + 2).trimmed();                                                                                                                           // Colorize: green
+                                value       = value.left(index2).trimmed();                                                                                                                              // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            mOptions.insert(id, OptionInfo(id, value, description));                                                                                                                     // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (id.startsWith("NGOS_BUILD_"))                                                                                                                                                    // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        // Parse parameter                                                                                                                                                               // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (                                                                                                                                                                         // Colorize: green
+                                i > 0                                                                                                                                                                    // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                lines.at(i - 1).trimmed() == "***/"                                                                                                                                      // Colorize: green
+                               )                                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                QStringList metaData;                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                // Parse meta data                                                                                                                                                       // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    qint64 position = i - 2;                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    while (position >= 0)                                                                                                                                                // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        QString metaLine = lines.at(position).trimmed();                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        if (metaLine == "/***")                                                                                                                                          // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            break;                                                                                                                                                       // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        if (metaLine.startsWith("***"))                                                                                                                                  // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            metaLine = metaLine.mid(3).trimmed();                                                                                                                        // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                        else                                                                                                                                                             // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            qCritical() << "Meta information should start with ***:" << metaLine;                                                                                        // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        if (metaLine != "")                                                                                                                                              // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            metaData.prepend(metaLine);                                                                                                                                  // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        --position;                                                                                                                                                      // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                QHash<QString, QString> metaInformation;                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                // Parse meta information                                                                                                                                                // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    for (qint64 j = 0; j < metaData.size(); ++j)                                                                                                                         // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        QString metaLine = metaData.at(j);                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        qint64 index2 = metaLine.indexOf(':');                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        if (index2 >= 0)                                                                                                                                                 // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            QString metaName  = metaLine.left(index2).trimmed();                                                                                                         // Colorize: green
+                                            QString metaValue = metaLine.mid(index2 + 1).trimmed();                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            if (metaValue.endsWith('\\'))                                                                                                                                // Colorize: green
+                                            {                                                                                                                                                            // Colorize: green
+                                                metaValue = metaValue.remove(metaValue.length() - 1, 1).trimmed();                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                do                                                                                                                                                       // Colorize: green
+                                                {                                                                                                                                                        // Colorize: green
+                                                    ++j;                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                    if (j >= metaData.size())                                                                                                                            // Colorize: green
+                                                    {                                                                                                                                                    // Colorize: green
+                                                        break;                                                                                                                                           // Colorize: green
+                                                    }                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                    QString metaNextValue = metaData.at(j);                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                    if (metaNextValue.endsWith('\\'))                                                                                                                    // Colorize: green
+                                                    {                                                                                                                                                    // Colorize: green
+                                                        metaNextValue = metaNextValue.remove(metaNextValue.length() - 1, 1).trimmed();                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                        metaValue.append('\n');                                                                                                                          // Colorize: green
+                                                        metaValue.append(metaNextValue);                                                                                                                 // Colorize: green
+                                                    }                                                                                                                                                    // Colorize: green
+                                                    else                                                                                                                                                 // Colorize: green
+                                                    {                                                                                                                                                    // Colorize: green
+                                                        metaValue.append('\n');                                                                                                                          // Colorize: green
+                                                        metaValue.append(metaNextValue);                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                        break;                                                                                                                                           // Colorize: green
+                                                    }                                                                                                                                                    // Colorize: green
+                                                } while(true);                                                                                                                                           // Colorize: green
+                                            }                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            metaInformation.insert(metaName, metaValue);                                                                                                                 // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                        else                                                                                                                                                             // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            qCritical() << "Failed to parse attribute name in meta information:" << metaLine;                                                                            // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                // Check meta information                                                                                                                                                // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    if (!metaInformation.contains("Category"))                                                                                                                           // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        qCritical() << "Meta information \"Category\" not found for parameter:" << id;                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        continue;                                                                                                                                                        // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (!metaInformation.contains("Name"))                                                                                                                               // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        qCritical() << "Meta information \"Name\" not found for parameter:" << id;                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        continue;                                                                                                                                                        // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (!metaInformation.contains("Description"))                                                                                                                        // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        qCritical() << "Meta information \"Description\" not found for parameter:" << id;                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        continue;                                                                                                                                                        // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (!metaInformation.contains("Type"))                                                                                                                               // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        qCritical() << "Meta information \"Type\" not found for parameter:" << id;                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        continue;                                                                                                                                                        // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (!metaInformation.contains("Default"))                                                                                                                            // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        qCritical() << "Meta information \"Default\" not found for parameter:" << id;                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        continue;                                                                                                                                                        // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (metaInformation.contains("Value"))                                                                                                                               // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        qCritical() << "Meta information \"Value\" was specified for parameter:" << id;                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        continue;                                                                                                                                                        // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                // Check for specific options of meta information                                                                                                                        // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    QString metaType = metaInformation.value("Type");                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (metaType == "Boolean")                                                                                                                                           // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        if (!metaInformation.contains("Values"))                                                                                                                         // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            qCritical() << "Meta information \"Values\" not found for parameter:" << id;                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            continue;                                                                                                                                                    // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        if (!metaInformation.contains("Value description"))                                                                                                              // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            qCritical() << "Meta information \"Value description\" not found for parameter:" << id;                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            continue;                                                                                                                                                    // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                    else                                                                                                                                                                 // Colorize: green
+                                    if (metaType == "Combobox")                                                                                                                                          // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        if (!metaInformation.contains("Values"))                                                                                                                         // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            qCritical() << "Meta information \"Values\" not found for parameter:" << id;                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            continue;                                                                                                                                                    // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                    else                                                                                                                                                                 // Colorize: green
+                                    if (metaType.startsWith("Integer"))                                                                                                                                  // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        if (!metaInformation.contains("Minimum"))                                                                                                                        // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            qCritical() << "Meta information \"Minimum\" not found for parameter:" << id;                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            continue;                                                                                                                                                    // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        if (!metaInformation.contains("Maximum"))                                                                                                                        // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            qCritical() << "Meta information \"Maximum\" not found for parameter:" << id;                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            continue;                                                                                                                                                    // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                    else                                                                                                                                                                 // Colorize: green
+                                    if (metaType == "Text")                                                                                                                                              // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        // Nothing                                                                                                                                                       // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                    else                                                                                                                                                                 // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        qCritical() << "Unexpected meta information \"Type\" (" << metaType << ") was specified for parameter:" << id;                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        continue;                                                                                                                                                        // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                metaInformation.insert("Value", value);                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                parameters.insert(id, metaInformation);                                                                                                                                  // Colorize: green
+                                parametersIds.append(id);                                                                                                                                                // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            else                                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                if (!parameters.contains(id))                                                                                                                                            // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    qCritical() << "Parameter without meta information:" << id;                                                                                                          // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        qCritical() << "Unexpected ID found:" << id;                                                                                                                                     // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (line != "#define BUILDCONFIG_H")                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        qCritical() << "Failed to parse line:" << line;                                                                                                                                  // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    buildParameters(parameters, parametersIds);                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &parameters, const QStringList &parametersIds)                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < parametersIds.size(); ++i)                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString                 id              = parametersIds.at(i);                                                                                                                                   // Colorize: green
+        QHash<QString, QString> metaInformation = parameters.value(id);                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QString metaCategory = metaInformation.value("Category");                                                                                                                                        // Colorize: green
+        QString metaType     = metaInformation.value("Type");                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        CategoryTreeWidgetItem *categoryItem;                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Create tree structure                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QStringList categories  = metaCategory.split("->");                                                                                                                                          // Colorize: green
+            QString     topCategory = categories.constFirst().trimmed();                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            categoryItem = getOrCreateTopCategoryItem(topCategory);                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            for (qint64 j = 1; j < categories.size(); ++j)                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                categoryItem = getOrCreateSubCategoryItem(categoryItem, categories.at(j).trimmed());                                                                                                     // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ParameterWidget *parameterWidget = nullptr;                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Create parameter widget                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (metaType == "Boolean")                                                                                                                                                                   // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                parameterWidget = new BooleanParameterWidget(id, metaInformation, categoryItem->getPage());                                                                                              // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (metaType == "Combobox")                                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                parameterWidget = new ComboboxParameterWidget(id, metaInformation, mOptions, categoryItem->getPage());                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (metaType == "Integer (Power of 2)")                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                parameterWidget = new IntegerPowerOf2ParameterWidget(id, metaInformation, categoryItem->getPage());                                                                                      // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (metaType == "Text")                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                parameterWidget = new TextParameterWidget(id, metaInformation, categoryItem->getPage());                                                                                                 // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qCritical() << "Unexpected meta information \"Type\" (" << metaType << ") was specified for parameter:" << id;                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                continue;                                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        categoryItem->getLayout()->addWidget(parameterWidget);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        connect(parameterWidget, SIGNAL(valueChanged()),                  this, SLOT(parameterValueChanged()));                                                                                          // Colorize: green
+        connect(parameterWidget, SIGNAL(detailsUpdated(const QString &)), this, SLOT(parameterDetailsUpdated(const QString &)));                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mParameters.insert(id, parameterWidget);                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Update parameters that depends on another                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        parameterValueChanged();                                                                                                                                                                         // Colorize: green
+        ui->actionSave->setEnabled(false);                                                                                                                                                               // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ui->categoriesTreeWidget->expandAll();                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CategoryTreeWidgetItem* MainWindow::getOrCreateTopCategoryItem(const QString &topCategory)                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < ui->categoriesTreeWidget->topLevelItemCount(); ++i)                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        CategoryTreeWidgetItem *treeItem = reinterpret_cast<CategoryTreeWidgetItem *>(ui->categoriesTreeWidget->topLevelItem(i));                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (treeItem->text(0) == topCategory)                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return treeItem;                                                                                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    CategoryTreeWidgetItem *categoryItem = new CategoryTreeWidgetItem(topCategory, this);                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ui->categoriesTreeWidget->addTopLevelItem(categoryItem);                                                                                                                                             // Colorize: green
+    ui->parametersStackedWidget->addWidget(categoryItem->getPage());                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return categoryItem;                                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                        // Colorize: green
+CategoryTreeWidgetItem* MainWindow::getOrCreateSubCategoryItem(CategoryTreeWidgetItem *categoryItem, const QString &subCategory)                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < categoryItem->childCount(); ++i)                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        CategoryTreeWidgetItem *treeItem = reinterpret_cast<CategoryTreeWidgetItem *>(categoryItem->child(i));                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (treeItem->text(0) == subCategory)                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return treeItem;                                                                                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    CategoryTreeWidgetItem *subCategoryItem = new CategoryTreeWidgetItem(subCategory, this);                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    categoryItem->addChild(subCategoryItem);                                                                                                                                                             // Colorize: green
+    ui->parametersStackedWidget->addWidget(subCategoryItem->getPage());                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return subCategoryItem;                                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::saveWindowState()                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QSettings settings("NGOS", "build_config_gui");                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    settings.setValue("MainWindow/geometry",      saveGeometry());                                                                                                                                       // Colorize: green
+    settings.setValue("MainWindow/windowState",   saveState());                                                                                                                                          // Colorize: green
+    settings.setValue("MainWindow/splitterState", ui->splitter->saveState());                                                                                                                            // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::loadWindowState()                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QSettings settings("NGOS", "build_config_gui");                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                               // Colorize: green
+    restoreGeometry(           settings.value("MainWindow/geometry").toByteArray());                                                                                                                     // Colorize: green
+    restoreState(              settings.value("MainWindow/windowState").toByteArray());                                                                                                                  // Colorize: green
+    ui->splitter->restoreState(settings.value("MainWindow/splitterState").toByteArray());                                                                                                                // Colorize: green
+    // Ignore CppAlignmentVerifier [END]                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
