@@ -1,92 +1,85 @@
-#include "textparameterwidget.h"
-
-#include <QDebug>
-#include <QVBoxLayout>
-
-#include <com/ngos/devtools/build_config_gui/widgets/common/trackinggroupbox.h>
-
-
-
-TextParameterWidget::TextParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent)
-    : ParameterWidget(id, metaInformation, options, parent)
-    , mLineEdit(nullptr)
-{
-    QVBoxLayout *layout = new QVBoxLayout(this);
-
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-
-
-
-    TrackingGroupBox *groupBox = new TrackingGroupBox(mName, this);
-    layout->addWidget(groupBox);
-
-
-
-    QVBoxLayout *layout2 = new QVBoxLayout(groupBox);
-
-    layout2->setSpacing(4);
-    layout2->setContentsMargins(4, 4, 4, 4);
-
-
-
-    QString newValue = mValue;
-
-    if (
-        newValue.length() > 1
-        &&
-        newValue.startsWith('\"')
-        &&
-        newValue.endsWith('\"')
-       )
-    {
-        newValue = newValue.mid(1, newValue.length() - 2);
-    }
-
-
-
-    mLineEdit = new TrackingLineEdit(newValue, groupBox);
-    layout2->addWidget(mLineEdit);
-
-
-
-    connect(mLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(lineEditTextChanged(const QString &)));
-    connect(mLineEdit, SIGNAL(entered()),                    this, SLOT(widgetEntered()));
-    connect(mLineEdit, SIGNAL(leaved()),                     this, SLOT(widgetLeaved()));
-    connect(groupBox,  SIGNAL(entered()),                    this, SLOT(widgetEntered()));
-    connect(groupBox,  SIGNAL(leaved()),                     this, SLOT(widgetLeaved()));
-}
-
-void TextParameterWidget::setValue(const QString &value)
-{
-    QString newValue = value;
-
-    if (
-        newValue.length() > 1
-        &&
-        newValue.startsWith('\"')
-        &&
-        newValue.endsWith('\"')
-       )
-    {
-        newValue = newValue.mid(1, newValue.length() - 2);
-    }
-
-    ParameterWidget::setValue('\"' + newValue + '\"');
-
-
-
-    mLineEdit->setText(newValue);
-}
-
-QString TextParameterWidget::generatePrivateDetails()
-{
-    return  "<h2>Values:</h2>"
-            "<b>Default:</b> " + mDefault + "<br>" +
-            "<b>Current:</b> " + mValue;
-}
-
-void TextParameterWidget::lineEditTextChanged(const QString &text)
-{
-    setValue(text);
-}
+#include "textparameterwidget.h"                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDebug>                                                                                                                                                                                        // Colorize: green
+#include <QVBoxLayout>                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/build_config_gui/widgets/common/trackinggroupbox.h>                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TextParameterWidget::TextParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QWidget *parent)                                        // Colorize: green
+    : ParameterWidget(id, metaInformation, parent)                                                                                                                                              // Colorize: green
+    , mLineEdit(nullptr)                                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    TrackingGroupBox *groupBox = new TrackingGroupBox(mName, this);                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mLineEdit = new TrackingLineEdit(prepareValue(mValue), groupBox);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create layout and put groupBox into it                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QVBoxLayout *layout = new QVBoxLayout(this);                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->setSpacing(0);                                                                                                                                                                           // Colorize: green
+        layout->setContentsMargins(0, 0, 0, 0);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->addWidget(groupBox);                                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create layout and put mLineEdit into it                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QVBoxLayout *layout = new QVBoxLayout(groupBox);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->setSpacing(4);                                                                                                                                                                           // Colorize: green
+        layout->setContentsMargins(4, 4, 4, 4);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->addWidget(mLineEdit);                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    connect(mLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(lineEditTextChanged(const QString &)));                                                                                          // Colorize: green
+    connect(mLineEdit, SIGNAL(entered()),                    this, SLOT(widgetEntered()));                                                                                                               // Colorize: green
+    connect(mLineEdit, SIGNAL(leaved()),                     this, SLOT(widgetLeaved()));                                                                                                                // Colorize: green
+    connect(groupBox,  SIGNAL(entered()),                    this, SLOT(widgetEntered()));                                                                                                               // Colorize: green
+    connect(groupBox,  SIGNAL(leaved()),                     this, SLOT(widgetLeaved()));                                                                                                                // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TextParameterWidget::setValue(const QString &value)                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString newValue = prepareValue(value);                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ParameterWidget::setValue('\"' + newValue + '\"');                                                                                                                                                   // Colorize: green
+    mLineEdit->setText(newValue);                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString TextParameterWidget::generatePrivateDetails()                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return  "<h2>Values:</h2>"                                                                                                                                                                           // Colorize: green
+            "<b>Default:</b> " + mDefault + "<br>" +                                                                                                                                                     // Colorize: green
+            "<b>Current:</b> " + mValue;                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TextParameterWidget::lineEditTextChanged(const QString &text)                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    setValue(text);                                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString TextParameterWidget::prepareValue(const QString &value) const                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (                                                                                                                                                                                                 // Colorize: green
+        value.length() > 1                                                                                                                                                                               // Colorize: green
+        &&                                                                                                                                                                                               // Colorize: green
+        value.startsWith('\"')                                                                                                                                                                           // Colorize: green
+        &&                                                                                                                                                                                               // Colorize: green
+        value.endsWith('\"')                                                                                                                                                                             // Colorize: green
+       )                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return value.mid(1, value.length() - 2);                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return value;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

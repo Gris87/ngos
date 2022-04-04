@@ -1,33 +1,35 @@
-#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_TEXTPARAMETERWIDGET_H
-#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_TEXTPARAMETERWIDGET_H
-
-
-
-#include <com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h>
-
-#include <com/ngos/devtools/build_config_gui/widgets/common/trackinglineedit.h>
-
-
-
-class TextParameterWidget: public ParameterWidget
-{
-    Q_OBJECT
-
-public:
-    explicit TextParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent = nullptr); // TEST: NO
-
-    void setValue(const QString &value) override; // TEST: NO
-
-protected:
-    QString generatePrivateDetails() override; // TEST: NO
-
-private slots:
-    void lineEditTextChanged(const QString &text); // TEST: NO
-
-private:
-    TrackingLineEdit *mLineEdit;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_TEXTPARAMETERWIDGET_H
+#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_TEXTPARAMETERWIDGET_H                                                                                                                      // Colorize: green
+#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_TEXTPARAMETERWIDGET_H                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h>                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/build_config_gui/widgets/common/trackinglineedit.h>                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class TextParameterWidget: public ParameterWidget                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_OBJECT                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    explicit TextParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QWidget *parent = nullptr); // TEST: NO                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void setValue(const QString &value) override; // TEST: NO                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+protected:                                                                                                                                                                                               // Colorize: green
+    QString generatePrivateDetails() override; // TEST: NO                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private slots:                                                                                                                                                                                           // Colorize: green
+    void lineEditTextChanged(const QString &text); // TEST: NO                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    QString prepareValue(const QString &value) const;                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TrackingLineEdit *mLineEdit;                                                                                                                                                                         // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_TEXTPARAMETERWIDGET_H                                                                                                                    // Colorize: green

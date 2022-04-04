@@ -1,175 +1,190 @@
-#include "integerpowerof2parameterwidget.h"
-
-#include <QDebug>
-#include <QVBoxLayout>
-
-#include <com/ngos/devtools/build_config_gui/widgets/common/trackinggroupbox.h>
-
-
-
-IntegerPowerOf2ParameterWidget::IntegerPowerOf2ParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent)
-    : ParameterWidget(id, metaInformation, options, parent)
-    , mComboBox(nullptr)
-    , mMinimum()
-    , mMaximum()
-    , mOptionsList()
-{
-    QVBoxLayout *layout = new QVBoxLayout(this);
-
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-
-
-
-    TrackingGroupBox *groupBox = new TrackingGroupBox(mName, this);
-    layout->addWidget(groupBox);
-
-
-
-    QVBoxLayout *layout2 = new QVBoxLayout(groupBox);
-
-    layout2->setSpacing(4);
-    layout2->setContentsMargins(4, 4, 4, 4);
-
-
-
-    mComboBox = new TrackingComboBox(groupBox);
-    layout2->addWidget(mComboBox);
-
-
-
-    mMinimum = metaInformation.value("Minimum");
-    mMaximum = metaInformation.value("Maximum");
-
-
-
-    if (!mMinimum.startsWith("0x"))
-    {
-        qCritical() << "Unexpected format for minimum value" << mMinimum << "specified for Integer (Power of 2) parameter" << mId;
-
-        return;
-    }
-
-    if (!mMaximum.startsWith("0x"))
-    {
-        qCritical() << "Unexpected format for maximum value" << mMaximum << "specified for Integer (Power of 2) parameter" << mId;
-
-        return;
-    }
-
-
-
-    bool    ok1          = false;
-    quint64 minimumValue = mMinimum.mid(2).toULongLong(&ok1, 16);
-
-    if (!ok1)
-    {
-        qCritical() << "Unexpected format for minimum value" << mMinimum << "specified for Integer (Power of 2) parameter" << mId;
-
-        return;
-    }
-
-
-
-    bool    ok2          = false;
-    quint64 maximumValue = mMaximum.mid(2).toULongLong(&ok2, 16);
-
-    if (!ok2)
-    {
-        qCritical() << "Unexpected format for maximum value" << mMaximum << "specified for Integer (Power of 2) parameter" << mId;
-
-        return;
-    }
-
-
-
-    quint64 value = 1;
-
-    for (qint64 i = 0; i < 64; ++i)
-    {
-        if (value > maximumValue)
-        {
-            break;
-        }
-
-        if (value >= minimumValue)
-        {
-            mOptionsList.append(QString("0x%1")
-                                        .arg(value, 16, 16, QChar('0'))
-            );
-        }
-
-        value <<= 1;
-    }
-
-
-
-    mComboBox->addItems(mOptionsList);
-
-
-
-    if (!mOptionsList.contains(mDefault))
-    {
-        qCritical() << "Invalid default value" << mValue << "specified for Integer (Power of 2) parameter" << mId;
-
-        return;
-    }
-
-
-
-    qint64 index = mOptionsList.indexOf(mValue);
-
-    if (index < 0)
-    {
-        qCritical() << "Invalid value" << mValue << "specified for Integer (Power of 2) parameter" << mId;
-
-        return;
-    }
-
-    mComboBox->setCurrentIndex(index);
-
-
-
-    connect(mComboBox, SIGNAL(currentIndexChanged(qint32)), this, SLOT(comboboxCurrentIndexChanged(qint32)));
-    connect(mComboBox, SIGNAL(entered()),                   this, SLOT(widgetEntered()));
-    connect(mComboBox, SIGNAL(leaved()),                    this, SLOT(widgetLeaved()));
-    connect(groupBox,  SIGNAL(entered()),                   this, SLOT(widgetEntered()));
-    connect(groupBox,  SIGNAL(leaved()),                    this, SLOT(widgetLeaved()));
-}
-
-void IntegerPowerOf2ParameterWidget::setValue(const QString &value)
-{
-    ParameterWidget::setValue(value);
-
-
-
-    qint64 index = mOptionsList.indexOf(mValue);
-
-    if (index < 0)
-    {
-        qCritical() << "Invalid value" << mValue << "specified for Integer (Power of 2) parameter" << mId;
-
-        return;
-    }
-
-    mComboBox->setCurrentIndex(index);
-}
-
-QString IntegerPowerOf2ParameterWidget::generatePrivateDetails()
-{
-    QString values = "Integer (Power of 2)";
-
-    return  "<h2>Values:</h2>" +
-            values + "<br>" +
-            "<br>" +
-            "<b>Minimum:</b> " + mMinimum + "<br>" +
-            "<b>Maximum:</b> " + mMaximum + "<br>" +
-            "<br>" +
-            "<b>Default:</b> " + mDefault + "<br>" +
-            "<b>Current:</b> " + mValue;
-}
-
-void IntegerPowerOf2ParameterWidget::comboboxCurrentIndexChanged(qint32 index)
-{
-    setValue(mOptionsList.at(index));
-}
+#include "integerpowerof2parameterwidget.h"                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDebug>                                                                                                                                                                                        // Colorize: green
+#include <QVBoxLayout>                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/build_config_gui/widgets/common/trackinggroupbox.h>                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+IntegerPowerOf2ParameterWidget::IntegerPowerOf2ParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QWidget *parent)                  // Colorize: green
+    : ParameterWidget(id, metaInformation, parent)                                                                                                                                              // Colorize: green
+    , mComboBox(nullptr)                                                                                                                                                                                 // Colorize: green
+    , mMinimum()                                                                                                                                                                                         // Colorize: green
+    , mMaximum()                                                                                                                                                                                         // Colorize: green
+    , mOptionsList()                                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    TrackingGroupBox *groupBox = new TrackingGroupBox(mName, this);                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mComboBox = new TrackingComboBox(groupBox);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create layout and put groupBox into it                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QVBoxLayout *layout = new QVBoxLayout(this);                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->setSpacing(0);                                                                                                                                                                           // Colorize: green
+        layout->setContentsMargins(0, 0, 0, 0);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->addWidget(groupBox);                                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create layout and put mComboBox into it                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QVBoxLayout *layout = new QVBoxLayout(groupBox);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->setSpacing(4);                                                                                                                                                                           // Colorize: green
+        layout->setContentsMargins(4, 4, 4, 4);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->addWidget(mComboBox);                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mMinimum = metaInformation.value("Minimum");                                                                                                                                                         // Colorize: green
+    mMaximum = metaInformation.value("Maximum");                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for minimum and maximum value                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!mMinimum.startsWith("0x"))                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Unexpected format for minimum value" << mMinimum << "specified for Integer (Power of 2) parameter" << mId;                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!mMaximum.startsWith("0x"))                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Unexpected format for maximum value" << mMaximum << "specified for Integer (Power of 2) parameter" << mId;                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    quint64 minimumValue;                                                                                                                                                                                // Colorize: green
+    quint64 maximumValue;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get minimum and maximum value                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        bool ok1 = false;                                                                                                                                                                                // Colorize: green
+        bool ok2 = false;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        minimumValue = mMinimum.mid(2).toULongLong(&ok1, 16);                                                                                                                                            // Colorize: green
+        maximumValue = mMaximum.mid(2).toULongLong(&ok2, 16);                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!ok1)                                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Unexpected format for minimum value" << mMinimum << "specified for Integer (Power of 2) parameter" << mId;                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!ok2)                                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Unexpected format for maximum value" << mMaximum << "specified for Integer (Power of 2) parameter" << mId;                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get options list                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        quint64 value = 1;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < 64; ++i)                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (value > maximumValue)                                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                break;                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (value >= minimumValue)                                                                                                                                                                   // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                mOptionsList.append(QString("0x%1")                                                                                                                                                      // Colorize: green
+                                            .arg(value, 16, 16, QChar('0'))                                                                                                                              // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            value <<= 1;                                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mComboBox->addItems(mOptionsList);                                                                                                                                                               // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for default value                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!mOptionsList.contains(mDefault))                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Invalid default value" << mValue << "specified for Integer (Power of 2) parameter" << mId;                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 index = mOptionsList.indexOf(mValue);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (index < 0)                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qCritical() << "Invalid value" << mValue << "specified for Integer (Power of 2) parameter" << mId;                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mComboBox->setCurrentIndex(index);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    connect(mComboBox, SIGNAL(currentIndexChanged(qint32)), this, SLOT(comboboxCurrentIndexChanged(qint32)));                                                                                            // Colorize: green
+    connect(mComboBox, SIGNAL(entered()),                   this, SLOT(widgetEntered()));                                                                                                                // Colorize: green
+    connect(mComboBox, SIGNAL(leaved()),                    this, SLOT(widgetLeaved()));                                                                                                                 // Colorize: green
+    connect(groupBox,  SIGNAL(entered()),                   this, SLOT(widgetEntered()));                                                                                                                // Colorize: green
+    connect(groupBox,  SIGNAL(leaved()),                    this, SLOT(widgetLeaved()));                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void IntegerPowerOf2ParameterWidget::setValue(const QString &value)                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    ParameterWidget::setValue(value);                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 index = mOptionsList.indexOf(mValue);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (index < 0)                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qCritical() << "Invalid value" << mValue << "specified for Integer (Power of 2) parameter" << mId;                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mComboBox->setCurrentIndex(index);                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString IntegerPowerOf2ParameterWidget::generatePrivateDetails()                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString values = "Integer (Power of 2)";                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return  "<h2>Values:</h2>" +                                                                                                                                                                         // Colorize: green
+            values + "<br>" +                                                                                                                                                                            // Colorize: green
+            "<br>" +                                                                                                                                                                                     // Colorize: green
+            "<b>Minimum:</b> " + mMinimum + "<br>" +                                                                                                                                                     // Colorize: green
+            "<b>Maximum:</b> " + mMaximum + "<br>" +                                                                                                                                                     // Colorize: green
+            "<br>" +                                                                                                                                                                                     // Colorize: green
+            "<b>Default:</b> " + mDefault + "<br>" +                                                                                                                                                     // Colorize: green
+            "<b>Current:</b> " + mValue;                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void IntegerPowerOf2ParameterWidget::comboboxCurrentIndexChanged(qint32 index)                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    setValue(mOptionsList.at(index));                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

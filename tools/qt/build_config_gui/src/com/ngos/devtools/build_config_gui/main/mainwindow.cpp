@@ -130,7 +130,7 @@ void MainWindow::on_actionReload_triggered()
             categories.enqueue((CategoryTreeWidgetItem *)treeItem->child(i));
         }
 
-        delete treeItem->getPage();
+        delete treeItem->getPage(); // TODO: Try to use destructor
     }
 
     ui->categoriesTreeWidget->clear();
@@ -652,7 +652,7 @@ void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &
 
         if (metaType == "Boolean")
         {
-            parameterWidget = new BooleanParameterWidget(id, metaInformation, mOptions, categoryItem->getPage());
+            parameterWidget = new BooleanParameterWidget(id, metaInformation, categoryItem->getPage());
         }
         else
         if (metaType == "Combobox")
@@ -662,12 +662,12 @@ void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &
         else
         if (metaType == "Integer (Power of 2)")
         {
-            parameterWidget = new IntegerPowerOf2ParameterWidget(id, metaInformation, mOptions, categoryItem->getPage());
+            parameterWidget = new IntegerPowerOf2ParameterWidget(id, metaInformation, categoryItem->getPage());
         }
         else
         if (metaType == "Text")
         {
-            parameterWidget = new TextParameterWidget(id, metaInformation, mOptions, categoryItem->getPage());
+            parameterWidget = new TextParameterWidget(id, metaInformation, categoryItem->getPage());
         }
         else
         {

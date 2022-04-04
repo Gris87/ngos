@@ -1,28 +1,28 @@
-#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_CATEGORYTREEWIDGETITEM_H
-#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_CATEGORYTREEWIDGETITEM_H
-
-
-
-#include <QTreeWidgetItem>
-
-#include <QScrollArea>
-#include <QVBoxLayout>
-
-
-
-class CategoryTreeWidgetItem: public QTreeWidgetItem
-{
-public:
-    CategoryTreeWidgetItem(const QString &title, QWidget *parent = nullptr); // TEST: NO
-
-    QScrollArea* getPage() const; // TEST: NO
-    QVBoxLayout* getLayout() const; // TEST: NO
-
-private:
-    QScrollArea *mPage;
-    QVBoxLayout *mLayout;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_CATEGORYTREEWIDGETITEM_H
+#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_CATEGORYTREEWIDGETITEM_H                                                                                                                              // Colorize: green
+#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_CATEGORYTREEWIDGETITEM_H                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QTreeWidgetItem>                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QScrollArea>                                                                                                                                                                                   // Colorize: green
+#include <QVBoxLayout>                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class CategoryTreeWidgetItem: public QTreeWidgetItem                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    CategoryTreeWidgetItem(const QString &title, QWidget *parent = nullptr); // TEST: NO                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QScrollArea* getPage() const; // TEST: NO                                                                                                                                                            // Colorize: green
+    QVBoxLayout* getLayout() const; // TEST: NO                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    QScrollArea *mPage;                                                                                                                                                                                  // Colorize: green
+    QVBoxLayout *mLayout;                                                                                                                                                                                // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_CATEGORYTREEWIDGETITEM_H                                                                                                                            // Colorize: green

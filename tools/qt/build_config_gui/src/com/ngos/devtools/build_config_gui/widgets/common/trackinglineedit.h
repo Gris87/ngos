@@ -1,28 +1,28 @@
-#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_COMMON_TRACKINGLINEEDIT_H
-#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_COMMON_TRACKINGLINEEDIT_H
-
-
-
-#include <QLineEdit>
-
-
-
-class TrackingLineEdit: public QLineEdit
-{
-    Q_OBJECT
-
-public:
-    explicit TrackingLineEdit(const QString &contents, QWidget *parent = nullptr); // TEST: NO
-
-protected:
-    void focusInEvent(QFocusEvent *event) override; // TEST: NO
-    void focusOutEvent(QFocusEvent *event) override; // TEST: NO
-
-signals:
-    void entered(); // TEST: NO
-    void leaved(); // TEST: NO
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_COMMON_TRACKINGLINEEDIT_H
+#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_COMMON_TRACKINGLINEEDIT_H                                                                                                                             // Colorize: green
+#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_COMMON_TRACKINGLINEEDIT_H                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QLineEdit>                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class TrackingLineEdit: public QLineEdit                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_OBJECT                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    explicit TrackingLineEdit(const QString &contents, QWidget *parent = nullptr); // TEST: NO                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+protected:                                                                                                                                                                                               // Colorize: green
+    void focusInEvent(QFocusEvent *event) override; // TEST: NO                                                                                                                                          // Colorize: green
+    void focusOutEvent(QFocusEvent *event) override; // TEST: NO                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+signals:                                                                                                                                                                                                 // Colorize: green
+    void entered(); // TEST: NO                                                                                                                                                                          // Colorize: green
+    void leaved(); // TEST: NO                                                                                                                                                                           // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_COMMON_TRACKINGLINEEDIT_H                                                                                                                           // Colorize: green

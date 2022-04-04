@@ -1,62 +1,62 @@
-#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_MAIN_MAINWINDOW_H
-#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_MAIN_MAINWINDOW_H
-
-
-
-#include <QMainWindow>
-
-#include <QCloseEvent>
-#include <QHash>
-#include <QTreeWidgetItem>
-
-#include <com/ngos/devtools/build_config_gui/other/optioninfo.h>
-#include <com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h>
-
-
-
-namespace Ui
-{
-    class MainWindow;
-}
-
-
-
-class MainWindow: public QMainWindow
-{
-    Q_OBJECT
-
-public:
-    explicit MainWindow(QWidget *parent = nullptr); // TEST: NO
-    ~MainWindow(); // TEST: NO
-
-    void loadBuildConfigFile(); // TEST: NO
-
-protected:
-    void closeEvent(QCloseEvent *event) override; // TEST: NO
-
-private slots:
-    void on_actionReload_triggered(); // TEST: NO
-    void on_actionSave_triggered(); // TEST: NO
-    void on_actionExit_triggered(); // TEST: NO
-    void on_actionAbout_triggered(); // TEST: NO
-    void on_actionReset_triggered(); // TEST: NO
-    void on_categoriesTreeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous); // TEST: NO
-
-    void parameterValueChanged(); // TEST: NO
-    void parameterDetailsUpdated(const QString &details); // TEST: NO
-
-private:
-    void parseBuildConfigFile(const QStringList &lines); // TEST: NO
-    void buildParameters(const QHash<QString, QHash<QString, QString>> &parameters, const QStringList &parametersIds); // TEST: NO
-
-    void saveWindowState(); // TEST: NO
-    void loadWindowState(); // TEST: NO
-
-    Ui::MainWindow                    *ui;
-    QHash<QString, OptionInfo>         mOptions;
-    QHash<QString, ParameterWidget *>  mParameters;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_MAIN_MAINWINDOW_H
+#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_MAIN_MAINWINDOW_H                                                                                                                                             // Colorize: green
+#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_MAIN_MAINWINDOW_H                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QMainWindow>                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QCloseEvent>                                                                                                                                                                                   // Colorize: green
+#include <QHash>                                                                                                                                                                                         // Colorize: green
+#include <QTreeWidgetItem>                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/build_config_gui/other/optioninfo.h>                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h>                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+namespace Ui                                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    class MainWindow;                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class MainWindow: public QMainWindow                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_OBJECT                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    explicit MainWindow(QWidget *parent = nullptr); // TEST: NO                                                                                                                                          // Colorize: green
+    ~MainWindow(); // TEST: NO                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void loadBuildConfigFile(); // TEST: NO                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+protected:                                                                                                                                                                                               // Colorize: green
+    void closeEvent(QCloseEvent *event) override; // TEST: NO                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private slots:                                                                                                                                                                                           // Colorize: green
+    void on_actionReload_triggered(); // TEST: NO                                                                                                                                                        // Colorize: green
+    void on_actionSave_triggered(); // TEST: NO                                                                                                                                                          // Colorize: green
+    void on_actionExit_triggered(); // TEST: NO                                                                                                                                                          // Colorize: green
+    void on_actionAbout_triggered(); // TEST: NO                                                                                                                                                         // Colorize: green
+    void on_actionReset_triggered(); // TEST: NO                                                                                                                                                         // Colorize: green
+    void on_categoriesTreeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous); // TEST: NO                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void parameterValueChanged(); // TEST: NO                                                                                                                                                            // Colorize: green
+    void parameterDetailsUpdated(const QString &details); // TEST: NO                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    void parseBuildConfigFile(const QStringList &lines); // TEST: NO                                                                                                                                     // Colorize: green
+    void buildParameters(const QHash<QString, QHash<QString, QString>> &parameters, const QStringList &parametersIds); // TEST: NO                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void saveWindowState(); // TEST: NO                                                                                                                                                                  // Colorize: green
+    void loadWindowState(); // TEST: NO                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Ui::MainWindow                    *ui;                                                                                                                                                               // Colorize: green
+    QHash<QString, OptionInfo>         mOptions;                                                                                                                                                         // Colorize: green
+    QHash<QString, ParameterWidget *>  mParameters;                                                                                                                                                      // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_MAIN_MAINWINDOW_H                                                                                                                                           // Colorize: green

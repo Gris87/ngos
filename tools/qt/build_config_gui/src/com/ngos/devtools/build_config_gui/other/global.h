@@ -1,21 +1,25 @@
-#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_OTHER_GLOBAL_H
-#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_OTHER_GLOBAL_H
-
-
-
-#include <QString>
-
-
-
-class Global
-{
-public:
-    static QString sProjectDir;
-
-private:
-    Global(); // TEST: NO
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_OTHER_GLOBAL_H
+#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_OTHER_GLOBAL_H                                                                                                                                                // Colorize: green
+#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_OTHER_GLOBAL_H                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class Global                                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    static void init(); // TEST: NO                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static QString sProjectDir;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    Global() = delete;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static void initProjectDir(); // TEST: NO                                                                                                                                                            // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_OTHER_GLOBAL_H                                                                                                                                              // Colorize: green

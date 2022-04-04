@@ -1,23 +1,23 @@
-#include "trackingcombobox.h"
-
-
-
-TrackingComboBox::TrackingComboBox(QWidget *parent)
-    : QComboBox(parent)
-{
-    setMouseTracking(true);
-}
-
-void TrackingComboBox::focusInEvent(QFocusEvent *event)
-{
-    QComboBox::focusInEvent(event);
-
-    emit entered();
-}
-
-void TrackingComboBox::focusOutEvent(QFocusEvent *event)
-{
-    QComboBox::focusOutEvent(event);
-
-    emit leaved();
-}
+#include "trackingcombobox.h"                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TrackingComboBox::TrackingComboBox(QWidget *parent)                                                                                                                                                      // Colorize: green
+    : QComboBox(parent)                                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    setMouseTracking(true);                                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TrackingComboBox::focusInEvent(QFocusEvent *event)                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QComboBox::focusInEvent(event);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    emit entered();                                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TrackingComboBox::focusOutEvent(QFocusEvent *event)                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QComboBox::focusOutEvent(event);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    emit leaved();                                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

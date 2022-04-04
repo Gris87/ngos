@@ -1,185 +1,209 @@
-#include "comboboxparameterwidget.h"
-
-#include <QDebug>
-#include <QVBoxLayout>
-
-#include <com/ngos/devtools/build_config_gui/widgets/common/trackinggroupbox.h>
-
-
-
-ComboboxParameterWidget::ComboboxParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent)
-    : ParameterWidget(id, metaInformation, options, parent)
-    , mComboBox(nullptr)
-    , mOptionsDescriptions()
-    , mOptionsList()
-{
-    QVBoxLayout *layout = new QVBoxLayout(this);
-
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-
-
-
-    TrackingGroupBox *groupBox = new TrackingGroupBox(mName, this);
-    layout->addWidget(groupBox);
-
-
-
-    QVBoxLayout *layout2 = new QVBoxLayout(groupBox);
-
-    layout2->setSpacing(4);
-    layout2->setContentsMargins(4, 4, 4, 4);
-
-
-
-    mComboBox = new TrackingComboBox(groupBox);
-    layout2->addWidget(mComboBox);
-
-
-
-    QString metaValues = metaInformation.value("Values");
-
-    mOptionsList = metaValues.split(',');
-
-    for (qint64 i = 0; i < mOptionsList.size(); ++i)
-    {
-        QString &option = mOptionsList[i];
-        option          = option.trimmed();
-
-
-
-        OptionInfo optionInfo = options.value(option);
-
-        if (optionInfo.description != "")
-        {
-            mOptionsDescriptions.insert(option, optionInfo.description);
-        }
-        else
-        {
-            qCritical() << "Description not found for option" << option << "for ComboBox parameter" << mId;
-
-            return;
-        }
-    }
-
-    mComboBox->addItems(mOptionsList);
-
-
-
-    if (!mOptionsDescriptions.contains(mDefault))
-    {
-        qCritical() << "Invalid default value" << mValue << "specified for ComboBox parameter" << mId;
-
-        return;
-    }
-
-
-
-    qint64 index = mOptionsList.indexOf(mValue);
-
-    if (index < 0)
-    {
-        qCritical() << "Invalid value" << mValue << "specified for ComboBox parameter" << mId;
-
-        return;
-    }
-
-    mComboBox->setCurrentIndex(index);
-
-
-
-    connect(mComboBox, SIGNAL(currentIndexChanged(qint32)), this, SLOT(comboboxCurrentIndexChanged(qint32)));
-    connect(mComboBox, SIGNAL(entered()),                   this, SLOT(widgetEntered()));
-    connect(mComboBox, SIGNAL(leaved()),                    this, SLOT(widgetLeaved()));
-    connect(groupBox,  SIGNAL(entered()),                   this, SLOT(widgetEntered()));
-    connect(groupBox,  SIGNAL(leaved()),                    this, SLOT(widgetLeaved()));
-}
-
-void ComboboxParameterWidget::setValue(const QString &value)
-{
-    ParameterWidget::setValue(value);
-
-
-
-    qint64 index = mOptionsList.indexOf(mValue);
-
-    if (index < 0)
-    {
-        qCritical() << "Invalid value" << mValue << "specified for ComboBox parameter" << mId;
-
-        return;
-    }
-
-    mComboBox->setCurrentIndex(index);
-}
-
-QString ComboboxParameterWidget::generatePrivateDetails()
-{
-    qint64 maxLen = 0;
-
-    for (qint64 i = 0; i < mOptionsList.size(); ++i)
-    {
-        const QString &option = mOptionsList.at(i);
-
-        if (option.length() > maxLen)
-        {
-            maxLen = option.length();
-        }
-    }
-
-
-
-    QString values;
-
-    for (qint64 i = 0; i < mOptionsList.size(); ++i)
-    {
-        QString option = mOptionsList.at(i);
-
-
-
-        QString value = QString("%1 - %2")
-                                .arg(option, -maxLen, QChar(' '))
-                                .arg(mOptionsDescriptions.value(option));
-
-        value = value.replace(' ', "&nbsp;");
-
-        if (option == mDefault)
-        {
-            value = "<b>" + value + "</b>";
-        }
-
-
-
-        if (i > 0)
-        {
-            values.append("<br>");
-        }
-
-        values.append(value);
-    }
-
-
-
-    maxLen = qMax(mDefault.length(), mValue.length());
-
-    QString defaultValue = QString("%1 - %2")
-                                    .arg(mDefault, -maxLen, QChar(' '))
-                                    .arg(mOptionsDescriptions.value(mDefault));
-    QString currentValue = QString("%1 - %2")
-                                    .arg(mValue, -maxLen, QChar(' '))
-                                    .arg(mOptionsDescriptions.value(mValue));
-
-    defaultValue = defaultValue.replace(' ', "&nbsp;");
-    currentValue = currentValue.replace(' ', "&nbsp;");
-
-    return  "<h2>Values:</h2>" +
-            values + "<br>" +
-            "<br>" +
-            "<b>Default:</b> " + defaultValue + "<br>" +
-            "<b>Current:</b> " + currentValue;
-}
-
-void ComboboxParameterWidget::comboboxCurrentIndexChanged(qint32 index)
-{
-    setValue(mOptionsList.at(index));
-}
+#include "comboboxparameterwidget.h"                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDebug>                                                                                                                                                                                        // Colorize: green
+#include <QVBoxLayout>                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/build_config_gui/widgets/common/trackinggroupbox.h>                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+ComboboxParameterWidget::ComboboxParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent)                                // Colorize: green
+    : ParameterWidget(id, metaInformation, parent)                                                                                                                                                       // Colorize: green
+    , mComboBox(nullptr)                                                                                                                                                                                 // Colorize: green
+    , mOptionsDescriptions()                                                                                                                                                                             // Colorize: green
+    , mOptionsList()                                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    TrackingGroupBox *groupBox = new TrackingGroupBox(mName, this);                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mComboBox = new TrackingComboBox(groupBox);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create layout and put groupBox into it                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QVBoxLayout *layout = new QVBoxLayout(this);                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->setSpacing(0);                                                                                                                                                                           // Colorize: green
+        layout->setContentsMargins(0, 0, 0, 0);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->addWidget(groupBox);                                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create layout and put mComboBox into it                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QVBoxLayout *layout = new QVBoxLayout(groupBox);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->setSpacing(4);                                                                                                                                                                           // Colorize: green
+        layout->setContentsMargins(4, 4, 4, 4);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->addWidget(mComboBox);                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get options list                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        mOptionsList = metaInformation.value("Values").split(',');                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < mOptionsList.size(); ++i)                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString &option = mOptionsList[i];                                                                                                                                                           // Colorize: green
+            option          = option.trimmed();                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            OptionInfo optionInfo = options.value(option);                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (optionInfo.description != "")                                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                mOptionsDescriptions.insert(option, optionInfo.description);                                                                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qCritical() << "Description not found for option" << option << "for ComboBox parameter" << mId;                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return;                                                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mComboBox->addItems(mOptionsList);                                                                                                                                                               // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for default value                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!mOptionsList.contains(mDefault))                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Invalid default value" << mValue << "specified for ComboBox parameter" << mId;                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 index = mOptionsList.indexOf(mValue);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (index < 0)                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qCritical() << "Invalid value" << mValue << "specified for ComboBox parameter" << mId;                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mComboBox->setCurrentIndex(index);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    connect(mComboBox, SIGNAL(currentIndexChanged(qint32)), this, SLOT(comboboxCurrentIndexChanged(qint32)));                                                                                            // Colorize: green
+    connect(mComboBox, SIGNAL(entered()),                   this, SLOT(widgetEntered()));                                                                                                                // Colorize: green
+    connect(mComboBox, SIGNAL(leaved()),                    this, SLOT(widgetLeaved()));                                                                                                                 // Colorize: green
+    connect(groupBox,  SIGNAL(entered()),                   this, SLOT(widgetEntered()));                                                                                                                // Colorize: green
+    connect(groupBox,  SIGNAL(leaved()),                    this, SLOT(widgetLeaved()));                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void ComboboxParameterWidget::setValue(const QString &value)                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    ParameterWidget::setValue(value);                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 index = mOptionsList.indexOf(mValue);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (index < 0)                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qCritical() << "Invalid value" << mValue << "specified for ComboBox parameter" << mId;                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mComboBox->setCurrentIndex(index);                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString ComboboxParameterWidget::generatePrivateDetails()                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    qint64 maxLen = 0;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get maximum length of options                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < mOptionsList.size(); ++i)                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            const QString &option = mOptionsList.at(i);                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (option.length() > maxLen)                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                maxLen = option.length();                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString values;                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get values with descriptions                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < mOptionsList.size(); ++i)                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString option = mOptionsList.at(i);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString value = QString("%1 - %2")                                                                                                                                                           // Colorize: green
+                                    .arg(option, -maxLen, QChar(' '))                                                                                                                                    // Colorize: green
+                                    .arg(mOptionsDescriptions.value(option));                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            value = value.replace(' ', "&nbsp;");                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (option == mDefault)                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                value = "<b>" + value + "</b>";                                                                                                                                                          // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (i > 0)                                                                                                                                                                                   // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                values.append("<br>");                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            values.append(value);                                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString defaultValue;                                                                                                                                                                                // Colorize: green
+    QString currentValue;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get default and current values                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        maxLen = qMax(mDefault.length(), mValue.length());                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        defaultValue = QString("%1 - %2")                                                                                                                                                                // Colorize: green
+                                .arg(mDefault, -maxLen, QChar(' '))                                                                                                                                      // Colorize: green
+                                .arg(mOptionsDescriptions.value(mDefault));                                                                                                                              // Colorize: green
+        currentValue = QString("%1 - %2")                                                                                                                                                                // Colorize: green
+                                .arg(mValue, -maxLen, QChar(' '))                                                                                                                                        // Colorize: green
+                                .arg(mOptionsDescriptions.value(mValue));                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        defaultValue = defaultValue.replace(' ', "&nbsp;");                                                                                                                                              // Colorize: green
+        currentValue = currentValue.replace(' ', "&nbsp;");                                                                                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return  "<h2>Values:</h2>" +                                                                                                                                                                         // Colorize: green
+            values + "<br>" +                                                                                                                                                                            // Colorize: green
+            "<br>" +                                                                                                                                                                                     // Colorize: green
+            "<b>Default:</b> " + defaultValue + "<br>" +                                                                                                                                                 // Colorize: green
+            "<b>Current:</b> " + currentValue;                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void ComboboxParameterWidget::comboboxCurrentIndexChanged(qint32 index)                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    setValue(mOptionsList.at(index));                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

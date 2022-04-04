@@ -1,46 +1,19 @@
-#include <QApplication>
-#include <QDebug>
-#include <QFile>
-
-#include <com/ngos/devtools/build_config_gui/main/mainwindow.h>
-#include <com/ngos/devtools/build_config_gui/other/global.h>
-
-
-
-qint32 main(qint32 argc, char *argv[])
-{
-    QApplication app(argc, argv);
-
-
-
-    Global::sProjectDir = app.applicationDirPath();
-
-    do
-    {
-        if (QFile::exists(Global::sProjectDir + "/ngos.files"))
-        {
-            break;
-        }
-
-
-
-        qint64 index = Global::sProjectDir.lastIndexOf('/');
-
-        if (index < 0)
-        {
-            qDebug() << "Project directory not found";
-
-            return 1;
-        }
-
-        Global::sProjectDir = Global::sProjectDir.left(index);
-    } while(true);
-
-
-
-    MainWindow mainWindow;
-    mainWindow.loadBuildConfigFile();
-    mainWindow.show();
-
-    return app.exec();
-}
+#include <QApplication>                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/build_config_gui/main/mainwindow.h>                                                                                                                                          // Colorize: green
+#include <com/ngos/devtools/build_config_gui/other/global.h>                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint32 main(qint32 argc, char *argv[])                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QApplication app(argc, argv);                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Global::init();                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    MainWindow mainWindow;                                                                                                                                                                               // Colorize: green
+    mainWindow.loadBuildConfigFile();                                                                                                                                                                    // Colorize: green
+    mainWindow.show();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return app.exec();                                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

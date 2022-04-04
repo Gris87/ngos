@@ -1,35 +1,35 @@
-#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_OTHER_OPTIONINFO_H
-#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_OTHER_OPTIONINFO_H
-
-
-
-#include <QString>
-
-
-
-struct OptionInfo
-{
-    OptionInfo() // TEST: NO
-    {
-        this->id          = "";
-        this->value       = "";
-        this->description = "";
-    }
-
-    OptionInfo(const QString &id, const QString &value, const QString &description) // TEST: NO
-    {
-        this->id          = id;
-        this->value       = value;
-        this->description = description;
-    }
-
-
-
-    QString id;
-    QString value;
-    QString description;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_OTHER_OPTIONINFO_H
+#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_OTHER_OPTIONINFO_H                                                                                                                                            // Colorize: green
+#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_OTHER_OPTIONINFO_H                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct OptionInfo                                                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    OptionInfo() // TEST: NO                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        this->id          = "";                                                                                                                                                                          // Colorize: green
+        this->value       = "";                                                                                                                                                                          // Colorize: green
+        this->description = "";                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    OptionInfo(const QString &id, const QString &value, const QString &description) // TEST: NO                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        this->id          = id;                                                                                                                                                                          // Colorize: green
+        this->value       = value;                                                                                                                                                                       // Colorize: green
+        this->description = description;                                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString id;                                                                                                                                                                                          // Colorize: green
+    QString value;                                                                                                                                                                                       // Colorize: green
+    QString description;                                                                                                                                                                                 // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_OTHER_OPTIONINFO_H                                                                                                                                          // Colorize: green

@@ -1,116 +1,111 @@
-#include "parameterwidget.h"
-
-
-
-ParameterWidget *ParameterWidget::sHoveredWidget;
-
-
-
-ParameterWidget::ParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &/*options*/, QWidget *parent)
-    : QWidget(parent)
-    , mId(id)
-    , mName(metaInformation.value("Name"))
-    , mDescription(metaInformation.value("Description"))
-    , mEnabled(metaInformation.value("Enabled"))
-    , mDefault(metaInformation.value("Default"))
-    , mValue(metaInformation.value("Value"))
-{
-    if (mDefault != mValue)
-    {
-        QFont font;
-        font.setBold(true);
-        setFont(font);
-    }
-}
-
-void ParameterWidget::setValue(const QString &value)
-{
-    if (mValue != value)
-    {
-        mValue = value;
-
-
-
-        QFont font;
-
-        if (mDefault != mValue)
-        {
-            font.setBold(true);
-        }
-
-        setFont(font);
-
-
-
-        if (sHoveredWidget)
-        {
-            emit detailsUpdated(sHoveredWidget->generateDetails());
-        }
-
-        emit valueChanged();
-    }
-}
-
-QString ParameterWidget::value() const
-{
-    return mValue;
-}
-
-void ParameterWidget::reset()
-{
-    if (mValue != mDefault)
-    {
-        setValue(mDefault);
-    }
-}
-
-void ParameterWidget::handleValueChanged(const QHash<QString, ParameterWidget *> &parameters)
-{
-    if (mEnabled != "")
-    {
-        QHashIterator<QString, ParameterWidget *> it(parameters);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-            QString id = it.key();
-
-            if (mEnabled.startsWith(id + " == "))
-            {
-                QString value = mEnabled.mid(id.length() + 4).trimmed();
-
-                setEnabled(value == it.value()->value());
-
-                break;
-            }
-        }
-    }
-}
-
-void ParameterWidget::widgetEntered()
-{
-    sHoveredWidget = this;
-
-    emit detailsUpdated(generateDetails());
-}
-
-void ParameterWidget::widgetLeaved()
-{
-    sHoveredWidget = nullptr;
-
-    emit detailsUpdated("");
-}
-
-QString ParameterWidget::generatePrivateDetails()
-{
-    return "";
-}
-
-QString ParameterWidget::generateDetails()
-{
-    return  "<h1>" + mName + "</h1>" +
-            "<h2><b>Description:</b></b></h2>" +
-            mDescription.replace('\n', "<br>") +
-            generatePrivateDetails();
-}
+#include "parameterwidget.h"                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+ParameterWidget *ParameterWidget::sHoveredWidget;                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+ParameterWidget::ParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QWidget *parent)                                                                                     // Colorize: green
+    : QWidget(parent)                                                                                                                                                                                    // Colorize: green
+    , mId(id)                                                                                                                                                                                            // Colorize: green
+    , mName(metaInformation.value("Name"))                                                                                                                                                               // Colorize: green
+    , mDescription(metaInformation.value("Description"))                                                                                                                                                 // Colorize: green
+    , mEnabled(metaInformation.value("Enabled"))                                                                                                                                                         // Colorize: green
+    , mDefault(metaInformation.value("Default"))                                                                                                                                                         // Colorize: green
+    , mValue(metaInformation.value("Value"))                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (mValue != mDefault)                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFont font;                                                                                                                                                                                      // Colorize: green
+        font.setBold(true);                                                                                                                                                                              // Colorize: green
+        setFont(font);                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void ParameterWidget::setValue(const QString &value)                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (mValue != value)                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        mValue = value;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QFont font;                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (mValue != mDefault)                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            font.setBold(true);                                                                                                                                                                          // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        setFont(font);                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (sHoveredWidget != nullptr)                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            emit detailsUpdated(sHoveredWidget->generateDetails());                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        emit valueChanged();                                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QString& ParameterWidget::value() const                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mValue;                                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void ParameterWidget::reset()                                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (mValue != mDefault)                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        setValue(mDefault);                                                                                                                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void ParameterWidget::handleValueChanged(const QHash<QString, ParameterWidget *> &parameters)                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (mEnabled != "")                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QHashIterator<QString, ParameterWidget *> it(parameters);                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString id = it.key();                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (mEnabled.startsWith(id + " == "))                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString value = mEnabled.mid(id.length() + 4).trimmed();                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                setEnabled(value == it.value()->value());                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                break;                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void ParameterWidget::widgetEntered()                                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    sHoveredWidget = this;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    emit detailsUpdated(generateDetails());                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void ParameterWidget::widgetLeaved()                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    sHoveredWidget = nullptr;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    emit detailsUpdated("");                                                                                                                                                                             // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString ParameterWidget::generateDetails()                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return  "<h1>" + mName + "</h1>" +                                                                                                                                                                   // Colorize: green
+            "<h2><b>Description:</b></b></h2>" +                                                                                                                                                         // Colorize: green
+            mDescription.replace('\n', "<br>") +                                                                                                                                                         // Colorize: green
+            generatePrivateDetails();                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

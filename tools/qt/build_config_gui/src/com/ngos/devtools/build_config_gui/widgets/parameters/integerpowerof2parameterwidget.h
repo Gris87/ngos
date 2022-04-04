@@ -1,36 +1,36 @@
-#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_INTEGERPOWEROF2PARAMETERWIDGET_H
-#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_INTEGERPOWEROF2PARAMETERWIDGET_H
-
-
-
-#include <com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h>
-
-#include <com/ngos/devtools/build_config_gui/widgets/common/trackingcombobox.h>
-
-
-
-class IntegerPowerOf2ParameterWidget: public ParameterWidget
-{
-    Q_OBJECT
-
-public:
-    explicit IntegerPowerOf2ParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent = nullptr); // TEST: NO
-
-    void setValue(const QString &value) override; // TEST: NO
-
-protected:
-    QString generatePrivateDetails() override; // TEST: NO
-
-private slots:
-    void comboboxCurrentIndexChanged(qint32 index); // TEST: NO
-
-private:
-    TrackingComboBox *mComboBox;
-    QString           mMinimum;
-    QString           mMaximum;
-    QStringList       mOptionsList;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_INTEGERPOWEROF2PARAMETERWIDGET_H
+#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_INTEGERPOWEROF2PARAMETERWIDGET_H                                                                                                           // Colorize: green
+#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_INTEGERPOWEROF2PARAMETERWIDGET_H                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/build_config_gui/widgets/parameters/parameterwidget.h>                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/build_config_gui/widgets/common/trackingcombobox.h>                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class IntegerPowerOf2ParameterWidget: public ParameterWidget                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_OBJECT                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    explicit IntegerPowerOf2ParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QWidget *parent = nullptr); // TEST: NO              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void setValue(const QString &value) override; // TEST: NO                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+protected:                                                                                                                                                                                               // Colorize: green
+    QString generatePrivateDetails() override; // TEST: NO                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private slots:                                                                                                                                                                                           // Colorize: green
+    void comboboxCurrentIndexChanged(qint32 index); // TEST: NO                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    TrackingComboBox *mComboBox;                                                                                                                                                                         // Colorize: green
+    QString           mMinimum;                                                                                                                                                                          // Colorize: green
+    QString           mMaximum;                                                                                                                                                                          // Colorize: green
+    QStringList       mOptionsList;                                                                                                                                                                      // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_INTEGERPOWEROF2PARAMETERWIDGET_H                                                                                                         // Colorize: green

@@ -1,11 +1,11 @@
-<RCC>
-    <qresource prefix="/">
-        <file>assets/images/about.png</file>
-        <file>assets/images/exit.png</file>
-        <file>assets/images/icon.ico</file>
-        <file>assets/images/logo.png</file>
-        <file>assets/images/reload.png</file>
-        <file>assets/images/reset.png</file>
-        <file>assets/images/save.png</file>
-    </qresource>
-</RCC>
+<RCC>                                                                                                                                                                                                    <!-- Colorize: green -->
+    <qresource prefix="/">                                                                                                                                                                               <!-- Colorize: green -->
+        <file>assets/images/about.png</file>                                                                                                                                                             <!-- Colorize: green -->
+        <file>assets/images/exit.png</file>                                                                                                                                                              <!-- Colorize: green -->
+        <file>assets/images/icon.ico</file>                                                                                                                                                              <!-- Colorize: green -->
+        <file>assets/images/logo.png</file>                                                                                                                                                              <!-- Colorize: green -->
+        <file>assets/images/reload.png</file>                                                                                                                                                            <!-- Colorize: green -->
+        <file>assets/images/reset.png</file>                                                                                                                                                             <!-- Colorize: green -->
+        <file>assets/images/save.png</file>                                                                                                                                                              <!-- Colorize: green -->
+    </qresource>                                                                                                                                                                                         <!-- Colorize: green -->
+</RCC>                                                                                                                                                                                                   <!-- Colorize: green -->

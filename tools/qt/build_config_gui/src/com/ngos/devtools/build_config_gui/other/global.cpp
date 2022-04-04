@@ -1,12 +1,41 @@
-#include "global.h"
-
-
-
-QString Global::sProjectDir;
-
-
-
-Global::Global()
-{
-    // Nothing
-}
+#include "global.h"                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QApplication>                                                                                                                                                                                  // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString Global::sProjectDir;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void Global::init()                                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    initProjectDir();                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void Global::initProjectDir()                                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    sProjectDir = qApp->applicationDirPath();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    do                                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (QFile::exists(sProjectDir + "/ngos.files"))                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        qint64 index = sProjectDir.lastIndexOf('/');                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (index < 0)                                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qFatal("Project directory not found");                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        sProjectDir = sProjectDir.left(index);                                                                                                                                                           // Colorize: green
+    } while(true);                                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

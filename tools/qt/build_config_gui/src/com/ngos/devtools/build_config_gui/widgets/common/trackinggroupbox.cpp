@@ -1,23 +1,23 @@
-#include "trackinggroupbox.h"
-
-
-
-TrackingGroupBox::TrackingGroupBox(const QString &title, QWidget *parent)
-    : QGroupBox(title, parent)
-{
-    setMouseTracking(true);
-}
-
-void TrackingGroupBox::focusInEvent(QFocusEvent *event)
-{
-    QGroupBox::focusInEvent(event);
-
-    emit entered();
-}
-
-void TrackingGroupBox::focusOutEvent(QFocusEvent *event)
-{
-    QGroupBox::focusOutEvent(event);
-
-    emit leaved();
-}
+#include "trackinggroupbox.h"                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TrackingGroupBox::TrackingGroupBox(const QString &title, QWidget *parent)                                                                                                                                // Colorize: green
+    : QGroupBox(title, parent)                                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    setMouseTracking(true);                                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TrackingGroupBox::focusInEvent(QFocusEvent *event)                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QGroupBox::focusInEvent(event);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    emit entered();                                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TrackingGroupBox::focusOutEvent(QFocusEvent *event)                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QGroupBox::focusOutEvent(event);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    emit leaved();                                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

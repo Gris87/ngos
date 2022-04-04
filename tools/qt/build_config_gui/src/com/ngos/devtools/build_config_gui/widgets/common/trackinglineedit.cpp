@@ -1,23 +1,23 @@
-#include "trackinglineedit.h"
-
-
-
-TrackingLineEdit::TrackingLineEdit(const QString &contents, QWidget *parent)
-    : QLineEdit(contents, parent)
-{
-    setMouseTracking(true);
-}
-
-void TrackingLineEdit::focusInEvent(QFocusEvent *event)
-{
-    QLineEdit::focusInEvent(event);
-
-    emit entered();
-}
-
-void TrackingLineEdit::focusOutEvent(QFocusEvent *event)
-{
-    QLineEdit::focusOutEvent(event);
-
-    emit leaved();
-}
+#include "trackinglineedit.h"                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TrackingLineEdit::TrackingLineEdit(const QString &contents, QWidget *parent)                                                                                                                             // Colorize: green
+    : QLineEdit(contents, parent)                                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    setMouseTracking(true);                                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TrackingLineEdit::focusInEvent(QFocusEvent *event)                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QLineEdit::focusInEvent(event);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    emit entered();                                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TrackingLineEdit::focusOutEvent(QFocusEvent *event)                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QLineEdit::focusOutEvent(event);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    emit leaved();                                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

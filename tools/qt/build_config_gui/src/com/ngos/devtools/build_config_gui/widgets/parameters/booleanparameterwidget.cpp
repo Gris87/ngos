@@ -1,187 +1,217 @@
-#include "booleanparameterwidget.h"
-
-#include <QDebug>
-#include <QRegularExpression>
-#include <QVBoxLayout>
-
-
-
-BooleanParameterWidget::BooleanParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent)
-    : ParameterWidget(id, metaInformation, options, parent)
-    , mCheckBox(nullptr)
-    , mTrueValue()
-    , mFalseValue()
-    , mTrueDescription()
-    , mFalseDescription()
-{
-    QVBoxLayout *layout = new QVBoxLayout(this);
-
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-
-
-
-    mCheckBox = new TrackingCheckBox(mName, this);
-    layout->addWidget(mCheckBox);
-
-
-
-    QString metaValues           = metaInformation.value("Values");
-    QString metaValueDescription = metaInformation.value("Value description");
-
-    QRegularExpression valuesRegExp("^true *=(.*), *false *=(.*)$"); // true = ON, false = OFF
-
-
-
-    QRegularExpressionMatch match = valuesRegExp.match(metaValues);
-
-    if (match.hasMatch())
-    {
-        mTrueValue  = match.captured(1).trimmed();
-        mFalseValue = match.captured(2).trimmed();
-    }
-    else
-    {
-        qCritical() << "Unexpected format for values" << metaValues << "specified for Boolean parameter" << mId;
-
-        return;
-    }
-
-
-
-    match = valuesRegExp.match(metaValueDescription);
-
-    if (match.hasMatch())
-    {
-        mTrueDescription  = match.captured(1).trimmed();
-        mFalseDescription = match.captured(2).trimmed();
-    }
-    else
-    {
-        qCritical() << "Unexpected format for value descriptions" << metaValueDescription << "specified for Boolean parameter" << mId;
-
-        return;
-    }
-
-
-
-    if (
-        mDefault != mTrueValue
-        &&
-        mDefault != mFalseValue
-       )
-    {
-        qCritical() << "Invalid default value" << mDefault << "specified for Boolean parameter" << mId;
-
-        return;
-    }
-
-
-
-    if (mValue == mTrueValue)
-    {
-        mCheckBox->setChecked(true);
-    }
-    else
-    if (mValue == mFalseValue)
-    {
-        mCheckBox->setChecked(false);
-    }
-    else
-    {
-        qCritical() << "Invalid value" << mValue << "specified for Boolean parameter" << mId;
-
-        return;
-    }
-
-
-
-    connect(mCheckBox, SIGNAL(toggled(bool)), this, SLOT(checkboxToggled(bool)));
-    connect(mCheckBox, SIGNAL(entered()),     this, SLOT(widgetEntered()));
-    connect(mCheckBox, SIGNAL(leaved()),      this, SLOT(widgetLeaved()));
-}
-
-void BooleanParameterWidget::setValue(const QString &value)
-{
-    ParameterWidget::setValue(value);
-
-
-
-    if (mValue == mTrueValue)
-    {
-        mCheckBox->setChecked(true);
-    }
-    else
-    if (mValue == mFalseValue)
-    {
-        mCheckBox->setChecked(false);
-    }
-    else
-    {
-        qCritical() << "Invalid value" << mValue << "specified for Boolean parameter" << mId;
-
-        return;
-    }
-}
-
-QString BooleanParameterWidget::generatePrivateDetails()
-{
-    QString defaultValue;
-    QString currentValue;
-
-    QString trueValue  = QString("true  - %1")
-                                    .arg(mTrueDescription);
-    QString falseValue = QString("false - %1")
-                                    .arg(mFalseDescription);
-
-    trueValue  = trueValue.replace(' ',  "&nbsp;");
-    falseValue = falseValue.replace(' ', "&nbsp;");
-
-
-
-    if (mValue == mTrueValue)
-    {
-        currentValue = trueValue;
-    }
-    else
-    if (mValue == mFalseValue)
-    {
-        currentValue = falseValue;
-    }
-    else
-    {
-        qCritical() << "Invalid value" << mValue << "specified for Boolean parameter" << mId;
-    }
-
-
-
-    if (mDefault == mTrueValue)
-    {
-        defaultValue = trueValue;
-        trueValue    = "<b>" + trueValue + "</b>";
-    }
-    else
-    if (mDefault == mFalseValue)
-    {
-        defaultValue = falseValue;
-        falseValue   = "<b>" + falseValue + "</b>";
-    }
-    else
-    {
-        qCritical() << "Invalid default value" << mDefault << "specified for Boolean parameter" << mId;
-    }
-
-
-
-    return  "<h2>Values:</h2>" +
-            trueValue + "<br>" +
-            falseValue + "<br>" +
-            "<br>" +
-            "<b>Default:</b> " + defaultValue + "<br>" +
-            "<b>Current:</b> " + currentValue;
-}
-
-void BooleanParameterWidget::checkboxToggled(bool checked)
-{
-    setValue(checked ? mTrueValue : mFalseValue);
-}
+#include "booleanparameterwidget.h"                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDebug>                                                                                                                                                                                        // Colorize: green
+#include <QRegularExpression>                                                                                                                                                                            // Colorize: green
+#include <QVBoxLayout>                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+BooleanParameterWidget::BooleanParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QWidget *parent)                                                                       // Colorize: green
+    : ParameterWidget(id, metaInformation, parent)                                                                                                                                                       // Colorize: green
+    , mCheckBox(nullptr)                                                                                                                                                                                 // Colorize: green
+    , mTrueValue()                                                                                                                                                                                       // Colorize: green
+    , mFalseValue()                                                                                                                                                                                      // Colorize: green
+    , mTrueDescription()                                                                                                                                                                                 // Colorize: green
+    , mFalseDescription()                                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    mCheckBox = new TrackingCheckBox(mName, this);                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create layout and put mCheckBox into it                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QVBoxLayout *layout = new QVBoxLayout(this);                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->setSpacing(0);                                                                                                                                                                           // Colorize: green
+        layout->setContentsMargins(0, 0, 0, 0);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->addWidget(mCheckBox);                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString metaValues           = metaInformation.value("Values");                                                                                                                                      // Colorize: green
+    QString metaValueDescription = metaInformation.value("Value description");                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QRegularExpression valuesRegExp("^true *=(.*), *false *=(.*)$"); // true = ON, false = OFF                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Parse values                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QRegularExpressionMatch match = valuesRegExp.match(metaValues);                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (match.hasMatch())                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mTrueValue  = match.captured(1).trimmed();                                                                                                                                                   // Colorize: green
+            mFalseValue = match.captured(2).trimmed();                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Unexpected format for values" << metaValues << "specified for Boolean parameter" << mId;                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Parse values descriptions                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QRegularExpressionMatch match = valuesRegExp.match(metaValueDescription);                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (match.hasMatch())                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mTrueDescription  = match.captured(1).trimmed();                                                                                                                                             // Colorize: green
+            mFalseDescription = match.captured(2).trimmed();                                                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Unexpected format for value descriptions" << metaValueDescription << "specified for Boolean parameter" << mId;                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for default value                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            mDefault != mTrueValue                                                                                                                                                                       // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            mDefault != mFalseValue                                                                                                                                                                      // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Invalid default value" << mDefault << "specified for Boolean parameter" << mId;                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Mark checkbox                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mValue == mTrueValue)                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mCheckBox->setChecked(true);                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (mValue == mFalseValue)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mCheckBox->setChecked(false);                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Invalid value" << mValue << "specified for Boolean parameter" << mId;                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    connect(mCheckBox, SIGNAL(toggled(bool)), this, SLOT(checkboxToggled(bool)));                                                                                                                        // Colorize: green
+    connect(mCheckBox, SIGNAL(entered()),     this, SLOT(widgetEntered()));                                                                                                                              // Colorize: green
+    connect(mCheckBox, SIGNAL(leaved()),      this, SLOT(widgetLeaved()));                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void BooleanParameterWidget::setValue(const QString &value)                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    ParameterWidget::setValue(value);                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Mark checkbox                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mValue == mTrueValue)                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mCheckBox->setChecked(true);                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (mValue == mFalseValue)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mCheckBox->setChecked(false);                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Invalid value" << mValue << "specified for Boolean parameter" << mId;                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString BooleanParameterWidget::generatePrivateDetails()                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString trueValue;                                                                                                                                                                                   // Colorize: green
+    QString falseValue;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get true and false value                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        trueValue  = QString("true  - %1")                                                                                                                                                               // Colorize: green
+                            .arg(mTrueDescription);                                                                                                                                                      // Colorize: green
+        falseValue = QString("false - %1")                                                                                                                                                               // Colorize: green
+                            .arg(mFalseDescription);                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        trueValue  = trueValue.replace(' ',  "&nbsp;");                                                                                                                                                  // Colorize: green
+        falseValue = falseValue.replace(' ', "&nbsp;");                                                                                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString currentValue;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get current value                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mValue == mTrueValue)                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            currentValue = trueValue;                                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (mValue == mFalseValue)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            currentValue = falseValue;                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Invalid value" << mValue << "specified for Boolean parameter" << mId;                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString defaultValue;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get default value                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mDefault == mTrueValue)                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            defaultValue = trueValue;                                                                                                                                                                    // Colorize: green
+            trueValue    = "<b>" + trueValue + "</b>";                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (mDefault == mFalseValue)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            defaultValue = falseValue;                                                                                                                                                                   // Colorize: green
+            falseValue   = "<b>" + falseValue + "</b>";                                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Invalid default value" << mDefault << "specified for Boolean parameter" << mId;                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return  "<h2>Values:</h2>" +                                                                                                                                                                         // Colorize: green
+            trueValue + "<br>" +                                                                                                                                                                         // Colorize: green
+            falseValue + "<br>" +                                                                                                                                                                        // Colorize: green
+            "<br>" +                                                                                                                                                                                     // Colorize: green
+            "<b>Default:</b> " + defaultValue + "<br>" +                                                                                                                                                 // Colorize: green
+            "<b>Current:</b> " + currentValue;                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void BooleanParameterWidget::checkboxToggled(bool checked)                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    setValue(checked ? mTrueValue : mFalseValue);                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

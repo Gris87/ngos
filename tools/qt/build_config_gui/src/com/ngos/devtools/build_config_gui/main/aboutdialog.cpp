@@ -1,31 +1,34 @@
-#include "aboutdialog.h"
-#include "build_config_gui/ui/ui_aboutdialog.h"
-
-
-
-AboutDialog::AboutDialog(QWidget *parent)
-    : QDialog(parent)
-    , ui(new Ui::AboutDialog())
-{
-    ui->setupUi(this);
-
-    setWindowFlags(
-                    Qt::Dialog
-                    | Qt::CustomizeWindowHint
-                    | Qt::WindowTitleHint
-                    | Qt::WindowSystemMenuHint
-                    | Qt::WindowCloseButtonHint
-    );
-
-    layout()->setSizeConstraint(QLayout::SetFixedSize);
-}
-
-AboutDialog::~AboutDialog()
-{
-    delete ui;
-}
-
-void AboutDialog::on_closeButton_clicked()
-{
-    reject();
-}
+#include "aboutdialog.h"                                                                                                                                                                                 // Colorize: green
+#include "build_config_gui/ui/ui_aboutdialog.h"                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+AboutDialog::AboutDialog(QWidget *parent)                                                                                                                                                                // Colorize: green
+    : QDialog(parent)                                                                                                                                                                                    // Colorize: green
+    , ui(new Ui::AboutDialog())                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    ui->setupUi(this);                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Make dialog with fixed sizes and single close button in the window hint                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        setWindowFlags(                                                                                                                                                                                  // Colorize: green
+                        Qt::Dialog                                                                                                                                                                       // Colorize: green
+                        | Qt::CustomizeWindowHint                                                                                                                                                        // Colorize: green
+                        | Qt::WindowTitleHint                                                                                                                                                            // Colorize: green
+                        | Qt::WindowSystemMenuHint                                                                                                                                                       // Colorize: green
+                        | Qt::WindowCloseButtonHint                                                                                                                                                      // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout()->setSizeConstraint(QLayout::SetFixedSize);                                                                                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+AboutDialog::~AboutDialog()                                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    delete ui;                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void AboutDialog::on_closeButton_clicked()                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    reject();                                                                                                                                                                                            // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

@@ -1,54 +1,52 @@
-#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_PARAMETERWIDGET_H
-#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_PARAMETERWIDGET_H
-
-
-
-#include <QWidget>
-
-#include <QHash>
-
-#include <com/ngos/devtools/build_config_gui/other/optioninfo.h>
-
-
-
-class ParameterWidget: public QWidget
-{
-    Q_OBJECT
-
-public:
-    explicit ParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent = nullptr); // TEST: NO
-
-    virtual void setValue(const QString &value); // TEST: NO
-    QString value() const; // TEST: NO
-
-    void reset(); // TEST: NO
-
-    void handleValueChanged(const QHash<QString, ParameterWidget *> &parameters); // TEST: NO
-
-protected slots:
-    void widgetEntered(); // TEST: NO
-    void widgetLeaved(); // TEST: NO
-
-protected:
-    virtual QString generatePrivateDetails(); // TEST: NO
-
-    QString mId;
-    QString mName;
-    QString mDescription;
-    QString mEnabled;
-    QString mDefault;
-    QString mValue;
-
-private:
-    QString generateDetails(); // TEST: NO
-
-    static ParameterWidget *sHoveredWidget;
-
-signals:
-    void valueChanged(); // TEST: NO
-    void detailsUpdated(const QString &details); // TEST: NO
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_PARAMETERWIDGET_H
+#ifndef COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_PARAMETERWIDGET_H                                                                                                                          // Colorize: green
+#define COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_PARAMETERWIDGET_H                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QWidget>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QHash>                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class ParameterWidget: public QWidget                                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_OBJECT                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    explicit ParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QWidget *parent = nullptr); // TEST: NO                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    virtual void setValue(const QString &value); // TEST: NO                                                                                                                                             // Colorize: green
+    const QString& value() const; // TEST: NO                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void reset(); // TEST: NO                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void handleValueChanged(const QHash<QString, ParameterWidget *> &parameters); // TEST: NO                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+protected slots:                                                                                                                                                                                         // Colorize: green
+    void widgetEntered(); // TEST: NO                                                                                                                                                                    // Colorize: green
+    void widgetLeaved(); // TEST: NO                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+protected:                                                                                                                                                                                               // Colorize: green
+    virtual QString generatePrivateDetails() = 0; // TEST: NO                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString mId;                                                                                                                                                                                         // Colorize: green
+    QString mName;                                                                                                                                                                                       // Colorize: green
+    QString mDescription;                                                                                                                                                                                // Colorize: green
+    QString mEnabled;                                                                                                                                                                                    // Colorize: green
+    QString mDefault;                                                                                                                                                                                    // Colorize: green
+    QString mValue;                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    QString generateDetails(); // TEST: NO                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static ParameterWidget *sHoveredWidget;                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+signals:                                                                                                                                                                                                 // Colorize: green
+    void valueChanged(); // TEST: NO                                                                                                                                                                     // Colorize: green
+    void detailsUpdated(const QString &details); // TEST: NO                                                                                                                                             // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_BUILD_CONFIG_GUI_WIDGETS_PARAMETERS_PARAMETERWIDGET_H                                                                                                                        // Colorize: green

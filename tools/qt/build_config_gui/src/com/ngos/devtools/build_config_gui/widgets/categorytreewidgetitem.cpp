@@ -1,51 +1,64 @@
-#include "categorytreewidgetitem.h"
-
-#include <QLabel>
-
-
-
-CategoryTreeWidgetItem::CategoryTreeWidgetItem(const QString &title, QWidget *parent)
-    : QTreeWidgetItem(QStringList() << title)
-    , mPage(new QScrollArea(parent))
-{
-    QWidget *scrollAreaWidgetContents = new QWidget(parent);
-    mPage->setWidgetResizable(true);
-    mPage->setWidget(scrollAreaWidgetContents);
-
-
-
-    QVBoxLayout *layout = new QVBoxLayout(scrollAreaWidgetContents);
-
-    layout->setSpacing(4);
-    layout->setContentsMargins(4, 4, 4, 4);
-
-
-
-    mLayout = new QVBoxLayout();
-
-    mLayout->setSpacing(4);
-    mLayout->setContentsMargins(0, 0, 0, 0);
-
-    layout->addLayout(mLayout);
-    layout->addItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
-
-
-
-    QLabel *titleLabel = new QLabel(title, mPage);
-
-    QFont font;
-    font.setPointSize(16);
-    titleLabel->setFont(font);
-
-    mLayout->addWidget(titleLabel);
-}
-
-QScrollArea* CategoryTreeWidgetItem::getPage() const
-{
-    return mPage;
-}
-
-QVBoxLayout* CategoryTreeWidgetItem::getLayout() const
-{
-    return mLayout;
-}
+#include "categorytreewidgetitem.h"                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QLabel>                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CategoryTreeWidgetItem::CategoryTreeWidgetItem(const QString &title, QWidget *parent)                                                                                                                    // Colorize: green
+    : QTreeWidgetItem(QStringList() << title)                                                                                                                                                            // Colorize: green
+    , mPage(new QScrollArea(parent))                                                                                                                                                                     // Colorize: green
+    , mLayout(new QVBoxLayout()) // TODO: Use parent?                                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QWidget *scrollAreaWidgetContents;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create scrollAreaWidgetContents                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        scrollAreaWidgetContents = new QWidget(parent);                                                                                                                                                  // Colorize: green
+        mPage->setWidgetResizable(true);                                                                                                                                                                 // Colorize: green
+        mPage->setWidget(scrollAreaWidgetContents);                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Setup layout that will content all widgets                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        mLayout->setSpacing(4);                                                                                                                                                                          // Colorize: green
+        mLayout->setContentsMargins(0, 0, 0, 0);                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create layout with mLayout and spacer                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QVBoxLayout *layout = new QVBoxLayout(scrollAreaWidgetContents);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->setSpacing(4);                                                                                                                                                                           // Colorize: green
+        layout->setContentsMargins(4, 4, 4, 4);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        layout->addLayout(mLayout);                                                                                                                                                                      // Colorize: green
+        layout->addItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create label with title and put it onto page                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QLabel *titleLabel = new QLabel(title, mPage);                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QFont font;                                                                                                                                                                                      // Colorize: green
+        font.setPointSize(16);                                                                                                                                                                           // Colorize: green
+        titleLabel->setFont(font);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mLayout->addWidget(titleLabel);                                                                                                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QScrollArea* CategoryTreeWidgetItem::getPage() const                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mPage;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QVBoxLayout* CategoryTreeWidgetItem::getLayout() const                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mLayout;                                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

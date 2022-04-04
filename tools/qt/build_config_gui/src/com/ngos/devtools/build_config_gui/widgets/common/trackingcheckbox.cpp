@@ -1,23 +1,23 @@
-#include "trackingcheckbox.h"
-
-
-
-TrackingCheckBox::TrackingCheckBox(const QString &text, QWidget *parent)
-    : QCheckBox(text, parent)
-{
-    setMouseTracking(true);
-}
-
-void TrackingCheckBox::focusInEvent(QFocusEvent *event)
-{
-    QCheckBox::focusInEvent(event);
-
-    emit entered();
-}
-
-void TrackingCheckBox::focusOutEvent(QFocusEvent *event)
-{
-    QCheckBox::focusOutEvent(event);
-
-    emit leaved();
-}
+#include "trackingcheckbox.h"                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TrackingCheckBox::TrackingCheckBox(const QString &text, QWidget *parent)                                                                                                                                 // Colorize: green
+    : QCheckBox(text, parent)                                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    setMouseTracking(true);                                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TrackingCheckBox::focusInEvent(QFocusEvent *event)                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QCheckBox::focusInEvent(event);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    emit entered();                                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TrackingCheckBox::focusOutEvent(QFocusEvent *event)                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QCheckBox::focusOutEvent(event);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    emit leaved();                                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
