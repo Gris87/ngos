@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice10280004 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice10280004::SUBDEVICE_10280004: return "PERC 3/DiF [qint]";
+        case PciSubDevice10280004::SUBDEVICE_10280004: return "PERC 3/DiF [Iguana]";
 
         default: return "Unknown device";
     }

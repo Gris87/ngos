@@ -110,7 +110,7 @@ inline const char8* enumToHumanString(PciDevice1028 device) // TEST: NO
         case PciDevice1028::DEVICE_0001: return "PowerEdge Expandable RAID Controller 2/Si";
         case PciDevice1028::DEVICE_0002: return "PowerEdge Expandable RAID Controller 3/Di";
         case PciDevice1028::DEVICE_0003: return "PowerEdge Expandable RAID Controller 3/Si";
-        case PciDevice1028::DEVICE_0004: return "PowerEdge Expandable RAID Controller 3/Di [qint]";
+        case PciDevice1028::DEVICE_0004: return "PowerEdge Expandable RAID Controller 3/Di [Iguana]";
         case PciDevice1028::DEVICE_0006: return "PowerEdge Expandable RAID Controller 3/Di";
         case PciDevice1028::DEVICE_0007: return "Remote Access Card III";
         case PciDevice1028::DEVICE_0008: return "Remote Access Card III";
