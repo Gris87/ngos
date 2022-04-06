@@ -2,7 +2,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-ParameterWidget *ParameterWidget::sHoveredWidget;                                                                                                                                                        // Colorize: green
+ParameterWidget *ParameterWidget::sHoveredWidget = nullptr;                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
