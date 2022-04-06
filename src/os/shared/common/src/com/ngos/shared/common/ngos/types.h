@@ -21,7 +21,7 @@ typedef u64 enum_t;
 
 
 
-#ifndef DEVTOOLS_APPLICATION
+#ifndef NGOS_DEVTOOLS_APPLICATION // Defined in pro file
 typedef long unsigned int size_t;
 #endif
 

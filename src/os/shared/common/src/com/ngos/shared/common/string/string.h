@@ -7,7 +7,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#ifdef DEVTOOLS_APPLICATION // Defined in pro file                                                                                                                                                       // Colorize: green
+#ifdef NGOS_DEVTOOLS_APPLICATION // Defined in pro file                                                                                                                                                       // Colorize: green
 char8* strapp(char8 *str1, const char8 *str2);                                                                                                                                                           // Colorize: green
 #else                                                                                                                                                                                                    // Colorize: green
 char8 toLower(char8 ch);
