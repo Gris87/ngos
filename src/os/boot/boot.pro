@@ -14,4 +14,3 @@ QMAKE_LFLAGS += \                                                               
                                                                                                                                                                                                          # Colorize: green
 SOURCES += \                                                                                                                                                                                             # Colorize: green
     asm/arch/x86_64/com/ngos/boot/main.S                                                                                                                                                                 # Colorize: green
-                                                                                                                                                                                                         # Colorize: green
