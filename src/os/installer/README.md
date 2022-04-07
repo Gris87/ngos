@@ -11,4 +11,4 @@ The main purpose of NGOS installer to format your hard disks in expected way and
 
 NGOS kernel is responsible for installing applications.
 
-Please read [for more details](../../../docs/0.%20Intro/6.%20Source%20code/1.%20NGOS/4.%20Installer%20part/README.md).
+Please read for [more details](../../../docs/0.%20Intro/6.%20Source%20code/1.%20NGOS/4.%20Installer%20part/README.md).

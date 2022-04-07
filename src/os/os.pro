@@ -1,9 +1,9 @@
-TEMPLATE = subdirs
-
-SUBDIRS += \
-    boot \
-    bootloader \
-    bootloader_tools \
-    configure \
-    installer \
-    kernel
+TEMPLATE = subdirs                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+SUBDIRS += \                                                                                                                                                                                             # Colorize: green
+    boot \                                                                                                                                                                                               # Colorize: green
+    bootloader \                                                                                                                                                                                         # Colorize: green
+    bootloader_tools \                                                                                                                                                                                   # Colorize: green
+    configure \                                                                                                                                                                                          # Colorize: green
+    installer \                                                                                                                                                                                          # Colorize: green
+    kernel                                                                                                                                                                                               # Colorize: green
