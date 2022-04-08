@@ -800,8 +800,8 @@ src/os/shared/common/asm/arch/x86_64/com/ngos/shared/common/memory/memcpy.S
 src/os/shared/common/asm/arch/x86_64/com/ngos/shared/common/memory/memset.S
 src/os/shared/common/asm/arch/x86_64/com/ngos/shared/common/memory/memzero.S
 src/os/shared/common/common.pri
+src/os/shared/common/src/com/ngos/shared/common/asm/asmutils.h
 src/os/shared/common/src/com/ngos/shared/common/asm/bitutils.h
-src/os/shared/common/src/com/ngos/shared/common/asm/instructions.h
 src/os/shared/common/src/com/ngos/shared/common/assets/assetentry.h
 src/os/shared/common/src/com/ngos/shared/common/assets/assets.cpp
 src/os/shared/common/src/com/ngos/shared/common/assets/assets.h
@@ -5413,8 +5413,8 @@ src/os/shared/uefibase/src/com/ngos/shared/uefibase/uefi/uefilogfile.cpp
 src/os/shared/uefibase/src/com/ngos/shared/uefibase/uefi/uefilogfile.h
 src/os/shared/uefibase/src/com/ngos/shared/uefibase/uefi/uefipointerdevices.cpp
 src/os/shared/uefibase/src/com/ngos/shared/uefibase/uefi/uefipointerdevices.h
+src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/asmutils.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/bitutils.h
-src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/instructions.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bootparams/memorymapentry.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/adler.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/crc.h

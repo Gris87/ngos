@@ -1,296 +1,296 @@
-SOURCES += \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvaddps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvdivps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvmaxps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvminps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvmulps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvrcpps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvrsqrtps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvsqrtps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvsubps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx2/testavx2vphaddd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx2/testavx2vphaddw.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx2/testavx2vphsubd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx2/testavx2vphsubw.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512bw/testavx512bwvpbroadcastb.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512bw/testavx512bwvpbroadcastw.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512bw/testavx512bwvpsllvw.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512bw/testavx512bwvpsrlvw.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512cd/testavx512cdvpbroadcastmb2q.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512cd/testavx512cdvpbroadcastmw2d.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512cd/testavx512cdvplzcntd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512cd/testavx512cdvplzcntq.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512dq/testavx512dqvcvtpd2qq.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512dq/testavx512dqvcvtps2qq.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512dq/testavx512dqvcvtqq2pd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512dq/testavx512dqvcvtqq2ps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512dq/testavx512dqvpmullq.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvaddps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvdivps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvmaxps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvminps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvmulps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvrcp14ps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvrsqrt14ps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvsqrtps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvsubps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvaddps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvdivps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvmaxps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvminps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvmulps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvrcp14ps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvrsqrt14ps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvsqrtps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvsubps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/fma3/testfma3vfmadd213pd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/fma3/testfma3vfmadd213ps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/fma3/testfma3vfmsub213pd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/fma3/testfma3vfmsub213ps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testsseaddps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testssedivps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testssemaxps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testsseminps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testssemulps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testssercpps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testssersqrtps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testssesqrtps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testssesubps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2addpd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2divpd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2maxpd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2minpd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2mulpd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2paddb.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2paddd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2paddq.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2paddw.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2psubb.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2psubd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2psubq.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2psubw.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2sqrtpd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2subpd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3addsubpb.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3addsubps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3haddpd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3haddps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3hsubpd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3hsubps.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3phaddd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3phaddw.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3phsubd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3phsubw.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pmaxsb.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pmaxsd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pmaxud.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pmaxuw.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pminsb.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pminsd.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pminud.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pminuw.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pmuldq.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pmulld.S \
-    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse42/testsse42pcmpgtq.S \
-    $$PWD/src/com/ngos/shared/uefibase/main/earlyinitialization.cpp \
-    $$PWD/src/com/ngos/shared/uefibase/main/setupbootparams.cpp \
-    $$PWD/src/com/ngos/shared/uefibase/main/setupcr4.cpp \
-    $$PWD/src/com/ngos/shared/uefibase/main/setupdynamicrelocation.cpp \
-    $$PWD/src/com/ngos/shared/uefibase/main/setupglobalobjects.cpp \
-    $$PWD/src/com/ngos/shared/uefibase/main/setupgraphics.cpp \
-    $$PWD/src/com/ngos/shared/uefibase/main/setuphardwareid.cpp \
-    $$PWD/src/com/ngos/shared/uefibase/uefi/uefi.cpp \
-    $$PWD/src/com/ngos/shared/uefibase/uefi/uefilogfile.cpp \
-    $$PWD/src/com/ngos/shared/uefibase/uefi/uefipointerdevices.cpp \
-    $$PWD/test/com/ngos/shared/uefibase/testresults.cpp
-
-HEADERS += \
-    $$PWD/src/com/ngos/shared/uefibase/main/earlyinitialization.h \
-    $$PWD/src/com/ngos/shared/uefibase/main/setupbootparams.h \
-    $$PWD/src/com/ngos/shared/uefibase/main/setupcr4.h \
-    $$PWD/src/com/ngos/shared/uefibase/main/setupdynamicrelocation.h \
-    $$PWD/src/com/ngos/shared/uefibase/main/setupglobalobjects.h \
-    $$PWD/src/com/ngos/shared/uefibase/main/setupgraphics.h \
-    $$PWD/src/com/ngos/shared/uefibase/main/setuphardwareid.h \
-    $$PWD/src/com/ngos/shared/uefibase/other/uefibootmemorymap.h \
-    $$PWD/src/com/ngos/shared/uefibase/uefi/uefi.h \
-    $$PWD/src/com/ngos/shared/uefibase/uefi/uefiassert.h \
-    $$PWD/src/com/ngos/shared/uefibase/uefi/uefilog.h \
-    $$PWD/src/com/ngos/shared/uefibase/uefi/uefilogfile.h \
-    $$PWD/src/com/ngos/shared/uefibase/uefi/uefipointerdevices.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/bitutils.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/instructions.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bootparams/memorymapentry.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/adler.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/crc.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/lib/md5hash.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/md5.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/containers/arraylist.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/containers/lib/listelement.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/containers/lib/mapelement.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/containers/list.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/containers/map.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/cpu/cpu.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/cryptography/aes.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/dmi.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/dmistringid.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/dmichassisentry.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmibiosextendedromsize.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmibiosromsize.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmicacheconfiguration.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmicachesize.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmicachesize2.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmimemoryarraymappedaddressrange.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmimemorydeviceextendedsize.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicemappedaddressrange.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicesize.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmiportablebatterymanufacturedate.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvaddps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvdivps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvmaxps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvminps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvmulps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvrcpps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvrsqrtps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvsqrtps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvsubps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/avx.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx2/asm_testavx2vphaddd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx2/asm_testavx2vphaddw.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx2/asm_testavx2vphsubd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx2/asm_testavx2vphsubw.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx2/avx2.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpbroadcastb.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpbroadcastw.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpsllvw.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpsrlvw.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/avx512bw.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512cd/asm_testavx512cdvpbroadcastmb2q.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512cd/asm_testavx512cdvpbroadcastmw2d.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512cd/asm_testavx512cdvplzcntd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512cd/asm_testavx512cdvplzcntq.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512cd/avx512cd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512dq/asm_testavx512dqvcvtpd2qq.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512dq/asm_testavx512dqvcvtps2qq.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512dq/asm_testavx512dqvcvtqq2pd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512dq/asm_testavx512dqvcvtqq2ps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512dq/asm_testavx512dqvpmullq.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512dq/avx512dq.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvaddps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvdivps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvmaxps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvminps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvmulps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvrcp14ps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvrsqrt14ps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvsqrtps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvsubps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/avx512f.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvaddps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvdivps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvmaxps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvminps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvmulps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvrcp14ps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvrsqrt14ps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvsqrtps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvsubps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/avx512vl.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmadd213pd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmadd213ps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmsub213pd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmsub213ps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/fma3.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fpu.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testsseaddps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssedivps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssemaxps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testsseminps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssemulps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssercpps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssersqrtps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssesqrtps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssesubps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/sse.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2addpd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2divpd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2maxpd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2minpd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2mulpd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddb.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddq.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddw.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubb.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubq.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubw.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2sqrtpd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2subpd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/sse2.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3addsubpd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3addsubps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3haddpd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3haddps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3hsubpd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3hsubps.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phaddd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phaddw.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phsubd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phsubw.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/sse3.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxsb.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxsd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxud.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxuw.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminsb.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminsd.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminud.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminuw.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmuldq.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmulld.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/sse41.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse42/asm_testsse42pcmpgtq.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse42/sse42.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/graphics/image.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/graphics/ninepatch.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/graphics/png/png.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/graphics/rgbapixel.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/graphics/stretchrange.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/gui/widgets/widget.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/guid/utils.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/hex/hex.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/macro/utils.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/memory/memory.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/linkage.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/types.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/utils.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pagetable/utils.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressaccesscontrolservicesacscapability.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressdynamicpowerallocationcapabilityregister.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressmulticastcapabilityregister.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressmulticastcontrolregister.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressresizablebaseaddresscontrol.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkaddresslinkconfigurationspace.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpresstphrequestercapabilityregister.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcecapability.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciextendeddevicecommand.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciextendeddevicestatus.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsextendedmessagecontrol.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsmessagecontrol.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/printf/printf.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/random/random.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/string/string.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/string/utils.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/time/time.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/types.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/uefi/uefipcirootbridgeioprotocol.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/uuid/utils.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/other/uefibootmemorymap.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/types.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/uefi/uefi.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/generated/com/ngos/shared/common/types.h \
-    $$PWD/test/com/ngos/shared/uefibase/sections/section0/testcase.h \
-    $$PWD/test/com/ngos/shared/uefibase/testengine.h \
-    $$PWD/test/com/ngos/shared/uefibase/testresults.h
+SOURCES += \                                                                                                                                                                                             # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvaddps.S \                                                                               # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvdivps.S \                                                                               # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvmaxps.S \                                                                               # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvminps.S \                                                                               # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvmulps.S \                                                                               # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvrcpps.S \                                                                               # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvrsqrtps.S \                                                                             # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvsqrtps.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx/testavxvsubps.S \                                                                               # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx2/testavx2vphaddd.S \                                                                            # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx2/testavx2vphaddw.S \                                                                            # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx2/testavx2vphsubd.S \                                                                            # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx2/testavx2vphsubw.S \                                                                            # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512bw/testavx512bwvpbroadcastb.S \                                                               # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512bw/testavx512bwvpbroadcastw.S \                                                               # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512bw/testavx512bwvpsllvw.S \                                                                    # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512bw/testavx512bwvpsrlvw.S \                                                                    # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512cd/testavx512cdvpbroadcastmb2q.S \                                                            # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512cd/testavx512cdvpbroadcastmw2d.S \                                                            # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512cd/testavx512cdvplzcntd.S \                                                                   # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512cd/testavx512cdvplzcntq.S \                                                                   # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512dq/testavx512dqvcvtpd2qq.S \                                                                  # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512dq/testavx512dqvcvtps2qq.S \                                                                  # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512dq/testavx512dqvcvtqq2pd.S \                                                                  # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512dq/testavx512dqvcvtqq2ps.S \                                                                  # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512dq/testavx512dqvpmullq.S \                                                                    # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvaddps.S \                                                                       # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvdivps.S \                                                                       # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvmaxps.S \                                                                       # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvminps.S \                                                                       # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvmulps.S \                                                                       # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvrcp14ps.S \                                                                     # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvrsqrt14ps.S \                                                                   # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvsqrtps.S \                                                                      # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512f/testavx512fvsubps.S \                                                                       # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvaddps.S \                                                                     # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvdivps.S \                                                                     # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvmaxps.S \                                                                     # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvminps.S \                                                                     # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvmulps.S \                                                                     # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvrcp14ps.S \                                                                   # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvrsqrt14ps.S \                                                                 # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvsqrtps.S \                                                                    # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/avx512vl/testavx512vlvsubps.S \                                                                     # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/fma3/testfma3vfmadd213pd.S \                                                                        # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/fma3/testfma3vfmadd213ps.S \                                                                        # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/fma3/testfma3vfmsub213pd.S \                                                                        # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/fma3/testfma3vfmsub213ps.S \                                                                        # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testsseaddps.S \                                                                                # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testssedivps.S \                                                                                # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testssemaxps.S \                                                                                # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testsseminps.S \                                                                                # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testssemulps.S \                                                                                # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testssercpps.S \                                                                                # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testssersqrtps.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testssesqrtps.S \                                                                               # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse/testssesubps.S \                                                                                # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2addpd.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2divpd.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2maxpd.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2minpd.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2mulpd.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2paddb.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2paddd.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2paddq.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2paddw.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2psubb.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2psubd.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2psubq.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2psubw.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2sqrtpd.S \                                                                             # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse2/testsse2subpd.S \                                                                              # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3addsubpb.S \                                                                           # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3addsubps.S \                                                                           # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3haddpd.S \                                                                             # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3haddps.S \                                                                             # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3hsubpd.S \                                                                             # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3hsubps.S \                                                                             # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3phaddd.S \                                                                             # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3phaddw.S \                                                                             # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3phsubd.S \                                                                             # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse3/testsse3phsubw.S \                                                                             # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pmaxsb.S \                                                                           # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pmaxsd.S \                                                                           # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pmaxud.S \                                                                           # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pmaxuw.S \                                                                           # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pminsb.S \                                                                           # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pminsd.S \                                                                           # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pminud.S \                                                                           # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pminuw.S \                                                                           # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pmuldq.S \                                                                           # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse41/testsse41pmulld.S \                                                                           # Colorize: green
+    $$PWD/asm/arch/x86_64/com/ngos/shared/uefibase/test/sections/section0/com/ngos/shared/common/fpu/sse42/testsse42pcmpgtq.S \                                                                          # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/main/earlyinitialization.cpp \                                                                                                                                    # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/main/setupbootparams.cpp \                                                                                                                                        # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/main/setupcr4.cpp \                                                                                                                                               # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/main/setupdynamicrelocation.cpp \                                                                                                                                 # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/main/setupglobalobjects.cpp \                                                                                                                                     # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/main/setupgraphics.cpp \                                                                                                                                          # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/main/setuphardwareid.cpp \                                                                                                                                        # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/uefi/uefi.cpp \                                                                                                                                                   # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/uefi/uefilogfile.cpp \                                                                                                                                            # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/uefi/uefipointerdevices.cpp \                                                                                                                                     # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/testresults.cpp                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+HEADERS += \                                                                                                                                                                                             # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/main/earlyinitialization.h \                                                                                                                                      # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/main/setupbootparams.h \                                                                                                                                          # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/main/setupcr4.h \                                                                                                                                                 # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/main/setupdynamicrelocation.h \                                                                                                                                   # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/main/setupglobalobjects.h \                                                                                                                                       # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/main/setupgraphics.h \                                                                                                                                            # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/main/setuphardwareid.h \                                                                                                                                          # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/other/uefibootmemorymap.h \                                                                                                                                       # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/uefi/uefi.h \                                                                                                                                                     # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/uefi/uefiassert.h \                                                                                                                                               # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/uefi/uefilog.h \                                                                                                                                                  # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/uefi/uefilogfile.h \                                                                                                                                              # Colorize: green
+    $$PWD/src/com/ngos/shared/uefibase/uefi/uefipointerdevices.h \                                                                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/asmutils.h \                                                                                                        # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/bitutils.h \                                                                                                        # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bootparams/memorymapentry.h \                                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/adler.h \                                                                                                      # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/crc.h \                                                                                                        # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/lib/md5hash.h \                                                                                                # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/md5.h \                                                                                                        # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/containers/arraylist.h \                                                                                                # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/containers/lib/listelement.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/containers/lib/mapelement.h \                                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/containers/list.h \                                                                                                     # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/containers/map.h \                                                                                                      # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/cpu/cpu.h \                                                                                                             # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/cryptography/aes.h \                                                                                                    # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/dmi.h \                                                                                                             # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/dmistringid.h \                                                                                                     # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/dmichassisentry.h \                                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmibiosextendedromsize.h \                                                                                # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmibiosromsize.h \                                                                                        # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmicacheconfiguration.h \                                                                                 # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmicachesize.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmicachesize2.h \                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmimemoryarraymappedaddressrange.h \                                                                      # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmimemorydeviceextendedsize.h \                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicemappedaddressrange.h \                                                                     # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicesize.h \                                                                                   # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h \                                                                 # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmiportablebatterymanufacturedate.h \                                                                     # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvaddps.h \                                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvdivps.h \                                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvmaxps.h \                                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvminps.h \                                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvmulps.h \                                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvrcpps.h \                                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvrsqrtps.h \                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvsqrtps.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/asm_testavxvsubps.h \                                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/avx.h \                                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx2/asm_testavx2vphaddd.h \                                                                                        # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx2/asm_testavx2vphaddw.h \                                                                                        # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx2/asm_testavx2vphsubd.h \                                                                                        # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx2/asm_testavx2vphsubw.h \                                                                                        # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx2/avx2.h \                                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpbroadcastb.h \                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpbroadcastw.h \                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpsllvw.h \                                                                                # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/asm_testavx512bwvpsrlvw.h \                                                                                # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/avx512bw.h \                                                                                               # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512cd/asm_testavx512cdvpbroadcastmb2q.h \                                                                        # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512cd/asm_testavx512cdvpbroadcastmw2d.h \                                                                        # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512cd/asm_testavx512cdvplzcntd.h \                                                                               # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512cd/asm_testavx512cdvplzcntq.h \                                                                               # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512cd/avx512cd.h \                                                                                               # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512dq/asm_testavx512dqvcvtpd2qq.h \                                                                              # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512dq/asm_testavx512dqvcvtps2qq.h \                                                                              # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512dq/asm_testavx512dqvcvtqq2pd.h \                                                                              # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512dq/asm_testavx512dqvcvtqq2ps.h \                                                                              # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512dq/asm_testavx512dqvpmullq.h \                                                                                # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512dq/avx512dq.h \                                                                                               # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvaddps.h \                                                                                   # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvdivps.h \                                                                                   # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvmaxps.h \                                                                                   # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvminps.h \                                                                                   # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvmulps.h \                                                                                   # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvrcp14ps.h \                                                                                 # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvrsqrt14ps.h \                                                                               # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvsqrtps.h \                                                                                  # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/asm_testavx512fvsubps.h \                                                                                   # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512f/avx512f.h \                                                                                                 # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvaddps.h \                                                                                 # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvdivps.h \                                                                                 # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvmaxps.h \                                                                                 # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvminps.h \                                                                                 # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvmulps.h \                                                                                 # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvrcp14ps.h \                                                                               # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvrsqrt14ps.h \                                                                             # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvsqrtps.h \                                                                                # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/asm_testavx512vlvsubps.h \                                                                                 # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512vl/avx512vl.h \                                                                                               # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmadd213pd.h \                                                                                    # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmadd213ps.h \                                                                                    # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmsub213pd.h \                                                                                    # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/asm_testfma3vfmsub213ps.h \                                                                                    # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fma3/fma3.h \                                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/fpu.h \                                                                                                             # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testsseaddps.h \                                                                                            # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssedivps.h \                                                                                            # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssemaxps.h \                                                                                            # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testsseminps.h \                                                                                            # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssemulps.h \                                                                                            # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssercpps.h \                                                                                            # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssersqrtps.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssesqrtps.h \                                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/asm_testssesubps.h \                                                                                            # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse/sse.h \                                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2addpd.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2divpd.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2maxpd.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2minpd.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2mulpd.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddb.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddd.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddq.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2paddw.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubb.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubd.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubq.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2psubw.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2sqrtpd.h \                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/asm_testsse2subpd.h \                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse2/sse2.h \                                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3addsubpd.h \                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3addsubps.h \                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3haddpd.h \                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3haddps.h \                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3hsubpd.h \                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3hsubps.h \                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phaddd.h \                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phaddw.h \                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phsubd.h \                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/asm_testsse3phsubw.h \                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse3/sse3.h \                                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxsb.h \                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxsd.h \                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxud.h \                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmaxuw.h \                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminsb.h \                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminsd.h \                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminud.h \                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pminuw.h \                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmuldq.h \                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/asm_testsse41pmulld.h \                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse41/sse41.h \                                                                                                     # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse42/asm_testsse42pcmpgtq.h \                                                                                      # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/sse42/sse42.h \                                                                                                     # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/graphics/image.h \                                                                                                      # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/graphics/ninepatch.h \                                                                                                  # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/graphics/png/png.h \                                                                                                    # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/graphics/rgbapixel.h \                                                                                                  # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/graphics/stretchrange.h \                                                                                               # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/gui/widgets/widget.h \                                                                                                  # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/guid/utils.h \                                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/hex/hex.h \                                                                                                             # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/macro/utils.h \                                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/memory/memory.h \                                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/linkage.h \                                                                                                        # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/types.h \                                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/utils.h \                                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pagetable/utils.h \                                                                                                     # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressaccesscontrolservicesacscapability.h \                                                                # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressdynamicpowerallocationcapabilityregister.h \                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressmulticastcapabilityregister.h \                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressmulticastcontrolregister.h \                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressresizablebaseaddresscontrol.h \                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkaddresslinkconfigurationspace.h \                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpresstphrequestercapabilityregister.h \                                                                    # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcecapability.h \                                                    # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciextendeddevicecommand.h \                                                                                    # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciextendeddevicestatus.h \                                                                                     # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsextendedmessagecontrol.h \                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsmessagecontrol.h \                                                                  # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/printf/printf.h \                                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/random/random.h \                                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/string/string.h \                                                                                                       # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/string/utils.h \                                                                                                        # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/time/time.h \                                                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/types.h \                                                                                                               # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/uefi/uefipcirootbridgeioprotocol.h \                                                                                    # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/uuid/utils.h \                                                                                                          # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/other/uefibootmemorymap.h \                                                                                           # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/types.h \                                                                                                             # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/uefi/uefi.h \                                                                                                         # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/generated/com/ngos/shared/common/types.h \                                                                                                     # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/testcase.h \                                                                                                                                   # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/testengine.h \                                                                                                                                                   # Colorize: green
+    $$PWD/test/com/ngos/shared/uefibase/testresults.h                                                                                                                                                    # Colorize: green

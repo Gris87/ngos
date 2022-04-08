@@ -1,6 +1,6 @@
 #include "serial.h"
 
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -34,23 +34,23 @@ NgosStatus Serial::initConsole()
 
 
 
-    COMMON_ASSERT_EXECUTION(outb(0x03, DEFAULT_SERIAL_PORT + LCR), NgosStatus::ASSERTION); // 8n1
-    COMMON_ASSERT_EXECUTION(outb(0,    DEFAULT_SERIAL_PORT + IER), NgosStatus::ASSERTION); // no interrupt
-    COMMON_ASSERT_EXECUTION(outb(0,    DEFAULT_SERIAL_PORT + FCR), NgosStatus::ASSERTION); // no fifo
-    COMMON_ASSERT_EXECUTION(outb(0x03, DEFAULT_SERIAL_PORT + MCR), NgosStatus::ASSERTION); // DTR + RTS
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(0x03, DEFAULT_SERIAL_PORT + LCR), NgosStatus::ASSERTION); // 8n1
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(0,    DEFAULT_SERIAL_PORT + IER), NgosStatus::ASSERTION); // no interrupt
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(0,    DEFAULT_SERIAL_PORT + FCR), NgosStatus::ASSERTION); // no fifo
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(0x03, DEFAULT_SERIAL_PORT + MCR), NgosStatus::ASSERTION); // DTR + RTS
 
 
 
     u64 divisor = 115200 / DEFAULT_BAUD;
 
-    u8 c = inb(DEFAULT_SERIAL_PORT + LCR);
+    u8 c = AsmUtils::inb(DEFAULT_SERIAL_PORT + LCR);
 
 
 
-    COMMON_ASSERT_EXECUTION(outb(c | DLAB,              DEFAULT_SERIAL_PORT + LCR), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(outb(divisor & 0xFF,        DEFAULT_SERIAL_PORT + DLL), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(outb((divisor >> 8) & 0xFF, DEFAULT_SERIAL_PORT + DLH), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(outb(c & ~DLAB,             DEFAULT_SERIAL_PORT + LCR), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(c | DLAB,              DEFAULT_SERIAL_PORT + LCR), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(divisor & 0xFF,        DEFAULT_SERIAL_PORT + DLL), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb((divisor >> 8) & 0xFF, DEFAULT_SERIAL_PORT + DLH), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(c & ~DLAB,             DEFAULT_SERIAL_PORT + LCR), NgosStatus::ASSERTION);
 
 
 
@@ -70,15 +70,15 @@ void Serial::print(char8 ch)
     u16 timeout = 0xFFFF;
 
     while (
-           !(inb(DEFAULT_SERIAL_PORT + LSR) & XMTRDY)
+           !(AsmUtils::inb(DEFAULT_SERIAL_PORT + LSR) & XMTRDY)
            &&
            --timeout
           )
     {
-        COMMON_ASSERT_EXECUTION(cpuIdle());
+        COMMON_ASSERT_EXECUTION(AsmUtils::cpuIdle());
     }
 
-    COMMON_ASSERT_EXECUTION(outb(ch, DEFAULT_SERIAL_PORT + TXR));
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(ch, DEFAULT_SERIAL_PORT + TXR));
 }
 
 void Serial::print(const char8 *str)

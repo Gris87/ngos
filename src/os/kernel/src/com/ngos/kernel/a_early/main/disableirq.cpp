@@ -1,6 +1,6 @@
 #include "disableirq.h"
 
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
 
@@ -12,7 +12,7 @@ NgosStatus disableIrq()
 
 
 
-    EARLY_ASSERT_EXECUTION(cli(), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(AsmUtils::cli(), NgosStatus::ASSERTION);
 
 
 

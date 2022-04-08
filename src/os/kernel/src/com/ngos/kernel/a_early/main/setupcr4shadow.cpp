@@ -1,7 +1,7 @@
 #include "setupcr4shadow.h"
 
 #include <com/ngos/kernel/other/cpu/percpu.h>
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
 
@@ -13,7 +13,7 @@ NgosStatus setupCr4Shadow()
 
 
 
-    PERCPU::cr4 = readCr4();
+    PERCPU::cr4 = AsmUtils::readCr4();
 
 
 

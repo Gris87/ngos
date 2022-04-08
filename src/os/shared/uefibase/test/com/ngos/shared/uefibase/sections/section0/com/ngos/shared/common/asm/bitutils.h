@@ -24,6 +24,8 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
         TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 8),  (u8 *)((u64)&buffer + 1));
         TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 13), (u8 *)((u64)&buffer + 1));
         TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 17), (u8 *)((u64)&buffer + 2));
+
+        // TODO: Add tests for negative bit
     }
     TEST_CASE_END();
 
@@ -41,6 +43,8 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
         TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(7), 128);
         TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(8), 1);
         TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(9), 2);
+
+        // TODO: Add tests for negative bit
     }
     TEST_CASE_END();
 
@@ -74,6 +78,8 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 
         TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, temp),              true);
         TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, (temp + 4) & 0xFF), false);
+
+        // TODO: Add tests for negative bit
     }
     TEST_CASE_END();
 
@@ -106,6 +112,8 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 
         TEST_ASSERT_EQUALS(BitUtils::set((u8 *)buffer, (temp + 4) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[0],                                      0x65198732AADCBF9F);
+
+        // TODO: Add tests for negative bit
     }
     TEST_CASE_END();
 
@@ -138,6 +146,8 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 
         TEST_ASSERT_EQUALS(BitUtils::setSafe((u8 *)buffer, (temp + 4) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[0],                                          0x65198732AADCBF9F);
+
+        // TODO: Add tests for negative bit
     }
     TEST_CASE_END();
 
@@ -170,6 +180,8 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 
         TEST_ASSERT_EQUALS(BitUtils::clear((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                                        0x2ADFACEB00AFCDE7);
+
+        // TODO: Add tests for negative bit
     }
     TEST_CASE_END();
 
@@ -202,6 +214,8 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 
         TEST_ASSERT_EQUALS(BitUtils::clearSafe((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                                            0x2ADFACEB00AFCDE7);
+
+        // TODO: Add tests for negative bit
     }
     TEST_CASE_END();
 
@@ -249,6 +263,8 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 
         TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                                         0xEADFACEB00AFCDE7);
+
+        // TODO: Add tests for negative bit
     }
     TEST_CASE_END();
 
@@ -296,6 +312,8 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 
         TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                                             0xEADFACEB00AFCDE7);
+
+        // TODO: Add tests for negative bit
     }
     TEST_CASE_END();
 

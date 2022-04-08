@@ -1,6 +1,6 @@
 #include "fpu.h"
 
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/cpu/cpu.h>
 #include <com/ngos/shared/common/fpu/macros.h>
 #include <com/ngos/shared/common/fpu/xfeature/xfeatureavx512opmaskstate.h>
@@ -38,7 +38,7 @@ NgosStatus FPU::initForBootStrapProcessor()
 
 
 
-    COMMON_ASSERT_EXECUTION(fninit(), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(AsmUtils::fninit(), NgosStatus::ASSERTION);
 
     COMMON_ASSERT_EXECUTION(initMxcsrMask(), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(initFXState(),   NgosStatus::ASSERTION);
@@ -193,11 +193,11 @@ NgosStatus FPU::initForApplicationProcessor()
 
 
 
-    COMMON_ASSERT_EXECUTION(fninit(), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(AsmUtils::fninit(), NgosStatus::ASSERTION);
 
     if (CPU::isCpuIdLevelSupported(XSTATE_CPUID))
     {
-        COMMON_ASSERT_EXECUTION(xsetbv(XCR_XFEATURES, sXFeatures.flags), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(AsmUtils::xsetbv(XCR_XFEATURES, sXFeatures.flags), NgosStatus::ASSERTION);
     }
 
 
@@ -213,7 +213,7 @@ NgosStatus FPU::initMxcsrMask()
 
     FXSaveState fxsaveState;
 
-    COMMON_ASSERT_EXECUTION(fxsave((u8 *)&fxsaveState), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(AsmUtils::fxsave((u8 *)&fxsaveState), NgosStatus::ASSERTION);
 
 
 
@@ -352,7 +352,7 @@ NgosStatus FPU::initXState()
 
 
 
-        COMMON_ASSERT_EXECUTION(xsetbv(XCR_XFEATURES, sXFeatures.flags), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(AsmUtils::xsetbv(XCR_XFEATURES, sXFeatures.flags), NgosStatus::ASSERTION);
 
         COMMON_ASSERT_EXECUTION(initXFeaturesOffsetsAndSizes(), NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(initStateSizes(),               NgosStatus::ASSERTION);
@@ -507,13 +507,13 @@ NgosStatus FPU::copyStateFromFPU() // TODO: check is it from FPU?
         // We need to set bit 63 of xComponents field to avoid General Protection during xrstors64 call
         sState.xsave.header.xComponents = sXFeatures | XCOMPONENTS_COMPACTED_FORMAT;
 
-        COMMON_ASSERT_EXECUTION(xrstors64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(AsmUtils::xrstors64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
     }
     else
     {
         COMMON_LVV(("X86Feature::XSAVES not supported"));
 
-        COMMON_ASSERT_EXECUTION(xrstor64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(AsmUtils::xrstor64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
     }
 
 
@@ -531,13 +531,13 @@ NgosStatus FPU::copyStateToFPU()
     {
         COMMON_LVV(("X86Feature::XSAVES supported"));
 
-        COMMON_ASSERT_EXECUTION(xsaves64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(AsmUtils::xsaves64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
     }
     else
     {
         COMMON_LVV(("X86Feature::XSAVES not supported"));
 
-        COMMON_ASSERT_EXECUTION(xsave64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(AsmUtils::xsave64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
     }
 
 

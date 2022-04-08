@@ -1,59 +1,59 @@
-#ifndef COM_NGOS_SHARED_COMMON_ASM_BITUTILS_H
-#define COM_NGOS_SHARED_COMMON_ASM_BITUTILS_H
-
-
-
-#include <com/ngos/shared/common/asm/instructions.h>
-#include <com/ngos/shared/common/ngos/linkage.h>
-#include <com/ngos/shared/common/ngos/status.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/ngos/utils.h>
-
-
-
-#define CONST_BIT_ADDRESS(address, bit) (u8 *)((address_t)(address) + ((bit) / 8))
-#define CONST_BIT_IN_U8(bit)            (1ULL << ((bit) & 7))
-
-
-
-class BitUtils
-{
-public:
-    static inline bool test(u8 *address, u64 bit)
-    {
-        if (IS_CONSTANT(bit))
-        {
-            return *CONST_BIT_ADDRESS(address, bit) & CONST_BIT_IN_U8(bit);
-        }
-        else
-        {
-            return bt(address, bit);
-        }
-    }
-
-    static inline NgosStatus set(u8 *address, u64 bit)
-    {
-        if (IS_CONSTANT(bit))
-        {
-            // Ignore CppAlignmentVerifier [BEGIN]
-            asm volatile(
-                "orb    %1, %0"                                   // orb    %rax, (%rbx)    # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
-                    :                                             // Output parameters
-                        "+m" (*CONST_BIT_ADDRESS(address, bit))   // 'm' - use memory, '+' - read and write
-                    :                                             // Input parameters
-                        "i" (CONST_BIT_IN_U8(bit))                // 'i' - integer constant // Ignore CppSingleCharVerifier
-                    :                                             // Clobber list
-                        "memory"                                  // Inform gcc that memory will be changed
-            );
-            // Ignore CppAlignmentVerifier [END]
-        }
-        else
-        {
-            return btsPure(address, bit);
-        }
-
-        return NgosStatus::OK;
-    }
+#ifndef COM_NGOS_SHARED_COMMON_ASM_BITUTILS_H                                                                                                                                                            // Colorize: green
+#define COM_NGOS_SHARED_COMMON_ASM_BITUTILS_H                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/asm/asmutils.h>                                                                                                                                                     // Colorize: green
+#include <com/ngos/shared/common/ngos/linkage.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/status.h>                                                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/ngos/utils.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define CONST_BIT_ADDRESS(address, bit) (reinterpret_cast<u8 *>(address) + ((bit) / 8))                                                                                                                                 // Colorize: green
+#define CONST_BIT_IN_U8(bit)            (1ULL << ((bit) & 7))                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class BitUtils                                                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    static inline bool test(u8 *address, i64 bit)                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (IS_CONSTANT(bit))                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return *CONST_BIT_ADDRESS(address, bit) & CONST_BIT_IN_U8(bit);                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return AsmUtils::bt(address, bit);                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus set(u8 *address, i64 bit)                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (IS_CONSTANT(bit))                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "orb    %1, %0"                                   // orb    %rax, (%rbx)    # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address                                       // Colorize: green
+                    :                                             // Output parameters                                                                                                                   // Colorize: green
+                        "+m" (*CONST_BIT_ADDRESS(address, bit))   // 'm' - use memory, '+' - read and write                                                                                              // Colorize: green
+                    :                                             // Input parameters                                                                                                                    // Colorize: green
+                        "i" (CONST_BIT_IN_U8(bit))                // 'i' - integer constant // Ignore CppSingleCharVerifier                                                                              // Colorize: green
+                    :                                             // Clobber list                                                                                                                        // Colorize: green
+                        "memory"                                  // Inform gcc that memory will be changed                                                                                              // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return AsmUtils::btsPure(address, bit);                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
 
     static inline NgosStatus setSafe(u8 *address, u64 bit)
     {
@@ -73,7 +73,7 @@ public:
         }
         else
         {
-            return btsPureSafe(address, bit);
+            return AsmUtils::btsPureSafe(address, bit);
         }
 
         return NgosStatus::OK;
@@ -97,7 +97,7 @@ public:
         }
         else
         {
-            return btrPure(address, bit);
+            return AsmUtils::btrPure(address, bit);
         }
 
         return NgosStatus::OK;
@@ -121,7 +121,7 @@ public:
         }
         else
         {
-            return btrPureSafe(address, bit);
+            return AsmUtils::btrPureSafe(address, bit);
         }
 
         return NgosStatus::OK;
@@ -145,7 +145,7 @@ public:
         }
         else
         {
-            return btcPure(address, bit);
+            return AsmUtils::btcPure(address, bit);
         }
 
         return NgosStatus::OK;
@@ -169,7 +169,7 @@ public:
         }
         else
         {
-            return btcPureSafe(address, bit);
+            return AsmUtils::btcPureSafe(address, bit);
         }
 
         return NgosStatus::OK;

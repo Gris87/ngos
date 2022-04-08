@@ -3,7 +3,7 @@
 #include <com/ngos/bootloader_tools/memorytest/main/memorytest.h>
 #include <com/ngos/bootloader_tools/memorytest/main/memorytestgui.h>
 #include <com/ngos/bootloader_tools/memorytest/tests/asm_readmemoryblock.h>
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/cpu/cpu.h>
 #include <com/ngos/shared/common/fpu/fpu.h>
 #include <com/ngos/shared/common/macro/constants.h>
@@ -40,7 +40,7 @@ void UEFI_API testRandomReadProcedure(void *buffer)
 
 
 
-    u64 startTime = rdtsc();
+    u64 startTime = AsmUtils::rdtsc();
 
     if (CPU::hasFlag(X86Feature::RDRAND))
     {
@@ -71,7 +71,7 @@ void UEFI_API testRandomReadProcedure(void *buffer)
         }
     }
 
-    u64 endTime = rdtsc();
+    u64 endTime = AsmUtils::rdtsc();
 
 
 

@@ -2,7 +2,7 @@
 
 #include <com/ngos/kernel/other/kerneldefines.h>
 #include <com/ngos/kernel/other/pagetable/addressconversion.h>
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/memory/memory.h>
@@ -132,7 +132,7 @@ NgosStatus addDynamicIdentityMap(u64 start, u64 end)
 
     while (start < end)
     {
-        COMMON_ASSERT_EXECUTION(invlpg((u8 *)start), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(AsmUtils::invlpg((u8 *)start), NgosStatus::ASSERTION);
 
         start += PMD_SIZE;
     }
@@ -159,7 +159,7 @@ NgosStatus clearDynamicIdentityMap(u64 start, u64 end)
 
     while (start < end)
     {
-        COMMON_ASSERT_EXECUTION(invlpg((u8 *)start), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(AsmUtils::invlpg((u8 *)start), NgosStatus::ASSERTION);
 
         start += PMD_SIZE;
     }

@@ -1,36 +1,36 @@
-#include <com/ngos/shared/common/ngos/linkage.h>
-                                                                                #
-                                                                                #
-                                                                                #
-.code64                                                                         # Generate code in 64 bits mode
-.section ".asm_code", "ax"                                                      # asm_code section (a - allocatable, x - executable)
-                                                                                #
-# ============================================================================= # =============================================================================
-# memzero declaration:                                                          #
-#     void* memzero(void *dest, u64 length);                                    #
-#                                                                               #
-# RDI - dest, destination address                                               #
-# RSI - length, amount of bytes                                                 #
-# ============================================================================= # =============================================================================
-                                                                                #
-GLOBAL_FUNCTION(memzero)                                                        # memzero function
-    movq    %rdi, %r9                                                           # Store RDI in R9
-    movq    %rsi, %rcx                                                          # Duplicate RSI to RCX
-    andq    $7, %rsi                                                            # Keep last 3 bits of RSI
-    shrq    $3, %rcx                                                            # Remove last 3 bits of RCX (Divide by 8)
-                                                                                #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-                                                                                #
-    movq  $0, %rax                                                              # Assign RAX to 0
-                                                                                #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-                                                                                #
-    rep; stosq                                                                  # Assign with 8 byte blocks from RAX to RDI while RCX > 0
-    movq    %rsi, %rcx                                                          # Assign RSI to RCX
-    rep; stosb                                                                  # Assign byte to byte from RAX to RDI while RCX > 0
-                                                                                #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-                                                                                #
-    movq    %r9, %rax                                                           # Restore original RDI value from R9 to RAX
-    retq                                                                        # Return from the function
-END_FUNCTION(memzero)                                                           # End of memzero function
+#include <com/ngos/shared/common/ngos/linkage.h>                                                                                                                                                         # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+.code64                                                                         # Generate code in 64 bits mode                                                                                          # Colorize: green
+.section ".asm_code", "ax"                                                      # asm_code section (a - allocatable, x - executable)                                                                     # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ============================================================================= # =============================================================================                                          # Colorize: green
+# memzero declaration:                                                          #                                                                                                                        # Colorize: green
+#     void* memzero(void *dest, u64 length);                                    #                                                                                                                        # Colorize: green
+#                                                                               #                                                                                                                        # Colorize: green
+# RDI - dest, destination address                                               #                                                                                                                        # Colorize: green
+# RSI - length, amount of bytes                                                 #                                                                                                                        # Colorize: green
+# ============================================================================= # =============================================================================                                          # Colorize: green
+                                                                                # # TODO: Push RCX                                                                                                       # Colorize: green
+GLOBAL_FUNCTION(memzero)                                                        # memzero function                                                                                                       # Colorize: green
+    movq    %rdi, %r9                                                           # Store RDI in R9                                                                                                        # Colorize: green
+    movq    %rsi, %rcx                                                          # Duplicate RSI to RCX                                                                                                   # Colorize: green
+    andq    $7, %rsi                                                            # Keep last 3 bits of RSI # TODO: Do not modify RSI                                                                      # Colorize: green
+    shrq    $3, %rcx                                                            # Remove last 3 bits of RCX (Divide by 8)                                                                                # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    movq  $0, %rax                                                              # Assign RAX to 0                                                                                                        # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    rep; stosq                                                                  # Assign with 8 byte blocks from RAX to RDI while RCX > 0                                                                # Colorize: green
+    movq    %rsi, %rcx                                                          # Assign RSI to RCX                                                                                                      # Colorize: green
+    rep; stosb                                                                  # Assign byte to byte from RAX to RDI while RCX > 0                                                                      # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    movq    %r9, %rax                                                           # Restore original RDI value from R9 to RAX                                                                              # Colorize: green
+    retq                                                                        # Return from the function                                                                                               # Colorize: green
+END_FUNCTION(memzero)                                                           # End of memzero function                                                                                                # Colorize: green

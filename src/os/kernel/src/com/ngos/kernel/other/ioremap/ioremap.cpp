@@ -2,7 +2,7 @@
 
 #include <com/ngos/kernel/other/ioremap/utils.h>
 #include <com/ngos/kernel/other/pagetable/addressconversion.h>
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/memory/memory.h>
@@ -258,7 +258,7 @@ NgosStatus IORemap::removeFixedMapping(address_t address, u64 size)
 
         setPte(&sFixmapPage[startPteForSlot + i], 0);
 
-        COMMON_ASSERT_EXECUTION(invlpg((u8 *)(start + i * PAGE_SIZE)), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(AsmUtils::invlpg((u8 *)(start + i * PAGE_SIZE)), NgosStatus::ASSERTION);
     }
 
 

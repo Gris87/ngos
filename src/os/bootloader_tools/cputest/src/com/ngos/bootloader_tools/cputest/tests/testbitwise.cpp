@@ -2,7 +2,7 @@
 
 #include <com/ngos/bootloader_tools/cputest/main/cputest.h>
 #include <com/ngos/bootloader_tools/cputest/main/cputestgui.h>
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/cpu/cpu.h>
 #include <com/ngos/shared/common/fpu/fpu.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
@@ -42,7 +42,7 @@ void UEFI_API testBitwiseProcedure(void *buffer)
 
 
 
-    u64 startTime = rdtsc();
+    u64 startTime = AsmUtils::rdtsc();
 
     for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
     {
@@ -54,7 +54,7 @@ void UEFI_API testBitwiseProcedure(void *buffer)
         temp6 =   ~temp6;
     }
 
-    u64 endTime = rdtsc();
+    u64 endTime = AsmUtils::rdtsc();
 
 
 

@@ -1,6 +1,6 @@
 #include "random.h"
 
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/cpu/cpu.h>
 #include <com/ngos/shared/common/cpu/x86feature.h>
 #include <com/ngos/shared/common/log/assert.h>
@@ -27,11 +27,11 @@ u64 simpleRandom(u64 seed)
         COMMON_LVV(("X86Feature::RDRAND supported"));
 
         if (
-            rdrand(&raw1) == NgosStatus::OK
+            AsmUtils::rdrand(&raw1) == NgosStatus::OK
             &&
-            rdrand(&raw2) == NgosStatus::OK
+            AsmUtils::rdrand(&raw2) == NgosStatus::OK
             &&
-            rdrand(&raw3) == NgosStatus::OK
+            AsmUtils::rdrand(&raw3) == NgosStatus::OK
            )
         {
             raw = raw1 * raw2 * raw3;
@@ -51,9 +51,9 @@ u64 simpleRandom(u64 seed)
 
 
 
-    raw1 = rdtsc();
-    raw2 = rdtsc();
-    raw3 = rdtsc();
+    raw1 = AsmUtils::rdtsc();
+    raw2 = AsmUtils::rdtsc();
+    raw3 = AsmUtils::rdtsc();
     raw  = raw1 * raw2 * raw3;
 
     COMMON_LVVV(("raw1 = 0x%016llX", raw1));

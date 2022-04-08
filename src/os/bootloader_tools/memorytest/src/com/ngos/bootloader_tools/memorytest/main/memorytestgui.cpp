@@ -2,7 +2,7 @@
 
 #include <com/ngos/bootloader_tools/memorytest/main/memorytest.h>
 #include <com/ngos/bootloader_tools/memorytest/tests/testbase.h>
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/dmi/dmi.h>
 #include <com/ngos/shared/common/graphics/graphics.h>
 #include <com/ngos/shared/common/gui/gui.h>
@@ -3241,7 +3241,7 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
             {
                 if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), i, sWaitEvents[sFirstProcessorEventIndex + i], 0, test, nullptr) == UefiStatus::SUCCESS)
                 {
-                    UEFI_ASSERT_EXECUTION(test->setStartTsc(rdtsc()), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(test->setStartTsc(AsmUtils::rdtsc()), NgosStatus::ASSERTION);
 
                     UEFI_LV(("Test %s started on processor %d", enumToFullString(sCurrentTest), i));
 
@@ -3677,7 +3677,7 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(i64 processorId)
 
         if (test->getProgress() != test->getHandledProgress())
         {
-            UEFI_ASSERT_EXECUTION(updateTest(testType, rdtsc()), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(updateTest(testType, AsmUtils::rdtsc()), NgosStatus::ASSERTION);
         }
 
 
@@ -3700,7 +3700,7 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(i64 processorId)
 
             if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), processorId, sWaitEvents[sFirstProcessorEventIndex + processorId], 0, test, nullptr) == UefiStatus::SUCCESS)
             {
-                UEFI_ASSERT_EXECUTION(test->setStartTsc(rdtsc()), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(test->setStartTsc(AsmUtils::rdtsc()), NgosStatus::ASSERTION);
 
                 UEFI_LV(("Test %s started on processor %u", enumToFullString(sCurrentTest), processorId));
 
@@ -3802,7 +3802,7 @@ NgosStatus MemoryTestGUI::processTimerEvent()
 
         if (!test->isCompleted() && test->getProgress() != test->getHandledProgress())
         {
-            i64 tsc = rdtsc();
+            i64 tsc = AsmUtils::rdtsc();
 
             UEFI_ASSERT_EXECUTION(updateTest((TestType)i, tsc), NgosStatus::ASSERTION);
 

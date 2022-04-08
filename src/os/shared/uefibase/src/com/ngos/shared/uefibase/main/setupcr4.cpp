@@ -1,6 +1,6 @@
 #include "setupcr4.h"
 
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/cpu/cpu.h>
 #include <com/ngos/shared/common/cpu/flags.h>
 #include <com/ngos/shared/uefibase/uefi/uefiassert.h>
@@ -14,7 +14,7 @@ NgosStatus setupCr4()
 
 
 
-    u64 cr4 = readCr4();
+    u64 cr4 = AsmUtils::readCr4();
 
     // UEFI_LVVV(("cr4 = 0x%016llX", cr4)); // Commented to avoid bad looking logs
 
@@ -42,7 +42,7 @@ NgosStatus setupCr4()
 
 
 
-    UEFI_ASSERT_EXECUTION(writeCr4(cr4), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(AsmUtils::writeCr4(cr4), NgosStatus::ASSERTION);
 
 
 

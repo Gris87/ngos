@@ -5,7 +5,7 @@
 
 #include <buildconfig.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/bitutils.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bootparams/memorymapentry.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/adler.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/crc.h>

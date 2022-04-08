@@ -3,7 +3,7 @@
 #include <com/ngos/configure/b_early/other/pagetable/asm_switchtofivelevelpaging.h>
 #include <com/ngos/configure/b_early/other/pagetable/pageallocationcontext.h>
 #include <com/ngos/configure/other/configuredefines.h>
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
 #include <com/ngos/shared/common/memory/memory.h>
@@ -175,7 +175,7 @@ NgosStatus finalizeIdentityMaps()
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
     switchToFiveLevelPaging(topLevelPage);
 #else
-    EARLY_ASSERT_EXECUTION(writeCr3((u64)topLevelPage), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(AsmUtils::writeCr3((u64)topLevelPage), NgosStatus::ASSERTION);
 #endif
 
 

@@ -3,7 +3,7 @@
 #include <com/ngos/bootloader_tools/memorytest/main/memorytest.h>
 #include <com/ngos/bootloader_tools/memorytest/main/memorytestgui.h>
 #include <com/ngos/bootloader_tools/memorytest/tests/asm_writememoryblock.h>
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/fpu/fpu.h>
 #include <com/ngos/shared/common/macro/constants.h>
 #include <com/ngos/shared/uefibase/main/setupcr4.h>
@@ -37,7 +37,7 @@ void UEFI_API testSequentialWriteProcedure(void *buffer)
 
 
 
-    u64 startTime = rdtsc();
+    u64 startTime = AsmUtils::rdtsc();
 
     for (i64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
     {
@@ -46,7 +46,7 @@ void UEFI_API testSequentialWriteProcedure(void *buffer)
         writeMemoryBlock(blockBuffer, (u8 *)i);
     }
 
-    u64 endTime = rdtsc();
+    u64 endTime = AsmUtils::rdtsc();
 
 
 

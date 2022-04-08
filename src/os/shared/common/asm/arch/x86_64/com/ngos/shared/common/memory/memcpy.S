@@ -1,38 +1,38 @@
-#include <com/ngos/shared/common/ngos/linkage.h>
-                                                                                #
-                                                                                #
-                                                                                #
-.code64                                                                         # Generate code in 64 bits mode
-.section ".asm_code", "ax"                                                      # asm_code section (a - allocatable, x - executable)
-                                                                                #
-# ============================================================================= # =============================================================================
-# memcpy declaration:                                                           #
-#     void* memcpy(void *dest, const void *src, u64 length);                    #
-#                                                                               #
-# RDI - dest, destination address                                               #
-# RSI - src, source address                                                     #
-# RDX - length, amount of bytes                                                 #
-# ============================================================================= # =============================================================================
-                                                                                #
-GLOBAL_FUNCTION(memcpy)                                                         # memcpy function
-    pushq   %rcx                                                                # Push RCX to the stack
-                                                                                #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-    movq    %rdi, %rax                                                          # Put RDI to RAX as return value
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-                                                                                #
-    movq    %rdx, %rcx                                                          # Assign RDX to RCX
-    shrq    $3, %rcx                                                            # Remove last 3 bits of RCX (Divide by 8)
-                                                                                #
-    rep; movsq                                                                  # Move with 8 byte blocks from RSI to RDI while RCX > 0
-                                                                                #
-    movq    %rdx, %rcx                                                          # Assign RDX to RCX
-    andq    $7, %rcx                                                            # Keep last 3 bits of RCX
-                                                                                #
-    rep; movsb                                                                  # Move byte to byte from RSI to RDI while RCX > 0
-                                                                                #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-                                                                                #
-    popq   %rcx                                                                 # Restore RCX from the stack
-    retq                                                                        # Return from the function
-END_FUNCTION(memcpy)                                                            # End of memcpy function
+#include <com/ngos/shared/common/ngos/linkage.h>                                                                                                                                                         # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+.code64                                                                         # Generate code in 64 bits mode                                                                                          # Colorize: green
+.section ".asm_code", "ax"                                                      # asm_code section (a - allocatable, x - executable)                                                                     # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ============================================================================= # =============================================================================                                          # Colorize: green
+# memcpy declaration:                                                           #                                                                                                                        # Colorize: green
+#     void* memcpy(void *dest, const void *src, u64 length);                    #                                                                                                                        # Colorize: green
+#                                                                               #                                                                                                                        # Colorize: green
+# RDI - dest, destination address                                               #                                                                                                                        # Colorize: green
+# RSI - src, source address                                                     #                                                                                                                        # Colorize: green
+# RDX - length, amount of bytes                                                 #                                                                                                                        # Colorize: green
+# ============================================================================= # =============================================================================                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+GLOBAL_FUNCTION(memcpy)                                                         # memcpy function                                                                                                        # Colorize: green
+    pushq   %rcx                                                                # Push RCX to the stack                                                                                                  # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------                                          # Colorize: green
+    movq    %rdi, %rax                                                          # Put RDI to RAX as return value                                                                                         # Colorize: green
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    movq    %rdx, %rcx                                                          # Assign RDX to RCX                                                                                                      # Colorize: green
+    shrq    $3, %rcx                                                            # Remove last 3 bits of RCX (Divide by 8)                                                                                # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    rep; movsq                                                                  # Move with 8 byte blocks from RSI to RDI while RCX > 0                                                                  # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    movq    %rdx, %rcx                                                          # Assign RDX to RCX                                                                                                      # Colorize: green
+    andq    $7, %rcx                                                            # Keep last 3 bits of RCX                                                                                                # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    rep; movsb                                                                  # Move byte to byte from RSI to RDI while RCX > 0                                                                        # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    popq   %rcx                                                                 # Restore RCX from the stack                                                                                             # Colorize: green
+    retq                                                                        # Return from the function                                                                                               # Colorize: green
+END_FUNCTION(memcpy)                                                            # End of memcpy function                                                                                                 # Colorize: green

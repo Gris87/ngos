@@ -1,41 +1,41 @@
-#include <com/ngos/shared/common/ngos/linkage.h>
-                                                                                #
-                                                                                #
-                                                                                #
-.code64                                                                         # Generate code in 64 bits mode
-.section ".asm_code", "ax"                                                      # asm_code section (a - allocatable, x - executable)
-                                                                                #
-# ============================================================================= # =============================================================================
-# memset declaration:                                                           #
-#     void* memset(void *dest, u8 ch, u64 length);                              #
-#                                                                               #
-# RDI - dest, destination address                                               #
-# RSI - ch, byte value                                                          #
-# RDX - length, amount of bytes                                                 #
-# ============================================================================= # =============================================================================
-                                                                                #
-GLOBAL_FUNCTION(memset)                                                         # memset function
-    movq    %rdi, %r9                                                           # Store RDI in R9
-    movq    %rdx, %rcx                                                          # Duplicate RDX to RCX
-    andq    $7, %rdx                                                            # Keep last 3 bits of RDX
-    shrq    $3, %rcx                                                            # Remove last 3 bits of RCX (Divide by 8)
-                                                                                #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-#  Cloning 1 byte from RSI to all 8 bytes of RAX                                #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-                                                                                #
-    movzbl  %sil, %esi                                                          # Put zeros to all bytes of ESI except the little one
-    movabs  $0x0101010101010101, %rax                                           # Put ones to each byte of RAX
-    imulq   %rsi, %rax                                                          # Multiply RAX on RSI. Clone byte from RSI to each byte of RAX
-                                                                                #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-                                                                                #
-    rep; stosq                                                                  # Assign with 8 byte blocks from RAX to RDI while RCX > 0
-    movq    %rdx, %rcx                                                          # Assign RDX to RCX
-    rep; stosb                                                                  # Assign byte to byte from RAX to RDI while RCX > 0
-                                                                                #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-                                                                                #
-    movq    %r9, %rax                                                           # Restore original RDI value from R9 to RAX
-    retq                                                                        # Return from the function
-END_FUNCTION(memset)                                                            # End of memset function
+#include <com/ngos/shared/common/ngos/linkage.h>                                                                                                                                                         # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+.code64                                                                         # Generate code in 64 bits mode                                                                                          # Colorize: green
+.section ".asm_code", "ax"                                                      # asm_code section (a - allocatable, x - executable)                                                                     # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ============================================================================= # =============================================================================                                          # Colorize: green
+# memset declaration:                                                           #                                                                                                                        # Colorize: green
+#     void* memset(void *dest, u8 ch, u64 length);                              #                                                                                                                        # Colorize: green
+#                                                                               #                                                                                                                        # Colorize: green
+# RDI - dest, destination address                                               #                                                                                                                        # Colorize: green
+# RSI - ch, byte value                                                          #                                                                                                                        # Colorize: green
+# RDX - length, amount of bytes                                                 #                                                                                                                        # Colorize: green
+# ============================================================================= # =============================================================================                                          # Colorize: green
+                                                                                # # TODO: Push RCX                                                                                                                       # Colorize: green
+GLOBAL_FUNCTION(memset)                                                         # memset function                                                                                                        # Colorize: green
+    movq    %rdi, %r9                                                           # Store RDI in R9                                                                                                        # Colorize: green
+    movq    %rdx, %rcx                                                          # Duplicate RDX to RCX                                                                                                   # Colorize: green
+    andq    $7, %rdx                                                            # Keep last 3 bits of RDX # TODO: Do not modify RDX                                                                                               # Colorize: green
+    shrq    $3, %rcx                                                            # Remove last 3 bits of RCX (Divide by 8)                                                                                # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------                                          # Colorize: green
+#  Cloning 1 byte from RSI to all 8 bytes of RAX                                #                                                                                                                        # Colorize: green
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    movzbl  %sil, %esi                                                          # Put zeros to all bytes of ESI except the little one # TODO: Process on RSI instead of ESI                              # Colorize: green
+    movabs  $0x0101010101010101, %rax                                           # Put ones to each byte of RAX                                                                                           # Colorize: green
+    imulq   %rsi, %rax                                                          # Multiply RAX on RSI. Clone byte from RSI to each byte of RAX                                                           # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    rep; stosq                                                                  # Assign with 8 byte blocks from RAX to RDI while RCX > 0                                                                # Colorize: green
+    movq    %rdx, %rcx                                                          # Assign RDX to RCX                                                                                                      # Colorize: green
+    rep; stosb                                                                  # Assign byte to byte from RAX to RDI while RCX > 0                                                                      # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    movq    %r9, %rax                                                           # Restore original RDI value from R9 to RAX                                                                              # Colorize: green
+    retq                                                                        # Return from the function                                                                                               # Colorize: green
+END_FUNCTION(memset)                                                            # End of memset function                                                                                                 # Colorize: green

@@ -3,7 +3,7 @@
 
 
 
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/status.h>
@@ -37,7 +37,7 @@ public:
 
 
 
-        return rdmsr(msr);
+        return AsmUtils::rdmsr(msr);
     }
 
     static inline NgosStatus write(u32 msr, u64 value) // TEST: NO
@@ -48,7 +48,7 @@ public:
 
 
 
-        return wrmsr(msr, value);
+        return AsmUtils::wrmsr(msr, value);
     }
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES

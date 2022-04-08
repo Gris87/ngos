@@ -1,6 +1,6 @@
 #include "memorytest.h"
 
-#include <com/ngos/shared/common/asm/instructions.h>
+#include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/uefibase/uefi/uefiassert.h>
 #include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
@@ -42,11 +42,11 @@ NgosStatus MemoryTest::initCpuSpeed()
 
 
 
-    u64 startTSC = rdtsc();
+    u64 startTSC = AsmUtils::rdtsc();
 
     UEFI_ASSERT_EXECUTION(UEFI::stall(CPU_SPEED_TIMEOUT), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
-    u64 endTSC = rdtsc();
+    u64 endTSC = AsmUtils::rdtsc();
     u64 ticks  = endTSC - startTSC;
 
 
