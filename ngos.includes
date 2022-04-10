@@ -1,9 +1,9 @@
-~/Qt/6.0.0/gcc_64/include/
-~/Qt/6.0.0/gcc_64/include/QtCore/
-~/Qt/6.0.0/gcc_64/include/QtGui/
-~/Qt/6.0.0/gcc_64/include/QtNetwork/
-~/Qt/6.0.0/gcc_64/include/QtWidgets/
-~/Qt/6.0.0/gcc_64/mkspecs/linux-g++/
+~/Qt/6.2.4/gcc_64/include/
+~/Qt/6.2.4/gcc_64/include/QtCore/
+~/Qt/6.2.4/gcc_64/include/QtGui/
+~/Qt/6.2.4/gcc_64/include/QtNetwork/
+~/Qt/6.2.4/gcc_64/include/QtWidgets/
+~/Qt/6.2.4/gcc_64/mkspecs/linux-g++/
 
 3rd_party/libs/freetype/include/
 include/
