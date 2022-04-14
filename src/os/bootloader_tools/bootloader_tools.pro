@@ -1,9 +1,9 @@
-TEMPLATE = subdirs
-
-SUBDIRS += \
-    cputest \
-    devicemanager \
-    hddtest \
-    memorytest \
-    networktest \
-    partitionwizard
+TEMPLATE = subdirs                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+SUBDIRS += \                                                                                                                                                                                             # Colorize: green
+    cputest \                                                                                                                                                                                            # Colorize: green
+    devicemanager \                                                                                                                                                                                      # Colorize: green
+    hddtest \                                                                                                                                                                                            # Colorize: green
+    memorytest \                                                                                                                                                                                         # Colorize: green
+    networktest \                                                                                                                                                                                        # Colorize: green
+    partitionwizard                                                                                                                                                                                      # Colorize: green
