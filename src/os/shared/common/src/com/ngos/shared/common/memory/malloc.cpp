@@ -1,165 +1,167 @@
-#include "malloc.h"
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/memory/memory.h>
-#include <com/ngos/shared/common/ngos/linkage.h>
-
-#ifdef UEFI_APPLICATION                         // Defined in pro file
-#include <com/ngos/shared/uefibase/uefi/uefi.h>
-#endif
-
-
-
-void* malloc(u64 size)
-{
-    // COMMON_LT((" | size = %u", size)); // Commented to avoid too frequent logs
-
-    COMMON_ASSERT(size > 0, "size is zero", nullptr);
-
-
-
-    void *res = nullptr;
-
-#ifdef UEFI_APPLICATION // Defined in pro file
-    if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, &res) != UefiStatus::SUCCESS)
-    {
-        COMMON_LF(("Failed to allocate pool(%u)", size));
-
-        return nullptr;
-    }
-
-    COMMON_LVV(("Allocated pool(0x%p, %u)", res, size));
-#else
-    AVOID_UNUSED(size); // TODO: Remove it when implemented
-#endif
-
-
-
-    return res;
-}
-
-NgosStatus free(void *address)
-{
-    // COMMON_LT((" | address = 0x%p", address)); // Commented to avoid too frequent logs
-
-    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
-
-
-
-#ifdef UEFI_APPLICATION // Defined in pro file
-    if (UEFI::freePool(address) == UefiStatus::SUCCESS)
-    {
-        COMMON_LVV(("Released pool(0x%p)", address));
-    }
-    else
-    {
-        COMMON_LC(("Failed to free pool(0x%p)", address));
-
-        return NgosStatus::FAILED;
-    }
-#else
-    AVOID_UNUSED(address); // TODO: Remove it when implemented
-#endif
-
-
-
-    return NgosStatus::OK;
-}
-
-void* realloc(void* address, u64 oldSize, u64 newSize)
-{
-    // COMMON_LT((" | address = 0x%p, oldSize = %u, newSize = %u", address, oldSize, newSize)); // Commented to avoid too frequent logs
-
-    COMMON_ASSERT(address != nullptr, "address is null",    nullptr);
-    COMMON_ASSERT(oldSize > 0,        "oldSize is zero",    nullptr);
-    COMMON_ASSERT(newSize > 0,        "newSize is zero",    nullptr);
-    COMMON_ASSERT(newSize > oldSize,  "newSize is invalid", nullptr);
-
-
-
-    void *res = malloc(newSize);
-
-    if (res != nullptr)
-    {
-        memcpy(res, address, oldSize);
-
-        COMMON_ASSERT_EXECUTION(free(address), nullptr);
-    }
-
-
-
-    return res;
-}
-
-void* operator new(size_t size)
-{
-    // COMMON_LT((" | size = %u", size)); // Commented to avoid too frequent logs
-
-
-
-    return malloc(size);
-}
-
-void operator delete(void *address)
-{
-    // COMMON_LT((" | address = 0x%p", address)); // Commented to avoid too frequent logs
-
-    COMMON_ASSERT(address != nullptr, "address is null");
-
-
-
-    COMMON_ASSERT_EXECUTION(free(address));
-}
-
-void operator delete(void *address, size_t size)
-{
-    // COMMON_LT((" | address = 0x%p, size = %u", address, size)); // Commented to avoid too frequent logs
-
-    COMMON_ASSERT(address != nullptr, "address is null");
-    COMMON_ASSERT(size > 0,           "size is zero");
-
-
-
-    AVOID_UNUSED(size);
-
-
-
-    COMMON_ASSERT_EXECUTION(free(address));
-}
-
-void* operator new[](size_t size)
-{
-    // COMMON_LT((" | size = %u", size)); // Commented to avoid too frequent logs
-
-
-
-    return malloc(size);
-}
-
-void operator delete[](void *address)
-{
-    // COMMON_LT((" | address = 0x%p", address)); // Commented to avoid too frequent logs
-
-    COMMON_ASSERT(address != nullptr, "address is null");
-
-
-
-    COMMON_ASSERT_EXECUTION(free(address));
-}
-
-void operator delete[](void *address, size_t size)
-{
-    // COMMON_LT((" | address = 0x%p, size = %u", address, size)); // Commented to avoid too frequent logs
-
-    COMMON_ASSERT(address != nullptr, "address is null");
-    COMMON_ASSERT(size > 0,           "size is zero");
-
-
-
-    AVOID_UNUSED(size);
-
-
-
-    COMMON_ASSERT_EXECUTION(free(address));
-}
+#include "malloc.h"                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/memory/memory.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/ngos/linkage.h>                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#ifdef UEFI_APPLICATION                         // Defined in pro file                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/uefibase/uefi/uefi.h>                                                                                                                                                          // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void* malloc(u64 size)                                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | size = %u", size)); // Commented to avoid too frequent logs                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(size > 0, "size is zero", nullptr);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void *res = nullptr;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Use UEFI::allocatePool if UEFI available otherwise use // TODO: Please continue                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+#ifdef UEFI_APPLICATION // Defined in pro file                                                                                                                                                           // Colorize: green
+        if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, &res) != UefiStatus::SUCCESS)                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LF(("Failed to allocate pool(%u)", size));                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return nullptr;                                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_LVV(("Allocated pool(0x%p, %u)", res, size));                                                                                                                                             // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
+        AVOID_UNUSED(size); // TODO: Remove it when implemented                                                                                                                                          // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus free(void *address)                                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | address = 0x%p", address)); // Commented to avoid too frequent logs                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Use UEFI::freePool if UEFI available otherwise use // TODO: Please continue                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+#ifdef UEFI_APPLICATION // Defined in pro file                                                                                                                                                           // Colorize: green
+        if (UEFI::freePool(address) != UefiStatus::SUCCESS)                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LC(("Failed to free pool(0x%p)", address));                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return NgosStatus::FAILED;                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_LVV(("Released pool(0x%p)", address));                                                                                                                                                    // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
+        AVOID_UNUSED(address); // TODO: Remove it when implemented                                                                                                                                       // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void* realloc(void* address, u64 oldSize, u64 newSize)                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | address = 0x%p, oldSize = %u, newSize = %u", address, oldSize, newSize)); // Commented to avoid too frequent logs                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(address != nullptr, "address is null",    nullptr);                                                                                                                                    // Colorize: green
+    COMMON_ASSERT(oldSize > 0,        "oldSize is zero",    nullptr);                                                                                                                                    // Colorize: green
+    COMMON_ASSERT(newSize > 0,        "newSize is zero",    nullptr);                                                                                                                                    // Colorize: green
+    COMMON_ASSERT(newSize > oldSize,  "newSize is invalid", nullptr);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void *res;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Allocate new buffer and move content into it                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        res = malloc(newSize);                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (res != nullptr)                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_ASSERT_EXECUTION(memcpy(res, address, oldSize), void*, res, nullptr);                                                                                                                 // Colorize: green
+            COMMON_ASSERT_EXECUTION(free(address),                             nullptr);                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void* operator new(size_t size)                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | size = %u", size)); // Commented to avoid too frequent logs                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return malloc(size);                                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void operator delete(void *address)                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | address = 0x%p", address)); // Commented to avoid too frequent logs                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(address != nullptr, "address is null");                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT_EXECUTION(free(address));                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void operator delete(void *address, size_t size)                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | address = 0x%p, size = %u", address, size)); // Commented to avoid too frequent logs                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(address != nullptr, "address is null");                                                                                                                                                // Colorize: green
+    COMMON_ASSERT(size > 0,           "size is zero");                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    AVOID_UNUSED(size);                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT_EXECUTION(free(address));                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void* operator new[](size_t size)                                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | size = %u", size)); // Commented to avoid too frequent logs                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return malloc(size);                                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void operator delete[](void *address)                                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | address = 0x%p", address)); // Commented to avoid too frequent logs                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(address != nullptr, "address is null");                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT_EXECUTION(free(address));                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void operator delete[](void *address, size_t size)                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | address = 0x%p, size = %u", address, size)); // Commented to avoid too frequent logs                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(address != nullptr, "address is null");                                                                                                                                                // Colorize: green
+    COMMON_ASSERT(size > 0,           "size is zero");                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    AVOID_UNUSED(size);                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT_EXECUTION(free(address));                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
