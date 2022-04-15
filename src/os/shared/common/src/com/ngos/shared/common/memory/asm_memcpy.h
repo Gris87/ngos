@@ -1,16 +1,16 @@
-#ifndef COM_NGOS_SHARED_COMMON_MEMORY_ASM_MEMCPY_H
-#define COM_NGOS_SHARED_COMMON_MEMORY_ASM_MEMCPY_H
-
-
-
-#include <com/ngos/shared/common/ngos/linkage.h>
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-CPP_EXTERN_C
-void* memcpy(void *dest, const void *src, u64 length); // TEST: MODULE=memory.h
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_MEMORY_ASM_MEMCPY_H
+#ifndef COM_NGOS_SHARED_COMMON_MEMORY_ASM_MEMCPY_H                                                                                                                                                       // Colorize: green
+#define COM_NGOS_SHARED_COMMON_MEMORY_ASM_MEMCPY_H                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/linkage.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CPP_EXTERN_C                                                                                                                                                                                             // Colorize: green
+void* memcpy(void *dest, const void *src, u64 length); // TEST: MODULE=memory.h                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_MEMORY_ASM_MEMCPY_H                                                                                                                                                     // Colorize: green
