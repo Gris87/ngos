@@ -1,15 +1,18 @@
 .gitignore
 3rd_party/.gitignore
-3rd_party/fetch_freetype.sh
 3rd_party/Makefile
+3rd_party/fetch_freetype.sh
+Makefile
+README.md
+TODO.md
 docs/.spelling
 docs/0. Intro/1. Project structure/README.md
-docs/0. Intro/2. Getting started/1. Install prerequisites on Ubuntu 20.10/README.md
-docs/0. Intro/2. Getting started/2. Install prerequisites on Ubuntu 20.04/README.md
-docs/0. Intro/2. Getting started/3. Install prerequisites on Ubuntu 19.10/README.md
-docs/0. Intro/2. Getting started/4. Install prerequisites on Ubuntu 19.04/README.md
-docs/0. Intro/2. Getting started/5. Install prerequisites on Ubuntu 18.10/README.md
-docs/0. Intro/2. Getting started/6. Install prerequisites on Ubuntu 18.04/README.md
+docs/0. Intro/2. Getting started/1. Install prerequisites on Ubuntu 21.10/README.md
+docs/0. Intro/2. Getting started/2. Install prerequisites on Ubuntu 21.04/README.md
+docs/0. Intro/2. Getting started/3. Install prerequisites on Ubuntu 20.10/README.md
+docs/0. Intro/2. Getting started/4. Install prerequisites on Ubuntu 20.04/README.md
+docs/0. Intro/2. Getting started/5. Install prerequisites on Ubuntu 19.10/README.md
+docs/0. Intro/2. Getting started/6. Install prerequisites on Ubuntu 19.04/README.md
 docs/0. Intro/2. Getting started/7. Install prerequisites on CentOS 8.2/README.md
 docs/0. Intro/2. Getting started/8. Install prerequisites on CentOS 7.6/README.md
 docs/0. Intro/2. Getting started/Configuring Qt Creator 01.png
@@ -84,9 +87,7 @@ docs/2. Kernel initialization/README.md
 docs/README.md
 include/buildconfig.h
 include/stdinc/stdarg.h
-Makefile
 ngos.creator.shared
-README.md
 scripts/add_rc_version_tag.sh
 scripts/add_version_tag.sh
 scripts/amount_of_code_lines.sh
@@ -98,12 +99,12 @@ scripts/non_verified_files.sh
 scripts/prerequisites/centos_7_6.sh
 scripts/prerequisites/centos_8_2.sh
 scripts/prerequisites/install.sh
-scripts/prerequisites/ubuntu_18_04.sh
-scripts/prerequisites/ubuntu_18_10.sh
 scripts/prerequisites/ubuntu_19_04.sh
 scripts/prerequisites/ubuntu_19_10.sh
 scripts/prerequisites/ubuntu_20_04.sh
 scripts/prerequisites/ubuntu_20_10.sh
+scripts/prerequisites/ubuntu_21_04.sh
+scripts/prerequisites/ubuntu_21_10.sh
 scripts/pull.sh
 scripts/push.sh
 scripts/sign_uefi_application.sh
@@ -113,31 +114,34 @@ secure_boot/.gitignore
 secure_boot/keys/ISK.key.gpg
 secure_boot/keys/ISK.pem
 secure_boot/keys/KEK.pem
-secure_boot/setup/db.auth
 secure_boot/setup/KEK.auth
 secure_boot/setup/PK.auth
+secure_boot/setup/db.auth
 src/.gitignore
 src/apps/.gitignore
 src/apps/apps.pro
 src/apps/ls/.gitignore
-src/apps/ls/ls.pro
 src/apps/ls/README.md
+src/apps/ls/ls.pro
 src/apps/ls/src/com/ngos/ls/main.cpp
 src/libs/.gitignore
 src/libs/libs.pro
 src/libs/qt/.gitignore
-src/libs/qt/qt.pro
 src/libs/qt/README.md
+src/libs/qt/qt.pro
 src/libs/qt/src/com/ngos/qt/qt.cpp
 src/libs/qt/src/com/ngos/qt/qt.h
 src/os/.gitignore
 src/os/boot/.gitignore
+src/os/boot/Image structure.png
+src/os/boot/README.md
 src/os/boot/asm/arch/x86_64/com/ngos/boot/main.S
 src/os/boot/boot.pro
-src/os/boot/Image structure.png
 src/os/boot/linker.ld
-src/os/boot/README.md
 src/os/bootloader/.gitignore
+src/os/bootloader/Image structure.png
+src/os/bootloader/README.md
+src/os/bootloader/Resources.qrc
 src/os/bootloader/asm/arch/x86_64/com/ngos/bootloader/main.S
 src/os/bootloader/assets/glyphs/console.bin
 src/os/bootloader/assets/glyphs/gui.bin
@@ -169,10 +173,7 @@ src/os/bootloader/assets/images/volume_internal.png
 src/os/bootloader/assets/images/volume_network.png
 src/os/bootloader/assets/images/volume_optical.png
 src/os/bootloader/bootloader.pro
-src/os/bootloader/Image structure.png
 src/os/bootloader/linker.ld
-src/os/bootloader/README.md
-src/os/bootloader/Resources.qrc
 src/os/bootloader/src/com/ngos/bootloader/main.cpp
 src/os/bootloader/src/com/ngos/bootloader/main/bootloader.cpp
 src/os/bootloader/src/com/ngos/bootloader/main/bootloader.h
@@ -188,6 +189,9 @@ src/os/bootloader/test/com/ngos/bootloader/sections/section1/testcase.h
 src/os/bootloader_tools/.gitignore
 src/os/bootloader_tools/bootloader_tools.pro
 src/os/bootloader_tools/cputest/.gitignore
+src/os/bootloader_tools/cputest/Image structure.png
+src/os/bootloader_tools/cputest/README.md
+src/os/bootloader_tools/cputest/Resources.qrc
 src/os/bootloader_tools/cputest/asm/arch/x86_64/com/ngos/bootloader_tools/cputest/main.S
 src/os/bootloader_tools/cputest/assets/glyphs/console.bin
 src/os/bootloader_tools/cputest/assets/glyphs/gui.bin
@@ -226,10 +230,7 @@ src/os/bootloader_tools/cputest/assets/images/tabwidget_panel.9.png
 src/os/bootloader_tools/cputest/assets/images/test.png
 src/os/bootloader_tools/cputest/assets/images/warning.png
 src/os/bootloader_tools/cputest/cputest.pro
-src/os/bootloader_tools/cputest/Image structure.png
 src/os/bootloader_tools/cputest/linker.ld
-src/os/bootloader_tools/cputest/README.md
-src/os/bootloader_tools/cputest/Resources.qrc
 src/os/bootloader_tools/cputest/src/com/ngos/bootloader_tools/cputest/main.cpp
 src/os/bootloader_tools/cputest/src/com/ngos/bootloader_tools/cputest/main/cputest.cpp
 src/os/bootloader_tools/cputest/src/com/ngos/bootloader_tools/cputest/main/cputest.h
@@ -280,6 +281,9 @@ src/os/bootloader_tools/cputest/src/com/ngos/bootloader_tools/cputest/tests/test
 src/os/bootloader_tools/cputest/test/com/ngos/bootloader_tools/cputest/sections/section1/com/ngos/bootloader_tools/cputest/types.h
 src/os/bootloader_tools/cputest/test/com/ngos/bootloader_tools/cputest/sections/section1/testcase.h
 src/os/bootloader_tools/devicemanager/.gitignore
+src/os/bootloader_tools/devicemanager/Image structure.png
+src/os/bootloader_tools/devicemanager/README.md
+src/os/bootloader_tools/devicemanager/Resources.qrc
 src/os/bootloader_tools/devicemanager/asm/arch/x86_64/com/ngos/bootloader_tools/devicemanager/main.S
 src/os/bootloader_tools/devicemanager/assets/glyphs/console.bin
 src/os/bootloader_tools/devicemanager/assets/glyphs/gui.bin
@@ -360,10 +364,7 @@ src/os/bootloader_tools/devicemanager/assets/images/toolbutton_pressed.9.png
 src/os/bootloader_tools/devicemanager/assets/images/tree_background.9.png
 src/os/bootloader_tools/devicemanager/assets/images/voltage_probe.png
 src/os/bootloader_tools/devicemanager/devicemanager.pro
-src/os/bootloader_tools/devicemanager/Image structure.png
 src/os/bootloader_tools/devicemanager/linker.ld
-src/os/bootloader_tools/devicemanager/README.md
-src/os/bootloader_tools/devicemanager/Resources.qrc
 src/os/bootloader_tools/devicemanager/src/com/ngos/bootloader_tools/devicemanager/main.cpp
 src/os/bootloader_tools/devicemanager/src/com/ngos/bootloader_tools/devicemanager/main/devicemanager.cpp
 src/os/bootloader_tools/devicemanager/src/com/ngos/bootloader_tools/devicemanager/main/devicemanager.h
@@ -388,6 +389,9 @@ src/os/bootloader_tools/devicemanager/src/com/ngos/bootloader_tools/devicemanage
 src/os/bootloader_tools/devicemanager/test/com/ngos/bootloader_tools/devicemanager/sections/section1/com/ngos/bootloader_tools/devicemanager/types.h
 src/os/bootloader_tools/devicemanager/test/com/ngos/bootloader_tools/devicemanager/sections/section1/testcase.h
 src/os/bootloader_tools/hddtest/.gitignore
+src/os/bootloader_tools/hddtest/Image structure.png
+src/os/bootloader_tools/hddtest/README.md
+src/os/bootloader_tools/hddtest/Resources.qrc
 src/os/bootloader_tools/hddtest/asm/arch/x86_64/com/ngos/bootloader_tools/hddtest/main.S
 src/os/bootloader_tools/hddtest/assets/glyphs/console.bin
 src/os/bootloader_tools/hddtest/assets/glyphs/gui.bin
@@ -423,10 +427,7 @@ src/os/bootloader_tools/hddtest/assets/images/tabwidget_panel.9.png
 src/os/bootloader_tools/hddtest/assets/images/test.png
 src/os/bootloader_tools/hddtest/assets/images/warning.png
 src/os/bootloader_tools/hddtest/hddtest.pro
-src/os/bootloader_tools/hddtest/Image structure.png
 src/os/bootloader_tools/hddtest/linker.ld
-src/os/bootloader_tools/hddtest/README.md
-src/os/bootloader_tools/hddtest/Resources.qrc
 src/os/bootloader_tools/hddtest/src/com/ngos/bootloader_tools/hddtest/main.cpp
 src/os/bootloader_tools/hddtest/src/com/ngos/bootloader_tools/hddtest/main/hddtest.cpp
 src/os/bootloader_tools/hddtest/src/com/ngos/bootloader_tools/hddtest/main/hddtest.h
@@ -435,6 +436,9 @@ src/os/bootloader_tools/hddtest/src/com/ngos/bootloader_tools/hddtest/main/hddte
 src/os/bootloader_tools/hddtest/test/com/ngos/bootloader_tools/hddtest/sections/section1/com/ngos/bootloader_tools/hddtest/types.h
 src/os/bootloader_tools/hddtest/test/com/ngos/bootloader_tools/hddtest/sections/section1/testcase.h
 src/os/bootloader_tools/memorytest/.gitignore
+src/os/bootloader_tools/memorytest/Image structure.png
+src/os/bootloader_tools/memorytest/README.md
+src/os/bootloader_tools/memorytest/Resources.qrc
 src/os/bootloader_tools/memorytest/asm/arch/x86_64/com/ngos/bootloader_tools/memorytest/main.S
 src/os/bootloader_tools/memorytest/asm/arch/x86_64/com/ngos/bootloader_tools/memorytest/tests/readmemoryblock.S
 src/os/bootloader_tools/memorytest/asm/arch/x86_64/com/ngos/bootloader_tools/memorytest/tests/writememoryblock.S
@@ -489,11 +493,8 @@ src/os/bootloader_tools/memorytest/assets/images/tabwidget_panel.9.png
 src/os/bootloader_tools/memorytest/assets/images/test.png
 src/os/bootloader_tools/memorytest/assets/images/test_panel.9.png
 src/os/bootloader_tools/memorytest/assets/images/warning.png
-src/os/bootloader_tools/memorytest/Image structure.png
 src/os/bootloader_tools/memorytest/linker.ld
 src/os/bootloader_tools/memorytest/memorytest.pro
-src/os/bootloader_tools/memorytest/README.md
-src/os/bootloader_tools/memorytest/Resources.qrc
 src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/main.cpp
 src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/main/memorytest.cpp
 src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/main/memorytest.h
@@ -516,6 +517,9 @@ src/os/bootloader_tools/memorytest/src/com/ngos/bootloader_tools/memorytest/test
 src/os/bootloader_tools/memorytest/test/com/ngos/bootloader_tools/memorytest/sections/section1/com/ngos/bootloader_tools/memorytest/types.h
 src/os/bootloader_tools/memorytest/test/com/ngos/bootloader_tools/memorytest/sections/section1/testcase.h
 src/os/bootloader_tools/networktest/.gitignore
+src/os/bootloader_tools/networktest/Image structure.png
+src/os/bootloader_tools/networktest/README.md
+src/os/bootloader_tools/networktest/Resources.qrc
 src/os/bootloader_tools/networktest/asm/arch/x86_64/com/ngos/bootloader_tools/networktest/main.S
 src/os/bootloader_tools/networktest/assets/glyphs/console.bin
 src/os/bootloader_tools/networktest/assets/glyphs/gui.bin
@@ -550,11 +554,8 @@ src/os/bootloader_tools/networktest/assets/images/table_header.9.png
 src/os/bootloader_tools/networktest/assets/images/tabwidget_panel.9.png
 src/os/bootloader_tools/networktest/assets/images/test.png
 src/os/bootloader_tools/networktest/assets/images/warning.png
-src/os/bootloader_tools/networktest/Image structure.png
 src/os/bootloader_tools/networktest/linker.ld
 src/os/bootloader_tools/networktest/networktest.pro
-src/os/bootloader_tools/networktest/README.md
-src/os/bootloader_tools/networktest/Resources.qrc
 src/os/bootloader_tools/networktest/src/com/ngos/bootloader_tools/networktest/main.cpp
 src/os/bootloader_tools/networktest/src/com/ngos/bootloader_tools/networktest/main/networktest.cpp
 src/os/bootloader_tools/networktest/src/com/ngos/bootloader_tools/networktest/main/networktest.h
@@ -563,6 +564,9 @@ src/os/bootloader_tools/networktest/src/com/ngos/bootloader_tools/networktest/ma
 src/os/bootloader_tools/networktest/test/com/ngos/bootloader_tools/networktest/sections/section1/com/ngos/bootloader_tools/networktest/types.h
 src/os/bootloader_tools/networktest/test/com/ngos/bootloader_tools/networktest/sections/section1/testcase.h
 src/os/bootloader_tools/partitionwizard/.gitignore
+src/os/bootloader_tools/partitionwizard/Image structure.png
+src/os/bootloader_tools/partitionwizard/README.md
+src/os/bootloader_tools/partitionwizard/Resources.qrc
 src/os/bootloader_tools/partitionwizard/asm/arch/x86_64/com/ngos/bootloader_tools/partitionwizard/main.S
 src/os/bootloader_tools/partitionwizard/assets/glyphs/console.bin
 src/os/bootloader_tools/partitionwizard/assets/glyphs/gui.bin
@@ -576,11 +580,8 @@ src/os/bootloader_tools/partitionwizard/assets/images/console.9.png
 src/os/bootloader_tools/partitionwizard/assets/images/cursor.png
 src/os/bootloader_tools/partitionwizard/assets/images/reboot.png
 src/os/bootloader_tools/partitionwizard/assets/images/shutdown.png
-src/os/bootloader_tools/partitionwizard/Image structure.png
 src/os/bootloader_tools/partitionwizard/linker.ld
 src/os/bootloader_tools/partitionwizard/partitionwizard.pro
-src/os/bootloader_tools/partitionwizard/README.md
-src/os/bootloader_tools/partitionwizard/Resources.qrc
 src/os/bootloader_tools/partitionwizard/src/com/ngos/bootloader_tools/partitionwizard/main.cpp
 src/os/bootloader_tools/partitionwizard/src/com/ngos/bootloader_tools/partitionwizard/main/partitionwizard.cpp
 src/os/bootloader_tools/partitionwizard/src/com/ngos/bootloader_tools/partitionwizard/main/partitionwizard.h
@@ -589,14 +590,14 @@ src/os/bootloader_tools/partitionwizard/src/com/ngos/bootloader_tools/partitionw
 src/os/bootloader_tools/partitionwizard/test/com/ngos/bootloader_tools/partitionwizard/sections/section1/com/ngos/bootloader_tools/partitionwizard/types.h
 src/os/bootloader_tools/partitionwizard/test/com/ngos/bootloader_tools/partitionwizard/sections/section1/testcase.h
 src/os/configure/.gitignore
+src/os/configure/Image structure.png
+src/os/configure/README.md
+src/os/configure/Resources.qrc
 src/os/configure/asm/arch/x86_64/com/ngos/configure/b_early/other/pagetable/switchtofivelevelpaging.S
 src/os/configure/asm/arch/x86_64/com/ngos/configure/main.S
 src/os/configure/assets/glyphs/console.bin
 src/os/configure/configure.pro
-src/os/configure/Image structure.png
 src/os/configure/linker.ld
-src/os/configure/README.md
-src/os/configure/Resources.qrc
 src/os/configure/src/com/ngos/configure/a_uefi/main/exitbootservices.cpp
 src/os/configure/src/com/ngos/configure/a_uefi/main/exitbootservices.h
 src/os/configure/src/com/ngos/configure/a_uefi/main/setupbootparams.cpp
@@ -658,6 +659,9 @@ src/os/configure/src/com/ngos/configure/other/kerneldescriptor.h
 src/os/configure/test/com/ngos/configure/sections/section1/com/ngos/configure/types.h
 src/os/configure/test/com/ngos/configure/sections/section1/testcase.h
 src/os/installer/.gitignore
+src/os/installer/Image structure.png
+src/os/installer/README.md
+src/os/installer/Resources.qrc
 src/os/installer/asm/arch/x86_64/com/ngos/installer/main.S
 src/os/installer/assets/glyphs/console.bin
 src/os/installer/assets/glyphs/gui.bin
@@ -671,11 +675,8 @@ src/os/installer/assets/images/console.9.png
 src/os/installer/assets/images/cursor.png
 src/os/installer/assets/images/reboot.png
 src/os/installer/assets/images/shutdown.png
-src/os/installer/Image structure.png
 src/os/installer/installer.pro
 src/os/installer/linker.ld
-src/os/installer/README.md
-src/os/installer/Resources.qrc
 src/os/installer/src/com/ngos/installer/main.cpp
 src/os/installer/src/com/ngos/installer/main/installer.cpp
 src/os/installer/src/com/ngos/installer/main/installer.h
@@ -684,14 +685,14 @@ src/os/installer/src/com/ngos/installer/main/installergui.h
 src/os/installer/test/com/ngos/installer/sections/section1/com/ngos/installer/types.h
 src/os/installer/test/com/ngos/installer/sections/section1/testcase.h
 src/os/kernel/.gitignore
+src/os/kernel/Image structure.png
+src/os/kernel/README.md
+src/os/kernel/Resources.qrc
 src/os/kernel/asm/arch/x86_64/com/ngos/kernel/a_early/main/setupidthandlers.S
 src/os/kernel/asm/arch/x86_64/com/ngos/kernel/main.S
 src/os/kernel/assets/glyphs/console.bin
-src/os/kernel/Image structure.png
 src/os/kernel/kernel.pro
 src/os/kernel/linker.ld
-src/os/kernel/README.md
-src/os/kernel/Resources.qrc
 src/os/kernel/src/com/ngos/kernel/a_early/main/asm_setupidthandlers.h
 src/os/kernel/src/com/ngos/kernel/a_early/main/disableirq.cpp
 src/os/kernel/src/com/ngos/kernel/a_early/main/disableirq.h
@@ -5609,12 +5610,15 @@ test/tests/12. Kernel QEMU-KVM Release.sh
 test/tests/13. Build all parameters.sh
 test/tests/assets/BIOS_screen.png
 test/tests/assets/PIE_memory.dmp.hex
-TODO.md
 tools/.gitignore
 tools/gdb/.gdbinit
 tools/gdb/install.sh
 tools/qt/.gitignore
 tools/qt/build_config_gui/.gitignore
+tools/qt/build_config_gui/README.md
+tools/qt/build_config_gui/Resources.qrc
+tools/qt/build_config_gui/Resources.rc
+tools/qt/build_config_gui/Screenshot.png
 tools/qt/build_config_gui/assets/images/about.png
 tools/qt/build_config_gui/assets/images/exit.png
 tools/qt/build_config_gui/assets/images/icon.ico
@@ -5623,10 +5627,6 @@ tools/qt/build_config_gui/assets/images/reload.png
 tools/qt/build_config_gui/assets/images/reset.png
 tools/qt/build_config_gui/assets/images/save.png
 tools/qt/build_config_gui/build_config_gui.pro
-tools/qt/build_config_gui/README.md
-tools/qt/build_config_gui/Resources.qrc
-tools/qt/build_config_gui/Resources.rc
-tools/qt/build_config_gui/Screenshot.png
 tools/qt/build_config_gui/src/com/ngos/devtools/build_config_gui/main.cpp
 tools/qt/build_config_gui/src/com/ngos/devtools/build_config_gui/main/aboutdialog.cpp
 tools/qt/build_config_gui/src/com/ngos/devtools/build_config_gui/main/aboutdialog.h
@@ -5658,19 +5658,19 @@ tools/qt/build_config_gui/src/com/ngos/devtools/build_config_gui/widgets/paramet
 tools/qt/build_config_gui/src/com/ngos/devtools/build_config_gui/widgets/parameters/textparameterwidget.cpp
 tools/qt/build_config_gui/src/com/ngos/devtools/build_config_gui/widgets/parameters/textparameterwidget.h
 tools/qt/build_config_maker/.gitignore
-tools/qt/build_config_maker/build_config_maker.pro
 tools/qt/build_config_maker/README.md
 tools/qt/build_config_maker/Screenshot.png
+tools/qt/build_config_maker/build_config_maker.pro
 tools/qt/build_config_maker/src/com/ngos/devtools/build_config_maker/main.cpp
 tools/qt/build_config_maker/src/com/ngos/devtools/build_config_maker/main/buildconfigmaker.cpp
 tools/qt/build_config_maker/src/com/ngos/devtools/build_config_maker/main/buildconfigmaker.h
 tools/qt/code_generator/.gitignore
-tools/qt/code_generator/assets/fonts/console.ttf
-tools/qt/code_generator/assets/fonts/gui.ttf
-tools/qt/code_generator/code_generator.pro
 tools/qt/code_generator/README.md
 tools/qt/code_generator/Resources.qrc
 tools/qt/code_generator/Screenshot.png
+tools/qt/code_generator/assets/fonts/console.ttf
+tools/qt/code_generator/assets/fonts/gui.ttf
+tools/qt/code_generator/code_generator.pro
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/assets/assetsgenerator.cpp
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/assets/assetsgenerator.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/assets/zzz_generators/consoleglyphgenerator.cpp
@@ -5713,9 +5713,9 @@ tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pcisubclass.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pcisubdevice.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pcivendor.h
 tools/qt/code_verifier/.gitignore
-tools/qt/code_verifier/code_verifier.pro
 tools/qt/code_verifier/README.md
 tools/qt/code_verifier/Screenshot.png
+tools/qt/code_verifier/code_verifier.pro
 tools/qt/code_verifier/src/com/ngos/devtools/code_verifier/main.cpp
 tools/qt/code_verifier/src/com/ngos/devtools/code_verifier/other/codefileinfo.cpp
 tools/qt/code_verifier/src/com/ngos/devtools/code_verifier/other/codefileinfo.h
@@ -5843,9 +5843,9 @@ tools/qt/code_verifier/src/com/ngos/devtools/code_verifier/verifiers/zzz_types/s
 tools/qt/code_verifier/src/com/ngos/devtools/code_verifier/verifiers/zzz_types/s/asmindentverifier.cpp
 tools/qt/code_verifier/src/com/ngos/devtools/code_verifier/verifiers/zzz_types/s/asmindentverifier.h
 tools/qt/docs_verifier/.gitignore
-tools/qt/docs_verifier/docs_verifier.pro
 tools/qt/docs_verifier/README.md
 tools/qt/docs_verifier/Screenshot.png
+tools/qt/docs_verifier/docs_verifier.pro
 tools/qt/docs_verifier/src/com/ngos/devtools/docs_verifier/main.cpp
 tools/qt/docs_verifier/src/com/ngos/devtools/docs_verifier/other/docsfileinfo.cpp
 tools/qt/docs_verifier/src/com/ngos/devtools/docs_verifier/other/docsfileinfo.h
@@ -5871,9 +5871,9 @@ tools/qt/docs_verifier/src/com/ngos/devtools/docs_verifier/verifiers/zzz_types/m
 tools/qt/docs_verifier/src/com/ngos/devtools/docs_verifier/verifiers/zzz_types/md/mdtopheadersverifier.cpp
 tools/qt/docs_verifier/src/com/ngos/devtools/docs_verifier/verifiers/zzz_types/md/mdtopheadersverifier.h
 tools/qt/image_builder/.gitignore
-tools/qt/image_builder/image_builder.pro
 tools/qt/image_builder/README.md
 tools/qt/image_builder/Screenshot.png
+tools/qt/image_builder/image_builder.pro
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/main.cpp
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/main/imagebuilder.cpp
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/main/imagebuilder.h
@@ -5894,9 +5894,9 @@ tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/peoptionalheader.h
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/sectionheader.cpp
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/sectionheader.h
 tools/qt/qmake/.gitignore
-tools/qt/qmake/qmake.pro
 tools/qt/qmake/README.md
 tools/qt/qmake/Screenshot.png
+tools/qt/qmake/qmake.pro
 tools/qt/qmake/src/com/ngos/devtools/qmake/main.cpp
 tools/qt/qmake/src/com/ngos/devtools/qmake/main/qmake.cpp
 tools/qt/qmake/src/com/ngos/devtools/qmake/main/qmake.h
@@ -5944,8 +5944,12 @@ tools/qt/tests_verifier/src/com/ngos/devtools/tests_verifier/threads/testworkert
 tools/qt/tests_verifier/src/com/ngos/devtools/tests_verifier/threads/testworkerthread.h
 tools/qt/tests_verifier/tests_verifier.pro
 tools/qt/usb_boot_maker/.gitignore
-tools/qt/usb_boot_maker/assets/binaries/protective_mbr.bin
+tools/qt/usb_boot_maker/README.md
+tools/qt/usb_boot_maker/Resources.qrc
+tools/qt/usb_boot_maker/Resources.rc
+tools/qt/usb_boot_maker/Screenshot.png
 tools/qt/usb_boot_maker/assets/binaries/protective_mbr.S
+tools/qt/usb_boot_maker/assets/binaries/protective_mbr.bin
 tools/qt/usb_boot_maker/assets/images/about.png
 tools/qt/usb_boot_maker/assets/images/exit.png
 tools/qt/usb_boot_maker/assets/images/icon.ico
@@ -5958,10 +5962,6 @@ tools/qt/usb_boot_maker/assets/translations/language_ru.qm
 tools/qt/usb_boot_maker/assets/translations/language_ru.ts
 tools/qt/usb_boot_maker/distrib/ssleay32.dll
 tools/qt/usb_boot_maker/distrib/xzcat.exe
-tools/qt/usb_boot_maker/README.md
-tools/qt/usb_boot_maker/Resources.qrc
-tools/qt/usb_boot_maker/Resources.rc
-tools/qt/usb_boot_maker/Screenshot.png
 tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/main.cpp
 tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/main/aboutdialog.cpp
 tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/main/aboutdialog.h
@@ -5997,12 +5997,31 @@ tools/tracers/assets/win10/EFI/Microsoft/Boot/BCD
 tools/tracers/assets/win10/EFI/Microsoft/Boot/BCD.LOG
 tools/tracers/assets/win10/EFI/Microsoft/Boot/BCD.LOG1
 tools/tracers/assets/win10/EFI/Microsoft/Boot/BCD.LOG2
+tools/tracers/assets/win10/EFI/Microsoft/Boot/BOOTSTAT.DAT
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/chs_boot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/cht_boot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/jpn_boot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/kor_boot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/malgun_boot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/malgunn_boot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/meiryo_boot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/meiryon_boot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/msjh_boot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/msjhn_boot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/msyh_boot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/msyhn_boot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/segmono_boot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/segoe_slboot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/segoen_slboot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/wgl4_boot.ttf
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Resources/bootres.dll
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Resources/en-US/bootres.dll.mui
+tools/tracers/assets/win10/EFI/Microsoft/Boot/Resources/ru-RU/bootres.dll.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/bg-BG/bootmgfw.efi.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/bg-BG/bootmgr.efi.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/boot.stl
 tools/tracers/assets/win10/EFI/Microsoft/Boot/bootmgfw.efi
 tools/tracers/assets/win10/EFI/Microsoft/Boot/bootmgr.efi
-tools/tracers/assets/win10/EFI/Microsoft/Boot/BOOTSTAT.DAT
 tools/tracers/assets/win10/EFI/Microsoft/Boot/cs-CZ/bootmgfw.efi.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/cs-CZ/bootmgr.efi.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/cs-CZ/memtest.efi.mui
@@ -6030,22 +6049,6 @@ tools/tracers/assets/win10/EFI/Microsoft/Boot/et-EE/bootmgr.efi.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/fi-FI/bootmgfw.efi.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/fi-FI/bootmgr.efi.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/fi-FI/memtest.efi.mui
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/chs_boot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/cht_boot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/jpn_boot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/kor_boot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/malgun_boot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/malgunn_boot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/meiryo_boot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/meiryon_boot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/msjh_boot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/msjhn_boot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/msyh_boot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/msyhn_boot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/segmono_boot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/segoe_slboot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/segoen_slboot.ttf
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Fonts/wgl4_boot.ttf
 tools/tracers/assets/win10/EFI/Microsoft/Boot/fr-CA/bootmgfw.efi.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/fr-CA/bootmgr.efi.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/fr-FR/bootmgfw.efi.mui
@@ -6097,9 +6100,6 @@ tools/tracers/assets/win10/EFI/Microsoft/Boot/pt-PT/bootmgfw.efi.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/pt-PT/bootmgr.efi.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/pt-PT/memtest.efi.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/qps-ploc/memtest.efi.mui
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Resources/bootres.dll
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Resources/en-US/bootres.dll.mui
-tools/tracers/assets/win10/EFI/Microsoft/Boot/Resources/ru-RU/bootres.dll.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/ro-RO/bootmgfw.efi.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/ro-RO/bootmgr.efi.mui
 tools/tracers/assets/win10/EFI/Microsoft/Boot/ru-RU/bootmgfw.efi.mui
@@ -6138,9 +6138,14 @@ tools/tracers/assets/win7/EFI/Microsoft/Boot/BCD
 tools/tracers/assets/win7/EFI/Microsoft/Boot/BCD.LOG
 tools/tracers/assets/win7/EFI/Microsoft/Boot/BCD.LOG1
 tools/tracers/assets/win7/EFI/Microsoft/Boot/BCD.LOG2
+tools/tracers/assets/win7/EFI/Microsoft/Boot/BOOTSTAT.DAT
+tools/tracers/assets/win7/EFI/Microsoft/Boot/Fonts/chs_boot.ttf
+tools/tracers/assets/win7/EFI/Microsoft/Boot/Fonts/cht_boot.ttf
+tools/tracers/assets/win7/EFI/Microsoft/Boot/Fonts/jpn_boot.ttf
+tools/tracers/assets/win7/EFI/Microsoft/Boot/Fonts/kor_boot.ttf
+tools/tracers/assets/win7/EFI/Microsoft/Boot/Fonts/wgl4_boot.ttf
 tools/tracers/assets/win7/EFI/Microsoft/Boot/bootmgfw.efi
 tools/tracers/assets/win7/EFI/Microsoft/Boot/bootmgr.efi
-tools/tracers/assets/win7/EFI/Microsoft/Boot/BOOTSTAT.DAT
 tools/tracers/assets/win7/EFI/Microsoft/Boot/cs-CZ/bootmgfw.efi.mui
 tools/tracers/assets/win7/EFI/Microsoft/Boot/cs-CZ/bootmgr.efi.mui
 tools/tracers/assets/win7/EFI/Microsoft/Boot/da-DK/bootmgfw.efi.mui
@@ -6155,11 +6160,6 @@ tools/tracers/assets/win7/EFI/Microsoft/Boot/es-ES/bootmgfw.efi.mui
 tools/tracers/assets/win7/EFI/Microsoft/Boot/es-ES/bootmgr.efi.mui
 tools/tracers/assets/win7/EFI/Microsoft/Boot/fi-FI/bootmgfw.efi.mui
 tools/tracers/assets/win7/EFI/Microsoft/Boot/fi-FI/bootmgr.efi.mui
-tools/tracers/assets/win7/EFI/Microsoft/Boot/Fonts/chs_boot.ttf
-tools/tracers/assets/win7/EFI/Microsoft/Boot/Fonts/cht_boot.ttf
-tools/tracers/assets/win7/EFI/Microsoft/Boot/Fonts/jpn_boot.ttf
-tools/tracers/assets/win7/EFI/Microsoft/Boot/Fonts/kor_boot.ttf
-tools/tracers/assets/win7/EFI/Microsoft/Boot/Fonts/wgl4_boot.ttf
 tools/tracers/assets/win7/EFI/Microsoft/Boot/fr-FR/bootmgfw.efi.mui
 tools/tracers/assets/win7/EFI/Microsoft/Boot/fr-FR/bootmgr.efi.mui
 tools/tracers/assets/win7/EFI/Microsoft/Boot/hu-HU/bootmgfw.efi.mui
@@ -6202,10 +6202,10 @@ tools/tracers/linux.sh
 tools/tracers/win10.sh
 tools/tracers/win7.sh
 tools/vm/make_hdd.sh
-tools/vm/qemu/.gitignore
-tools/vm/qemu/start.sh
 tools/vm/qemu-kvm/.gitignore
 tools/vm/qemu-kvm/start.sh
+tools/vm/qemu/.gitignore
+tools/vm/qemu/start.sh
 tools/vm/start_vm.sh
 tools/vm/vbox/.gitignore
 tools/vm/vbox/start.sh
@@ -6235,9 +6235,9 @@ webapps/ngos/setup.sh
 webapps/prerequisites/centos_7_6.sh
 webapps/prerequisites/centos_8_2.sh
 webapps/prerequisites/install.sh
-webapps/prerequisites/ubuntu_18_04.sh
-webapps/prerequisites/ubuntu_18_10.sh
 webapps/prerequisites/ubuntu_19_04.sh
 webapps/prerequisites/ubuntu_19_10.sh
 webapps/prerequisites/ubuntu_20_04.sh
 webapps/prerequisites/ubuntu_20_10.sh
+webapps/prerequisites/ubuntu_21_04.sh
+webapps/prerequisites/ubuntu_21_10.sh
