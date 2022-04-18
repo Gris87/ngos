@@ -1,8 +1,8 @@
 #!/bin/bash
                                                                                                                                                                                                          # Colorize: green
-# This script helps to install webapps prerequisites on Ubuntu 18.04                                                                                                                                     # Colorize: green
+# This script helps to install webapps prerequisites on Ubuntu 21.10                                                                                                                                     # Colorize: green
 # Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
-# Usage: sudo ./ubuntu_18_04.sh                                                                                                                                                                          # Colorize: green
+# Usage: sudo ./ubuntu_21_10.sh                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -20,8 +20,8 @@ fi                                                                              
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-if [[ `lsb_release -rs` != 18.04 ]]; then                                                                                                                                                                # Colorize: green
-    echo "This script should be called on Ubuntu 18.04"                                                                                                                                                  # Colorize: green
+if [[ `lsb_release -rs` != 21.10 ]]; then                                                                                                                                                                # Colorize: green
+    echo "This script should be called on Ubuntu 21.10"                                                                                                                                                  # Colorize: green
                                                                                                                                                                                                          # Colorize: green
     exit 1                                                                                                                                                                                               # Colorize: green
 fi                                                                                                                                                                                                       # Colorize: green
