@@ -311,14 +311,14 @@ NgosStatus Bootloader::buildPath(const char16 *parentPath, const char8 *path, ch
         memcpy(str, parentPath, size1 * sizeof(char16));
         str[size1] = '\\';
 
-        for (good_i64 i = 0; i <= size2; ++i)
+        for (good_I64 i = 0; i <= size2; ++i)
         {
             str[size1 + 1 + i] = path[i];
         }
     }
     else
     {
-        for (good_i64 i = 0; i <= size2; ++i)
+        for (good_I64 i = 0; i <= size2; ++i)
         {
             str[i] = path[i];
         }
@@ -862,7 +862,7 @@ NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size, uefi_handle
     u64 numberOfVolumes = size / sizeof(uefi_handle);
     UEFI_LVVV(("numberOfVolumes = %u", numberOfVolumes));
 
-    for (good_i64 i = 0; i < (i64)numberOfVolumes; ++i)
+    for (good_I64 i = 0; i < (i64)numberOfVolumes; ++i)
     {
         VolumeInfo volume;
 
@@ -1195,7 +1195,7 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
 
 
 
-            for (good_i64 i = 0; i < volume->gptData.header->entryCount; ++i)
+            for (good_I64 i = 0; i < volume->gptData.header->entryCount; ++i)
             {
                 volume->gptData.entries[i].name[ARRAY_COUNT(volume->gptData.entries[i].name) - 1] = 0;
             }
@@ -1350,7 +1350,7 @@ NgosStatus Bootloader::initVolumeNameAndGuid(VolumeInfo *volume)
 
                     if (previousVolume.gptData.entries)
                     {
-                        for (good_i64 i = 0; i < previousVolume.gptData.header->entryCount; ++i)
+                        for (good_I64 i = 0; i < previousVolume.gptData.header->entryCount; ++i)
                         {
                             GptEntry *gptEntry = &previousVolume.gptData.entries[i];
 
@@ -1463,7 +1463,7 @@ NgosStatus Bootloader::initOSes()
         UEFI_LVVV(("sOSes:"));
         UEFI_LVVV(("-------------------------------------"));
 
-        for (good_i64 i = 0; i < (i64)sOSes.getSize(); ++i)
+        for (good_I64 i = 0; i < (i64)sOSes.getSize(); ++i)
         {
             const OsInfo &os = sOSes.at(i);
 

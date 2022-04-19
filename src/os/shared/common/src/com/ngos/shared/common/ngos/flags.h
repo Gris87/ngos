@@ -212,7 +212,7 @@
         start        = cur; \
         unknownCount = 0; \
         \
-        for (good_i64 i = 0; i < (i64)(sizeof(flags) * 8); ++i) \
+        for (good_I64 i = 0; i < (i64)(sizeof(flags) * 8); ++i) \
         { \
             enum_t flag = (1ULL << i); \
             \

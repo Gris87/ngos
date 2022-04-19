@@ -9,7 +9,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 CPP_EXTERN_C                                                                                                                                                                                             // Colorize: green
-void* memcpy(void *dest, const void *src, good_u64 length); // TEST: MODULE=memory.h                                                                                                                          // Colorize: green
+void* memcpy(void *dest, const void *src, good_U64 length); // TEST: MODULE=memory.h                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green

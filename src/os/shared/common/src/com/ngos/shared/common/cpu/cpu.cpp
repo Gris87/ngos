@@ -160,14 +160,14 @@ NgosStatus CPU::init()
         {
             COMMON_LVVV(("CPU flags:"));
 
-            for (good_i64 i = 0; i < (i64)x86FeatureWord::MAXIMUM; ++i)
+            for (good_I64 i = 0; i < (i64)x86FeatureWord::MAXIMUM; ++i)
             {
                 COMMON_LVVV(("sFlags[%-27s] = 0x%08X", enumToFullString((x86FeatureWord)i), sFlags[i]));
             }
 
             COMMON_LVVV(("CPU bugs:"));
 
-            for (good_i64 i = 0; i < (i64)x86BugWord::MAXIMUM; ++i)
+            for (good_I64 i = 0; i < (i64)x86BugWord::MAXIMUM; ++i)
             {
                 COMMON_LVVV(("sBugs[%-24s] = 0x%08X", enumToFullString((x86BugWord)i), sBugs[i]));
             }
@@ -292,11 +292,11 @@ NgosStatus CPU::flagsToString(char8 *buffer, u16 size)
 
     u16 currentIndex = 0;
 
-    for (good_i64 i = 0; i < (i64)x86FeatureWord::MAXIMUM; ++i)
+    for (good_I64 i = 0; i < (i64)x86FeatureWord::MAXIMUM; ++i)
     {
         u32 flag = sFlags[i];
 
-        for (good_i64 j = 0; j < 32; ++j)
+        for (good_I64 j = 0; j < 32; ++j)
         {
             if (flag & (1ULL << j))
             {
@@ -353,11 +353,11 @@ NgosStatus CPU::bugsToString(char8 *buffer, u16 size)
 
     u16 currentIndex = 0;
 
-    for (good_i64 i = 0; i < (i64)x86BugWord::MAXIMUM; ++i)
+    for (good_I64 i = 0; i < (i64)x86BugWord::MAXIMUM; ++i)
     {
         u32 bug = sBugs[i];
 
-        for (good_i64 j = 0; j < 32; ++j)
+        for (good_I64 j = 0; j < 32; ++j)
         {
             if (bug & (1ULL << j))
             {
@@ -474,7 +474,7 @@ NgosStatus CPU::check(const char8 **wantedFlag)
     i64 flagsCount = ARRAY_COUNT(flags);
     COMMON_LVVV(("flagsCount = %d", flagsCount));
 
-    for (good_i64 i = 0; i < flagsCount; ++i)
+    for (good_I64 i = 0; i < flagsCount; ++i)
     {
         X86Feature flag = flags[i];
 
@@ -1011,12 +1011,12 @@ NgosStatus CPU::initCpuFeatures()
                     ++offset;
                 }
 
-                for (good_i64 i = offset; i < length; ++i)
+                for (good_I64 i = offset; i < length; ++i)
                 {
                     modelStr[i - offset] = modelStr[i];
                 }
 
-                for (good_i64 i = length - offset; i < length; ++i)
+                for (good_I64 i = length - offset; i < length; ++i)
                 {
                     modelStr[i] = 0;
                 }

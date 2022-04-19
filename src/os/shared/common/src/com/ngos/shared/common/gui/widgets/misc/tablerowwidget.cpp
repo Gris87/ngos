@@ -167,7 +167,7 @@ Widget* TableRowWidget::getOwnerWidget()
 
     const ArrayList<TableRowWidget *> &rows = tableWidget->getRows();
 
-    for (good_i64 i = 0; i < (i64)rows.getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)rows.getSize(); ++i)
     {
         if (rows.at(i) == this)
         {

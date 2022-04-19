@@ -584,7 +584,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/stop.png",                        &sStopImage),                   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/close.png",                       &sCloseImage),                  NgosStatus::ASSERTION);
 
-    for (good_i64 i = 0; i < (i64)TestMode::MAXIMUM; ++i)
+    for (good_I64 i = 0; i < (i64)TestMode::MAXIMUM; ++i)
     {
         UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets(sModeImagesPath[i], &sModeImages[i]), NgosStatus::ASSERTION);
     }
@@ -835,7 +835,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-        for (good_i64 i = 0; i < (i64)memoryDevices.getSize(); ++i)
+        for (good_I64 i = 0; i < (i64)memoryDevices.getSize(); ++i)
         {
             UEFI_ASSERT_EXECUTION(addMemoryInfoPanel(i / 4, memoryInfoRegionPositionX + (i % 2) * memoryInfoPanelWidth, memoryInfoRegionPositionY + ((i >> 1) % 2) * memoryInfoPanelHeight, memoryInfoPanelWidth, memoryInfoPanelHeight, memoryInfoPanelImage, memoryInfoPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, memoryDeviceDisabledImage, memoryDeviceDisabledResizedImage, systemInformationTabPageWidget, memoryDevices.at(i)), NgosStatus::ASSERTION);
         }
@@ -890,7 +890,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-            for (good_i64 i = 0; i < (i64)sInfoPages.getSize(); ++i)
+            for (good_I64 i = 0; i < (i64)sInfoPages.getSize(); ++i)
             {
                 ImageWidget *pageIndicatorImageWidget;
 
@@ -920,7 +920,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-        for (good_i64 i = 0; i < (i64)memoryDevices.getSize(); ++i)
+        for (good_I64 i = 0; i < (i64)memoryDevices.getSize(); ++i)
         {
             UEFI_ASSERT_EXECUTION(addMemoryInfoPanel(0, memoryInfoRegionPositionX, memoryInfoRegionPositionY + i * memoryInfoPanelHeight, memoryInfoPanelWidth, memoryInfoPanelHeight, memoryInfoPanelImage, memoryInfoPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, memoryDeviceDisabledImage, memoryDeviceDisabledResizedImage, systemInformationTabPageWidget, memoryDevices.at(i)), NgosStatus::ASSERTION);
         }
@@ -1094,7 +1094,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-        for (good_i64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
+        for (good_I64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
         {
             UEFI_ASSERT_EXECUTION(addMemoryTestPanel(i / 4, memoryTestRegionPositionX + (i % 2) * memoryTestPanelWidth, memoryTestRegionPositionY + ((i >> 1) % 2) * memoryTestPanelHeight, memoryTestPanelWidth, memoryTestPanelHeight, memoryTestPanelImage, memoryTestPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, startImage, startResizedImage, memoryTestStartButtonWidth, memoryTestStartButtonHeight, memoryDevices.at(i)), NgosStatus::ASSERTION);
         }
@@ -1142,7 +1142,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-            for (good_i64 i = 0; i < (i64)sTestPages.getSize(); ++i)
+            for (good_I64 i = 0; i < (i64)sTestPages.getSize(); ++i)
             {
                 ImageWidget *pageIndicatorImageWidget;
 
@@ -1184,7 +1184,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-        for (good_i64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
+        for (good_I64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
         {
             UEFI_ASSERT_EXECUTION(addMemoryTestPanel(0, memoryTestRegionPositionX, memoryTestRegionPositionY + i * memoryTestPanelHeight, memoryTestPanelWidth, memoryTestPanelHeight, memoryTestPanelImage, memoryTestPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, startImage, startResizedImage, memoryTestStartButtonWidth, memoryTestStartButtonHeight, memoryDevices.at(i)), NgosStatus::ASSERTION);
         }
@@ -2081,7 +2081,7 @@ NgosStatus MemoryTestGUI::fillIssuesTable()
 
     const ArrayList<DmiMemoryDevice> &memoryDevices = DMI::getMemoryDevices();
 
-    for (good_i64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
+    for (good_I64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
     {
         const DmiMemoryDevice &memoryDevice = memoryDevices.at(i);
 
@@ -2157,7 +2157,7 @@ NgosStatus MemoryTestGUI::fillIssuesTable()
 
         const DmiMemoryDevice &firstMemoryDevice = memoryDevices.first();
 
-        for (good_i64 i = 1; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
+        for (good_I64 i = 1; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
         {
             const DmiMemoryDevice &memoryDevice = memoryDevices.at(i);
 
@@ -2473,7 +2473,7 @@ NgosStatus MemoryTestGUI::fillSummaryTable()
 
     const ArrayList<DmiMemoryDevice> &memoryDevices = DMI::getMemoryDevices();
 
-    for (good_i64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
+    for (good_I64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
     {
         const DmiMemoryDevice &memoryDevice = memoryDevices.at(i);
 
@@ -2503,13 +2503,13 @@ NgosStatus MemoryTestGUI::fillSummaryTable()
 
     i64 dualChannelNumberOfPairs = 0;
 
-    for (good_i64 i = 1; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
+    for (good_I64 i = 1; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
     {
         const DmiMemoryDevice &memoryDevice = memoryDevices.at(i);
 
 
 
-        for (good_i64 j = 0; j < i; ++j)
+        for (good_I64 j = 0; j < i; ++j)
         {
             if (!dualChannelPairs.at(j))
             {
@@ -2725,7 +2725,7 @@ NgosStatus MemoryTestGUI::showFirstInfoPage()
 
     ArrayList<PanelWidget *> *page = sInfoPages.at(sInfoCurrentPage);
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -2740,7 +2740,7 @@ NgosStatus MemoryTestGUI::showFirstInfoPage()
 
     page = sInfoPages.first();
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -2785,7 +2785,7 @@ NgosStatus MemoryTestGUI::showLastInfoPage()
 
     ArrayList<PanelWidget *> *page = sInfoPages.at(sInfoCurrentPage);
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -2800,7 +2800,7 @@ NgosStatus MemoryTestGUI::showLastInfoPage()
 
     page = sInfoPages.last();
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -2849,7 +2849,7 @@ NgosStatus MemoryTestGUI::showFirstTestPage()
 
     ArrayList<PanelWidget *> *page = sTestPages.at(sTestCurrentPage);
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -2864,7 +2864,7 @@ NgosStatus MemoryTestGUI::showFirstTestPage()
 
     page = sTestPages.first();
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -2920,7 +2920,7 @@ NgosStatus MemoryTestGUI::showLastTestPage()
 
     ArrayList<PanelWidget *> *page = sTestPages.at(sTestCurrentPage);
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -2935,7 +2935,7 @@ NgosStatus MemoryTestGUI::showLastTestPage()
 
     page = sTestPages.last();
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -3127,7 +3127,7 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
 
 
-    for (good_i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
+    for (good_I64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
     {
         char8 *averageText  = (char8 *)sAverageLabelWidgets[i]->getText();
         char8 *maximumText  = (char8 *)sMaximumLabelWidgets[i]->getText();
@@ -3195,7 +3195,7 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
                 UEFI_LVVV(("Processors:"));
                 UEFI_LVVV(("-------------------------------------"));
 
-                for (good_i64 i = 0; i < (i64)numberOfProcessors; ++i)
+                for (good_I64 i = 0; i < (i64)numberOfProcessors; ++i)
                 {
                     UefiProcessorInformation info;
 
@@ -3223,7 +3223,7 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
 
 
-            for (good_i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
+            for (good_I64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
             {
                 UEFI_ASSERT_EXECUTION(memoryTests[i]->reset(start, end, testSize), NgosStatus::ASSERTION);
             }
@@ -3237,7 +3237,7 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
 
             TestBase *test = memoryTests[0];
 
-            for (good_i64 i = 0; i < (i64)numberOfProcessors; ++i)
+            for (good_I64 i = 0; i < (i64)numberOfProcessors; ++i)
             {
                 if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), i, sWaitEvents[sFirstProcessorEventIndex + i], 0, test, nullptr) == UefiStatus::SUCCESS)
                 {
@@ -3439,7 +3439,7 @@ NgosStatus MemoryTestGUI::generateWaitEventList()
 
 
 
-    for (good_i64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
+    for (good_I64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getSimplePointer(i)->waitForInput;
 
@@ -3448,7 +3448,7 @@ NgosStatus MemoryTestGUI::generateWaitEventList()
 
 
 
-    for (good_i64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
+    for (good_I64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getAbsolutePointer(i)->waitForInput;
 
@@ -3457,7 +3457,7 @@ NgosStatus MemoryTestGUI::generateWaitEventList()
 
 
 
-    for (good_i64 i = eventId; i < sWaitEventsCount; ++i)
+    for (good_I64 i = eventId; i < sWaitEventsCount; ++i)
     {
         UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::NONE, UefiTpl::NONE, nullptr, nullptr, &sWaitEvents[i]), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
         UEFI_LVV(("Created event(0x%p) for processor", sWaitEvents[i]));
@@ -3744,7 +3744,7 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(i64 processorId)
 
             i64 testTotal = 0;
 
-            for (good_i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
+            for (good_I64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
             {
                 testTotal += memoryTests[i]->getScore();
             }
@@ -3796,7 +3796,7 @@ NgosStatus MemoryTestGUI::processTimerEvent()
 
 
 
-    for (good_i64 i = 0; i < (i64)sCurrentTest; ++i)
+    for (good_I64 i = 0; i < (i64)sCurrentTest; ++i)
     {
         TestBase *test = memoryTests[i];
 
@@ -4993,7 +4993,7 @@ NgosStatus MemoryTestGUI::onInfoLeftButtonPressed()
 
     ArrayList<PanelWidget *> *page = sInfoPages.at(sInfoCurrentPage);
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -5008,7 +5008,7 @@ NgosStatus MemoryTestGUI::onInfoLeftButtonPressed()
 
     page = sInfoPages.at(sInfoCurrentPage);
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -5054,7 +5054,7 @@ NgosStatus MemoryTestGUI::onInfoRightButtonPressed()
 
     ArrayList<PanelWidget *> *page = sInfoPages.at(sInfoCurrentPage);
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -5069,7 +5069,7 @@ NgosStatus MemoryTestGUI::onInfoRightButtonPressed()
 
     page = sInfoPages.at(sInfoCurrentPage);
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -5163,7 +5163,7 @@ NgosStatus MemoryTestGUI::onTestLeftButtonPressed()
 
     ArrayList<PanelWidget *> *page = sTestPages.at(sTestCurrentPage);
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -5178,7 +5178,7 @@ NgosStatus MemoryTestGUI::onTestLeftButtonPressed()
 
     page = sTestPages.at(sTestCurrentPage);
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -5235,7 +5235,7 @@ NgosStatus MemoryTestGUI::onTestRightButtonPressed()
 
     ArrayList<PanelWidget *> *page = sTestPages.at(sTestCurrentPage);
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -5250,7 +5250,7 @@ NgosStatus MemoryTestGUI::onTestRightButtonPressed()
 
     page = sTestPages.at(sTestCurrentPage);
 
-    for (good_i64 i = 0; i < (i64)page->getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }

@@ -416,7 +416,7 @@ NgosStatus TreeNodeWidget::setExpanded(bool expanded)
 
         if (isExpanded())
         {
-            for (good_i64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
+            for (good_I64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
             {
                 COMMON_ASSERT_EXECUTION(mChildrenNodes.at(i)->invalidatePositionY(positionY), NgosStatus::ASSERTION);
             }
@@ -429,7 +429,7 @@ NgosStatus TreeNodeWidget::setExpanded(bool expanded)
 
         while (parentNode)
         {
-            for (good_i64 i = curNode->mNodeIndexInParent + 1; i < (i64)parentNode->mChildrenNodes.getSize(); ++i)
+            for (good_I64 i = curNode->mNodeIndexInParent + 1; i < (i64)parentNode->mChildrenNodes.getSize(); ++i)
             {
                 COMMON_ASSERT_EXECUTION(parentNode->mChildrenNodes.at(i)->invalidatePositionY(positionY), NgosStatus::ASSERTION);
             }
@@ -570,7 +570,7 @@ NgosStatus TreeNodeWidget::doExpand()
 
 
 
-    for (good_i64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
     {
         TreeNodeWidget *node = mChildrenNodes.at(i);
 
@@ -593,7 +593,7 @@ NgosStatus TreeNodeWidget::doCollapse()
 
 
 
-    for (good_i64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
+    for (good_I64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
     {
         TreeNodeWidget *node = mChildrenNodes.at(i);
 
@@ -631,7 +631,7 @@ NgosStatus TreeNodeWidget::invalidatePositionY(i64 &positionY)
 
     if (isExpanded())
     {
-        for (good_i64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
+        for (good_I64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
         {
             COMMON_ASSERT_EXECUTION(mChildrenNodes.at(i)->invalidatePositionY(positionY), NgosStatus::ASSERTION);
         }

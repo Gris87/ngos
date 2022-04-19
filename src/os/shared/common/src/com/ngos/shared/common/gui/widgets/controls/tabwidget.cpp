@@ -150,7 +150,7 @@ NgosStatus TabWidget::repaint()
 
     u64 buttonPositionX = paddingLeft;
 
-    for (good_i64 i = 0; i < mTabButtons.getSize(); ++i)
+    for (good_I64 i = 0; i < mTabButtons.getSize(); ++i)
     {
         TabButton *tabButton = mTabButtons.at(i);
 
@@ -229,7 +229,7 @@ NgosStatus TabWidget::setSize(u64 width, u64 height)
 
 
 
-        for (good_i64 i = 0; i < mTabPages.getSize(); ++i)
+        for (good_I64 i = 0; i < mTabPages.getSize(); ++i)
         {
             TabPageWidget *page = mTabPages.at(i);
 

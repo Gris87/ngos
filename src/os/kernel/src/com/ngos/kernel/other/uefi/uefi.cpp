@@ -64,22 +64,22 @@ NgosStatus UEFI::initMemoryMap()
         COMMON_LVVV(("IORemap::sLastReleasedSlot = %u", IORemap::sLastReleasedSlot));
         COMMON_LVVV(("IORemap::sSlotsAvailable   = %u", IORemap::sSlotsAvailable));
 
-        for (good_i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
+        for (good_I64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
         {
             COMMON_LVVV(("IORemap::sSlotsAddresses[%d] = 0x%p", i, IORemap::sSlotsAddresses[i]));
         }
 
-        for (good_i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
+        for (good_I64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
         {
             COMMON_LVVV(("IORemap::sSlotsSizes[%d] = %u", i, IORemap::sSlotsSizes[i]));
         }
 
-        for (good_i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
+        for (good_I64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
         {
             COMMON_LVVV(("IORemap::sPoolOfSlots[%d] = %u", i, IORemap::sPoolOfSlots[i]));
         }
 
-        for (good_i64 i = 0; i < PTRS_PER_PTE; ++i)
+        for (good_I64 i = 0; i < PTRS_PER_PTE; ++i)
         {
             if (pteValue(IORemap::sFixmapPage[i]))
             {
@@ -144,7 +144,7 @@ NgosStatus UEFI::initMemoryMap()
             COMMON_LVVV(("UEFI Memory Map entries:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (good_i64 i = 0; i < count; ++i)
+            for (good_I64 i = 0; i < count; ++i)
             {
                 UefiMemoryDescriptor *memoryDescriptor = UEFI_MEMORY_MAP_DESCRIPTOR(i);
                 COMMON_TEST_ASSERT(memoryDescriptor, NgosStatus::ASSERTION);
@@ -434,22 +434,22 @@ NgosStatus UEFI::initSystemTable()
         COMMON_LVVV(("IORemap::sLastReleasedSlot = %u", IORemap::sLastReleasedSlot));
         COMMON_LVVV(("IORemap::sSlotsAvailable   = %u", IORemap::sSlotsAvailable));
 
-        for (good_i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
+        for (good_I64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
         {
             COMMON_LVVV(("IORemap::sSlotsAddresses[%d] = 0x%p", i, IORemap::sSlotsAddresses[i]));
         }
 
-        for (good_i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
+        for (good_I64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
         {
             COMMON_LVVV(("IORemap::sSlotsSizes[%d] = %u", i, IORemap::sSlotsSizes[i]));
         }
 
-        for (good_i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
+        for (good_I64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
         {
             COMMON_LVVV(("IORemap::sPoolOfSlots[%d] = %u", i, IORemap::sPoolOfSlots[i]));
         }
 
-        for (good_i64 i = 0; i < PTRS_PER_PTE; ++i)
+        for (good_I64 i = 0; i < PTRS_PER_PTE; ++i)
         {
             if (pteValue(IORemap::sFixmapPage[i]))
             {
@@ -506,7 +506,7 @@ NgosStatus UEFI::initSystemTable()
         COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.regions:"));
         COMMON_LVVV(("-------------------------------------"));
 
-        for (good_i64 i = 0; i < (i64)MemoryManager::sMemoryBlock.reserved.count; ++i)
+        for (good_I64 i = 0; i < (i64)MemoryManager::sMemoryBlock.reserved.count; ++i)
         {
             COMMON_LVVV(("#%-3d: 0x%p-0x%p | %s | 0x%04X", i, MemoryManager::sMemoryBlock.reserved.regions[i].start, MemoryManager::sMemoryBlock.reserved.regions[i].end(), flagsToFullString(MemoryManager::sMemoryBlock.reserved.regions[i].flags), MemoryManager::sMemoryBlock.reserved.regions[i].nodeId));
         }
@@ -658,7 +658,7 @@ NgosStatus UEFI::initConfigurationTables()
 
     COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)sSystemTable.configurationTables, sSystemTable.numberOfConfigurationTables * sizeof(UefiConfigurationTable), (void **)&configurationTables), NgosStatus::ASSERTION);
 
-    for (good_i64 i = 0; i < (i64)sSystemTable.numberOfConfigurationTables; ++i)
+    for (good_I64 i = 0; i < (i64)sSystemTable.numberOfConfigurationTables; ++i)
     {
         COMMON_LVV(("Processing configuration table #%d %s at address 0x%p", i, guidToString(configurationTables[i].vendorGuid), configurationTables[i].vendorTable));
 

@@ -31,7 +31,7 @@ NgosStatus printPte(PTE *pte)
 
 
 
-    for (good_i64 i = 0; i < PTRS_PER_PTE; ++i)
+    for (good_I64 i = 0; i < PTRS_PER_PTE; ++i)
     {
         if (ptePresent(pte[i]))
         {
@@ -52,7 +52,7 @@ NgosStatus printPmd(PMD *pmd)
 
 
 
-    for (good_i64 i = 0; i < PTRS_PER_PMD; ++i)
+    for (good_I64 i = 0; i < PTRS_PER_PMD; ++i)
     {
         if (pmdPresent(pmd[i]))
         {
@@ -78,7 +78,7 @@ NgosStatus printPud(PUD *pud)
 
 
 
-    for (good_i64 i = 0; i < PTRS_PER_PUD; ++i)
+    for (good_I64 i = 0; i < PTRS_PER_PUD; ++i)
     {
         if (pudPresent(pud[i]))
         {
@@ -105,7 +105,7 @@ NgosStatus printP4d(P4D *p4d)
 
 
 
-    for (good_i64 i = 0; i < PTRS_PER_P4D; ++i)
+    for (good_I64 i = 0; i < PTRS_PER_P4D; ++i)
     {
         if (p4dPresent(p4d[i]))
         {
@@ -132,7 +132,7 @@ NgosStatus printPgd(PGD *pgd)
 
 
 
-    for (good_i64 i = 0; i < PTRS_PER_PGD; ++i)
+    for (good_I64 i = 0; i < PTRS_PER_PGD; ++i)
     {
         if (pgdPresent(pgd[i]))
         {
@@ -205,7 +205,7 @@ NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea *areas)
         EARLY_LVVV(("Unavailable memory areas:"));
         EARLY_LVVV(("-------------------------------------"));
 
-        for (good_i64 i = 0; i < (i64)UnavailableMemoryArea::MAXIMUM; ++i)
+        for (good_I64 i = 0; i < (i64)UnavailableMemoryArea::MAXIMUM; ++i)
         {
             EARLY_LVVV(("%-16s: 0x%p-0x%p", enumToFullString((UnavailableMemoryArea)i), areas[i].start, areas[i].end));
         }
@@ -245,7 +245,7 @@ NgosStatus findIntersection(BootParams *params, MemoryArea *unavailableMemoryAre
 
 
 
-    for (good_i64 i = 0; i < (i64)UnavailableMemoryArea::MAXIMUM; ++i)
+    for (good_I64 i = 0; i < (i64)UnavailableMemoryArea::MAXIMUM; ++i)
     {
         if (
             end > (i64)unavailableMemoryAreas[i].start
@@ -467,7 +467,7 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
         EARLY_LVVV(("Memory Map entries:"));
         EARLY_LVVV(("-------------------------------------"));
 
-        for (good_i64 i = 0; i < params->memoryMapEntriesCount; ++i)
+        for (good_I64 i = 0; i < params->memoryMapEntriesCount; ++i)
         {
             EARLY_LVVV(("#%-3d: type = %-2u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
         }
@@ -501,7 +501,7 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
 
 
 
-    for (good_i64 i = randomId; i >= 0; --i)
+    for (good_I64 i = randomId; i >= 0; --i)
     {
         EARLY_LVV(("Processing memory map entry #%d: type = %u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
 
@@ -513,7 +513,7 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
 
 
 
-    for (good_i64 i = randomId + 1; i < params->memoryMapEntriesCount; ++i)
+    for (good_I64 i = randomId + 1; i < params->memoryMapEntriesCount; ++i)
     {
         EARLY_LVV(("Processing memory map entry #%d: type = %u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
 

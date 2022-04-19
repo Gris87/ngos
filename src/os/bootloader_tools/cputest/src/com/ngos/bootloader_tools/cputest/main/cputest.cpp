@@ -265,7 +265,7 @@ NgosStatus CpuTest::initCpuCachesIntel()
 
         u8 *registerByte = (u8 *)&registers[0];
 
-        for (good_i64 i = 0; i < (i64)sizeof(registers); ++i)
+        for (good_I64 i = 0; i < (i64)sizeof(registers); ++i)
         {
             UEFI_LVVV(("registerByte[%d] = 0x%02X", i, registerByte[i]));
 

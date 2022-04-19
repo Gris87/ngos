@@ -115,7 +115,7 @@ NgosStatus setupIdtHandlers()
 
 
 
-    for (good_i64 i = 0; i < IDT_EXCEPTIONS_COUNT; ++i)
+    for (good_I64 i = 0; i < IDT_EXCEPTIONS_COUNT; ++i)
     {
         EARLY_ASSERT_EXECUTION(setupIdtInterruptGate(i, earlyIdtHandlerArray[i]), NgosStatus::ASSERTION);
     }

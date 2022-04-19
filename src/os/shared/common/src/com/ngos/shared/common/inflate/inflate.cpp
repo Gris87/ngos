@@ -91,7 +91,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
     memzero(count, sizeof(count));
 
-    for (good_i64 i = 0; i < numberOfCodes; ++i)
+    for (good_I64 i = 0; i < numberOfCodes; ++i)
     {
         ++count[lengthBuffer[i]];
     }
@@ -103,7 +103,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
         // Commented to avoid too frequent logs
         // COMMON_LVVV(("count:"));
         //
-        // for (good_i64 i = 0; i <= MAX_BITS; ++i)
+        // for (good_I64 i = 0; i <= MAX_BITS; ++i)
         // {
         //     COMMON_LVVV(("count[%d] = %u", i, count[i]));
         // }
@@ -161,7 +161,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
     i32 left = 1;
 
-    for (good_i64 i = 1; i <= MAX_BITS; ++i)
+    for (good_I64 i = 1; i <= MAX_BITS; ++i)
     {
         left <<= 1;
         left -=  count[i];
@@ -203,7 +203,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
     offsets[1] = 0;
 
-    for (good_i64 i = 1; i < MAX_BITS; ++i)
+    for (good_I64 i = 1; i < MAX_BITS; ++i)
     {
         offsets[i + 1] = offsets[i] + count[i];
     }
@@ -212,7 +212,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
     u16 work[288];
 
-    for (good_i64 i = 0; i < numberOfCodes; ++i)
+    for (good_I64 i = 0; i < numberOfCodes; ++i)
     {
         if (lengthBuffer[i] != 0)
         {
@@ -230,7 +230,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
         // Commented to avoid too frequent logs
         // COMMON_LVVV(("offsets:"));
         //
-        // for (good_i64 i = 0; i <= MAX_BITS; ++i)
+        // for (good_I64 i = 0; i <= MAX_BITS; ++i)
         // {
         //     COMMON_LVVV(("offsets[%d] = %u", i, offsets[i]));
         // }
@@ -837,7 +837,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
         // Commented to avoid too frequent logs
         // COMMON_LVVV(("lengthBuffer:"));
         //
-        // for (good_i64 i = 0; i < LENGTH_CODE_COUNT; ++i)
+        // for (good_I64 i = 0; i < LENGTH_CODE_COUNT; ++i)
         // {
         //     COMMON_LVVV(("lengthBuffer[%d] = %u", i, lengthBuffer[i]));
         // }
@@ -924,7 +924,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
                 return NgosStatus::INVALID_DATA;
             }
 
-            for (good_i64 i = 0; i < copyCount; ++i)
+            for (good_I64 i = 0; i < copyCount; ++i)
             {
                 lengthBuffer[currentCodeIndex] = length;
 
@@ -982,7 +982,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
         // Commented to avoid too frequent logs
         // COMMON_LVVV(("lengthBuffer:"));
         //
-        // for (good_i64 i = 0; i < currentCodeIndex; ++i)
+        // for (good_I64 i = 0; i < currentCodeIndex; ++i)
         // {
         //     COMMON_LVVV(("lengthBuffer[%d] = %u", i, lengthBuffer[i]));
         // }

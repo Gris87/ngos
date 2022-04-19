@@ -476,7 +476,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
                         }
                     }
 
-                    for (good_i64 i = 0; i < length; ++i)
+                    for (good_I64 i = 0; i < length; ++i)
                     {
                         *str = *str2;
                         ++str;
@@ -507,7 +507,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
                         }
                     }
 
-                    for (good_i64 i = 0; i < length; ++i)
+                    for (good_I64 i = 0; i < length; ++i)
                     {
                         *str = *str2;
                         ++str;

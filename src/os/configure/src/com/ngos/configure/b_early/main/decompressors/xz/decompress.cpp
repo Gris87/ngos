@@ -158,7 +158,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-            for (good_i64 i = 0; i < numberOfFilters; ++i)
+            for (good_I64 i = 0; i < numberOfFilters; ++i)
             {
                 XzFilter &filter = filters[numberOfFilters - i - 1];
 
@@ -202,7 +202,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
             u64 compressedSize   = 0;
             u64 uncompressedSize = 0;
 
-            for (good_i64 i = 0; i < numberOfFilters; ++i)
+            for (good_I64 i = 0; i < numberOfFilters; ++i)
             {
                 XzFilter &filter = filters[i];
 
@@ -339,7 +339,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-            for (good_i64 i = 0; i < (i64)numberOfRecords; ++i)
+            for (good_I64 i = 0; i < (i64)numberOfRecords; ++i)
             {
                 u64 indexUnpaddedSize = 0;
 

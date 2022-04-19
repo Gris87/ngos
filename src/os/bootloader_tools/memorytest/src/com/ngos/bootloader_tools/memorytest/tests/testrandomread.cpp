@@ -44,7 +44,7 @@ void UEFI_API testRandomReadProcedure(void *buffer)
 
     if (CPU::hasFlag(X86Feature::RDRAND))
     {
-        for (good_i64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
+        for (good_I64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
         {
             test->setProgress(i);
 
@@ -61,7 +61,7 @@ void UEFI_API testRandomReadProcedure(void *buffer)
     }
     else
     {
-        for (good_i64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
+        for (good_I64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
         {
             test->setProgress(i);
 

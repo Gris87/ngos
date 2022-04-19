@@ -42,7 +42,7 @@ void UEFI_API testSse3Procedure(void *buffer)
 
         u64 startTime = AsmUtils::rdtsc();
 
-        for (good_i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
+        for (good_I64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
         {
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(

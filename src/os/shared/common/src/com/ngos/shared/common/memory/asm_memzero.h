@@ -9,7 +9,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 CPP_EXTERN_C                                                                                                                                                                                             // Colorize: green
-void* memzero(void *dest, good_u64 length); // TEST: MODULE=memory.h                                                                                                                                          // Colorize: green
+void* memzero(void *dest, good_U64 length); // TEST: MODULE=memory.h                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green

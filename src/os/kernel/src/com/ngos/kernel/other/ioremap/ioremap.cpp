@@ -30,7 +30,7 @@ NgosStatus IORemap::init()
 
 
 
-    for (good_i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
+    for (good_I64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
     {
         sPoolOfSlots[i] = i;
 
@@ -90,7 +90,7 @@ NgosStatus IORemap::addPmdForFixmap()
     // Validation
     {
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
-        for (good_i64 i = 0; i < PTRS_PER_PMD; ++i)
+        for (good_I64 i = 0; i < PTRS_PER_PMD; ++i)
         {
             if (pmdValue(fixmap_pagetable_level2[i]))
             {
@@ -163,7 +163,7 @@ NgosStatus IORemap::addFixedMapping(address_t address, u64 size, void **res)
 
     u16 startPteForSlot = slot * NUMBER_OF_FIX_BITMAPS;
 
-    for (good_i64 i = 0; i < numberOfPages; ++i)
+    for (good_I64 i = 0; i < numberOfPages; ++i)
     {
         COMMON_TEST_ASSERT(pteValue(sFixmapPage[startPteForSlot + i]) == 0, NgosStatus::ASSERTION);
 
@@ -252,7 +252,7 @@ NgosStatus IORemap::removeFixedMapping(address_t address, u64 size)
 
     u16 startPteForSlot = slot * NUMBER_OF_FIX_BITMAPS;
 
-    for (good_i64 i = 0; i < numberOfPages; ++i)
+    for (good_I64 i = 0; i < numberOfPages; ++i)
     {
         COMMON_TEST_ASSERT(pteValue(sFixmapPage[startPteForSlot + i]) != 0, NgosStatus::ASSERTION);
 

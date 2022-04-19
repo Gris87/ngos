@@ -156,7 +156,7 @@ NgosStatus Jpeg::releaseDecoder(JpegDecoder *decoder)
 
 
 
-    for (good_i64 i = 0; i < JPEG_HUFFMAN_TABLE_COUNT; ++i)
+    for (good_I64 i = 0; i < JPEG_HUFFMAN_TABLE_COUNT; ++i)
     {
         if (decoder->vlcDcTables[i])
         {
@@ -171,7 +171,7 @@ NgosStatus Jpeg::releaseDecoder(JpegDecoder *decoder)
 
 
 
-    for (good_i64 i = 0; i < JPEG_NUMBER_OF_COMPONENTS; ++i)
+    for (good_I64 i = 0; i < JPEG_NUMBER_OF_COMPONENTS; ++i)
     {
         if (decoder->components[i].dataBuffer)
         {
@@ -414,7 +414,7 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
     u8 samplingFactorXMax = 0;
     u8 samplingFactorYMax = 0;
 
-    for (good_i64 i = 0; i < numberOfComponents; ++i)
+    for (good_I64 i = 0; i < numberOfComponents; ++i)
     {
         JpegStartOfFrameComponent *component        = &startOfFrameMarker->components[i];
         JpegComponent             *generalComponent = &decoder->components[i];
@@ -506,7 +506,7 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-    for (good_i64 i = 0; i < numberOfComponents; ++i)
+    for (good_I64 i = 0; i < numberOfComponents; ++i)
     {
         JpegComponent *generalComponent = &decoder->components[i];
 
@@ -633,7 +633,7 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
         u16 totalNumberOfSymbols = 0;
 
-        for (good_i64 i = 0; i < JPEG_HUFFMAN_NUMBER_OF_SYMBOLS_COUNT; ++i)
+        for (good_I64 i = 0; i < JPEG_HUFFMAN_NUMBER_OF_SYMBOLS_COUNT; ++i)
         {
             spread >>= 1;
 
@@ -665,13 +665,13 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
-            for (good_i64 j = 0; j < numberOfSymbols; ++j)
+            for (good_I64 j = 0; j < numberOfSymbols; ++j)
             {
                 u8 code = table->symbols[totalNumberOfSymbols + j];
 
                 // COMMON_LVVV(("code = 0x%02X", code)); // Commented to avoid too frequent logs
 
-                for (good_i64 k = 0; k < spread; ++k)
+                for (good_I64 k = 0; k < spread; ++k)
                 {
                     vlc->bits = i + 1;
                     vlc->code = code;
@@ -777,7 +777,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
         {
             if (length < JPEG_QUANTIZATION_TABLE_SIZE * 2)
             {
-                for (good_i64 i = 0; i < JPEG_QUANTIZATION_TABLE_SIZE; ++i)
+                for (good_I64 i = 0; i < JPEG_QUANTIZATION_TABLE_SIZE; ++i)
                 {
                     tableData[i] = 1;
                 }
@@ -793,7 +793,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
         {
             if (length < JPEG_QUANTIZATION_TABLE_SIZE)
             {
-                for (good_i64 i = 0; i < JPEG_QUANTIZATION_TABLE_SIZE; ++i)
+                for (good_I64 i = 0; i < JPEG_QUANTIZATION_TABLE_SIZE; ++i)
                 {
                     tableData[i] = 1;
                 }
@@ -808,7 +808,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
 
 
-        for (good_i64 i = 0; i < count; ++i)
+        for (good_I64 i = 0; i < count; ++i)
         {
             tableData[i] = tablePrecision ? ntohs(((u16 *)table->data16)[i]) : ((u8 *)table->data8)[i];
         }
@@ -959,7 +959,7 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
 
 
 
-    for (good_i64 i = 0; i < numberOfComponents; ++i)
+    for (good_I64 i = 0; i < numberOfComponents; ++i)
     {
         JpegStartOfScanComponent *component        = &startOfScanMarker->components[i];
         JpegComponent            *generalComponent = &decoder->components[i];
@@ -1043,7 +1043,7 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
     while (status == NgosStatus::OK)
     {
-        for (good_i64 i = 0; i < numberOfComponents; ++i)
+        for (good_I64 i = 0; i < numberOfComponents; ++i)
         {
             status = decodeMcuBlock(decoder, &decoder->components[i], mcuBlockX, mcuBlockY);
 
@@ -1088,7 +1088,7 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
 
 
-                for (good_i64 i = 0; i < numberOfComponents; ++i)
+                for (good_I64 i = 0; i < numberOfComponents; ++i)
                 {
                     decoder->components[i].dcpred = 0;
                 }
@@ -1173,9 +1173,9 @@ NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, 
 
 
 
-    for (good_i64 i = 0; i < component->samplingFactorY; ++i)
+    for (good_I64 i = 0; i < component->samplingFactorY; ++i)
     {
-        for (good_i64 j = 0; j < component->samplingFactorX; ++j)
+        for (good_I64 j = 0; j < component->samplingFactorX; ++j)
         {
             NgosStatus status = decodeMcuBlockSample(decoder, component, component->dataBuffer + (((mcuBlockY * component->samplingFactorY + i) * component->stride + mcuBlockX * component->samplingFactorX + j) * 8));
 
@@ -1290,14 +1290,14 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
 
 
-    for (good_i64 i = 0; i < 64; i += 8)
+    for (good_I64 i = 0; i < 64; i += 8)
     {
         COMMON_ASSERT_EXECUTION(handleRowIDCT(&block[i]), NgosStatus::ASSERTION);
     }
 
 
 
-    for (good_i64 i = 0; i < 8; ++i)
+    for (good_I64 i = 0; i < 8; ++i)
     {
         COMMON_ASSERT_EXECUTION(handleColIDCT(&block[i], &sampleDataBuffer[i], component->stride), NgosStatus::ASSERTION);
     }
@@ -1522,7 +1522,7 @@ NgosStatus Jpeg::handleColIDCT(i64 *block, u8 *sampleDataBuffer, u64 stride)
     {
         x0 = CLAMP_TO_BYTE(((block[0] + 32) >> 6) + 128);
 
-        for (good_i64 i = 0; i < 8; ++i)
+        for (good_I64 i = 0; i < 8; ++i)
         {
             *sampleDataBuffer =  x0;
             sampleDataBuffer  += stride;
@@ -1585,7 +1585,7 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
 
 
 
-    for (good_i64 i = 0; i < numberOfComponents; ++i)
+    for (good_I64 i = 0; i < numberOfComponents; ++i)
     {
         JpegComponent *component = &decoder->components[i];
 
@@ -1628,9 +1628,9 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
         u8 *pCb = decoder->components[1].dataBuffer;
         u8 *pCr = decoder->components[2].dataBuffer;
 
-        for (good_i64 i = 0; i < height; ++i)
+        for (good_I64 i = 0; i < height; ++i)
         {
-            for (good_i64 j = 0; j < width; ++j)
+            for (good_I64 j = 0; j < width; ++j)
             {
                 i64 y  = *pY << 8;
                 i64 cb = *pCb - 128;
@@ -1657,9 +1657,9 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
     {
         u8 *pC = decoder->components[0].dataBuffer;
 
-        for (good_i64 i = 0; i < height; ++i)
+        for (good_I64 i = 0; i < height; ++i)
         {
-            for (good_i64 j = 0; j < width; ++j)
+            for (good_I64 j = 0; j < width; ++j)
             {
                 u8 c = *pC;
                 ++pC;
@@ -1716,7 +1716,7 @@ NgosStatus Jpeg::upsampleX(JpegComponent *component)
 
 
 
-    for (good_i64 y = 0; y < height; ++y)
+    for (good_I64 y = 0; y < height; ++y)
     {
         cout[0] = CHROMA_FILTER(CF2A * cin[0] + CF2B * cin[1]);
         cout[1] = CHROMA_FILTER(CF3X * cin[0] + CF3Y * cin[1] + CF3Z * cin[2]);
@@ -1724,7 +1724,7 @@ NgosStatus Jpeg::upsampleX(JpegComponent *component)
 
 
 
-        for (good_i64 x = 0; x < width - 3; ++x)
+        for (good_I64 x = 0; x < width - 3; ++x)
         {
             cout[(x << 1) + 3] = CHROMA_FILTER(CF4A * cin[x] + CF4B * cin[x + 1] + CF4C * cin[x + 2] + CF4D * cin[x + 3]);
             cout[(x << 1) + 4] = CHROMA_FILTER(CF4D * cin[x] + CF4C * cin[x + 1] + CF4B * cin[x + 2] + CF4A * cin[x + 3]);
@@ -1787,7 +1787,7 @@ NgosStatus Jpeg::upsampleY(JpegComponent *component)
 
 
 
-    for (good_i64 x = 0; x < width; ++x)
+    for (good_I64 x = 0; x < width; ++x)
     {
         cin  = &component->dataBuffer[x];
         cout = &out[x];
@@ -1801,7 +1801,7 @@ NgosStatus Jpeg::upsampleY(JpegComponent *component)
 
 
 
-        for (good_i64 y = 0; y < height - 3; ++y)
+        for (good_I64 y = 0; y < height - 3; ++y)
         {
             *cout =  CHROMA_FILTER(CF4A * cin[-stride] + CF4B * cin[0] + CF4C * cin[stride] + CF4D * cin[stride2]);     cout += width;
             *cout =  CHROMA_FILTER(CF4D * cin[-stride] + CF4C * cin[0] + CF4B * cin[stride] + CF4A * cin[stride2]);     cout += width;

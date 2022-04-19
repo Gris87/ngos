@@ -59,12 +59,12 @@ NgosStatus FPU::initForBootStrapProcessor()
         COMMON_LVVV(("sState.fxsave.mxcsr     = 0x%08X", sState.fxsave.mxcsr));
         COMMON_LVVV(("sState.fxsave.mxcsrMask = 0x%08X", sState.fxsave.mxcsrMask));
 
-        for (good_i64 i = 0; i < 16; ++i)
+        for (good_I64 i = 0; i < 16; ++i)
         {
             COMMON_LVVV(("sState.fxsave.stack[%d] = 0x%016llX", i, sState.fxsave.stack[i]));
         }
 
-        for (good_i64 i = 0; i < 16; ++i)
+        for (good_I64 i = 0; i < 16; ++i)
         {
             COMMON_LVVV(("sState.fxsave.xmm[%d][0] = 0x%016llX", i, sState.fxsave.xmm[i][0]));
             COMMON_LVVV(("sState.fxsave.xmm[%d][1] = 0x%016llX", i, sState.fxsave.xmm[i][1]));
@@ -77,7 +77,7 @@ NgosStatus FPU::initForBootStrapProcessor()
         COMMON_LVVV(("sMxcsrMask                      = 0x%08X",    sMxcsrMask));
         COMMON_LVVV(("sXFeatures                      = %s",        flagsToFullString(sXFeatures)));
 
-        for (good_i64 i = 0; i < (i64)XFeature::MAXIMUM; ++i)
+        for (good_I64 i = 0; i < (i64)XFeature::MAXIMUM; ++i)
         {
             COMMON_LVVV(("sXFeaturesOffsets[%-44s]          = 0x%08X", enumToFullString((XFeature)i), sXFeaturesOffsets[i]));
             COMMON_LVVV(("sXFeaturesCompactedOffsets[%-44s] = 0x%08X", enumToFullString((XFeature)i), sXFeaturesCompactedOffsets[i]));
@@ -387,7 +387,7 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
 
 
 
-    for (good_i64 i = (i64)XFeature::SSE + 1; i < (i64)XFeature::MAXIMUM; ++i)
+    for (good_I64 i = (i64)XFeature::SSE + 1; i < (i64)XFeature::MAXIMUM; ++i)
     {
         XFeature feature = (XFeature)i;
 
@@ -426,7 +426,7 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
         sXFeaturesCompactedOffsets[(enum_t)XFeature::SSE]     = sXFeaturesOffsets[(enum_t)XFeature::SSE];
         sXFeaturesCompactedOffsets[(enum_t)XFeature::SSE + 1] = sizeof(FXSaveState) + sizeof(XStateHeader);
 
-        for (good_i64 i = (i64)XFeature::SSE + 2; i < (i64)XFeature::MAXIMUM; ++i)
+        for (good_I64 i = (i64)XFeature::SSE + 2; i < (i64)XFeature::MAXIMUM; ++i)
         {
             XFeature feature = (XFeature)i;
 
@@ -684,7 +684,7 @@ u32 FPU::expectedStateSize()
 
     u32 res = sizeof(FXSaveState) + sizeof(XStateHeader);
 
-    for (good_i64 i = (i64)XFeature::SSE + 1; i < (i64)XFeature::MAXIMUM; ++i)
+    for (good_I64 i = (i64)XFeature::SSE + 1; i < (i64)XFeature::MAXIMUM; ++i)
     {
         XFeature feature = (XFeature)i;
 

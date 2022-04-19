@@ -39,7 +39,7 @@ TEST_CASES(section0, com_ngos_shared_common_time_time);
 
         i64 res = 16725225600000;
 
-        for (good_i64 i = 2500; i >= -1000; --i)
+        for (good_I64 i = 2500; i >= -1000; --i)
         {
             TEST_ASSERT_EQUALS(Time::timeToTimestampInMilliseconds(i, 1,  1,  0,  0,  0,  0), res);
 
@@ -89,7 +89,7 @@ TEST_CASES(section0, com_ngos_shared_common_time_time);
 
         u16 total = 0;
 
-        for (good_i64 i = 1; i <= 12; ++i)
+        for (good_I64 i = 1; i <= 12; ++i)
         {
             TEST_ASSERT_EQUALS(Time::sDaysFromStartOfYear[i - 1], total);
 

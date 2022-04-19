@@ -49,7 +49,7 @@ NgosStatus E820::init()
             COMMON_LVVV(("sTable.entries:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (good_i64 i = 0; i < (i64)sTable.count; ++i)
+            for (good_I64 i = 0; i < (i64)sTable.count; ++i)
             {
                 COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, enumToFullString(sTable.entries[i].type), sTable.entries[i].start, sTable.entries[i].end()));
             }
@@ -61,7 +61,7 @@ NgosStatus E820::init()
             COMMON_LVVV(("sTableKExec.entries:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (good_i64 i = 0; i < (i64)sTableKExec.count; ++i)
+            for (good_I64 i = 0; i < (i64)sTableKExec.count; ++i)
             {
                 COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, enumToFullString(sTableKExec.entries[i].type), sTableKExec.entries[i].start, sTableKExec.entries[i].end()));
             }
@@ -73,7 +73,7 @@ NgosStatus E820::init()
             COMMON_LVVV(("sTableFirmware.entries:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (good_i64 i = 0; i < (i64)sTableFirmware.count; ++i)
+            for (good_I64 i = 0; i < (i64)sTableFirmware.count; ++i)
             {
                 COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, enumToFullString(sTableFirmware.entries[i].type), sTableFirmware.entries[i].start, sTableFirmware.entries[i].end()));
             }
@@ -316,7 +316,7 @@ NgosStatus E820::updateRangeInTable(E820Table *table, u64 start, u64 size, Memor
 
 
 
-    for (good_i64 i = left; i < (i64)table->count; ++i)
+    for (good_I64 i = left; i < (i64)table->count; ++i)
     {
         MemoryMapEntry &entry = table->entries[i];
 

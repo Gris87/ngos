@@ -82,7 +82,7 @@ NgosStatus Image::fill(const RgbaPixel &color)
     {
         RgbaPixel *buffer = getRgbaBuffer();
 
-        for (good_i64 i = 0; i < resolution; ++i)
+        for (good_I64 i = 0; i < resolution; ++i)
         {
             buffer[i].value32 = color.value32;
         }
@@ -91,7 +91,7 @@ NgosStatus Image::fill(const RgbaPixel &color)
     {
         RgbPixel *buffer = getRgbBuffer();
 
-        for (good_i64 i = 0; i < resolution; ++i)
+        for (good_I64 i = 0; i < resolution; ++i)
         {
             buffer[i].red   = color.red;
             buffer[i].green = color.green;

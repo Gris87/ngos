@@ -351,7 +351,7 @@ NgosStatus AES::encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
 
     i64 blocksCount = inSize / 16;
 
-    for (good_i64 i = 0; i < blocksCount; ++i)
+    for (good_I64 i = 0; i < blocksCount; ++i)
     {
         COMMON_ASSERT_EXECUTION((this->*mEncodeBlockFunction)(in, out), NgosStatus::ASSERTION);
 
@@ -408,7 +408,7 @@ NgosStatus AES::decode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
 
     i64 blocksCount = inSize / 16;
 
-    for (good_i64 i = 0; i < blocksCount; ++i)
+    for (good_I64 i = 0; i < blocksCount; ++i)
     {
         COMMON_ASSERT_EXECUTION((this->*mDecodeBlockFunction)(in, out), NgosStatus::ASSERTION);
 

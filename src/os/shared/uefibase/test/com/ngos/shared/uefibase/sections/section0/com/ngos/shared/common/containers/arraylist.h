@@ -905,7 +905,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
     {
         ArrayList<u8> temp;
 
-        for (good_i64 i = 0; i < 32; ++i)
+        for (good_I64 i = 0; i < 32; ++i)
         {
             TEST_ASSERT_EQUALS(temp.append(i * 169), NgosStatus::OK);
         }

@@ -905,7 +905,7 @@ NgosStatus lzmaReset(XzLzma2Decoder *decoder)
     // we would write 12 KiB less.
     u16 *probs = decoder->lzma.isMatch[0];
 
-    for (good_i64 i = 0; i < (i64)PROBS_TOTAL; ++i)
+    for (good_I64 i = 0; i < (i64)PROBS_TOTAL; ++i)
     {
         probs[i] = RC_BIT_MODEL_TOTAL / 2;
     }

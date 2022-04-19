@@ -142,7 +142,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices()
             UEFI_LVVV(("sAbsolutePointers:"));
             UEFI_LVVV(("-------------------------------------"));
 
-            for (good_i64 i = 0; i < (i64)sAbsolutePointersCount; ++i)
+            for (good_I64 i = 0; i < (i64)sAbsolutePointersCount; ++i)
             {
                 UEFI_LVVV(("sAbsolutePointers[%d]->waitForInput       = 0x%p", i, sAbsolutePointers[i]->waitForInput));
                 UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMinX = %u",   i, sAbsolutePointers[i]->mode->absoluteMinX));
@@ -259,7 +259,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, u64 si
 
     sAbsolutePointersCount = 0;
 
-    for (good_i64 i = 0; i < count; ++i)
+    for (good_I64 i = 0; i < count; ++i)
     {
         uefi_handle                  handle = pointersHandles[i];
         UefiAbsolutePointerProtocol *pointer;
@@ -348,7 +348,7 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices()
             UEFI_LVVV(("sSimplePointers:"));
             UEFI_LVVV(("-------------------------------------"));
 
-            for (good_i64 i = 0; i < (i64)sSimplePointersCount; ++i)
+            for (good_I64 i = 0; i < (i64)sSimplePointersCount; ++i)
             {
                 UEFI_LVVV(("sSimplePointers[%d]->waitForInput      = 0x%p", i, sSimplePointers[i]->waitForInput));
                 UEFI_LVVV(("sSimplePointers[%d]->mode->resolutionX = %u",   i, sSimplePointers[i]->mode->resolutionX));
@@ -461,7 +461,7 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices(Guid *protocol, u64 size
 
     sSimplePointersCount = 0;
 
-    for (good_i64 i = 0; i < count; ++i)
+    for (good_I64 i = 0; i < count; ++i)
     {
         uefi_handle                handle = pointersHandles[i];
         UefiSimplePointerProtocol *pointer;

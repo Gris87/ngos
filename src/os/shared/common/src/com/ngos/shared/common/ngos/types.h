@@ -22,15 +22,15 @@ typedef u64 enum_t;
 
 
 // TODO: Delete it
-typedef signed char      good_i8;
-typedef signed short     good_i16;
-typedef signed int       good_i32;
-typedef signed long long good_i64;
+typedef signed char      good_I8;
+typedef signed short     good_I16;
+typedef signed int       good_I32;
+typedef signed long long good_I64;
 
-typedef unsigned char      good_u8;
-typedef unsigned short     good_u16;
-typedef unsigned int       good_u32;
-typedef unsigned long long good_u64;
+typedef unsigned char      good_U8;
+typedef unsigned short     good_U16;
+typedef unsigned int       good_U32;
+typedef unsigned long long good_U64;
 
 typedef char     good_char8;
 typedef char16_t good_char16;

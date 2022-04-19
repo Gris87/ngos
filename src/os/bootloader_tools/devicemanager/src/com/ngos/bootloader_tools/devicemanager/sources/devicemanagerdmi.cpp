@@ -13,7 +13,7 @@
     { \
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(name, mprintf(format, flagsVar.flags), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION); \
         \
-        for (good_i64 _ = 0; _ < (i64)(sizeof(flagsVar) * 8); ++_) \
+        for (good_I64 _ = 0; _ < (i64)(sizeof(flagsVar) * 8); ++_) \
         { \
             u64 flag = (1ULL << _); \
             \
@@ -710,7 +710,7 @@ NgosStatus DeviceManagerDMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
                 UEFI_LVVV(("entry->containedObjectHandles:"));
                 UEFI_LVVV(("-------------------------------------"));
 
-                for (good_i64 i = 0; i < entry->numberOfContainedObjectHandles; ++i)
+                for (good_I64 i = 0; i < entry->numberOfContainedObjectHandles; ++i)
                 {
                     UEFI_LVVV(("#%-3d: 0x%04X", i, entry->containedObjectHandles[i]));
                 }
@@ -866,7 +866,7 @@ NgosStatus DeviceManagerDMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 
         // Add records for Contained object handles
         {
-            for (good_i64 i = 0; i < entry->numberOfContainedObjectHandles; ++i)
+            for (good_I64 i = 0; i < entry->numberOfContainedObjectHandles; ++i)
             {
                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Contained object handle #%d", i), mprintf("0x%04X", entry->containedObjectHandles[i]), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
             }
@@ -931,7 +931,7 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
                         UEFI_LVVV(("entryV23->containedElements:"));
                         UEFI_LVVV(("-------------------------------------"));
 
-                        for (good_i64 i = 0; i < entryV23->containedElementCount; ++i)
+                        for (good_I64 i = 0; i < entryV23->containedElementCount; ++i)
                         {
                             DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, i);
 
@@ -1216,7 +1216,7 @@ NgosStatus DeviceManagerDMI::saveDmiChassisEntry(DmiChassisEntry *entry)
         {
             if (entryV23)
             {
-                for (good_i64 i = 0; i < entryV23->containedElementCount; ++i)
+                for (good_I64 i = 0; i < entryV23->containedElementCount; ++i)
                 {
                     DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, i);
 
@@ -2366,7 +2366,7 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
                         UEFI_LVVV(("entryV32->peerGroups:"));
                         UEFI_LVVV(("-------------------------------------"));
 
-                        for (good_i64 i = 0; i < entryV32->peerGroupingCount; ++i)
+                        for (good_I64 i = 0; i < entryV32->peerGroupingCount; ++i)
                         {
                             UEFI_LVVV(("entryV32->peerGroups[%d].segmentGroupNumber                           = %u",     i, entryV32->peerGroups[i].segmentGroupNumber));
                             UEFI_LVVV(("entryV32->peerGroups[%d].busNumber                                    = %u",     i, entryV32->peerGroups[i].busNumber));
@@ -2552,7 +2552,7 @@ NgosStatus DeviceManagerDMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
         {
             if (entryV32)
             {
-                for (good_i64 i = 0; i < entryV32->peerGroupingCount; ++i)
+                for (good_I64 i = 0; i < entryV32->peerGroupingCount; ++i)
                 {
                     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d segment group number", i), mprintf("%u", entryV32->peerGroups[i].segmentGroupNumber),                               DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
                     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Peer group #%d bus number",           i), mprintf("%u", entryV32->peerGroups[i].busNumber),                                        DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
@@ -2595,7 +2595,7 @@ NgosStatus DeviceManagerDMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *
                 UEFI_LVVV(("entry->devices:"));
                 UEFI_LVVV(("-------------------------------------"));
 
-                for (good_i64 i = 0; i < count; ++i)
+                for (good_I64 i = 0; i < count; ++i)
                 {
                     UEFI_LVVV(("entry->devices[%d].deviceTypeAndEnabled.deviceType = %s",     i, enumToFullString((DmiOnboardDevicesDeviceType)entry->devices[i].deviceTypeAndEnabled.deviceType)));
                     UEFI_LVVV(("entry->devices[%d].deviceTypeAndEnabled.enabled    = %u",     i, entry->devices[i].deviceTypeAndEnabled.enabled));
@@ -2628,7 +2628,7 @@ NgosStatus DeviceManagerDMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *
 
     // Add Device Manager entries
     {
-        for (good_i64 i = 0; i < count; ++i)
+        for (good_I64 i = 0; i < count; ++i)
         {
             DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiOnboardDevice(&entry->devices[i]), enumToHumanString(entry->header.type));
 
@@ -2672,7 +2672,7 @@ NgosStatus DeviceManagerDMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *
 
 
 
-                    for (good_i64 i = 0; i < count; ++i)
+                    for (good_I64 i = 0; i < count; ++i)
                     {
                         if (stringId == entry->devices[i].description)
                         {
@@ -2709,7 +2709,7 @@ NgosStatus DeviceManagerDMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *
 
     // Add description for entries without decription
     {
-        for (good_i64 i = 0; i < count; ++i)
+        for (good_I64 i = 0; i < count; ++i)
         {
             DeviceManagerEntryDMI *deviceManagerEntry = onboardDevices.at(i);
 
@@ -3049,7 +3049,7 @@ NgosStatus DeviceManagerDMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsE
                 UEFI_LVVV(("entry->items:"));
                 UEFI_LVVV(("-------------------------------------"));
 
-                for (good_i64 i = 0; i < count; ++i)
+                for (good_I64 i = 0; i < count; ++i)
                 {
                     UEFI_LVVV(("entry->items[%d].type   = %s",     i, enumToFullString(entry->items[i].type)));
                     UEFI_LVVV(("entry->items[%d].handle = 0x%04X", i, entry->items[i].handle));
@@ -3151,7 +3151,7 @@ NgosStatus DeviceManagerDMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsE
 
         // Add records for Items
         {
-            for (good_i64 i = 0; i < count; ++i)
+            for (good_I64 i = 0; i < count; ++i)
             {
                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Item #%d type",   i), strdup(enumToFullString(entry->items[i].type)), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Item #%d handle", i), mprintf("0x%04X", entry->items[i].handle),      DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
@@ -6926,7 +6926,7 @@ NgosStatus DeviceManagerDMI::saveDmiAdditionalInformationEntry(DmiAdditionalInfo
 
                 DmiAdditionalInformation *curInfo = &entry->additionalInformationEntries[0];
 
-                for (good_i64 i = 0; i < entry->numberOfAdditionalInformationEntries; ++i)
+                for (good_I64 i = 0; i < entry->numberOfAdditionalInformationEntries; ++i)
                 {
                     UEFI_LVVV(("curInfo->entryLength      = %u",     curInfo->entryLength));
                     UEFI_LVVV(("curInfo->referencedHandle = 0x%04X", curInfo->referencedHandle));
@@ -6973,7 +6973,7 @@ NgosStatus DeviceManagerDMI::saveDmiAdditionalInformationEntry(DmiAdditionalInfo
         {
             DmiAdditionalInformation *curInfo = &entry->additionalInformationEntries[0];
 
-            for (good_i64 i = 0; i < entry->numberOfAdditionalInformationEntries; ++i)
+            for (good_I64 i = 0; i < entry->numberOfAdditionalInformationEntries; ++i)
             {
                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d length",            i), mprintf("%u",     curInfo->entryLength),      DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Entry #%d referenced handle", i), mprintf("0x%04X", curInfo->referencedHandle), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
