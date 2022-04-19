@@ -110,7 +110,7 @@ NgosStatus ArrayList<T>::prepend(const T &value)
 
     COMMON_ASSERT_EXECUTION(extendCapacity(), NgosStatus::ASSERTION);
 
-    for (i64 i = mSize; i > 0; --i)
+    for (good_i64 i = mSize; i > 0; --i)
     {
         mValues[i] = mValues[i - 1];
     }
@@ -145,7 +145,7 @@ NgosStatus ArrayList<T>::insert(i64 index, const T &value)
 
     COMMON_ASSERT_EXECUTION(extendCapacity(), NgosStatus::ASSERTION);
 
-    for (i64 i = mSize; i > index; --i)
+    for (good_i64 i = mSize; i > index; --i)
     {
         mValues[i] = mValues[i - 1];
     }
@@ -181,7 +181,7 @@ NgosStatus ArrayList<T>::removeAt(i64 index)
 
 
 
-        for (i64 i = index + 1; i < mSize; ++i)
+        for (good_i64 i = index + 1; i < mSize; ++i)
         {
             mValues[i - 1] = mValues[i];
         }
@@ -265,7 +265,7 @@ i64 ArrayList<T>::indexOf(const T &value) const
 
 
 
-    for (i64 i = 0; i < mSize; ++i)
+    for (good_i64 i = 0; i < mSize; ++i)
     {
         if (mValues[i] == value)
         {

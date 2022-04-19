@@ -29,7 +29,7 @@ DeviceManagerEntry::~DeviceManagerEntry()
 
 
 
-    for (i64 i = 0; i < (i64)mRecords.getSize(); ++i)
+    for (good_i64 i = 0; i < (i64)mRecords.getSize(); ++i)
     {
         delete mRecords.at(i);
     }

@@ -178,7 +178,7 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/shutdown.png",               &shutdownImage),           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cursor.png",                 &cursorImage),             NgosStatus::ASSERTION);
 
-    for (i64 i = 0; i < (i64)DeviceManagerMode::MAXIMUM; ++i)
+    for (good_i64 i = 0; i < (i64)DeviceManagerMode::MAXIMUM; ++i)
     {
         UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets(sModeImagesPath[i], &sModeImages[i]), NgosStatus::ASSERTION);
     }
@@ -414,7 +414,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
 
     const ArrayList<DeviceManagerEntryDMI *>& entries = DeviceManagerDMI::getEntries();
 
-    for (i64 i = 0; i < (i64)entries.getSize(); ++i)
+    for (good_i64 i = 0; i < (i64)entries.getSize(); ++i)
     {
         DeviceManagerEntryDMI *entry = entries.at(i);
 
@@ -508,7 +508,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForPciChildren(TreeNodeWidget *nodeW
 
 
 
-    for (i64 i = 0; i < (i64)entries.getSize(); ++i)
+    for (good_i64 i = 0; i < (i64)entries.getSize(); ++i)
     {
         DeviceManagerEntryPCI *entry = entries.at(i);
 
@@ -585,7 +585,7 @@ NgosStatus DeviceManagerGUI::fillDeviceInfoTableWidget(DeviceManagerEntry *entry
         {
             u64 count = 0;
 
-            for (i64 i = 0; i < (i64)records.getSize(); ++i)
+            for (good_i64 i = 0; i < (i64)records.getSize(); ++i)
             {
                 DeviceManagerEntryRecord *record = records.at(i);
 
@@ -608,7 +608,7 @@ NgosStatus DeviceManagerGUI::fillDeviceInfoTableWidget(DeviceManagerEntry *entry
         {
             u64 row = 0;
 
-            for (i64 i = 0; i < (i64)records.getSize(); ++i)
+            for (good_i64 i = 0; i < (i64)records.getSize(); ++i)
             {
                 DeviceManagerEntryRecord *record = records.at(i);
 
@@ -700,7 +700,7 @@ NgosStatus DeviceManagerGUI::generateWaitEventList()
 
 
 
-    for (i64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
+    for (good_i64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getSimplePointer(i)->waitForInput;
 
@@ -709,7 +709,7 @@ NgosStatus DeviceManagerGUI::generateWaitEventList()
 
 
 
-    for (i64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
+    for (good_i64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getAbsolutePointer(i)->waitForInput;
 

@@ -39,7 +39,7 @@ void UEFI_API testSequentialWriteProcedure(void *buffer)
 
     u64 startTime = AsmUtils::rdtsc();
 
-    for (i64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
+    for (good_i64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
     {
         test->setProgress(i);
 

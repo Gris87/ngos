@@ -43,7 +43,7 @@ NgosStatus Hex::toString(u8 *data, i64 size, char8 *buffer, i64 bufferSize, bool
 
     u16 *cur = (u16 *)buffer;
 
-    for (i64 i = 0; i < size; ++i)
+    for (good_i64 i = 0; i < size; ++i)
     {
         u8 ch = *data;
 

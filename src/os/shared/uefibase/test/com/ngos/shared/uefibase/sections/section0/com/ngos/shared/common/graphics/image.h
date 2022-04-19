@@ -86,12 +86,12 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_image);
 
 
 
-        for (i64 i = 0; i < (i64)temp.mBufferSize; ++i)
+        for (good_i64 i = 0; i < (i64)temp.mBufferSize; ++i)
         {
             TEST_ASSERT_EQUALS(temp.mBuffer[i], (i % 4) + 1);
         }
 
-        for (i64 i = 0; i < (i64)temp2.mBufferSize; ++i)
+        for (good_i64 i = 0; i < (i64)temp2.mBufferSize; ++i)
         {
             TEST_ASSERT_EQUALS(temp2.mBuffer[i], (i % 3) + 1);
         }

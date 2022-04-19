@@ -658,7 +658,7 @@ NgosStatus TableWidget::setColumnCount(i64 columns)
 
 
 
-    for (i64 i = 0; i < (i64)columns; ++i)
+    for (good_i64 i = 0; i < (i64)columns; ++i)
     {
         mColumnWidth.append(0);
         mHeaders.append(nullptr);
@@ -720,7 +720,7 @@ NgosStatus TableWidget::setHeaderText(i64 column, const char8 *text)
 
     i64 positionX = 0;
 
-    for (i64 i = 0; i < (i64)column; ++i)
+    for (good_i64 i = 0; i < (i64)column; ++i)
     {
         COMMON_TEST_ASSERT(mColumnWidth.at(i) > 0, NgosStatus::ASSERTION);
 
@@ -756,7 +756,7 @@ NgosStatus TableWidget::setRowCount(i64 rows)
 
 
 
-    for (i64 i = mRows.getSize(); i < (i64)rows; ++i)
+    for (good_i64 i = mRows.getSize(); i < (i64)rows; ++i)
     {
         TableRowWidget *rowWidget = new TableRowWidget(mScrollWrapperWidget);
 
@@ -772,7 +772,7 @@ NgosStatus TableWidget::setRowCount(i64 rows)
 
         i64 positionX = 0;
 
-        for (i64 j = 0; j < (i64)mColumnWidth.getSize(); ++j)
+        for (good_i64 j = 0; j < (i64)mColumnWidth.getSize(); ++j)
         {
             i64 columnWidth = mColumnWidth.at(j);
 
@@ -797,7 +797,7 @@ NgosStatus TableWidget::setRowCount(i64 rows)
 
 
 
-    for (i64 i = mRows.getSize(); i > (i64)rows; --i)
+    for (good_i64 i = mRows.getSize(); i > (i64)rows; --i)
     {
         TableRowWidget *rowWidget = mRows.at(i - 1);
 

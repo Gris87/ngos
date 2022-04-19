@@ -35,7 +35,7 @@ TEST_CASES(section0, com_ngos_shared_common_checksum_md5);
         u8 temp2[256];
         u8 temp3[256];
 
-        for (i64 i = 0; i < 256; ++i)
+        for (good_i64 i = 0; i < 256; ++i)
         {
             temp1[i] = i * 37;
             temp2[i] = i * 13;
@@ -63,7 +63,7 @@ TEST_CASES(section0, com_ngos_shared_common_checksum_md5);
 
         u8 temp1[256];
 
-        for (i64 i = 0; i < 256; ++i)
+        for (good_i64 i = 0; i < 256; ++i)
         {
             temp1[i] = i * 37;
         }
@@ -134,7 +134,7 @@ TEST_CASES(section0, com_ngos_shared_common_checksum_md5);
 
         u8 temp4[256];
 
-        for (i64 i = 0; i < 256; ++i)
+        for (good_i64 i = 0; i < 256; ++i)
         {
             temp4[i] = i * 37;
         }
@@ -197,7 +197,7 @@ TEST_CASES(section0, com_ngos_shared_common_checksum_md5);
 
         u8 temp1[66];
 
-        for (i64 i = 0; i < 66; ++i)
+        for (good_i64 i = 0; i < 66; ++i)
         {
             temp1[i] = i * 37;
         }

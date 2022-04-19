@@ -56,7 +56,7 @@ NgosStatus KvmClock::init()
             COMMON_LVVV(("CpuHotplug::sSteps:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)CpuHotplugState::MAXIMUM; ++i)
+            for (good_i64 i = 0; i < (i64)CpuHotplugState::MAXIMUM; ++i)
             {
                 if (CpuHotplug::sSteps[i].name)
                 {

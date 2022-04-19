@@ -155,7 +155,7 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
     RgbPixel    *pixelData = (*image)->getRgbBuffer();
     u8           byteValue = 0;
 
-    for (i64 y = height - 1; y >= 0; --y)
+    for (good_i64 y = height - 1; y >= 0; --y)
     {
         u8 *imageByte =  imageData;
         imageData     += stride;
@@ -166,7 +166,7 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
         {
             case 1:
             {
-                for (i64 x = 0; x < width; ++x)
+                for (good_i64 x = 0; x < width; ++x)
                 {
                     u8 index = x & 0x07;
 
@@ -191,7 +191,7 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
             case 4:
             {
-                for (i64 x = 0; x <= width - 2; x += 2)
+                for (good_i64 x = 0; x <= width - 2; x += 2)
                 {
                     byteValue = *imageByte;
                     ++imageByte;
@@ -236,7 +236,7 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
             case 8:
             {
-                for (i64 x = 0; x < width; ++x)
+                for (good_i64 x = 0; x < width; ++x)
                 {
                     u8 index = *imageByte;
                     ++imageByte;
@@ -254,7 +254,7 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
             case 24:
             {
-                for (i64 x = 0; x < width; ++x)
+                for (good_i64 x = 0; x < width; ++x)
                 {
                     pixel->blue  = *imageByte;  ++imageByte;
                     pixel->green = *imageByte;  ++imageByte;

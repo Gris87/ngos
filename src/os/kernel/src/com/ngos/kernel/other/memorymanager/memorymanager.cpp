@@ -139,7 +139,7 @@ NgosStatus MemoryManager::removeRegions(MemoryBlockType *type, u64 index, u64 co
 
 
 
-    for (i64 i = 0; i < (i64)count; ++i)
+    for (good_i64 i = 0; i < (i64)count; ++i)
     {
         type->totalSize -= type->regions[index + i].size;
     }

@@ -436,7 +436,7 @@ NgosStatus TreeWidget::pageUp()
 
         TreeNodeWidget *selectedTreeNodeWidget = mSelectedTreeNodeWidget;
 
-        for (i64 i = 0; i < (i64)visibleRow; ++i)
+        for (good_i64 i = 0; i < (i64)visibleRow; ++i)
         {
             TreeNodeWidget *parentNode = selectedTreeNodeWidget->getParentNode();
 
@@ -526,7 +526,7 @@ NgosStatus TreeWidget::pageDown()
 
         TreeNodeWidget *selectedTreeNodeWidget = mSelectedTreeNodeWidget;
 
-        for (i64 i = 0; i < (i64)visibleRow; ++i)
+        for (good_i64 i = 0; i < (i64)visibleRow; ++i)
         {
             if (selectedTreeNodeWidget->isExpanded())
             {

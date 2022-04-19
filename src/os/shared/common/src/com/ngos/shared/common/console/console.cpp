@@ -137,9 +137,9 @@ NgosStatus Console::print(char8 ch)
 
 
 
-        for (i64 i = 0; i < glyphData->bitmapHeight; ++i)
+        for (good_i64 i = 0; i < glyphData->bitmapHeight; ++i)
         {
-            for (i64 j = 0; j < glyphData->bitmapWidth; ++j)
+            for (good_i64 j = 0; j < glyphData->bitmapWidth; ++j)
             {
                 RgbaPixel *pixel = &sLastLineBuffer[(charPosY + i) * sScreenGop->mode->info->horizontalResolution + charPosX + j];
 

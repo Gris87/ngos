@@ -117,7 +117,7 @@ NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size, uefi
     i64 count = size / sizeof(uefi_handle);
     UEFI_LVVV(("count = %d", count));
 
-    for (i64 i = 0; i < count; ++i)
+    for (good_i64 i = 0; i < count; ++i)
     {
         uefi_handle        handle = pciIoHandles[i];
         UefiPciIoProtocol *pci    = nullptr;

@@ -53,7 +53,7 @@ NgosStatus generateHardwareId(BootParams *params, i64 *length)
 
     u64 rand = 0;
 
-    for (i64 i = len; i < (i64)sizeof(params->hardwareId) - 1; ++i)
+    for (good_i64 i = len; i < (i64)sizeof(params->hardwareId) - 1; ++i)
     {
         if (!rand)
         {

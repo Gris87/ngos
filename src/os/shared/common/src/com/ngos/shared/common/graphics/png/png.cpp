@@ -977,7 +977,7 @@ NgosStatus Png::imagePostprocess(PngDecoder *decoder, bool withNinePatch)
     {
         RgbaPixel *pixel = image->getRgbaBuffer();
 
-        for (i64 i = 0; i < resolution; ++i)
+        for (good_i64 i = 0; i < resolution; ++i)
         {
             if (pixel->alpha != 0xFF)
             {
@@ -993,7 +993,7 @@ NgosStatus Png::imagePostprocess(PngDecoder *decoder, bool withNinePatch)
 
         pixel = image->getRgbaBuffer();
 
-        for (i64 i = 0; i < resolution; ++i)
+        for (good_i64 i = 0; i < resolution; ++i)
         {
             u8 temp     = pixel->red;
             pixel->red  = pixel->blue;
@@ -1006,7 +1006,7 @@ NgosStatus Png::imagePostprocess(PngDecoder *decoder, bool withNinePatch)
     {
         RgbPixel *pixel = image->getRgbBuffer();
 
-        for (i64 i = 0; i < resolution; ++i)
+        for (good_i64 i = 0; i < resolution; ++i)
         {
             u8 temp     = pixel->red;
             pixel->red  = pixel->blue;
@@ -1049,7 +1049,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
 
         if (image->isRgba())
         {
-            for (i64 i = 1; i < image->getWidth() - 1; ++i)
+            for (good_i64 i = 1; i < image->getWidth() - 1; ++i)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[i];
 
@@ -1076,7 +1076,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
         }
         else
         {
-            for (i64 i = 1; i < image->getWidth() - 1; ++i)
+            for (good_i64 i = 1; i < image->getWidth() - 1; ++i)
             {
                 RgbPixel *pixel = &image->getRgbBuffer()[i];
 
@@ -1120,7 +1120,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
 
         if (image->isRgba())
         {
-            for (i64 i = 1; i < image->getHeight() - 1; ++i)
+            for (good_i64 i = 1; i < image->getHeight() - 1; ++i)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[i * image->getWidth()];
 
@@ -1147,7 +1147,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
         }
         else
         {
-            for (i64 i = 1; i < image->getHeight() - 1; ++i)
+            for (good_i64 i = 1; i < image->getHeight() - 1; ++i)
             {
                 RgbPixel *pixel = &image->getRgbBuffer()[i * image->getWidth()];
 
@@ -1190,7 +1190,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
 
         if (image->isRgba())
         {
-            for (i64 i = 1; i < image->getWidth() - 1; ++i)
+            for (good_i64 i = 1; i < image->getWidth() - 1; ++i)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[lastPosY + i];
 
@@ -1202,7 +1202,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
             }
 
-            for (i64 i = image->getWidth() - 2; i >= 1; --i)
+            for (good_i64 i = image->getWidth() - 2; i >= 1; --i)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[lastPosY + i];
 
@@ -1214,7 +1214,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
             }
 
-            for (i64 i = 1; i < image->getHeight() - 1; ++i)
+            for (good_i64 i = 1; i < image->getHeight() - 1; ++i)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[(i + 1) * image->getWidth() - 1];
 
@@ -1226,7 +1226,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
             }
 
-            for (i64 i = image->getHeight() - 2; i >= 1 ; --i)
+            for (good_i64 i = image->getHeight() - 2; i >= 1 ; --i)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[(i + 1) * image->getWidth() - 1];
 
@@ -1240,7 +1240,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
         }
         else
         {
-            for (i64 i = 1; i < image->getWidth() - 1; ++i)
+            for (good_i64 i = 1; i < image->getWidth() - 1; ++i)
             {
                 RgbPixel *pixel = &image->getRgbBuffer()[lastPosY + i];
 
@@ -1258,7 +1258,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
             }
 
-            for (i64 i = image->getWidth() - 2; i >= 1; --i)
+            for (good_i64 i = image->getWidth() - 2; i >= 1; --i)
             {
                 RgbPixel *pixel = &image->getRgbBuffer()[lastPosY + i];
 
@@ -1276,7 +1276,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
             }
 
-            for (i64 i = 1; i < image->getHeight() - 1; ++i)
+            for (good_i64 i = 1; i < image->getHeight() - 1; ++i)
             {
                 RgbPixel *pixel = &image->getRgbBuffer()[(i + 1) * image->getWidth() - 1];
 
@@ -1294,7 +1294,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
             }
 
-            for (i64 i = image->getHeight() - 2; i >= 1 ; --i)
+            for (good_i64 i = image->getHeight() - 2; i >= 1 ; --i)
             {
                 RgbPixel *pixel = &image->getRgbBuffer()[(i + 1) * image->getWidth() - 1];
 
@@ -1367,7 +1367,7 @@ NgosStatus Png::unfilter(PngDecoder *decoder, u8 *in, u8 *out, u16 width, u16 he
     u32  bytesPerLine = DIV_UP(width * bitsPerPixel, 8);
     u8  *previousLine = nullptr;
 
-    for (i64 i = 0; i < height; ++i)
+    for (good_i64 i = 0; i < height; ++i)
     {
         u8 *inLine  = &in[i * (bytesPerLine + 1)]; // +1 because each line starts with filterType byte
         u8 *outLine = &out[i * bytesPerLine];
@@ -1421,7 +1421,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
         {
             memcpy(outLine, inLine, byteWidth);
 
-            for (i64 i = byteWidth; i < bytesPerLine; ++i)
+            for (good_i64 i = byteWidth; i < bytesPerLine; ++i)
             {
                 outLine[i] = inLine[i] + outLine[i - byteWidth];
             }
@@ -1432,7 +1432,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
         {
             if (previousLine)
             {
-                for (i64 i = 0; i < bytesPerLine; ++i)
+                for (good_i64 i = 0; i < bytesPerLine; ++i)
                 {
                     outLine[i] = inLine[i] + previousLine[i];
                 }
@@ -1448,12 +1448,12 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
         {
             if (previousLine)
             {
-                for (i64 i = 0; i < byteWidth; ++i)
+                for (good_i64 i = 0; i < byteWidth; ++i)
                 {
                     outLine[i] = inLine[i] + (previousLine[i] >> 1);
                 }
 
-                for (i64 i = byteWidth; i < bytesPerLine; ++i)
+                for (good_i64 i = byteWidth; i < bytesPerLine; ++i)
                 {
                     outLine[i] = inLine[i] + ((outLine[i - byteWidth] + previousLine[i]) >> 1);
                 }
@@ -1462,7 +1462,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
             {
                 memcpy(outLine, inLine, byteWidth);
 
-                for (i64 i = byteWidth; i < bytesPerLine; ++i)
+                for (good_i64 i = byteWidth; i < bytesPerLine; ++i)
                 {
                     outLine[i] = inLine[i] + (outLine[i - byteWidth] >> 1);
                 }
@@ -1474,12 +1474,12 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
         {
             if (previousLine)
             {
-                for (i64 i = 0; i < byteWidth; ++i)
+                for (good_i64 i = 0; i < byteWidth; ++i)
                 {
                     outLine[i] = (inLine[i] + previousLine[i]); // paethPredictor(0, previousLine[i], 0) is always previousLine[i]
                 }
 
-                for (i64 i = byteWidth; i < bytesPerLine; ++i)
+                for (good_i64 i = byteWidth; i < bytesPerLine; ++i)
                 {
                     outLine[i] = (inLine[i] + paethPredictor(outLine[i - byteWidth], previousLine[i], previousLine[i - byteWidth]));
                 }
@@ -1488,7 +1488,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
             {
                 memcpy(outLine, inLine, byteWidth);
 
-                for (i64 i = byteWidth; i < bytesPerLine; ++i)
+                for (good_i64 i = byteWidth; i < bytesPerLine; ++i)
                 {
                     // paethPredictor(outLine[i - byteWidth], 0, 0) is always outLine[i - byteWidth]
                     outLine[i] = (inLine[i] + outLine[i - byteWidth]);
@@ -1529,9 +1529,9 @@ NgosStatus Png::removePaddingBits(u8 *in, u8 *out, i64 inLineBits, i64 outLineBi
 
 
 
-    for (i64 i = 0; i < height; ++i)
+    for (good_i64 i = 0; i < height; ++i)
     {
-        for (i64 j = 0; j < outLineBits; ++j)
+        for (good_i64 j = 0; j < outLineBits; ++j)
         {
             u8 bit = readBitFromReversedStream(&inBitPointer, in);
 

@@ -25,7 +25,7 @@ NgosStatus setupDynamicRelocation(address_t kernelLocation)
     i64 count = ((address_t)&_rela_end - (address_t)&_rela_begin) / sizeof(ElfRela);
     UEFI_LVVV(("count = %d", count));
 
-    for (i64 i = 0; i < count; ++i)
+    for (good_i64 i = 0; i < count; ++i)
     {
         ElfRela &rela = relas[i];
 

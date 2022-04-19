@@ -24,7 +24,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
     i64 count = (*bootMemoryMap->memoryMapSize) / (*bootMemoryMap->descriptorSize);
     UEFI_LVVV(("count = %d", count));
 
-    for (i64 i = 0; i < count; ++i)
+    for (good_i64 i = 0; i < count; ++i)
     {
         UefiMemoryDescriptor *memoryDescriptor = MEMORY_MAP_DESCRIPTOR(bootMemoryMap, i);
         UEFI_LVV(("Handling memory descriptor #%d at address 0x%p", i, memoryDescriptor));
@@ -158,7 +158,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
             UEFI_LVVV(("UEFI Memory Map entries:"));
             UEFI_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < count; ++i)
+            for (good_i64 i = 0; i < count; ++i)
             {
                 UefiMemoryDescriptor *memoryDescriptor = MEMORY_MAP_DESCRIPTOR(bootMemoryMap, i);
                 UEFI_TEST_ASSERT(memoryDescriptor, NgosStatus::ASSERTION);
@@ -173,7 +173,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
             UEFI_LVVV(("Memory Map entries:"));
             UEFI_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < params->memoryMapEntriesCount; ++i)
+            for (good_i64 i = 0; i < params->memoryMapEntriesCount; ++i)
             {
                 UEFI_LVVV(("#%-3d: type = %-2u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
             }

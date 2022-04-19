@@ -117,7 +117,7 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sMemoryDeviceEntries:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)sMemoryDeviceEntries.getSize(); ++i)
+            for (good_i64 i = 0; i < (i64)sMemoryDeviceEntries.getSize(); ++i)
             {
                 DmiMemoryDeviceEntry *device = sMemoryDeviceEntries.at(i);
 
@@ -136,7 +136,7 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sMemoryDeviceMappedAddressEntries:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)sMemoryDeviceMappedAddressEntries.getSize(); ++i)
+            for (good_i64 i = 0; i < (i64)sMemoryDeviceMappedAddressEntries.getSize(); ++i)
             {
                 DmiMemoryDeviceMappedAddressEntry *device = sMemoryDeviceMappedAddressEntries.at(i);
 
@@ -155,7 +155,7 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sMemoryDevices:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)sMemoryDevices.getSize(); ++i)
+            for (good_i64 i = 0; i < (i64)sMemoryDevices.getSize(); ++i)
             {
                 const DmiMemoryDevice &device = sMemoryDevices.at(i);
 
@@ -184,7 +184,7 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sIdentities:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)DmiIdentity::MAXIMUM; ++i)
+            for (good_i64 i = 0; i < (i64)DmiIdentity::MAXIMUM; ++i)
             {
                 if (sIdentities[i])
                 {
@@ -208,7 +208,7 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sUuids:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)DmiStoredUuid::MAXIMUM; ++i)
+            for (good_i64 i = 0; i < (i64)DmiStoredUuid::MAXIMUM; ++i)
             {
                 COMMON_LVVV(("%-11s: %s", enumToFullString((DmiStoredUuid)i), uuidToString(sUuids[i])));
             }
@@ -982,7 +982,7 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
                 COMMON_LVVV(("entry->containedObjectHandles:"));
                 COMMON_LVVV(("-------------------------------------"));
 
-                for (i64 i = 0; i < entry->numberOfContainedObjectHandles; ++i)
+                for (good_i64 i = 0; i < entry->numberOfContainedObjectHandles; ++i)
                 {
                     COMMON_LVVV(("#%-3d: 0x%04X", i, entry->containedObjectHandles[i]));
                 }
@@ -1158,7 +1158,7 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
                         COMMON_LVVV(("entryV23->containedElements:"));
                         COMMON_LVVV(("-------------------------------------"));
 
-                        for (i64 i = 0; i < entryV23->containedElementCount; ++i)
+                        for (good_i64 i = 0; i < entryV23->containedElementCount; ++i)
                         {
                             DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, i);
 
@@ -1973,7 +1973,7 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
                         COMMON_LVVV(("entryV32->peerGroups:"));
                         COMMON_LVVV(("-------------------------------------"));
 
-                        for (i64 i = 0; i < entryV32->peerGroupingCount; ++i)
+                        for (good_i64 i = 0; i < entryV32->peerGroupingCount; ++i)
                         {
                             COMMON_LVVV(("entryV32->peerGroups[%d].segmentGroupNumber                           = %u",     i, entryV32->peerGroups[i].segmentGroupNumber));
                             COMMON_LVVV(("entryV32->peerGroups[%d].busNumber                                    = %u",     i, entryV32->peerGroups[i].busNumber));
@@ -2115,7 +2115,7 @@ NgosStatus DMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry)
                 COMMON_LVVV(("entry->devices:"));
                 COMMON_LVVV(("-------------------------------------"));
 
-                for (i64 i = 0; i < count; ++i)
+                for (good_i64 i = 0; i < count; ++i)
                 {
                     COMMON_LVVV(("entry->devices[%d].deviceTypeAndEnabled.deviceType = %s",     i, enumToFullString((DmiOnboardDevicesDeviceType)entry->devices[i].deviceTypeAndEnabled.deviceType)));
                     COMMON_LVVV(("entry->devices[%d].deviceTypeAndEnabled.enabled    = %u",     i, entry->devices[i].deviceTypeAndEnabled.enabled));
@@ -2464,7 +2464,7 @@ NgosStatus DMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry)
                 COMMON_LVVV(("entry->items:"));
                 COMMON_LVVV(("-------------------------------------"));
 
-                for (i64 i = 0; i < count; ++i)
+                for (good_i64 i = 0; i < count; ++i)
                 {
                     COMMON_LVVV(("entry->items[%d].type   = %s",     i, enumToFullString(entry->items[i].type)));
                     COMMON_LVVV(("entry->items[%d].handle = 0x%04X", i, entry->items[i].handle));
@@ -4450,7 +4450,7 @@ NgosStatus DMI::saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry 
 
                 DmiAdditionalInformation *curInfo = &entry->additionalInformationEntries[0];
 
-                for (i64 i = 0; i < entry->numberOfAdditionalInformationEntries; ++i)
+                for (good_i64 i = 0; i < entry->numberOfAdditionalInformationEntries; ++i)
                 {
                     COMMON_LVVV(("curInfo->entryLength      = %u",     curInfo->entryLength));
                     COMMON_LVVV(("curInfo->referencedHandle = 0x%04X", curInfo->referencedHandle));
@@ -4720,7 +4720,7 @@ NgosStatus DMI::storeDmiMemoryDevices()
 
 
 
-    for (i64 i = 0; i < (i64)sMemoryDeviceEntries.getSize(); ++i)
+    for (good_i64 i = 0; i < (i64)sMemoryDeviceEntries.getSize(); ++i)
     {
         DmiMemoryDeviceEntry *entry = sMemoryDeviceEntries.at(i);
 
@@ -4817,7 +4817,7 @@ NgosStatus DMI::storeDmiMemoryDevices()
                     u64 start = 0xFFFFFFFFFFFFFFFF;
                     u64 end   = 0;
 
-                    for (i64 j = 0; j < (i64)sMemoryDeviceMappedAddressEntries.getSize(); ++j)
+                    for (good_i64 j = 0; j < (i64)sMemoryDeviceMappedAddressEntries.getSize(); ++j)
                     {
                         DmiMemoryDeviceMappedAddressEntry *deviceMappedAddress = sMemoryDeviceMappedAddressEntries.at(j);
 

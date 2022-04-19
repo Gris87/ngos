@@ -68,7 +68,7 @@ u64 getElfMemorySize(ElfHeader *header)
 
     u64 res = 0;
 
-    for (i64 i = 0; i < header->programHeaderTableEntryCount; ++i)
+    for (good_i64 i = 0; i < header->programHeaderTableEntryCount; ++i)
     {
         ElfProgramHeaderTableEntry *programHeader = (ElfProgramHeaderTableEntry *)((u64)header + header->programHeaderTableOffset + i * header->programHeaderTableEntrySize);
 
@@ -96,7 +96,7 @@ NgosStatus loadElfToAddress(ElfHeader *header, u64 address)
 
 
 
-    for (i64 i = 0; i < header->programHeaderTableEntryCount; ++i)
+    for (good_i64 i = 0; i < header->programHeaderTableEntryCount; ++i)
     {
         ElfProgramHeaderTableEntry *programHeader = (ElfProgramHeaderTableEntry *)((u64)header + header->programHeaderTableOffset + i * header->programHeaderTableEntrySize);
 
@@ -140,7 +140,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
 
 
 
-    for (i64 i = 0; i < header->sectionHeaderTableEntryCount; ++i)
+    for (good_i64 i = 0; i < header->sectionHeaderTableEntryCount; ++i)
     {
         ElfSectionHeaderTableEntry *sectionHeader = (ElfSectionHeaderTableEntry *)((u64)header + header->sectionHeaderTableOffset + i * header->sectionHeaderTableEntrySize);
 
@@ -164,7 +164,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
             i64 count = sectionHeader->size / sizeof(ElfRela);
             // EARLY_LVVV(("count = %d", count)); // Commented to avoid too frequent logs
 
-            for (i64 j = 0; j < count; ++j)
+            for (good_i64 j = 0; j < count; ++j)
             {
                 ElfRela &rela = relas[j];
 

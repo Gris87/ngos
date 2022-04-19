@@ -121,7 +121,7 @@ NgosStatus NetworkTest::initSimpleNetworkProtocols(Guid *protocol, u64 size, uef
 
 
 
-    for (i64 i = 0; i < count; ++i)
+    for (good_i64 i = 0; i < count; ++i)
     {
         uefi_handle                handle = handles[i];
         UefiSimpleNetworkProtocol *network;

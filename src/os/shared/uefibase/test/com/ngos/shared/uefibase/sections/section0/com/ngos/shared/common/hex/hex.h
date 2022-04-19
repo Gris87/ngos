@@ -21,7 +21,7 @@ TEST_CASES(section0, com_ngos_shared_common_hex_hex);
         u8 bytes1[10];
         u8 bytes2[10];
 
-        for (i64 i = 0; i < 10; ++i)
+        for (good_i64 i = 0; i < 10; ++i)
         {
             bytes1[i] = i * 93;
             bytes2[i] = i * 87 + 25;

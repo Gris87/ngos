@@ -33,7 +33,7 @@ NgosStatus printPte(PTE *pte)
 
 
 
-    for (i64 i = 0; i < PTRS_PER_PTE; ++i)
+    for (good_i64 i = 0; i < PTRS_PER_PTE; ++i)
     {
         if (ptePresent(pte[i]))
         {
@@ -54,7 +54,7 @@ NgosStatus printPmd(PMD *pmd)
 
 
 
-    for (i64 i = 0; i < PTRS_PER_PMD; ++i)
+    for (good_i64 i = 0; i < PTRS_PER_PMD; ++i)
     {
         if (pmdPresent(pmd[i]))
         {
@@ -80,7 +80,7 @@ NgosStatus printPud(PUD *pud)
 
 
 
-    for (i64 i = 0; i < PTRS_PER_PUD; ++i)
+    for (good_i64 i = 0; i < PTRS_PER_PUD; ++i)
     {
         if (pudPresent(pud[i]))
         {
@@ -107,7 +107,7 @@ NgosStatus printP4d(P4D *p4d)
 
 
 
-    for (i64 i = 0; i < PTRS_PER_P4D; ++i)
+    for (good_i64 i = 0; i < PTRS_PER_P4D; ++i)
     {
         if (p4dPresent(p4d[i]))
         {
@@ -134,7 +134,7 @@ NgosStatus printPgd(PGD *pgd)
 
 
 
-    for (i64 i = 0; i < PTRS_PER_PGD; ++i)
+    for (good_i64 i = 0; i < PTRS_PER_PGD; ++i)
     {
         if (pgdPresent(pgd[i]))
         {
@@ -435,7 +435,7 @@ NgosStatus adaptVirtualAddressSpacePageTable(u64 imageLocation)
 
 
 
-    for (i64 i = 0; i < PTRS_PER_PMD; ++i)
+    for (good_i64 i = 0; i < PTRS_PER_PMD; ++i)
     {
         if (pmdPresent(pmd[i]))
         {

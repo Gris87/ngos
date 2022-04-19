@@ -248,7 +248,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-        for (i64 i = 0; i < (i64)osCount; ++i)
+        for (good_i64 i = 0; i < (i64)osCount; ++i)
         {
             const OsInfo &os = oses.at(i);
 
@@ -406,7 +406,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-        for (i64 i = 0; i < (i64)osCount; ++i)
+        for (good_i64 i = 0; i < (i64)osCount; ++i)
         {
             Button *button = sOsButtons.at(i);
 
@@ -416,7 +416,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
             osButtonPositionX += osButtonStep;
         }
 
-        for (i64 i = osCount; i < (i64)sOsButtons.getSize(); ++i)
+        for (good_i64 i = osCount; i < (i64)sOsButtons.getSize(); ++i)
         {
             Button *button = sOsButtons.at(i);
 
@@ -453,7 +453,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
                 osCount = oses.getSize();
 
-                for (i64 i = 0; i < (i64)osCount; ++i)
+                for (good_i64 i = 0; i < (i64)osCount; ++i)
                 {
                     const OsInfo &os = oses.at(i);
 
@@ -695,7 +695,7 @@ NgosStatus BootloaderGUI::cleanUp()
 
 
 
-    for (i64 i = 0; i < (i64)OsType::MAXIMUM; ++i)
+    for (good_i64 i = 0; i < (i64)OsType::MAXIMUM; ++i)
     {
         if (sOsImages[i])
         {
@@ -703,7 +703,7 @@ NgosStatus BootloaderGUI::cleanUp()
         }
     }
 
-    for (i64 i = 0; i < (i64)VolumeType::MAXIMUM; ++i)
+    for (good_i64 i = 0; i < (i64)VolumeType::MAXIMUM; ++i)
     {
         if (sVolumeImages[i])
         {
@@ -756,7 +756,7 @@ NgosStatus BootloaderGUI::focusFirstOsButton()
 
         UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
-        for (i64 i = 0; i < OS_VISIBLE_COUNT; ++i)
+        for (good_i64 i = 0; i < OS_VISIBLE_COUNT; ++i)
         {
             Button *button        = sOsButtons.at(i);
             Button *visibleButton = sOsButtons.at(sOsButtonLeft + i);
@@ -765,7 +765,7 @@ NgosStatus BootloaderGUI::focusFirstOsButton()
             button->setVisible(true);
         }
 
-        for (i64 i = OS_VISIBLE_COUNT; i < (i64)sOsButtons.getSize(); ++i)
+        for (good_i64 i = OS_VISIBLE_COUNT; i < (i64)sOsButtons.getSize(); ++i)
         {
             sOsButtons.at(i)->setVisible(false);
         }
@@ -837,7 +837,7 @@ NgosStatus BootloaderGUI::focusPreviousOsButton()
 
             UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
-            for (i64 i = sOsButtonLeft; i < (i64)sOsButtonRight; ++i)
+            for (good_i64 i = sOsButtonLeft; i < (i64)sOsButtonRight; ++i)
             {
                 Button *button        = sOsButtons.at(i - 1);
                 Button *visibleButton = sOsButtons.at(i);
@@ -894,7 +894,7 @@ NgosStatus BootloaderGUI::focusNextOsButton()
 
             UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
-            for (i64 i = sOsButtonRight; i > (i64)sOsButtonLeft; --i)
+            for (good_i64 i = sOsButtonRight; i > (i64)sOsButtonLeft; --i)
             {
                 Button *button        = sOsButtons.at(i);
                 Button *visibleButton = sOsButtons.at(i - 1);
@@ -986,7 +986,7 @@ NgosStatus BootloaderGUI::generateWaitEventList()
 
 
 
-    for (i64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
+    for (good_i64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getSimplePointer(i)->waitForInput;
 
@@ -995,7 +995,7 @@ NgosStatus BootloaderGUI::generateWaitEventList()
 
 
 
-    for (i64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
+    for (good_i64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getAbsolutePointer(i)->waitForInput;
 
@@ -1723,7 +1723,7 @@ NgosStatus BootloaderGUI::onLeftButtonPressed()
 
     UEFI_TEST_ASSERT(sOsButtonLeft > 0, NgosStatus::ASSERTION);
 
-    for (i64 i = sOsButtonLeft; i < (i64)sOsButtonRight; ++i)
+    for (good_i64 i = sOsButtonLeft; i < (i64)sOsButtonRight; ++i)
     {
         Button *button        = sOsButtons.at(i - 1);
         Button *visibleButton = sOsButtons.at(i);
@@ -1770,7 +1770,7 @@ NgosStatus BootloaderGUI::onRightButtonPressed()
 
     UEFI_TEST_ASSERT(sOsButtonRight < sOsButtons.getSize(), NgosStatus::ASSERTION);
 
-    for (i64 i = sOsButtonRight; i > (i64)sOsButtonLeft; --i)
+    for (good_i64 i = sOsButtonRight; i > (i64)sOsButtonLeft; --i)
     {
         Button *button        = sOsButtons.at(i);
         Button *visibleButton = sOsButtons.at(i - 1);

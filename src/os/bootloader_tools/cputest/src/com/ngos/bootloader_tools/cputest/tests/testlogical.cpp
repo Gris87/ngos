@@ -48,7 +48,7 @@ void UEFI_API testLogicalProcedure(void *buffer)
 
     u64 startTime = AsmUtils::rdtsc();
 
-    for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
+    for (good_i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
     {
         if (temp1 < 3)
         {

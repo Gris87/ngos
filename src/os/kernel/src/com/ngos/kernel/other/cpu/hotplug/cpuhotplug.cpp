@@ -62,7 +62,7 @@ NgosStatus CpuHotplug::allocateDynamicState(CpuHotplugState state, CpuHotplugSta
 
     if (state == CpuHotplugState::BP_PREPARE_DYNAMIC)
     {
-        for (i64 i = (i64)CpuHotplugState::BP_PREPARE_DYNAMIC; i <= (i64)CpuHotplugState::BP_PREPARE_DYNAMIC_END; ++i)
+        for (good_i64 i = (i64)CpuHotplugState::BP_PREPARE_DYNAMIC; i <= (i64)CpuHotplugState::BP_PREPARE_DYNAMIC_END; ++i)
         {
             if (sSteps[i].name == nullptr)
             {
@@ -75,7 +75,7 @@ NgosStatus CpuHotplug::allocateDynamicState(CpuHotplugState state, CpuHotplugSta
     else
     if (state == CpuHotplugState::AP_ONLINE_DYNAMIC)
     {
-        for (i64 i = (i64)CpuHotplugState::AP_ONLINE_DYNAMIC; i <= (i64)CpuHotplugState::AP_ONLINE_DYNAMIC_END; ++i)
+        for (good_i64 i = (i64)CpuHotplugState::AP_ONLINE_DYNAMIC; i <= (i64)CpuHotplugState::AP_ONLINE_DYNAMIC_END; ++i)
         {
             if (sSteps[i].name == nullptr)
             {

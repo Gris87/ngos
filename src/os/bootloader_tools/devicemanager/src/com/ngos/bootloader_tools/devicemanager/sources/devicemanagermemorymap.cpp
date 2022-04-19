@@ -76,7 +76,7 @@ NgosStatus DeviceManagerMemoryMap::init()
 
     i64 numberOfDescriptors = memoryMapSize / descriptorSize;
 
-    for (i64 i = 0; i < numberOfDescriptors; ++i)
+    for (good_i64 i = 0; i < numberOfDescriptors; ++i)
     {
         UefiMemoryDescriptor *memoryDescriptor = MEMORY_MAP_DESCRIPTOR(&bootMemoryMap, i);
         UEFI_LVV(("Handling memory descriptor #%d at address 0x%p", i, memoryDescriptor));
@@ -116,7 +116,7 @@ NgosStatus DeviceManagerMemoryMap::init()
 
 
 
-    for (i64 i = 0; i < (i64)UefiMemoryType::MAXIMUM; ++i)
+    for (good_i64 i = 0; i < (i64)UefiMemoryType::MAXIMUM; ++i)
     {
         UEFI_ASSERT_EXECUTION(sEntry->addRecord(enumToString((UefiMemoryType)i), strdup(bytesToString(summary[i])), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
     }

@@ -541,7 +541,7 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char16 *fileName)
     filePath->header.subType = UefiDevicePathSubType::MEDIA_FILEPATH_DP;
     filePath->header.length  = filePathSize;
 
-    for (i64 i = 0; i < (i64)fileNameSize; ++i)
+    for (good_i64 i = 0; i < (i64)fileNameSize; ++i)
     {
         filePath->pathName[i] = fileName[i];
     }
@@ -1027,7 +1027,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
     i64 count = memoryMapSize / descriptorSize;
     UEFI_LVVV(("count = %d", count));
 
-    for (i64 i = 0; i < count; ++i)
+    for (good_i64 i = 0; i < count; ++i)
     {
         UefiMemoryDescriptor *memoryDescriptor = (UefiMemoryDescriptor *)((u64)memoryMap + (i * descriptorSize));
         UEFI_LVV(("Handling memory descriptor #%d at address 0x%p", i, memoryDescriptor));
@@ -1183,7 +1183,7 @@ UefiSmbios3ConfigurationTable* UEFI::getSmbios3Config()
 
 
 
-    for (i64 i = 0; i < (i64)sSystemTable->numberOfConfigurationTables; ++i)
+    for (good_i64 i = 0; i < (i64)sSystemTable->numberOfConfigurationTables; ++i)
     {
         UefiConfigurationTable *configurationTable = &sSystemTable->configurationTables[i];
 
@@ -1210,7 +1210,7 @@ UefiSmbiosConfigurationTable* UEFI::getSmbiosConfig()
 
 
 
-    for (i64 i = 0; i < (i64)sSystemTable->numberOfConfigurationTables; ++i)
+    for (good_i64 i = 0; i < (i64)sSystemTable->numberOfConfigurationTables; ++i)
     {
         UefiConfigurationTable *configurationTable = &sSystemTable->configurationTables[i];
 
@@ -1273,7 +1273,7 @@ NgosStatus UEFI::maximizeConsole(UefiSimpleTextOutputInterface *textOutput)
     u64 maximumBuffer = 0;
     i32 foundMode     = 0;
 
-    for (i64 i = 0; i < textOutput->mode->maxMode; ++i)
+    for (good_i64 i = 0; i < textOutput->mode->maxMode; ++i)
     {
         u64 columns;
         u64 rows;

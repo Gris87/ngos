@@ -83,7 +83,7 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
 
         u8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (good_i64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
@@ -127,7 +127,7 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
 
         u8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (good_i64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
@@ -174,7 +174,7 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
 
         u8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (good_i64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
@@ -209,7 +209,7 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
 
         u8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (good_i64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
@@ -241,7 +241,7 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
 
         u8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (good_i64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
@@ -285,7 +285,7 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
 
         u8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (good_i64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
@@ -332,7 +332,7 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
 
         u8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (good_i64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
@@ -367,7 +367,7 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
 
         u8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (good_i64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
@@ -399,7 +399,7 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
 
         u8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (good_i64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
@@ -443,7 +443,7 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
 
         u8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (good_i64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
@@ -490,7 +490,7 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
 
         u8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (good_i64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
@@ -537,7 +537,7 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
 
         u8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (good_i64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
@@ -584,7 +584,7 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
 
         u8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (good_i64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }

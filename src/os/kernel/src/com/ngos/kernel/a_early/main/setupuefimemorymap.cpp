@@ -36,7 +36,7 @@ NgosStatus setupUefiMemoryMap()
         EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions:"));
         EARLY_LVVV(("-------------------------------------"));
 
-        for (i64 i = 0; i < (i64)MemoryManager::sMemoryBlock.reserved.count; ++i)
+        for (good_i64 i = 0; i < (i64)MemoryManager::sMemoryBlock.reserved.count; ++i)
         {
             EARLY_LVVV(("#%-3d: 0x%p-0x%p | %s | 0x%04X", i, MemoryManager::sMemoryBlock.reserved.regions[i].start, MemoryManager::sMemoryBlock.reserved.regions[i].end(), flagsToFullString(MemoryManager::sMemoryBlock.reserved.regions[i].flags), MemoryManager::sMemoryBlock.reserved.regions[i].nodeId));
         }

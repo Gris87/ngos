@@ -481,7 +481,7 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
             memzero(in1, sizeof(in1));
 
-            for (i64 i = 0; i < (i64)sizeof(in2); ++i)
+            for (good_i64 i = 0; i < (i64)sizeof(in2); ++i)
             {
                 in2[i] = i;
             }

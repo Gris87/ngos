@@ -85,7 +85,7 @@ AssetEntry* Assets::getAssetEntry(const char8 *fileName)
 
 
 
-    for (i64 i = 0; i < sEntriesCount; ++i)
+    for (good_i64 i = 0; i < sEntriesCount; ++i)
     {
         if (strequal(sEntries[i].fileName, fileName))
         {
