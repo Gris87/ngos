@@ -7,7 +7,7 @@
 
 
 
-u64 simpleRandom(u64 seed = 0);
+good_I64 simpleRandom(good_I64 seed = 0);
 
 
 

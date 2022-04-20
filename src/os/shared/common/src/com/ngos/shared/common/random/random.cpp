@@ -8,17 +8,17 @@
 
 
 
-u64 simpleRandom(u64 seed)
+good_I64 simpleRandom(good_I64 seed)
 {
-    COMMON_LT((" | seed = %u", seed));
+    COMMON_LT((" | seed = %d", seed));
 
 
 
-    u64 random = seed;
-    u64 raw1   = 0;
-    u64 raw2   = 0;
-    u64 raw3   = 0;
-    u64 raw    = 0;
+    good_I64 random = seed;
+    good_I64 raw1   = 0;
+    good_I64 raw2   = 0;
+    good_I64 raw3   = 0;
+    good_I64 raw    = 0;
 
 
 

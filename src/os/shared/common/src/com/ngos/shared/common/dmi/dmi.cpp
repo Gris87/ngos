@@ -2450,6 +2450,7 @@ NgosStatus DMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry)
 
 
     u8 count = (entry->header.length - sizeof(entry->header) - sizeof(entry->groupName)) / sizeof(entry->items[0]);
+    AVOID_UNUSED(count);
 
     // Validation
     {

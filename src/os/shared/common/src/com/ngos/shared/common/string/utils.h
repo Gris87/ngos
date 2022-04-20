@@ -60,6 +60,7 @@ inline NgosStatus bytesToString(u64 bytes, char8 *buffer, i64 size)
 
 
     i64 length;
+    AVOID_UNUSED(length);
 
     switch (level)
     {

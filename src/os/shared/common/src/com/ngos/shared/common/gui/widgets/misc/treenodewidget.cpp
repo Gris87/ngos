@@ -263,6 +263,8 @@ NgosStatus TreeNodeWidget::onWidgetPressed(Widget *sender)
     COMMON_ASSERT(sender,                      "sender is null",    NgosStatus::ASSERTION);
     COMMON_ASSERT(sender == mExpandToolButton, "sender is unknown", NgosStatus::ASSERTION);
 
+    AVOID_UNUSED(sender);
+
 
 
     COMMON_ASSERT_EXECUTION(setExpanded(!mExpanded), NgosStatus::ASSERTION);

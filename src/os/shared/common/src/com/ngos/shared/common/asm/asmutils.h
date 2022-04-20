@@ -1,830 +1,891 @@
-#ifndef COM_NGOS_SHARED_COMMON_ASM_INSTRUCTIONS_H
-#define COM_NGOS_SHARED_COMMON_ASM_INSTRUCTIONS_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/status.h>
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-#define RDRAND_RETRY_LOOPS 10
-
-#define i8254_PORT_CONTROL    0x43
-#define i8254_PORT_COUNTER0   0x40
-#define i8254_CMD_READBACK    0xC0
-#define i8254_SELECT_COUNTER0 0x02
-#define i8254_STATUS_NOTREADY 0x40
-
-
-
+#ifndef COM_NGOS_SHARED_COMMON_ASM_ASMUTILS_H                                                                                                                                                        // Colorize: green
+#define COM_NGOS_SHARED_COMMON_ASM_ASMUTILS_H                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/status.h>                                                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define RDRAND_RETRY_LOOPS 10                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 class AsmUtils                                                                                                                                                                                           // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
-public:
-    static inline NgosStatus cpuIdle() // TEST: NO
-    {
-        // COMMON_LT(("")); // Commented to avoid bad looking logs
-
-
-
-        asm volatile("rep; nop");
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline NgosStatus outb(u8 value, u16 port) // TEST: NO
-    {
-        COMMON_LT((" | value = 0x%02X, port = 0x%04X", value, port));
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "outb   %0, %1"       // outb   %al, (%dx)  # Output byte in AL to I/O port in DX. %al == value, (%dx) == port
-                :                 // Output parameters
-                :                 // Input parameters
-                    "a" (value),  // 'a' - AL // Ignore CppSingleCharVerifier
-                    "dN" (port)   // 'd' - DX, 'N' - Constant in range 0 to 255
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline u8 inb(u16 port) // TEST: NO
-    {
-        COMMON_LT((" | port = 0x%04X", port));
-
-
-
-        u8 value;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "inb    %1, %0"       // inb    (%dx), %al  # Input byte from I/O port in DX into AL. %al == value, (%dx) == port
-                :                 // Output parameters
-                    "=a" (value)  // 'a' - AL, '=' - write only
-                :                 // Input parameters
-                    "dN" (port)   // 'd' - DX, 'N' - Constant in range 0 to 255
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return value;
-    }
-
-    static inline NgosStatus rdrand(u64 *value)
-    {
-        COMMON_LT((" | value = 0x%p", value));
-
-
-
-        bool ok;
-        u8   retry = RDRAND_RETRY_LOOPS;
-
-
-
-        while (retry > 0)
-        {
-            // Ignore CppAlignmentVerifier [BEGIN]
-            asm volatile(
-                "rdrand     %0"     "\n\t"    // rdrand     %rax    # Generate random number to RAX. %rax == (*value)
-                "setc       %1"               // setc       %dl     # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == ok
-                    :                         // Output parameters
-                        "=r"  (*value),       // 'r' - any general register, '=' - write only
-                        "=qm" (ok)            // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only
-            );
-            // Ignore CppAlignmentVerifier [END]
-
-
-
-            if (ok)
-            {
-                return NgosStatus::OK;
-            }
-
-
-
-            --retry;
-        }
-
-
-
-        return NgosStatus::FAILED;
-    }
-
-    static inline u64 rdtsc()
-    {
-        COMMON_LT((""));
-
-
-
-        u32 eax;
-        u32 edx;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "rdtsc"               // rdtsc      # Get how many CPU ticks took place since the processor was reset to EDX:EAX. %edx == edx. %eax == eax
-                :                 // Output parameters
-                    "=a" (eax),   // 'a' - EAX, '=' - write only
-                    "=d" (edx)    // 'd' - EDX, '=' - write only
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return ((u64)edx << 32) | eax;
-    }
-
-    static inline NgosStatus writeCr3(u64 value) // TEST: NO
-    {
-        COMMON_LT((" | value = 0x%016llX", value));
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "movq   %0, %%cr3"    // movq   %rax, %cr3      # Put value to CR3. %rax == value
-                :                 // Output parameters
-                :                 // Input parameters
-                    "r" (value)   // 'r' - any general register // Ignore CppSingleCharVerifier
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline u64 readCr4() // TEST: NO
-    {
-        COMMON_LT((""));
-
-
-
-        u64 value;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "movq   %%cr4, %0"    // movq   %cr4, %rax      # Put CR4 to value. %rax == value
-                :                 // Output parameters
-                    "=r" (value)  // 'r' - any general register, '=' - write only
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return value;
-    }
-
-    static inline NgosStatus writeCr4(u64 value) // TEST: NO
-    {
-        COMMON_LT((" | value = 0x%016llX", value));
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "movq   %0, %%cr4"    // movq   %rax, %cr4      # Put value to CR4. %rax == value
-                :                 // Output parameters
-                :                 // Input parameters
-                    "r" (value)   // 'r' - any general register // Ignore CppSingleCharVerifier
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline bool bt(u8 *address, u64 bit)
-    {
-        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
-
-        COMMON_ASSERT(address != nullptr, "address is null", false);
-
-
-
-        bool res;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "bt     %2, %1"     "\n\t"    // bt     %rax, (%rbx)    # Tests bit RAX starting from address RBX. %rax == bit. %rbx == address
-            "setc   %0"                   // setc   %dl             # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
-                :                         // Output parameters
-                    "=qm" (res)           // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only
-                :                         // Input parameters
-                    "m" (*address),       // 'm' - use memory // Ignore CppSingleCharVerifier
-                    "r" (bit)             // 'r' - any general register // Ignore CppSingleCharVerifier
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return res;
-    }
-
-    static inline bool bts(u8 *address, u64 bit)
-    {
-        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
-
-        COMMON_ASSERT(address != nullptr, "address is null", false);
-
-
-
-        bool res;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "bts    %2, %0"     "\n\t"    // bts    %rax, (%rbx)    # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
-            "setc   %1"                   // setc   %dl             # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
-                :                         // Output parameters
-                    "+m" (*address),      // 'm' - use memory, '+' - read and write
-                    "=qm" (res)           // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only
-                :                         // Input parameters
-                    "r" (bit)             // 'r' - any general register // Ignore CppSingleCharVerifier
-                :                         // Clobber list
-                    "memory"              // Inform gcc that memory will be changed
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return res;
-    }
-
-    static inline bool btsSafe(u8 *address, u64 bit)
-    {
-        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
-
-        COMMON_ASSERT(address != nullptr, "address is null", false);
-
-
-
-        bool res;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "lock bts   %2, %0"     "\n\t"    // lock bts   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
-            "setc       %1"                   // setc       %dl             # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
-                :                             // Output parameters
-                    "+m" (*address),          // 'm' - use memory, '+' - read and write
-                    "=qm" (res)               // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only
-                :                             // Input parameters
-                    "r" (bit)                 // 'r' - any general register // Ignore CppSingleCharVerifier
-                :                             // Clobber list
-                    "memory"                  // Inform gcc that memory will be changed
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return res;
-    }
-
-    static inline NgosStatus btsPure(u8 *address, u64 bit)
-    {
-        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
-
-        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "bts    %1, %0"           // bts    %rax, (%rbx)    # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
-                :                     // Output parameters
-                    "+m" (*address)   // 'm' - use memory, '+' - read and write
-                :                     // Input parameters
-                    "r" (bit)         // 'r' - any general register // Ignore CppSingleCharVerifier
-                :                     // Clobber list
-                    "memory"          // Inform gcc that memory will be changed
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline NgosStatus btsPureSafe(u8 *address, u64 bit)
-    {
-        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
-
-        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "lock bts   %1, %0"       // lock bts   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address
-                :                     // Output parameters
-                    "+m" (*address)   // 'm' - use memory, '+' - read and write
-                :                     // Input parameters
-                    "r" (bit)         // 'r' - any general register // Ignore CppSingleCharVerifier
-                :                     // Clobber list
-                    "memory"          // Inform gcc that memory will be changed
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline bool btr(u8 *address, u64 bit)
-    {
-        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
-
-        COMMON_ASSERT(address != nullptr, "address is null", false);
-
-
-
-        bool res;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "btr    %2, %0"     "\n\t"    // btr    %rax, (%rbx)    # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address
-            "setc   %1"                   // setc   %dl             # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
-                :                         // Output parameters
-                    "+m" (*address),      // 'm' - use memory, '+' - read and write
-                    "=qm" (res)           // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only
-                :                         // Input parameters
-                    "r" (bit)             // 'r' - any general register // Ignore CppSingleCharVerifier
-                :                         // Clobber list
-                    "memory"              // Inform gcc that memory will be changed
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return res;
-    }
-
-    static inline bool btrSafe(u8 *address, u64 bit)
-    {
-        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
-
-        COMMON_ASSERT(address != nullptr, "address is null", false);
-
-
-
-        bool res;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "lock btr   %2, %0"     "\n\t"    // lock btr   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address
-            "setc       %1"                   // setc       %dl             # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
-                :                             // Output parameters
-                    "+m" (*address),          // 'm' - use memory, '+' - read and write
-                    "=qm" (res)               // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only
-                :                             // Input parameters
-                    "r" (bit)                 // 'r' - any general register // Ignore CppSingleCharVerifier
-                :                             // Clobber list
-                    "memory"                  // Inform gcc that memory will be changed
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return res;
-    }
-
-    static inline NgosStatus btrPure(u8 *address, u64 bit)
-    {
-        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
-
-        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "btr    %1, %0"           // btr    %rax, (%rbx)    # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address
-                :                     // Output parameters
-                    "+m" (*address)   // 'm' - use memory, '+' - read and write
-                :                     // Input parameters
-                    "r" (bit)         // 'r' - any general register // Ignore CppSingleCharVerifier
-                :                     // Clobber list
-                    "memory"          // Inform gcc that memory will be changed
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline NgosStatus btrPureSafe(u8 *address, u64 bit)
-    {
-        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
-
-        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "lock btr   %1, %0"       // lock btr   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address
-                :                     // Output parameters
-                    "+m" (*address)   // 'm' - use memory, '+' - read and write
-                :                     // Input parameters
-                    "r" (bit)         // 'r' - any general register // Ignore CppSingleCharVerifier
-                :                     // Clobber list
-                    "memory"          // Inform gcc that memory will be changed
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline bool btc(u8 *address, u64 bit)
-    {
-        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
-
-        COMMON_ASSERT(address != nullptr, "address is null", false);
-
-
-
-        bool res;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "btc    %2, %0"     "\n\t"    // btc    %rax, (%rbx)    # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
-            "setc   %1"                   // setc   %dl             # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
-                :                         // Output parameters
-                    "+m" (*address),      // 'm' - use memory, '+' - read and write
-                    "=qm" (res)           // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only
-                :                         // Input parameters
-                    "r" (bit)             // 'r' - any general register // Ignore CppSingleCharVerifier
-                :                         // Clobber list
-                    "memory"              // Inform gcc that memory will be changed
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return res;
-    }
-
-    static inline bool btcSafe(u8 *address, u64 bit)
-    {
-        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
-
-        COMMON_ASSERT(address != nullptr, "address is null", false);
-
-
-
-        bool res;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "lock btc   %2, %0"     "\n\t"    // lock btc   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
-            "setc       %1"                   // setc       %dl             # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res
-                :                             // Output parameters
-                    "+m" (*address),          // 'm' - use memory, '+' - read and write
-                    "=qm" (res)               // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only
-                :                             // Input parameters
-                    "r" (bit)                 // 'r' - any general register // Ignore CppSingleCharVerifier
-                :                             // Clobber list
-                    "memory"                  // Inform gcc that memory will be changed
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return res;
-    }
-
-    static inline NgosStatus btcPure(u8 *address, u64 bit)
-    {
-        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
-
-        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "btc    %1, %0"           // btc    %rax, (%rbx)    # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
-                :                     // Output parameters
-                    "+m" (*address)   // 'm' - use memory, '+' - read and write
-                :                     // Input parameters
-                    "r" (bit)         // 'r' - any general register // Ignore CppSingleCharVerifier
-                :                     // Clobber list
-                    "memory"          // Inform gcc that memory will be changed
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline NgosStatus btcPureSafe(u8 *address, u64 bit)
-    {
-        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
-
-        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "lock btc   %1, %0"       // lock btc   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address
-                :                     // Output parameters
-                    "+m" (*address)   // 'm' - use memory, '+' - read and write
-                :                     // Input parameters
-                    "r" (bit)         // 'r' - any general register // Ignore CppSingleCharVerifier
-                :                     // Clobber list
-                    "memory"          // Inform gcc that memory will be changed
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline u64 rdmsr(u32 msr) // TEST: NO
-    {
-        COMMON_LT((" | msr = 0x%08X", msr));
-
-
-
-        u32 eax;
-        u32 edx;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "rdmsr"               // rdmsr      # Read MSR value specified by ECX to EDX:EAX. %edx == edx. %eax == eax
-                :                 // Output parameters
-                    "=a" (eax),   // 'a' - EAX, '=' - write only
-                    "=d" (edx)    // 'd' - EDX, '=' - write only
-                :                 // Input parameters
-                    "c" (msr)     // 'c' - ECX // Ignore CppSingleCharVerifier
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return ((u64)edx << 32) | eax;
-    }
-
-    static inline NgosStatus wrmsr(u32 msr, u64 value) // TEST: NO
-    {
-        COMMON_LT((" | msr = 0x%08X, value = 0x%016llX", msr, value));
-
-
-
-        u32 eax = value & 0xFFFFFFFF;
-        u32 edx = value >> 32;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "wrmsr"               // wrmsr      # Write MSR value specified by ECX from EDX:EAX. %edx == edx. %eax == eax
-                :                 // Output parameters
-                :                 // Input parameters
-                    "c" (msr),    // 'c' - ECX // Ignore CppSingleCharVerifier
-                    "a" (eax),    // 'a' - EAX // Ignore CppSingleCharVerifier
-                    "d" (edx)     // 'd' - EDX // Ignore CppSingleCharVerifier
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline NgosStatus cli() // TEST: NO
-    {
-        COMMON_LT((""));
-
-
-
-        asm volatile("cli");
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline NgosStatus sti() // TEST: NO
-    {
-        COMMON_LT((""));
-
-
-
-        asm volatile("sti");
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline NgosStatus fninit() // TEST: NO
-    {
-        COMMON_LT((""));
-
-
-
-        asm volatile("fninit");
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline NgosStatus xsetbv(u32 index, u64 value) // TEST: NO
-    {
-        COMMON_LT((" | index = 0x%08X, value = 0x%016llX", index, value));
-
-
-
-        u32 eax = value;
-        u32 edx = value >> 32;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "xsetbv"              // xsetbv     # Writes the contents of registers EDX:EAX into the 64-bit extended control register (XCR) specified in the ECX register
-                :                 // Output parameters
-                :                 // Input parameters
-                    "c" (index),  // 'c' - ECX // Ignore CppSingleCharVerifier
-                    "a" (eax),    // 'a' - EAX // Ignore CppSingleCharVerifier
-                    "d" (edx)     // 'd' - EDX // Ignore CppSingleCharVerifier
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline NgosStatus fxsave(u8 *address) // TEST: NO
-    {
-        COMMON_LT((" | address = 0x%p", address));
-
-        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "fxsave     %0"           // fxsave     0x0000(%rip)    # Saves the current state of the x87 FPU, MMX technology, XMM, and MXCSR registers to a 512-byte memory location. 0x0000(%rip) == address
-                :                     // Output parameters
-                    "+m" (*address)   // 'm' - use memory, '+' - read and write
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline NgosStatus xsave64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
-    {
-        COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));
-
-        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
-        COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);
-
-
-
-        u32 eax = mask;
-        u32 edx = mask >> 32;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "xsave64    %0"           // xsave64    0x0000(%rip)    # Saves Processor Extended States specified by EDX:EAX to address. 0x0000(%rip) == address
-                :                     // Output parameters
-                    "+m" (*address)   // 'm' - use memory, '+' - read and write
-                :                     // Input parameters
-                    "a" (eax),        // 'a' - EAX // Ignore CppSingleCharVerifier
-                    "d" (edx)         // 'd' - EDX // Ignore CppSingleCharVerifier
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline NgosStatus xsaves64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
-    {
-        COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));
-
-        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
-        COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);
-
-
-
-        u32 eax = mask;
-        u32 edx = mask >> 32;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "xsaves64   %0"           // xsaves64   0x0000(%rip)    # Saves Processor Extended States specified by EDX:EAX to address with compaction, optimizing if possible. 0x0000(%rip) == address
-                :                     // Output parameters
-                    "+m" (*address)   // 'm' - use memory, '+' - read and write
-                :                     // Input parameters
-                    "a" (eax),        // 'a' - EAX // Ignore CppSingleCharVerifier
-                    "d" (edx)         // 'd' - EDX // Ignore CppSingleCharVerifier
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline NgosStatus xrstor64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
-    {
-        COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));
-
-        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
-        COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);
-
-
-
-        u32 eax = mask;
-        u32 edx = mask >> 32;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "xrstor64   %0"           // xrstor64   0x0000(%rip)    # Restores Processor Extended States specified by EDX:EAX to address. 0x0000(%rip) == address
-                :                     // Output parameters
-                    "+m" (*address)   // 'm' - use memory, '+' - read and write
-                :                     // Input parameters
-                    "a" (eax),        // 'a' - EAX // Ignore CppSingleCharVerifier
-                    "d" (edx)         // 'd' - EDX // Ignore CppSingleCharVerifier
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline NgosStatus xrstors64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
-    {
-        COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));
-
-        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
-        COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);
-
-
-
-        u32 eax = mask;
-        u32 edx = mask >> 32;
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "xrstors64  %0"           // xrstors64  0x0000(%rip)    # Restores Processor Extended States specified by EDX:EAX to address. 0x0000(%rip) == address
-                :                     // Output parameters
-                    "+m" (*address)   // 'm' - use memory, '+' - read and write
-                :                     // Input parameters
-                    "a" (eax),        // 'a' - EAX // Ignore CppSingleCharVerifier
-                    "d" (edx)         // 'd' - EDX // Ignore CppSingleCharVerifier
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-
-    static inline NgosStatus invlpg(u8 *address) // TEST: NO
-    {
-        COMMON_LT((" | address = 0x%p", address));
-
-        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        asm volatile(
-            "invlpg     %0"           // invlpg     0x0000(%rip)    # Invalidate TLB entries for page containing specified address. 0x0000(%rip) == address
-                :                     // Output parameters
-                :                     // Input parameters
-                    "m" (*address)    // 'm' - use memory // Ignore CppSingleCharVerifier
-        );
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        return NgosStatus::OK;
-    }
-};
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_ASM_INSTRUCTIONS_H
+public:                                                                                                                                                                                                  // Colorize: green
+    static inline NgosStatus cpuIdle() // TEST: NO                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // COMMON_LT(("")); // Commented to avoid bad looking logs                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        asm volatile("rep; nop");   // Do nothing                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus outb(good_U16 port, good_U8 value) // TEST: NO                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | port = 0x%04X, value = 0x%02X", port, value));                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Write byte to I/O port                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "outb    %0, %1"      // outb    %al, (%dx)     # Output byte in AL to I/O port in DX. %al == value, %dx == port                                                                         // Colorize: green
+                    :                 // Output parameters                                                                                                                                               // Colorize: green
+                    :                 // Input parameters                                                                                                                                                // Colorize: green
+                        "a" (value),  // 'a' - AL // Ignore CppSingleCharVerifier                                                                                                                        // Colorize: green
+                        "dN" (port)   // 'd' - DX, 'N' - Constant in range 0 to 255                                                                                                                      // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline good_U8 inb(good_U16 port) // TEST: NO                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | port = 0x%04X", port));                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 value;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Read byte from I/O port                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "inb     %1, %0"      // inb     (%dx), %al     # Input byte from I/O port in DX into AL. %al == value, %dx == port                                                                      // Colorize: green
+                    :                 // Output parameters                                                                                                                                               // Colorize: green
+                        "=a" (value)  // 'a' - AL, '=' - write only                                                                                                                                      // Colorize: green
+                    :                 // Input parameters                                                                                                                                                // Colorize: green
+                        "dN" (port)   // 'd' - DX, 'N' - Constant in range 0 to 255                                                                                                                      // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return value;                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus rdrand(good_I64 *value)                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | value = 0x%p", value));                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(value != nullptr, "value is null", NgosStatus::ASSERTION);                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Try multiple times to call rdrand and exit on first success                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            bool ok;                                                                                                                                                                                     // Colorize: green
+            good_U8   retry = RDRAND_RETRY_LOOPS;                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (retry > 0)                                                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                // Generate random number and check for success                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                               // Colorize: green
+                    asm volatile(                                                                                                                                                                        // Colorize: green
+                        "rdrand  %0"    "\n\t"  // rdrand  %rax     # Generate random number to RAX. %rax == (*value)                                                                                    // Colorize: green
+                        "setc    %1"            // setc    %dl      # Sets DL = 1 if the Carry Flag is set. %dl == ok                                                                                    // Colorize: green
+                            :                   // Output parameters                                                                                                                                     // Colorize: green
+                                "=r"  (*value), // 'r' - any general register, '=' - write only                                                                                                          // Colorize: green
+                                "=qm" (ok)      // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only                                                                                   // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                    // Ignore CppAlignmentVerifier [END]                                                                                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (ok)                                                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    return NgosStatus::OK;                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                --retry;                                                                                                                                                                                 // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::FAILED;                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline good_U64 rdtsc()                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((""));                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U32 eax;                                                                                                                                                                                    // Colorize: green
+        good_U32 edx;                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Perform rdtsc and store result to eax and edx                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "rdtsc"             // rdtsc    # Get how many CPU ticks took place since the processor was reset to EDX:EAX. %edx == edx. %eax == eax                                                   // Colorize: green
+                    :               // Output parameters                                                                                                                                                 // Colorize: green
+                        "=a" (eax), // 'a' - EAX, '=' - write only                                                                                                                                       // Colorize: green
+                        "=d" (edx)  // 'd' - EDX, '=' - write only                                                                                                                                       // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return (static_cast<good_U64>(edx) << 32) | eax;                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus writeCr3(good_U64 value) // TEST: NO                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | value = 0x%016llX", value));                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Write value to CR3                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "movq   %0, %%cr3"  // movq     %rax, %cr3      # Put value to CR3. %rax == value                                                                                                        // Colorize: green
+                    :               // Output parameters                                                                                                                                                 // Colorize: green
+                    :               // Input parameters                                                                                                                                                  // Colorize: green
+                        "r" (value) // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                                        // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline good_U64 readCr4() // TEST: NO                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((""));                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U64 value;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Read CR4 to value                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "movq   %%cr4, %0"      // movq     %cr4, %rax  # Put CR4 to value. %rax == value                                                                                                        // Colorize: green
+                    :                   // Output parameters                                                                                                                                             // Colorize: green
+                        "=r" (value)    // 'r' - any general register, '=' - write only                                                                                                                  // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return value;                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus writeCr4(good_U64 value) // TEST: NO                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | value = 0x%016llX", value));                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Write value to CR4                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "movq   %0, %%cr4"  // movq     %rax, %cr4  # Put value to CR4. %rax == value                                                                                                            // Colorize: green
+                    :               // Output parameters                                                                                                                                                 // Colorize: green
+                    :               // Input parameters                                                                                                                                                  // Colorize: green
+                        "r" (value) // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                                        // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline bool bt(good_U8 *address, good_U64 bit)                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", false);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        bool res;                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check if specified bit is set and put result to res                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "bt     %2, %1"     "\n\t"    // bt     %rax, (%rbx)    # Tests bit RAX starting from address RBX. %rax == bit. %rbx == address                                                          // Colorize: green
+                "setc   %0"                   // setc   %dl             # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res                                                         // Colorize: green
+                    :                         // Output parameters                                                                                                                                       // Colorize: green
+                        "=qm" (res)           // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only                                                                                     // Colorize: green
+                    :                         // Input parameters                                                                                                                                        // Colorize: green
+                        "m" (*address),       // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                                        // Colorize: green
+                        "r" (bit)             // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                              // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return res;                                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline bool bts(good_U8 *address, good_U64 bit)                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", false);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        bool res;                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Set specified bit and put into res original bit value                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "bts    %2, %0"     "\n\t"    // bts    %rax, (%rbx)    # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address                                                           // Colorize: green
+                "setc   %1"                   // setc   %dl             # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res                                                         // Colorize: green
+                    :                         // Output parameters                                                                                                                                       // Colorize: green
+                        "+m" (*address),      // 'm' - use memory, '+' - read and write                                                                                                                  // Colorize: green
+                        "=qm" (res)           // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only                                                                                     // Colorize: green
+                    :                         // Input parameters                                                                                                                                        // Colorize: green
+                        "r" (bit)             // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                              // Colorize: green
+                    :                         // Clobber list                                                                                                                                            // Colorize: green
+                        "memory"              // Inform gcc that memory will be changed                                                                                                                  // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return res;                                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline bool btsSafe(good_U8 *address, good_U64 bit)                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", false);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        bool res;                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Set specified bit and put into res original bit value                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "lock bts   %2, %0"     "\n\t"    // lock bts   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address // Colorize: green
+                "setc       %1"                   // setc       %dl             # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res                                                 // Colorize: green
+                    :                             // Output parameters                                                                                                                                   // Colorize: green
+                        "+m" (*address),          // 'm' - use memory, '+' - read and write                                                                                                              // Colorize: green
+                        "=qm" (res)               // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only                                                                                 // Colorize: green
+                    :                             // Input parameters                                                                                                                                    // Colorize: green
+                        "r" (bit)                 // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                          // Colorize: green
+                    :                             // Clobber list                                                                                                                                        // Colorize: green
+                        "memory"                  // Inform gcc that memory will be changed                                                                                                              // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return res;                                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus btsPure(good_U8 *address, good_U64 bit)                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Set specified bit                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "bts    %1, %0"           // bts    %rax, (%rbx)    # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address                                                               // Colorize: green
+                    :                     // Output parameters                                                                                                                                           // Colorize: green
+                        "+m" (*address)   // 'm' - use memory, '+' - read and write                                                                                                                      // Colorize: green
+                    :                     // Input parameters                                                                                                                                            // Colorize: green
+                        "r" (bit)         // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                                  // Colorize: green
+                    :                     // Clobber list                                                                                                                                                // Colorize: green
+                        "memory"          // Inform gcc that memory will be changed                                                                                                                      // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus btsPureSafe(good_U8 *address, good_U64 bit)                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Set specified bit                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "lock bts   %1, %0"       // lock bts   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Sets bit RAX starting from address RBX. %rax == bit. %rbx == address // Colorize: green
+                    :                     // Output parameters                                                                                                                                           // Colorize: green
+                        "+m" (*address)   // 'm' - use memory, '+' - read and write                                                                                                                      // Colorize: green
+                    :                     // Input parameters                                                                                                                                            // Colorize: green
+                        "r" (bit)         // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                                  // Colorize: green
+                    :                     // Clobber list                                                                                                                                                // Colorize: green
+                        "memory"          // Inform gcc that memory will be changed                                                                                                                      // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline bool btr(good_U8 *address, good_U64 bit)                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", false);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        bool res;                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Reset specified bit and put into res original bit value                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "btr    %2, %0"     "\n\t"    // btr    %rax, (%rbx)    # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address                                                         // Colorize: green
+                "setc   %1"                   // setc   %dl             # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res                                                         // Colorize: green
+                    :                         // Output parameters                                                                                                                                       // Colorize: green
+                        "+m" (*address),      // 'm' - use memory, '+' - read and write                                                                                                                  // Colorize: green
+                        "=qm" (res)           // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only                                                                                     // Colorize: green
+                    :                         // Input parameters                                                                                                                                        // Colorize: green
+                        "r" (bit)             // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                              // Colorize: green
+                    :                         // Clobber list                                                                                                                                            // Colorize: green
+                        "memory"              // Inform gcc that memory will be changed                                                                                                                  // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return res;                                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline bool btrSafe(good_U8 *address, good_U64 bit)                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", false);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        bool res;                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Reset specified bit and put into res original bit value                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "lock btr   %2, %0"     "\n\t"    // lock btr   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address // Colorize: green
+                "setc       %1"                   // setc       %dl             # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res                                                 // Colorize: green
+                    :                             // Output parameters                                                                                                                                   // Colorize: green
+                        "+m" (*address),          // 'm' - use memory, '+' - read and write                                                                                                              // Colorize: green
+                        "=qm" (res)               // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only                                                                                 // Colorize: green
+                    :                             // Input parameters                                                                                                                                    // Colorize: green
+                        "r" (bit)                 // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                          // Colorize: green
+                    :                             // Clobber list                                                                                                                                        // Colorize: green
+                        "memory"                  // Inform gcc that memory will be changed                                                                                                              // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return res;                                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus btrPure(good_U8 *address, good_U64 bit)                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Reset specified bit                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "btr    %1, %0"           // btr    %rax, (%rbx)    # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address                                                             // Colorize: green
+                    :                     // Output parameters                                                                                                                                           // Colorize: green
+                        "+m" (*address)   // 'm' - use memory, '+' - read and write                                                                                                                      // Colorize: green
+                    :                     // Input parameters                                                                                                                                            // Colorize: green
+                        "r" (bit)         // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                                  // Colorize: green
+                    :                     // Clobber list                                                                                                                                                // Colorize: green
+                        "memory"          // Inform gcc that memory will be changed                                                                                                                      // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus btrPureSafe(good_U8 *address, good_U64 bit)                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Reset specified bit                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "lock btr   %1, %0"       // lock btr   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Resets bit RAX starting from address RBX. %rax == bit. %rbx == address // Colorize: green
+                    :                     // Output parameters                                                                                                                                           // Colorize: green
+                        "+m" (*address)   // 'm' - use memory, '+' - read and write                                                                                                                      // Colorize: green
+                    :                     // Input parameters                                                                                                                                            // Colorize: green
+                        "r" (bit)         // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                                  // Colorize: green
+                    :                     // Clobber list                                                                                                                                                // Colorize: green
+                        "memory"          // Inform gcc that memory will be changed                                                                                                                      // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline bool btc(good_U8 *address, good_U64 bit)                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", false);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        bool res;                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Invert specified bit and put into res original bit value                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "btc    %2, %0"     "\n\t"    // btc    %rax, (%rbx)    # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address                                                        // Colorize: green
+                "setc   %1"                   // setc   %dl             # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res                                                         // Colorize: green
+                    :                         // Output parameters                                                                                                                                       // Colorize: green
+                        "+m" (*address),      // 'm' - use memory, '+' - read and write                                                                                                                  // Colorize: green
+                        "=qm" (res)           // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only                                                                                     // Colorize: green
+                    :                         // Input parameters                                                                                                                                        // Colorize: green
+                        "r" (bit)             // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                              // Colorize: green
+                    :                         // Clobber list                                                                                                                                            // Colorize: green
+                        "memory"              // Inform gcc that memory will be changed                                                                                                                  // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return res;                                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline bool btcSafe(good_U8 *address, good_U64 bit)                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", false);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        bool res;                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Invert specified bit and put into res original bit value                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "lock btc   %2, %0"     "\n\t"    // lock btc   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address // Colorize: green
+                "setc       %1"                   // setc       %dl             # Sets the byte in the operand to 1 if the Carry Flag is set. %dl == res                                                 // Colorize: green
+                    :                             // Output parameters                                                                                                                                   // Colorize: green
+                        "+m" (*address),          // 'm' - use memory, '+' - read and write                                                                                                              // Colorize: green
+                        "=qm" (res)               // 'q' - Registers a, b, c or d, or 'm' - use memory, '=' - write only                                                                                 // Colorize: green
+                    :                             // Input parameters                                                                                                                                    // Colorize: green
+                        "r" (bit)                 // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                          // Colorize: green
+                    :                             // Clobber list                                                                                                                                        // Colorize: green
+                        "memory"                  // Inform gcc that memory will be changed                                                                                                              // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return res;                                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus btcPure(good_U8 *address, good_U64 bit)                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Invert specified bit                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "btc    %1, %0"           // btc    %rax, (%rbx)    # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address                                                            // Colorize: green
+                    :                     // Output parameters                                                                                                                                           // Colorize: green
+                        "+m" (*address)   // 'm' - use memory, '+' - read and write                                                                                                                      // Colorize: green
+                    :                     // Input parameters                                                                                                                                            // Colorize: green
+                        "r" (bit)         // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                                  // Colorize: green
+                    :                     // Clobber list                                                                                                                                                // Colorize: green
+                        "memory"          // Inform gcc that memory will be changed                                                                                                                      // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus btcPureSafe(good_U8 *address, good_U64 bit)                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Invert specified bit                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "lock btc   %1, %0"       // lock btc   %rax, (%rbx)    # lock - CPU will lock system Bus until instruction finish # Inverts bit RAX starting from address RBX. %rax == bit. %rbx == address // Colorize: green
+                    :                     // Output parameters                                                                                                                                           // Colorize: green
+                        "+m" (*address)   // 'm' - use memory, '+' - read and write                                                                                                                      // Colorize: green
+                    :                     // Input parameters                                                                                                                                            // Colorize: green
+                        "r" (bit)         // 'r' - any general register // Ignore CppSingleCharVerifier                                                                                                  // Colorize: green
+                    :                     // Clobber list                                                                                                                                                // Colorize: green
+                        "memory"          // Inform gcc that memory will be changed                                                                                                                      // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline good_U64 rdmsr(good_U32 msr) // TEST: NO                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | msr = 0x%08X", msr));                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U32 eax;                                                                                                                                                                                    // Colorize: green
+        good_U32 edx;                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Read MSR value and store it to eax and edx                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "rdmsr"               // rdmsr      # Read MSR value specified by ECX to EDX:EAX. %edx == edx. %eax == eax                                                                               // Colorize: green
+                    :                 // Output parameters                                                                                                                                               // Colorize: green
+                        "=a" (eax),   // 'a' - EAX, '=' - write only                                                                                                                                     // Colorize: green
+                        "=d" (edx)    // 'd' - EDX, '=' - write only                                                                                                                                     // Colorize: green
+                    :                 // Input parameters                                                                                                                                                // Colorize: green
+                        "c" (msr)     // 'c' - ECX // Ignore CppSingleCharVerifier                                                                                                                       // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return (static_cast<good_U64>(edx) << 32) | eax;                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus wrmsr(good_U32 msr, good_U64 value) // TEST: NO                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | msr = 0x%08X, value = 0x%016llX", msr, value));                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u32 eax = value;                                                                                                                                                                                 // Colorize: green
+        u32 edx = value >> 32;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        asm volatile(                                                                                                                                                                                    // Colorize: green
+            "wrmsr"               // wrmsr      # Write MSR value specified by ECX from EDX:EAX. %edx == edx. %eax == eax                                                                                // Colorize: green
+                :                 // Output parameters                                                                                                                                                   // Colorize: green
+                :                 // Input parameters                                                                                                                                                    // Colorize: green
+                    "c" (msr),    // 'c' - ECX // Ignore CppSingleCharVerifier                                                                                                                           // Colorize: green
+                    "a" (eax),    // 'a' - EAX // Ignore CppSingleCharVerifier                                                                                                                           // Colorize: green
+                    "d" (edx)     // 'd' - EDX // Ignore CppSingleCharVerifier                                                                                                                           // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus cli() // TEST: NO                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((""));                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        asm volatile("cli");    // Clear interrupt flag; interrupts disabled when interrupt flag cleared.                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus sti() // TEST: NO                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((""));                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        asm volatile("sti");    // Set interrupt flag; external, maskable interrupts enabled at the end of the next instruction.                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus fninit() // TEST: NO                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((""));                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        asm volatile("fninit"); // Initialize FPU without checking for pending unmasked floating-point exceptions                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus xsetbv(u32 index, u64 value) // TEST: NO                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | index = 0x%08X, value = 0x%016llX", index, value));                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u32 eax = value;                                                                                                                                                                                 // Colorize: green
+        u32 edx = value >> 32;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Write value into the 64-bit extended control register (XCR)                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "xsetbv"              // xsetbv     # Writes the contents of registers EDX:EAX into the 64-bit extended control register (XCR) specified in the ECX register                             // Colorize: green
+                    :                 // Output parameters                                                                                                                                               // Colorize: green
+                    :                 // Input parameters                                                                                                                                                // Colorize: green
+                        "c" (index),  // 'c' - ECX // Ignore CppSingleCharVerifier                                                                                                                       // Colorize: green
+                        "a" (eax),    // 'a' - EAX // Ignore CppSingleCharVerifier                                                                                                                       // Colorize: green
+                        "d" (edx)     // 'd' - EDX // Ignore CppSingleCharVerifier                                                                                                                       // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus fxsave(good_U8 *address) // TEST: NO                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p", address));                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Save registers to specified memory                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "fxsave     %0"           // fxsave     0x0000(%rip)    # Saves the current state of the x87 FPU, MMX technology, XMM, and MXCSR registers to a 512-byte memory location. 0x0000(%rip) == address // Colorize: green
+                    :                     // Output parameters                                                                                                                                           // Colorize: green
+                        "+m" (*address)   // 'm' - use memory, '+' - read and write                                                                                                                      // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus xsave64(good_U8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+        COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u32 eax = mask;                                                                                                                                                                                  // Colorize: green
+        u32 edx = mask >> 32;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Save processor extended states masked by mask                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "xsave64    %0"           // xsave64    0x0000(%rip)    # Saves Processor Extended States specified by EDX:EAX to address. 0x0000(%rip) == address                                       // Colorize: green
+                    :                     // Output parameters                                                                                                                                           // Colorize: green
+                        "+m" (*address)   // 'm' - use memory, '+' - read and write                                                                                                                      // Colorize: green
+                    :                     // Input parameters                                                                                                                                            // Colorize: green
+                        "a" (eax),        // 'a' - EAX // Ignore CppSingleCharVerifier                                                                                                                   // Colorize: green
+                        "d" (edx)         // 'd' - EDX // Ignore CppSingleCharVerifier                                                                                                                   // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus xsaves64(good_U8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+        COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u32 eax = mask;                                                                                                                                                                                  // Colorize: green
+        u32 edx = mask >> 32;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Save processor extended states with compaction masked by mask                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "xsaves64   %0"           // xsaves64   0x0000(%rip)    # Saves Processor Extended States specified by EDX:EAX to address with compaction, optimizing if possible. 0x0000(%rip) == address // Colorize: green
+                    :                     // Output parameters                                                                                                                                           // Colorize: green
+                        "+m" (*address)   // 'm' - use memory, '+' - read and write                                                                                                                      // Colorize: green
+                    :                     // Input parameters                                                                                                                                            // Colorize: green
+                        "a" (eax),        // 'a' - EAX // Ignore CppSingleCharVerifier                                                                                                                   // Colorize: green
+                        "d" (edx)         // 'd' - EDX // Ignore CppSingleCharVerifier                                                                                                                   // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus xrstor64(good_U8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+        COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u32 eax = mask;                                                                                                                                                                                  // Colorize: green
+        u32 edx = mask >> 32;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Restore processor extended states masked by mask                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "xrstor64   %0"           // xrstor64   0x0000(%rip)    # Restores Processor Extended States specified by EDX:EAX to address. 0x0000(%rip) == address                                    // Colorize: green
+                    :                     // Output parameters                                                                                                                                           // Colorize: green
+                        "+m" (*address)   // 'm' - use memory, '+' - read and write                                                                                                                      // Colorize: green
+                    :                     // Input parameters                                                                                                                                            // Colorize: green
+                        "a" (eax),        // 'a' - EAX // Ignore CppSingleCharVerifier                                                                                                                   // Colorize: green
+                        "d" (edx)         // 'd' - EDX // Ignore CppSingleCharVerifier                                                                                                                   // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus xrstors64(good_U8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+        COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u32 eax = mask;                                                                                                                                                                                  // Colorize: green
+        u32 edx = mask >> 32;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Restore processor extended states with compaction masked by mask                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "xrstors64  %0"           // xrstors64  0x0000(%rip)    # Restores Processor Extended States specified by EDX:EAX to address. 0x0000(%rip) == address                                    // Colorize: green
+                    :                     // Output parameters                                                                                                                                           // Colorize: green
+                        "+m" (*address)   // 'm' - use memory, '+' - read and write                                                                                                                      // Colorize: green
+                    :                     // Input parameters                                                                                                                                            // Colorize: green
+                        "a" (eax),        // 'a' - EAX // Ignore CppSingleCharVerifier                                                                                                                   // Colorize: green
+                        "d" (edx)         // 'd' - EDX // Ignore CppSingleCharVerifier                                                                                                                   // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus invlpg(good_U8 *address) // TEST: NO                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | address = 0x%p", address));                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Invalidate page specified by address                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            asm volatile(                                                                                                                                                                                // Colorize: green
+                "invlpg     %0"           // invlpg     0x0000(%rip)    # Invalidate TLB entries for page containing specified address. 0x0000(%rip) == address                                          // Colorize: green
+                    :                     // Output parameters                                                                                                                                           // Colorize: green
+                    :                     // Input parameters                                                                                                                                            // Colorize: green
+                        "m" (*address)    // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                                            // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_ASM_ASMUTILS_H                                                                                                                                                          // Colorize: green

@@ -3327,6 +3327,8 @@ NgosStatus MemoryTestGUI::updateTest(TestType testType, i64 tsc)
     char8 *averageText = (char8 *)sAverageLabelWidgets[(enum_t)testType]->getText();
 
     i64 averageTextLength = sprintf(averageText, "Avg: %s/s", bytesToString(averageSpeed));
+    AVOID_UNUSED(averageTextLength);
+
     UEFI_TEST_ASSERT(averageTextLength < AVERAGE_TEXT_LENGTH, NgosStatus::ASSERTION);
 
 
@@ -3344,6 +3346,8 @@ NgosStatus MemoryTestGUI::updateTest(TestType testType, i64 tsc)
         char8 *maximumText = (char8 *)sMaximumLabelWidgets[(enum_t)testType]->getText();
 
         i64 maximumTextLength = sprintf(maximumText, "Max: %s/s", bytesToString(speed));
+        AVOID_UNUSED(maximumTextLength);
+
         UEFI_TEST_ASSERT(maximumTextLength < MAXIMUM_TEXT_LENGTH, NgosStatus::ASSERTION);
 
 
@@ -3366,6 +3370,8 @@ NgosStatus MemoryTestGUI::updateTest(TestType testType, i64 tsc)
         char8 *progressText = (char8 *)sProgressLabelWidgets[(enum_t)testType]->getText();
 
         i64 progressTextLength = sprintf(progressText, "%s / %s", startBuffer, endBuffer);
+        AVOID_UNUSED(progressTextLength);
+
         UEFI_TEST_ASSERT(progressTextLength < PROGRESS_TEXT_LENGTH, NgosStatus::ASSERTION);
 
 
@@ -3685,6 +3691,8 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(i64 processorId)
         char8 *progressText = (char8 *)sProgressLabelWidgets[(enum_t)testType]->getText();
 
         i64 progressTextLength = sprintf(progressText, "Score: %u", test->getScore());
+        AVOID_UNUSED(progressTextLength);
+
         UEFI_TEST_ASSERT(progressTextLength < PROGRESS_TEXT_LENGTH, NgosStatus::ASSERTION);
 
 

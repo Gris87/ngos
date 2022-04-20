@@ -34,10 +34,10 @@ NgosStatus Serial::initConsole()
 
 
 
-    COMMON_ASSERT_EXECUTION(AsmUtils::outb(0x03, DEFAULT_SERIAL_PORT + LCR), NgosStatus::ASSERTION); // 8n1
-    COMMON_ASSERT_EXECUTION(AsmUtils::outb(0,    DEFAULT_SERIAL_PORT + IER), NgosStatus::ASSERTION); // no interrupt
-    COMMON_ASSERT_EXECUTION(AsmUtils::outb(0,    DEFAULT_SERIAL_PORT + FCR), NgosStatus::ASSERTION); // no fifo
-    COMMON_ASSERT_EXECUTION(AsmUtils::outb(0x03, DEFAULT_SERIAL_PORT + MCR), NgosStatus::ASSERTION); // DTR + RTS
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(DEFAULT_SERIAL_PORT + LCR, 0x03), NgosStatus::ASSERTION); // 8n1
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(DEFAULT_SERIAL_PORT + IER, 0x00), NgosStatus::ASSERTION); // no interrupt
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(DEFAULT_SERIAL_PORT + FCR, 0x00), NgosStatus::ASSERTION); // no fifo
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(DEFAULT_SERIAL_PORT + MCR, 0x03), NgosStatus::ASSERTION); // DTR + RTS
 
 
 
@@ -47,10 +47,10 @@ NgosStatus Serial::initConsole()
 
 
 
-    COMMON_ASSERT_EXECUTION(AsmUtils::outb(c | DLAB,              DEFAULT_SERIAL_PORT + LCR), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(AsmUtils::outb(divisor & 0xFF,        DEFAULT_SERIAL_PORT + DLL), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(AsmUtils::outb((divisor >> 8) & 0xFF, DEFAULT_SERIAL_PORT + DLH), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(AsmUtils::outb(c & ~DLAB,             DEFAULT_SERIAL_PORT + LCR), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(DEFAULT_SERIAL_PORT + LCR, c | DLAB),              NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(DEFAULT_SERIAL_PORT + DLL, divisor & 0xFF),        NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(DEFAULT_SERIAL_PORT + DLH, (divisor >> 8) & 0xFF), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(DEFAULT_SERIAL_PORT + LCR, c & ~DLAB),             NgosStatus::ASSERTION);
 
 
 
@@ -61,7 +61,7 @@ NgosStatus Serial::initConsole()
     return NgosStatus::OK;
 }
 
-void Serial::print(char8 ch)
+NgosStatus Serial::print(char8 ch)
 {
     // COMMON_LT((" | ch = %c", ch)); // Commented to avoid infinite loop
 
@@ -70,77 +70,99 @@ void Serial::print(char8 ch)
     u16 timeout = 0xFFFF;
 
     while (
-           !(AsmUtils::inb(DEFAULT_SERIAL_PORT + LSR) & XMTRDY)
+           (AsmUtils::inb(DEFAULT_SERIAL_PORT + LSR) & XMTRDY) == 0
            &&
-           --timeout
+           timeout > 0
           )
     {
-        COMMON_ASSERT_EXECUTION(AsmUtils::cpuIdle());
+        COMMON_ASSERT_EXECUTION(AsmUtils::cpuIdle(), NgosStatus::ASSERTION);
+
+        --timeout;
     }
 
-    COMMON_ASSERT_EXECUTION(AsmUtils::outb(ch, DEFAULT_SERIAL_PORT + TXR));
+    COMMON_ASSERT_EXECUTION(AsmUtils::outb(DEFAULT_SERIAL_PORT + TXR, ch), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
 }
 
-void Serial::print(const char8 *str)
+NgosStatus Serial::print(const char8 *str)
 {
     // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid infinite loop
 
-    COMMON_ASSERT(str, "str is null");
+    COMMON_ASSERT(str != nullptr, "str is null", NgosStatus::ASSERTION);
 
 
 
-    while (*str)
+    while (*str != 0)
     {
         if (*str == '\n')
         {
-            print('\r');
+            COMMON_ASSERT_EXECUTION(print('\r'), NgosStatus::ASSERTION);
         }
 
-        print(*str);
+        COMMON_ASSERT_EXECUTION(print(*str), NgosStatus::ASSERTION);
 
         ++str;
     }
+
+
+
+    return NgosStatus::OK;
 }
 
-void Serial::println()
+NgosStatus Serial::println()
 {
     // COMMON_LT(("")); // Commented to avoid bad looking logs
 
 
 
-    char8 nl[2] = { '\n', 0 };
-    print(nl);
+    COMMON_ASSERT_EXECUTION(print('\r'), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(print('\n'), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
 }
 
-void Serial::println(char8 ch)
+NgosStatus Serial::println(char8 ch)
 {
     // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
 
 
 
-    char8 buffer[3] = { ch, '\n', 0 };
-    print(buffer);
+    COMMON_ASSERT_EXECUTION(print(ch),   NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(print('\r'), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(print('\n'), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
 }
 
-void Serial::println(const char8 *str)
+NgosStatus Serial::println(const char8 *str)
 {
     // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid infinite loop
 
-    COMMON_ASSERT(str, "str is null");
+    COMMON_ASSERT(str != nullptr, "str is null", NgosStatus::ASSERTION);
 
 
 
-    print(str);
+    COMMON_ASSERT_EXECUTION(print(str),  NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(print('\r'), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(print('\n'), NgosStatus::ASSERTION);
 
-    char8 nl[2] = { '\n', 0 };
-    print(nl);
+
+
+    return NgosStatus::OK;
 }
 
 i64 Serial::printf(const char8 *format, ...)
 {
     // COMMON_LT((" | format = 0x%p", format)); // Commented to avoid infinite loop
 
-    COMMON_ASSERT(format, "format is null", 0);
+    COMMON_ASSERT(format != nullptr, "format is null", 0);
 
 
 
@@ -154,7 +176,7 @@ i64 Serial::printf(const char8 *format, ...)
 
 
 
-    println(printfBuffer);
+    COMMON_ASSERT_EXECUTION(println(printfBuffer), 0);
 
 
 

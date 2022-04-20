@@ -1,64 +1,64 @@
-#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_ASM_INSTRUCTIONS_H
-#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_ASM_INSTRUCTIONS_H
-
-
-
-#include <buildconfig.h>
-#include <com/ngos/shared/common/asm/asmutils.h>
-#include <com/ngos/shared/common/cpu/cpu.h>
-#include <com/ngos/shared/uefibase/testengine.h>
-
-
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-
-
-
-TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
-{
-    TEST_CASE("rdrand()");
-    {
-        if (CPU::hasFlag(X86Feature::RDRAND))
-        {
-            u64 value1 = 0;
-            u64 value2 = 0;
-            u64 value3 = 0;
-
-            TEST_ASSERT_EQUALS(AsmUtils::rdrand(&value1), NgosStatus::OK);
-            TEST_ASSERT_EQUALS(AsmUtils::rdrand(&value2), NgosStatus::OK);
-            TEST_ASSERT_EQUALS(AsmUtils::rdrand(&value3), NgosStatus::OK);
-
-            TEST_ASSERT_NOT_EQUALS(value1, 0);
-            TEST_ASSERT_NOT_EQUALS(value2, 0);
-            TEST_ASSERT_NOT_EQUALS(value3, 0);
-
-            TEST_ASSERT_NOT_EQUALS(value1, value2);
-            TEST_ASSERT_NOT_EQUALS(value1, value3);
-            TEST_ASSERT_NOT_EQUALS(value2, value3);
-        }
-        else
-        {
-            UEFI_LVV(("X86Feature::RDRAND not supported"));
-        }
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("rdtsc()");
-    {
-        u64 value1 = AsmUtils::rdtsc();
-        u64 value2 = AsmUtils::rdtsc();
-        u64 value3 = AsmUtils::rdtsc();
-
-        TEST_ASSERT_NOT_EQUALS(value1, 0);
-        TEST_ASSERT_NOT_EQUALS(value2, 0);
-        TEST_ASSERT_NOT_EQUALS(value3, 0);
-
-        TEST_ASSERT(value2 > value1);
-        TEST_ASSERT(value3 > value2);
-    }
-    TEST_CASE_END();
+#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_ASM_INSTRUCTIONS_H                                                                                                             // Colorize: green
+#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_ASM_INSTRUCTIONS_H                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <buildconfig.h>                                                                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/common/asm/asmutils.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/cpu/cpu.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/uefibase/testengine.h>                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TEST_CASES(section0, com_ngos_shared_common_asm_instructions);                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    TEST_CASE("rdrand()");                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (CPU::hasFlag(X86Feature::RDRAND))                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_I64 value1 = 0;                                                                                                                                                                         // Colorize: green
+            good_I64 value2 = 0;                                                                                                                                                                         // Colorize: green
+            good_I64 value3 = 0;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_EQUALS(AsmUtils::rdrand(&value1), NgosStatus::OK);                                                                                                                               // Colorize: green
+            TEST_ASSERT_EQUALS(AsmUtils::rdrand(&value2), NgosStatus::OK);                                                                                                                               // Colorize: green
+            TEST_ASSERT_EQUALS(AsmUtils::rdrand(&value3), NgosStatus::OK);                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_NOT_EQUALS(value1, 0);                                                                                                                                                           // Colorize: green
+            TEST_ASSERT_NOT_EQUALS(value2, 0);                                                                                                                                                           // Colorize: green
+            TEST_ASSERT_NOT_EQUALS(value3, 0);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_NOT_EQUALS(value1, value2);                                                                                                                                                      // Colorize: green
+            TEST_ASSERT_NOT_EQUALS(value1, value3);                                                                                                                                                      // Colorize: green
+            TEST_ASSERT_NOT_EQUALS(value2, value3);                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            UEFI_LVV(("X86Feature::RDRAND not supported"));                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("rdtsc()");                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U64 value1 = AsmUtils::rdtsc();                                                                                                                                                             // Colorize: green
+        good_U64 value2 = AsmUtils::rdtsc();                                                                                                                                                             // Colorize: green
+        good_U64 value3 = AsmUtils::rdtsc();                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(value1, 0);                                                                                                                                                               // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(value2, 0);                                                                                                                                                               // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(value3, 0);                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT(value2 > value1);                                                                                                                                                                    // Colorize: green
+        TEST_ASSERT(value3 > value2);                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
 
 
 
