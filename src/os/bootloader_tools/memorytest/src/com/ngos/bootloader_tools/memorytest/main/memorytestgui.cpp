@@ -3294,7 +3294,7 @@ NgosStatus MemoryTestGUI::startTest(i64 id)
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::updateTest(TestType testType, i64 tsc)
+NgosStatus MemoryTestGUI::updateTest(TestType testType, u64 tsc)
 {
     UEFI_LT((" | testType = %u, tsc = %u", testType, tsc));
 
@@ -3810,7 +3810,7 @@ NgosStatus MemoryTestGUI::processTimerEvent()
 
         if (!test->isCompleted() && test->getProgress() != test->getHandledProgress())
         {
-            i64 tsc = AsmUtils::rdtsc();
+            u64 tsc = AsmUtils::rdtsc();
 
             UEFI_ASSERT_EXECUTION(updateTest((TestType)i, tsc), NgosStatus::ASSERTION);
 

@@ -20,17 +20,13 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);                  
     {                                                                                                                                                                                                    // Colorize: green
         if (CPU::hasFlag(X86Feature::RDRAND))                                                                                                                                                            // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
-            good_I64 value1 = 0;                                                                                                                                                                         // Colorize: green
-            good_I64 value2 = 0;                                                                                                                                                                         // Colorize: green
-            good_I64 value3 = 0;                                                                                                                                                                         // Colorize: green
+            good_I64 value1;                                                                                                                                                                         // Colorize: green
+            good_I64 value2;                                                                                                                                                                         // Colorize: green
+            good_I64 value3;                                                                                                                                                                         // Colorize: green
                                                                                                                                                                                                          // Colorize: green
             TEST_ASSERT_EQUALS(AsmUtils::rdrand(&value1), NgosStatus::OK);                                                                                                                               // Colorize: green
             TEST_ASSERT_EQUALS(AsmUtils::rdrand(&value2), NgosStatus::OK);                                                                                                                               // Colorize: green
             TEST_ASSERT_EQUALS(AsmUtils::rdrand(&value3), NgosStatus::OK);                                                                                                                               // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-            TEST_ASSERT_NOT_EQUALS(value1, 0);                                                                                                                                                           // Colorize: green
-            TEST_ASSERT_NOT_EQUALS(value2, 0);                                                                                                                                                           // Colorize: green
-            TEST_ASSERT_NOT_EQUALS(value3, 0);                                                                                                                                                           // Colorize: green
                                                                                                                                                                                                          // Colorize: green
             TEST_ASSERT_NOT_EQUALS(value1, value2);                                                                                                                                                      // Colorize: green
             TEST_ASSERT_NOT_EQUALS(value1, value3);                                                                                                                                                      // Colorize: green
@@ -59,550 +55,947 @@ TEST_CASES(section0, com_ngos_shared_common_asm_instructions);                  
         TEST_ASSERT(value3 > value2);                                                                                                                                                                    // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
     TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
-
-
-
-    TEST_CASE("bt()");
-    {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
-
-        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, 100), true);
-        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, 87),  false);
-        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, 37),  true);
-        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, 13),  true);
-        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, 204), false);
-        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, 123), true);
-        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, 67),  false);
-        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, 0),   true);
-        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, 255), true);
-        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, 256), true);
-        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, 300), false);
-        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, 301), true);
-
-
-
-        u8 temp = 0;
-
-        for (good_I64 i = 0; i < 100; ++i)
-        {
-            temp += temp + 1;
-        }
-
-        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, temp),              true);
-        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, (temp + 4) & 0xFF), false);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("bts()");
-    {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
-
-        TEST_ASSERT_EQUALS(AsmUtils::bts((u8 *)buffer, 87),  false);
-        TEST_ASSERT_EQUALS(buffer[1],                        0x984ADBFACEA31913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::bts((u8 *)buffer, 204), false);
-        TEST_ASSERT_EQUALS(buffer[3],                        0xEADFACEB00AFDDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::bts((u8 *)buffer, 67),  false);
-        TEST_ASSERT_EQUALS(buffer[1],                        0x984ADBFACEA3191B);
-
-        TEST_ASSERT_EQUALS(AsmUtils::bts((u8 *)buffer, 300), false);
-        TEST_ASSERT_EQUALS(buffer[4],                        0x98313ADADADADA19);
-
-        TEST_ASSERT_EQUALS(AsmUtils::bts((u8 *)buffer, 87),  true);
-        TEST_ASSERT_EQUALS(buffer[1],                        0x984ADBFACEA3191B);
-
-        TEST_ASSERT_EQUALS(AsmUtils::bts((u8 *)buffer, 204), true);
-        TEST_ASSERT_EQUALS(buffer[3],                        0xEADFACEB00AFDDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::bts((u8 *)buffer, 67),  true);
-        TEST_ASSERT_EQUALS(buffer[1],                        0x984ADBFACEA3191B);
-
-        TEST_ASSERT_EQUALS(AsmUtils::bts((u8 *)buffer, 300), true);
-        TEST_ASSERT_EQUALS(buffer[4],                        0x98313ADADADADA19);
-
-
-
-        u8 temp = 0;
-
-        for (good_I64 i = 0; i < 100; ++i)
-        {
-            temp += temp + 1;
-        }
-
-        TEST_ASSERT_EQUALS(AsmUtils::bts((u8 *)buffer, (temp + 4) & 0xFF), false);
-        TEST_ASSERT_EQUALS(buffer[0],                                      0x65198732AADCBF9F);
-
-        TEST_ASSERT_EQUALS(AsmUtils::bts((u8 *)buffer, (temp + 4) & 0xFF), true);
-        TEST_ASSERT_EQUALS(buffer[0],                                      0x65198732AADCBF9F);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("btsSafe()");
-    {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsSafe((u8 *)buffer, 87),  false);
-        TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBFACEA31913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsSafe((u8 *)buffer, 204), false);
-        TEST_ASSERT_EQUALS(buffer[3],                            0xEADFACEB00AFDDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsSafe((u8 *)buffer, 67),  false);
-        TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBFACEA3191B);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsSafe((u8 *)buffer, 300), false);
-        TEST_ASSERT_EQUALS(buffer[4],                            0x98313ADADADADA19);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsSafe((u8 *)buffer, 87),  true);
-        TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBFACEA3191B);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsSafe((u8 *)buffer, 204), true);
-        TEST_ASSERT_EQUALS(buffer[3],                            0xEADFACEB00AFDDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsSafe((u8 *)buffer, 67),  true);
-        TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBFACEA3191B);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsSafe((u8 *)buffer, 300), true);
-        TEST_ASSERT_EQUALS(buffer[4],                            0x98313ADADADADA19);
-
-
-
-        u8 temp = 0;
-
-        for (good_I64 i = 0; i < 100; ++i)
-        {
-            temp += temp + 1;
-        }
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsSafe((u8 *)buffer, (temp + 4) & 0xFF), false);
-        TEST_ASSERT_EQUALS(buffer[0],                                          0x65198732AADCBF9F);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsSafe((u8 *)buffer, (temp + 4) & 0xFF), true);
-        TEST_ASSERT_EQUALS(buffer[0],                                          0x65198732AADCBF9F);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("btsPure()");
-    {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsPure((u8 *)buffer, 87),  NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBFACEA31913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsPure((u8 *)buffer, 204), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[3],                            0xEADFACEB00AFDDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsPure((u8 *)buffer, 67),  NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBFACEA3191B);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsPure((u8 *)buffer, 300), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[4],                            0x98313ADADADADA19);
-
-
-
-        u8 temp = 0;
-
-        for (good_I64 i = 0; i < 100; ++i)
-        {
-            temp += temp + 1;
-        }
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsPure((u8 *)buffer, (temp + 4) & 0xFF), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[0],                                          0x65198732AADCBF9F);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("btsPureSafe()");
-    {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsPureSafe((u8 *)buffer, 87),  NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[1],                                0x984ADBFACEA31913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsPureSafe((u8 *)buffer, 204), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[3],                                0xEADFACEB00AFDDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsPureSafe((u8 *)buffer, 67),  NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[1],                                0x984ADBFACEA3191B);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsPureSafe((u8 *)buffer, 300), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[4],                                0x98313ADADADADA19);
-
-
-
-        u8 temp = 0;
-
-        for (good_I64 i = 0; i < 100; ++i)
-        {
-            temp += temp + 1;
-        }
-
-        TEST_ASSERT_EQUALS(AsmUtils::btsPureSafe((u8 *)buffer, (temp + 4) & 0xFF), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[0],                                              0x65198732AADCBF9F);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("btr()");
-    {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
-
-        TEST_ASSERT_EQUALS(AsmUtils::btr((u8 *)buffer, 100), true);
-        TEST_ASSERT_EQUALS(buffer[1],                        0x984ADBEACE231913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btr((u8 *)buffer, 37),  true);
-        TEST_ASSERT_EQUALS(buffer[0],                        0x65198712AADCBF97);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btr((u8 *)buffer, 255), true);
-        TEST_ASSERT_EQUALS(buffer[3],                        0x6ADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btr((u8 *)buffer, 301), true);
-        TEST_ASSERT_EQUALS(buffer[4],                        0x98310ADADADADA19);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btr((u8 *)buffer, 100), false);
-        TEST_ASSERT_EQUALS(buffer[1],                        0x984ADBEACE231913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btr((u8 *)buffer, 37),  false);
-        TEST_ASSERT_EQUALS(buffer[0],                        0x65198712AADCBF97);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btr((u8 *)buffer, 255), false);
-        TEST_ASSERT_EQUALS(buffer[3],                        0x6ADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btr((u8 *)buffer, 301), false);
-        TEST_ASSERT_EQUALS(buffer[4],                        0x98310ADADADADA19);
-
-
-
-        u8 temp = 0;
-
-        for (good_I64 i = 0; i < 100; ++i)
-        {
-            temp += temp + 1;
-        }
-
-        TEST_ASSERT_EQUALS(AsmUtils::btr((u8 *)buffer, (temp - 1) & 0xFF), true);
-        TEST_ASSERT_EQUALS(buffer[3],                                      0x2ADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btr((u8 *)buffer, (temp - 1) & 0xFF), false);
-        TEST_ASSERT_EQUALS(buffer[3],                                      0x2ADFACEB00AFCDE7);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("btrSafe()");
-    {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrSafe((u8 *)buffer, 100), true);
-        TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBEACE231913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrSafe((u8 *)buffer, 37),  true);
-        TEST_ASSERT_EQUALS(buffer[0],                            0x65198712AADCBF97);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrSafe((u8 *)buffer, 255), true);
-        TEST_ASSERT_EQUALS(buffer[3],                            0x6ADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrSafe((u8 *)buffer, 301), true);
-        TEST_ASSERT_EQUALS(buffer[4],                            0x98310ADADADADA19);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrSafe((u8 *)buffer, 100), false);
-        TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBEACE231913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrSafe((u8 *)buffer, 37),  false);
-        TEST_ASSERT_EQUALS(buffer[0],                            0x65198712AADCBF97);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrSafe((u8 *)buffer, 255), false);
-        TEST_ASSERT_EQUALS(buffer[3],                            0x6ADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrSafe((u8 *)buffer, 301), false);
-        TEST_ASSERT_EQUALS(buffer[4],                            0x98310ADADADADA19);
-
-
-
-        u8 temp = 0;
-
-        for (good_I64 i = 0; i < 100; ++i)
-        {
-            temp += temp + 1;
-        }
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrSafe((u8 *)buffer, (temp - 1) & 0xFF), true);
-        TEST_ASSERT_EQUALS(buffer[3],                                          0x2ADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrSafe((u8 *)buffer, (temp - 1) & 0xFF), false);
-        TEST_ASSERT_EQUALS(buffer[3],                                          0x2ADFACEB00AFCDE7);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("btrPure()");
-    {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrPure((u8 *)buffer, 100), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBEACE231913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrPure((u8 *)buffer, 37),  NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[0],                            0x65198712AADCBF97);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrPure((u8 *)buffer, 255), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[3],                            0x6ADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrPure((u8 *)buffer, 301), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[4],                            0x98310ADADADADA19);
-
-
-
-        u8 temp = 0;
-
-        for (good_I64 i = 0; i < 100; ++i)
-        {
-            temp += temp + 1;
-        }
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrPure((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[3],                                          0x2ADFACEB00AFCDE7);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("btrPureSafe()");
-    {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrPureSafe((u8 *)buffer, 100), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[1],                                0x984ADBEACE231913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrPureSafe((u8 *)buffer, 37),  NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[0],                                0x65198712AADCBF97);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrPureSafe((u8 *)buffer, 255), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[3],                                0x6ADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrPureSafe((u8 *)buffer, 301), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[4],                                0x98310ADADADADA19);
-
-
-
-        u8 temp = 0;
-
-        for (good_I64 i = 0; i < 100; ++i)
-        {
-            temp += temp + 1;
-        }
-
-        TEST_ASSERT_EQUALS(AsmUtils::btrPureSafe((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[3],                                              0x2ADFACEB00AFCDE7);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("btc()");
-    {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
-
-        TEST_ASSERT_EQUALS(AsmUtils::btc((u8 *)buffer, 100), true);
-        TEST_ASSERT_EQUALS(buffer[1],                        0x984ADBEACE231913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btc((u8 *)buffer, 100), false);
-        TEST_ASSERT_EQUALS(buffer[1],                        0x984ADBFACE231913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btc((u8 *)buffer, 37),  true);
-        TEST_ASSERT_EQUALS(buffer[0],                        0x65198712AADCBF97);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btc((u8 *)buffer, 37),  false);
-        TEST_ASSERT_EQUALS(buffer[0],                        0x65198732AADCBF97);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btc((u8 *)buffer, 255), true);
-        TEST_ASSERT_EQUALS(buffer[3],                        0x6ADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btc((u8 *)buffer, 255), false);
-        TEST_ASSERT_EQUALS(buffer[3],                         0xEADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btc((u8 *)buffer, 301), true);
-        TEST_ASSERT_EQUALS(buffer[4],                        0x98310ADADADADA19);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btc((u8 *)buffer, 301), false);
-        TEST_ASSERT_EQUALS(buffer[4],                        0x98312ADADADADA19);
-
-
-
-        u8 temp = 0;
-
-        for (good_I64 i = 0; i < 100; ++i)
-        {
-            temp += temp + 1;
-        }
-
-        TEST_ASSERT_EQUALS(AsmUtils::btc((u8 *)buffer, (temp - 1) & 0xFF), true);
-        TEST_ASSERT_EQUALS(buffer[3],                                      0xAADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btc((u8 *)buffer, (temp - 1) & 0xFF), false);
-        TEST_ASSERT_EQUALS(buffer[3],                                      0xEADFACEB00AFCDE7);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("btcSafe()");
-    {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcSafe((u8 *)buffer, 100), true);
-        TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBEACE231913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcSafe((u8 *)buffer, 100), false);
-        TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBFACE231913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcSafe((u8 *)buffer, 37),  true);
-        TEST_ASSERT_EQUALS(buffer[0],                            0x65198712AADCBF97);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcSafe((u8 *)buffer, 37),  false);
-        TEST_ASSERT_EQUALS(buffer[0],                            0x65198732AADCBF97);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcSafe((u8 *)buffer, 255), true);
-        TEST_ASSERT_EQUALS(buffer[3],                            0x6ADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcSafe((u8 *)buffer, 255), false);
-        TEST_ASSERT_EQUALS(buffer[3],                            0xEADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcSafe((u8 *)buffer, 301), true);
-        TEST_ASSERT_EQUALS(buffer[4],                            0x98310ADADADADA19);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcSafe((u8 *)buffer, 301), false);
-        TEST_ASSERT_EQUALS(buffer[4],                            0x98312ADADADADA19);
-
-
-
-        u8 temp = 0;
-
-        for (good_I64 i = 0; i < 100; ++i)
-        {
-            temp += temp + 1;
-        }
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcSafe((u8 *)buffer, (temp - 1) & 0xFF), true);
-        TEST_ASSERT_EQUALS(buffer[3],                                          0xAADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcSafe((u8 *)buffer, (temp - 1) & 0xFF), false);
-        TEST_ASSERT_EQUALS(buffer[3],                                          0xEADFACEB00AFCDE7);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("btcPure()");
-    {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPure((u8 *)buffer, 100), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBEACE231913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPure((u8 *)buffer, 100), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBFACE231913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPure((u8 *)buffer, 37),  NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[0],                            0x65198712AADCBF97);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPure((u8 *)buffer, 37),  NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[0],                            0x65198732AADCBF97);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPure((u8 *)buffer, 255), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[3],                            0x6ADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPure((u8 *)buffer, 255), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[3],                            0xEADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPure((u8 *)buffer, 301), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[4],                            0x98310ADADADADA19);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPure((u8 *)buffer, 301), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[4],                            0x98312ADADADADA19);
-
-
-
-        u8 temp = 0;
-
-        for (good_I64 i = 0; i < 100; ++i)
-        {
-            temp += temp + 1;
-        }
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPure((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[3],                                          0xAADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPure((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[3],                                          0xEADFACEB00AFCDE7);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("btcPureSafe()");
-    {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe((u8 *)buffer, 100), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[1],                                0x984ADBEACE231913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe((u8 *)buffer, 100), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[1],                                0x984ADBFACE231913);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe((u8 *)buffer, 37),  NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[0],                                0x65198712AADCBF97);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe((u8 *)buffer, 37),  NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[0],                                0x65198732AADCBF97);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe((u8 *)buffer, 255), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[3],                                0x6ADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe((u8 *)buffer, 255), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[3],                                0xEADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe((u8 *)buffer, 301), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[4],                                0x98310ADADADADA19);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe((u8 *)buffer, 301), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[4],                                0x98312ADADADADA19);
-
-
-
-        u8 temp = 0;
-
-        for (good_I64 i = 0; i < 100; ++i)
-        {
-            temp += temp + 1;
-        }
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[3],                                              0xAADFACEB00AFCDE7);
-
-        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(buffer[3],                                              0xEADFACEB00AFCDE7);
-    }
-    TEST_CASE_END();
-}
-TEST_CASES_END();
-
-
-
-#endif
-
-
-
-#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_ASM_INSTRUCTIONS_H
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("bt()");                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U8 buffer[] =                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,                                                                                                                                              // Colorize: green
+            0x11, 0x21, 0x31, 0x41, 0x51, 0x61, 0x71, 0x81,                                                                                                                                              // Colorize: green
+            0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x82,                                                                                                                                              // Colorize: green
+            0x13, 0x23, 0x33, 0x43, 0x53, 0x63, 0x73, 0x83,                                                                                                                                              // Colorize: green
+            0x14, 0x24, 0x34, 0x44, 0x54, 0x64, 0x74, 0x84                                                                                                                                               // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer, 100), true);  // 0x51, bit 4 = 1                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer, 87),  false); // 0x31, bit 7 = 0                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer, 37),  false); // 0x50, bit 5 = 0                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer, 13),  true);  // 0x20, bit 5 = 1                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer, 204), false); // 0x23, bit 4 = 0                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer, 123), false); // 0x81, bit 3 = 0                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer, 67),  false); // 0x11, bit 3 = 0                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer, 0),   false); // 0x10, bit 0 = 0                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer, 255), true);  // 0x83, bit 7 = 1                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer, 256), false); // 0x14, bit 0 = 0                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer, 300), false); // 0x64, bit 4 = 0                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer, 301), true);  // 0x64, bit 5 = 1                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp = 0;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 10; ++i)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp += temp + 3;                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp, 253);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, temp),              false); // 0x83, bit 5 = 0                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt((u8 *)buffer, (temp + 7) & 0xFF), true);  // 0x10, bit 4 = 1                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("bts()");                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U8 buffer[] =                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,                                                                                                                                              // Colorize: green
+            0x11, 0x21, 0x31, 0x41, 0x51, 0x61, 0x71, 0x81,                                                                                                                                              // Colorize: green
+            0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x82,                                                                                                                                              // Colorize: green
+            0x13, 0x23, 0x33, 0x43, 0x53, 0x63, 0x73, 0x83,                                                                                                                                              // Colorize: green
+            0x14, 0x24, 0x34, 0x44, 0x54, 0x64, 0x74, 0x84                                                                                                                                               // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                0x10);                                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  0), false); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bts(buffer, 0), false); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  0), true);  // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                0x11);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                 0x51);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  101), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bts(buffer, 101), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  101), true);  // bit 5                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                 0x71);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                 0x23);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  200), true); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bts(buffer, 200), true); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  200), true); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                 0x23);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                 0x64);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  301), true); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bts(buffer, 301), true); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  301), true); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                 0x64);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp = 0;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 10; ++i)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp += temp + 3;                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp, 253);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                  0x83);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  temp), false); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bts(buffer, temp), false); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  temp), true);  // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                  0xA3);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                               0xA3);                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  (temp + 2) & 0xFF), true); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bts(buffer, (temp + 2) & 0xFF), true); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  (temp + 2) & 0xFF), true); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                               0xA3);                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("btsSafe()");                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U8 buffer[] =                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,                                                                                                                                              // Colorize: green
+            0x11, 0x21, 0x31, 0x41, 0x51, 0x61, 0x71, 0x81,                                                                                                                                              // Colorize: green
+            0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x82,                                                                                                                                              // Colorize: green
+            0x13, 0x23, 0x33, 0x43, 0x53, 0x63, 0x73, 0x83,                                                                                                                                              // Colorize: green
+            0x14, 0x24, 0x34, 0x44, 0x54, 0x64, 0x74, 0x84                                                                                                                                               // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                    0x10);                                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      0), false); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsSafe(buffer, 0), false); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      0), true);  // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                    0x11);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                     0x51);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      101), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsSafe(buffer, 101), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      101), true); // bit 5                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                     0x71);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                     0x23);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      200), true); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsSafe(buffer, 200), true); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      200), true); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                     0x23);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                     0x64);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      301), true); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsSafe(buffer, 301), true); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      301), true); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                     0x64);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp = 0;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 10; ++i)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp += temp + 3;                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp, 253);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                      0x83);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      temp), false); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsSafe(buffer, temp), false); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      temp), true);  // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                      0xA3);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                   0xA3);                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      (temp + 2) & 0xFF), true); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsSafe(buffer, (temp + 2) & 0xFF), true); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      (temp + 2) & 0xFF), true); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                   0xA3);                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("btsPure()");                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U8 buffer[] =                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,                                                                                                                                              // Colorize: green
+            0x11, 0x21, 0x31, 0x41, 0x51, 0x61, 0x71, 0x81,                                                                                                                                              // Colorize: green
+            0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x82,                                                                                                                                              // Colorize: green
+            0x13, 0x23, 0x33, 0x43, 0x53, 0x63, 0x73, 0x83,                                                                                                                                              // Colorize: green
+            0x14, 0x24, 0x34, 0x44, 0x54, 0x64, 0x74, 0x84                                                                                                                                               // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                    0x10);                                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      0), false);          // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsPure(buffer, 0), NgosStatus::OK); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      0), true);           // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                    0x11);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                     0x51);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      101), false);          // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsPure(buffer, 101), NgosStatus::OK); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      101), true);           // bit 5                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                     0x71);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                     0x23);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      200), true);           // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsPure(buffer, 200), NgosStatus::OK); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      200), true);           // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                     0x23);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                     0x64);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      301), true);           // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsPure(buffer, 301), NgosStatus::OK); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      301), true);           // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                     0x64);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp = 0;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 10; ++i)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp += temp + 3;                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp, 253);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                      0x83);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      temp), false);          // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsPure(buffer, temp), NgosStatus::OK); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      temp), true);           // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                      0xA3);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                   0xA3);                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      (temp + 2) & 0xFF), true);           // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsPure(buffer, (temp + 2) & 0xFF), NgosStatus::OK); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      (temp + 2) & 0xFF), true);           // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                   0xA3);                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("btsPureSafe()");                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U8 buffer[] =                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,                                                                                                                                              // Colorize: green
+            0x11, 0x21, 0x31, 0x41, 0x51, 0x61, 0x71, 0x81,                                                                                                                                              // Colorize: green
+            0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x82,                                                                                                                                              // Colorize: green
+            0x13, 0x23, 0x33, 0x43, 0x53, 0x63, 0x73, 0x83,                                                                                                                                              // Colorize: green
+            0x14, 0x24, 0x34, 0x44, 0x54, 0x64, 0x74, 0x84                                                                                                                                               // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                        0x10);                                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          0), false);          // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsPureSafe(buffer, 0), NgosStatus::OK); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          0), true);           // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                        0x11);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                         0x51);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          101), false);          // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsPureSafe(buffer, 101), NgosStatus::OK); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          101), true);           // bit 5                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                         0x71);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                         0x23);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          200), true);           // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsPureSafe(buffer, 200), NgosStatus::OK); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          200), true);           // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                         0x23);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                         0x64);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          301), true);           // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsPureSafe(buffer, 301), NgosStatus::OK); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          301), true);           // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                         0x64);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp = 0;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 10; ++i)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp += temp + 3;                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp, 253);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                          0x83);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          temp), false);          // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsPureSafe(buffer, temp), NgosStatus::OK); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          temp), true);           // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                          0xA3);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                       0xA3);                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          (temp + 2) & 0xFF), true);           // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btsPureSafe(buffer, (temp + 2) & 0xFF), NgosStatus::OK); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          (temp + 2) & 0xFF), true);           // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                       0xA3);                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("btr()");                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U8 buffer[] =                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,                                                                                                                                              // Colorize: green
+            0x11, 0x21, 0x31, 0x41, 0x51, 0x61, 0x71, 0x81,                                                                                                                                              // Colorize: green
+            0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x82,                                                                                                                                              // Colorize: green
+            0x13, 0x23, 0x33, 0x43, 0x53, 0x63, 0x73, 0x83,                                                                                                                                              // Colorize: green
+            0x14, 0x24, 0x34, 0x44, 0x54, 0x64, 0x74, 0x84                                                                                                                                               // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                0x10);                                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  0), false); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btr(buffer, 0), false); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  0), false); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                0x10);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                 0x51);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  101), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btr(buffer, 101), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  101), false); // bit 5                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                 0x51);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                 0x23);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  200), true);  // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btr(buffer, 200), true);  // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  200), false); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                 0x22);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                 0x64);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  301), true);  // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btr(buffer, 301), true);  // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  301), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                 0x44);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp = 0;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 10; ++i)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp += temp + 3;                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp, 253);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                  0x83);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  temp), false); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btr(buffer, temp), false); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  temp), false); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                  0x83);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                               0x83);                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  (temp + 2) & 0xFF), true);  // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btr(buffer, (temp + 2) & 0xFF), true);  // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  (temp + 2) & 0xFF), false); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                               0x03);                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("btrSafe()");                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U8 buffer[] =                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,                                                                                                                                              // Colorize: green
+            0x11, 0x21, 0x31, 0x41, 0x51, 0x61, 0x71, 0x81,                                                                                                                                              // Colorize: green
+            0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x82,                                                                                                                                              // Colorize: green
+            0x13, 0x23, 0x33, 0x43, 0x53, 0x63, 0x73, 0x83,                                                                                                                                              // Colorize: green
+            0x14, 0x24, 0x34, 0x44, 0x54, 0x64, 0x74, 0x84                                                                                                                                               // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                    0x10);                                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      0), false); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrSafe(buffer, 0), false); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      0), false); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                    0x10);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                     0x51);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      101), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrSafe(buffer, 101), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      101), false); // bit 5                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                     0x51);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                     0x23);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      200), true);  // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrSafe(buffer, 200), true);  // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      200), false); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                     0x22);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                     0x64);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      301), true);  // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrSafe(buffer, 301), true);  // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      301), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                     0x44);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp = 0;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 10; ++i)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp += temp + 3;                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp, 253);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                      0x83);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      temp), false); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrSafe(buffer, temp), false); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      temp), false); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                      0x83);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                   0x83);                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      (temp + 2) & 0xFF), true);  // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrSafe(buffer, (temp + 2) & 0xFF), true);  // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      (temp + 2) & 0xFF), false); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                   0x03);                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("btrPure()");                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U8 buffer[] =                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,                                                                                                                                              // Colorize: green
+            0x11, 0x21, 0x31, 0x41, 0x51, 0x61, 0x71, 0x81,                                                                                                                                              // Colorize: green
+            0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x82,                                                                                                                                              // Colorize: green
+            0x13, 0x23, 0x33, 0x43, 0x53, 0x63, 0x73, 0x83,                                                                                                                                              // Colorize: green
+            0x14, 0x24, 0x34, 0x44, 0x54, 0x64, 0x74, 0x84                                                                                                                                               // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                    0x10);                                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      0), false);          // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrPure(buffer, 0), NgosStatus::OK); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      0), false);          // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                    0x10);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                     0x51);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      101), false);          // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrPure(buffer, 101), NgosStatus::OK); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      101), false);          // bit 5                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                     0x51);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                     0x23);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      200), true);           // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrPure(buffer, 200), NgosStatus::OK); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      200), false);          // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                     0x22);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                     0x64);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      301), true);           // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrPure(buffer, 301), NgosStatus::OK); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      301), false);          // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                     0x44);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp = 0;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 10; ++i)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp += temp + 3;                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp, 253);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                      0x83);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      temp), false);          // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrPure(buffer, temp), NgosStatus::OK); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      temp), false);          // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                      0x83);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                   0x83);                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      (temp + 2) & 0xFF), true);           // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrPure(buffer, (temp + 2) & 0xFF), NgosStatus::OK); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      (temp + 2) & 0xFF), false);          // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                   0x03);                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("btrPureSafe()");                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U8 buffer[] =                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,                                                                                                                                              // Colorize: green
+            0x11, 0x21, 0x31, 0x41, 0x51, 0x61, 0x71, 0x81,                                                                                                                                              // Colorize: green
+            0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x82,                                                                                                                                              // Colorize: green
+            0x13, 0x23, 0x33, 0x43, 0x53, 0x63, 0x73, 0x83,                                                                                                                                              // Colorize: green
+            0x14, 0x24, 0x34, 0x44, 0x54, 0x64, 0x74, 0x84                                                                                                                                               // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                        0x10);                                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          0), false);          // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrPureSafe(buffer, 0), NgosStatus::OK); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          0), false);          // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                        0x10);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                         0x51);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          101), false);          // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrPureSafe(buffer, 101), NgosStatus::OK); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          101), false);          // bit 5                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                         0x51);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                         0x23);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          200), true);           // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrPureSafe(buffer, 200), NgosStatus::OK); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          200), false);          // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                         0x22);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                         0x64);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          301), true);           // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrPureSafe(buffer, 301), NgosStatus::OK); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          301), false);          // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                         0x44);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp = 0;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 10; ++i)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp += temp + 3;                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp, 253);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                          0x83);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          temp), false);          // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrPureSafe(buffer, temp), NgosStatus::OK); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          temp), false);          // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                          0x83);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                       0x83);                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          (temp + 2) & 0xFF), true);           // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btrPureSafe(buffer, (temp + 2) & 0xFF), NgosStatus::OK); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          (temp + 2) & 0xFF), false);          // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                       0x03);                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("btc()");                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U8 buffer[] =                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,                                                                                                                                              // Colorize: green
+            0x11, 0x21, 0x31, 0x41, 0x51, 0x61, 0x71, 0x81,                                                                                                                                              // Colorize: green
+            0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x82,                                                                                                                                              // Colorize: green
+            0x13, 0x23, 0x33, 0x43, 0x53, 0x63, 0x73, 0x83,                                                                                                                                              // Colorize: green
+            0x14, 0x24, 0x34, 0x44, 0x54, 0x64, 0x74, 0x84                                                                                                                                               // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                0x10);                                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  0), false); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btc(buffer, 0), false); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  0), true);  // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                0x11);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                 0x51);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  101), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btc(buffer, 101), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  101), true);  // bit 5                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                 0x71);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                 0x23);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  200), true);  // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btc(buffer, 200), true);  // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  200), false); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                 0x22);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                 0x64);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  301), true);  // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btc(buffer, 301), true);  // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  301), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                 0x44);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp = 0;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 10; ++i)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp += temp + 3;                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp, 253);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                  0x83);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  temp), false); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btc(buffer, temp), false); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  temp), true);  // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                  0xA3);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                               0xA3);                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  (temp + 2) & 0xFF), true);  // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btc(buffer, (temp + 2) & 0xFF), true);  // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,  (temp + 2) & 0xFF), false); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                               0x23);                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("btcSafe()");                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U8 buffer[] =                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,                                                                                                                                              // Colorize: green
+            0x11, 0x21, 0x31, 0x41, 0x51, 0x61, 0x71, 0x81,                                                                                                                                              // Colorize: green
+            0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x82,                                                                                                                                              // Colorize: green
+            0x13, 0x23, 0x33, 0x43, 0x53, 0x63, 0x73, 0x83,                                                                                                                                              // Colorize: green
+            0x14, 0x24, 0x34, 0x44, 0x54, 0x64, 0x74, 0x84                                                                                                                                               // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                    0x10);                                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      0), false); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcSafe(buffer, 0), false); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      0), true);  // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                    0x11);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                     0x51);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      101), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcSafe(buffer, 101), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      101), true);  // bit 5                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                     0x71);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                     0x23);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      200), true);  // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcSafe(buffer, 200), true);  // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      200), false); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                     0x22);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                     0x64);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      301), true);  // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcSafe(buffer, 301), true);  // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      301), false); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                     0x44);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp = 0;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 10; ++i)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp += temp + 3;                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp, 253);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                      0x83);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      temp), false); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcSafe(buffer, temp), false); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      temp), true);  // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                      0xA3);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                   0xA3);                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      (temp + 2) & 0xFF), true);  // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcSafe(buffer, (temp + 2) & 0xFF), true);  // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      (temp + 2) & 0xFF), false); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                   0x23);                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("btcPure()");                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U8 buffer[] =                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,                                                                                                                                              // Colorize: green
+            0x11, 0x21, 0x31, 0x41, 0x51, 0x61, 0x71, 0x81,                                                                                                                                              // Colorize: green
+            0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x82,                                                                                                                                              // Colorize: green
+            0x13, 0x23, 0x33, 0x43, 0x53, 0x63, 0x73, 0x83,                                                                                                                                              // Colorize: green
+            0x14, 0x24, 0x34, 0x44, 0x54, 0x64, 0x74, 0x84                                                                                                                                               // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                    0x10);                                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      0), false);          // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcPure(buffer, 0), NgosStatus::OK); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      0), true);           // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                    0x11);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                     0x51);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      101), false);          // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcPure(buffer, 101), NgosStatus::OK); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      101), true);           // bit 5                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                     0x71);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                     0x23);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      200), true);           // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcPure(buffer, 200), NgosStatus::OK); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      200), false);          // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                     0x22);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                     0x64);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      301), true);           // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcPure(buffer, 301), NgosStatus::OK); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      301), false);          // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                     0x44);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp = 0;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 10; ++i)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp += temp + 3;                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp, 253);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                      0x83);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      temp), false);          // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcPure(buffer, temp), NgosStatus::OK); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      temp), true);           // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                      0xA3);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                   0xA3);                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      (temp + 2) & 0xFF), true);           // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcPure(buffer, (temp + 2) & 0xFF), NgosStatus::OK); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,      (temp + 2) & 0xFF), false);          // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                   0x23);                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("btcPureSafe()");                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U8 buffer[] =                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,                                                                                                                                              // Colorize: green
+            0x11, 0x21, 0x31, 0x41, 0x51, 0x61, 0x71, 0x81,                                                                                                                                              // Colorize: green
+            0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x82,                                                                                                                                              // Colorize: green
+            0x13, 0x23, 0x33, 0x43, 0x53, 0x63, 0x73, 0x83,                                                                                                                                              // Colorize: green
+            0x14, 0x24, 0x34, 0x44, 0x54, 0x64, 0x74, 0x84                                                                                                                                               // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                        0x10);                                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          0), false);          // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe(buffer, 0), NgosStatus::OK); // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          0), true);           // bit 0                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[0],                        0x11);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                         0x51);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          101), false);          // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe(buffer, 101), NgosStatus::OK); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          101), true);           // bit 5                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[12],                         0x71);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                         0x23);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          200), true);           // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe(buffer, 200), NgosStatus::OK); // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          200), false);          // bit 0                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[25],                         0x22);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                         0x64);                                                                                                                                           // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          301), true);           // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe(buffer, 301), NgosStatus::OK); // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          301), false);          // bit 5                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[37],                         0x44);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp = 0;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 10; ++i)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp += temp + 3;                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp, 253);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                          0x83);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          temp), false);          // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe(buffer, temp), NgosStatus::OK); // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          temp), true);           // bit 5                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                          0xA3);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                       0xA3);                                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          (temp + 2) & 0xFF), true);           // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::btcPureSafe(buffer, (temp + 2) & 0xFF), NgosStatus::OK); // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(AsmUtils::bt(buffer,          (temp + 2) & 0xFF), false);          // bit 7                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(buffer[31],                                       0x23);                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+TEST_CASES_END();                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_ASM_INSTRUCTIONS_H                                                                                                           // Colorize: green

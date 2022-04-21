@@ -55,7 +55,7 @@ private:
     static NgosStatus showLastTestPage(); // TEST: NO
 
     static NgosStatus startTest(i64 id); // TEST: NO
-    static NgosStatus updateTest(TestType testType, i64 tsc); // TEST: NO
+    static NgosStatus updateTest(TestType testType, u64 tsc); // TEST: NO
 
     static NgosStatus generateWaitEventList(); // TEST: NO
     static NgosStatus waitForEvent(); // TEST: NO
