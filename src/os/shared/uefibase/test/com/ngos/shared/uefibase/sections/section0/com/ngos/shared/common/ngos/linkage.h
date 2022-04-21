@@ -19,7 +19,7 @@ TEST_CASES(section0, com_ngos_shared_common_ngos_linkage);
     {
         u64 temp = 0;
 
-        for (good_I64 i = 0; i < 100; ++i)
+        for (good_I64 i = 0; i < 10; ++i)
         {
             temp += temp + 1;
         }
