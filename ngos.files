@@ -803,6 +803,7 @@ src/os/shared/common/asm/arch/x86_64/com/ngos/shared/common/memory/memzero.S
 src/os/shared/common/common.pri
 src/os/shared/common/src/com/ngos/shared/common/asm/asmutils.h
 src/os/shared/common/src/com/ngos/shared/common/asm/bitutils.h
+src/os/shared/common/src/com/ngos/shared/common/assets/assetentriescount.h
 src/os/shared/common/src/com/ngos/shared/common/assets/assetentry.h
 src/os/shared/common/src/com/ngos/shared/common/assets/assets.cpp
 src/os/shared/common/src/com/ngos/shared/common/assets/assets.h

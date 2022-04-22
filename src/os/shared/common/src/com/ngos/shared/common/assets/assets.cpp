@@ -1,103 +1,103 @@
-#include "assets.h"
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/string/string.h>
-
-
-
-u8         Assets::sEntriesCount;
-AssetEntry Assets::sEntries[ASSET_ENTRIES_COUNT];
-
-
-
-extern void *_assets_begin; // _assets_begin declared in linker.ld file // Ignore CppEqualAlignmentVerifier
-extern void *_assets_end;   // _assets_end declared in linker.ld file   // Ignore CppEqualAlignmentVerifier
-
-
-
-NgosStatus Assets::init()
-{
-    COMMON_LT((""));
-
-
-
-    u8 *start = (u8 *)&_assets_begin;
-    u8 *end   = (u8 *)&_assets_end;
-
-
-
-    u8 *currentAddress = start;
-    sEntriesCount      = 0;
-
-    while (currentAddress < end)
-    {
-        COMMON_TEST_ASSERT(sEntriesCount < ASSET_ENTRIES_COUNT, NgosStatus::ASSERTION);
-
-
-
-        sEntries[sEntriesCount].fileName =  (const char8 *)currentAddress;
-        currentAddress                   += strlen(sEntries[sEntriesCount].fileName) + 1;
-
-        COMMON_TEST_ASSERT(currentAddress < end, NgosStatus::ASSERTION);
-
-
-
-        sEntries[sEntriesCount].contentSize =  (*(u64 *)currentAddress);
-        currentAddress                      += sizeof(sEntries[sEntriesCount].contentSize);
-
-        COMMON_TEST_ASSERT(currentAddress < end, NgosStatus::ASSERTION);
-
-
-
-        sEntries[sEntriesCount].content =  currentAddress;
-        currentAddress                  += sEntries[sEntriesCount].contentSize;
-
-
-
-        COMMON_LVVV(("Assets::sEntries[%u].fileName    = %s",   sEntriesCount, sEntries[sEntriesCount].fileName));
-        COMMON_LVVV(("Assets::sEntries[%u].contentSize = %u",   sEntriesCount, sEntries[sEntriesCount].contentSize));
-        COMMON_LVVV(("Assets::sEntries[%u].content     = 0x%p", sEntriesCount, sEntries[sEntriesCount].content));
-
-
-
-        ++sEntriesCount;
-    }
-
-
-
-    COMMON_TEST_ASSERT(currentAddress == end, NgosStatus::ASSERTION);
-
-#ifdef BUILD_TARGET_DEVICEMANAGER // Defined in pro file
-    COMMON_TEST_ASSERT(sEntriesCount == ASSET_ENTRIES_COUNT, NgosStatus::ASSERTION);
-#endif
-
-
-
-    return NgosStatus::OK;
-}
-
-AssetEntry* Assets::getAssetEntry(const char8 *fileName)
-{
-    COMMON_LT((" | fileName = 0x%p", fileName));
-
-    COMMON_ASSERT(fileName, "fileName is null", nullptr);
-
-
-
-    for (good_I64 i = 0; i < sEntriesCount; ++i)
-    {
-        if (strequal(sEntries[i].fileName, fileName))
-        {
-            COMMON_LVV(("Asset \"%s\" found at address 0x%p with size %u", fileName, sEntries[i].content, sEntries[i].contentSize));
-
-            return &sEntries[i];
-        }
-    }
-
-
-
-    COMMON_LF(("Asset \"%s\" not found", fileName));
-
-    return nullptr;
-}
+#include "assets.h"                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/string/string.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+AssetEntry Assets::sEntries[ASSET_ENTRIES_COUNT];                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+extern good_U8 _assets_begin; // _assets_begin declared in linker.ld file // Ignore CppEqualAlignmentVerifier                                                                                            // Colorize: green
+extern good_U8 _assets_end;   // _assets_end declared in linker.ld file   // Ignore CppEqualAlignmentVerifier                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus Assets::init()                                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    good_U8 *start = &_assets_begin;                                                                                                                                                                     // Colorize: green
+    good_U8 *end   = &_assets_end;                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate over assets and append them to sEntries                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_I64  entryId        = 0;                                                                                                                                                                    // Colorize: green
+        good_U8  *currentAddress = start;                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (currentAddress < end)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entryId < ASSET_ENTRIES_COUNT, NgosStatus::ASSERTION);                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            sEntries[entryId].fileName =  reinterpret_cast<const char8 *>(currentAddress);                                                                                                               // Colorize: green
+            currentAddress             += strlen(sEntries[entryId].fileName) + 1;                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(currentAddress < end, NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            sEntries[entryId].contentSize =  *reinterpret_cast<good_I64 *>(currentAddress);                                                                                                              // Colorize: green
+            currentAddress                += sizeof(sEntries[entryId].contentSize);                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(currentAddress < end, NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            sEntries[entryId].content =  currentAddress;                                                                                                                                                 // Colorize: green
+            currentAddress            += sEntries[entryId].contentSize;                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_LVVV(("Assets::sEntries[%d].fileName    = %s",   entryId, sEntries[entryId].fileName));                                                                                               // Colorize: green
+            COMMON_LVVV(("Assets::sEntries[%d].contentSize = %d",   entryId, sEntries[entryId].contentSize));                                                                                            // Colorize: green
+            COMMON_LVVV(("Assets::sEntries[%d].content     = 0x%p", entryId, sEntries[entryId].content));                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ++entryId;                                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_TEST_ASSERT(currentAddress == end,                 NgosStatus::ASSERTION);                                                                                                                // Colorize: green
+        COMMON_TEST_ASSERT(entryId        == ASSET_ENTRIES_COUNT, NgosStatus::ASSERTION);                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+AssetEntry* Assets::getAssetEntry(const char8 *fileName)                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | fileName = 0x%p", fileName));                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(fileName != nullptr, "fileName is null", nullptr);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate over assets and try to search for specified file name                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (good_I64 i = 0; i < ASSET_ENTRIES_COUNT; ++i)                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (strequal(sEntries[i].fileName, fileName))                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_LVV(("Asset \"%s\" found at address 0x%p with size %d", fileName, sEntries[i].content, sEntries[i].contentSize));                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return &sEntries[i];                                                                                                                                                                     // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_LF(("Asset \"%s\" not found", fileName));                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return nullptr;                                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
