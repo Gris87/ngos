@@ -1,14 +1,18 @@
-#ifndef COM_NGOS_SHARED_COMMON_RANDOM_RANDOM_H
-#define COM_NGOS_SHARED_COMMON_RANDOM_RANDOM_H
-
-
-
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-good_I64 simpleRandom(good_I64 seed = 0);
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_RANDOM_RANDOM_H
+#ifndef COM_NGOS_SHARED_COMMON_RANDOM_RANDOM_H                                                                                                                                                           // Colorize: green
+#define COM_NGOS_SHARED_COMMON_RANDOM_RANDOM_H                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class Random                                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    static good_I64 cpuBased(good_I64 seed = 0);                                                                                                                                                         // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_RANDOM_RANDOM_H                                                                                                                                                         // Colorize: green

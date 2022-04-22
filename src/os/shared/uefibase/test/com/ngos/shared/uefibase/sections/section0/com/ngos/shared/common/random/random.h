@@ -1,47 +1,42 @@
-#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_RANDOM_RANDOM_H
-#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_RANDOM_RANDOM_H
-
-
-
-#include <buildconfig.h>
-#include <com/ngos/shared/common/random/random.h>
-#include <com/ngos/shared/uefibase/testengine.h>
-
-
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-
-
-
-TEST_CASES(section0, com_ngos_shared_common_random_random);
-{
-    TEST_CASE("simpleRandom()");
-    {
-        good_I64 random1 = simpleRandom();
-        good_I64 random2 = simpleRandom();
-        good_I64 random3 = simpleRandom();
-        good_I64 random4 = simpleRandom();
-
-        TEST_ASSERT_NOT_EQUALS(random1, 0);
-        TEST_ASSERT_NOT_EQUALS(random2, 0);
-        TEST_ASSERT_NOT_EQUALS(random3, 0);
-        TEST_ASSERT_NOT_EQUALS(random4, 0);
-
-        TEST_ASSERT_NOT_EQUALS(random1, random2);
-        TEST_ASSERT_NOT_EQUALS(random1, random3);
-        TEST_ASSERT_NOT_EQUALS(random1, random4);
-        TEST_ASSERT_NOT_EQUALS(random2, random3);
-        TEST_ASSERT_NOT_EQUALS(random2, random4);
-        TEST_ASSERT_NOT_EQUALS(random3, random4);
-    }
-    TEST_CASE_END();
-}
-TEST_CASES_END();
-
-
-
-#endif
-
-
-
-#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_RANDOM_RANDOM_H
+#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_RANDOM_RANDOM_H                                                                                                                // Colorize: green
+#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_RANDOM_RANDOM_H                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <buildconfig.h>                                                                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/common/random/random.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/uefibase/testengine.h>                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TEST_CASES(section0, com_ngos_shared_common_random_random);                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    TEST_CASE("cpuBased()");                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_I64 random1 = Random::cpuBased();                                                                                                                                                           // Colorize: green
+        good_I64 random2 = Random::cpuBased();                                                                                                                                                           // Colorize: green
+        good_I64 random3 = Random::cpuBased();                                                                                                                                                           // Colorize: green
+        good_I64 random4 = Random::cpuBased();                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(random1, random2);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(random1, random3);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(random1, random4);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(random2, random3);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(random2, random4);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(random3, random4);                                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+TEST_CASES_END();                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_RANDOM_RANDOM_H                                                                                                              // Colorize: green

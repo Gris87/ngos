@@ -346,7 +346,7 @@ NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEn
     u64 randomRange = allowedSize - imageSize;
 
     u64 randomPosition =
-            simpleRandom(
+            Random::cpuBased(
                 (
                     (
                         (
@@ -479,7 +479,7 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
 
 
     u64 randomId =
-            simpleRandom(
+            Random::cpuBased(
                 (
                     (
                         (
@@ -544,7 +544,7 @@ NgosStatus findRandomVirtualAddress(BootParams *params, MemoryArea *unavailableM
     u64 randomRange = PUD_SIZE - imageSize;
 
     u64 randomPosition =
-            simpleRandom(
+            Random::cpuBased(
                 (
                     (
                         (

@@ -170,7 +170,7 @@ u8 Time::daysInMonth(i64 year, u8 month)
 
     if (month == 2)
     {
-        return isLeapYear(year) ? 29 : 28;
+        return isLeapYear(year) ? DAYS_IN_FEBRUARY + 1 : DAYS_IN_FEBRUARY;
     }
 
     return sDaysInMonth[month - 1];
@@ -182,7 +182,7 @@ bool Time::isLeapYear(i64 year)
 
 
 
-    if (year & 3)
+    if (year % 4 != 0)
     {
         return false;
     }

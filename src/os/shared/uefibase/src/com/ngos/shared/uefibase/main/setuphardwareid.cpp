@@ -57,7 +57,7 @@ NgosStatus generateHardwareId(BootParams *params, i64 *length)
     {
         if (!rand)
         {
-            rand = simpleRandom();
+            rand = Random::cpuBased();
         }
 
         const char8 *digits = "0123456789ABCDEF";
