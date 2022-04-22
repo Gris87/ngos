@@ -191,7 +191,7 @@ NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea *areas)
 
     EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::ZERO_PAGE,        0,                                         PMD_SIZE,                                                          false), NgosStatus::ASSERTION);
     EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::BOOT_PARAMS,      (address_t)params,                         sizeof(*params),                                                   true),  NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::RELOCATED_KERNEL, params->header.kernelLocation,             params->header.allocatedKernelSize,                                true),  NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::RELOCATED_KERNEL, params->kernel.location,                   params->kernel.allocatedSize,                                      true),  NgosStatus::ASSERTION);
     EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::UEFI_MEMORY_MAP,  (address_t)params->uefi.memoryMap.map,     params->uefi.memoryMap.size,                                       false), NgosStatus::ASSERTION);
     EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_MAP,       (address_t)params->memoryMapEntries,       params->memoryMapEntriesCount * sizeof(*params->memoryMapEntries), false), NgosStatus::ASSERTION);
     EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::VIDEO_RAM,        params->screens[0]->mode->frameBufferBase, params->screens[0]->mode->frameBufferSize,                         true),  NgosStatus::ASSERTION);
@@ -350,15 +350,15 @@ NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEn
                 (
                     (
                         (
-                            (u64)params->header.kernelLocation
+                            (u64)params->kernel.location
                             + (u64)params->memoryMapEntries
                             + (u64)unavailableMemoryAreas
                             + (u64)address
                             + (u64)params->pciRomImages
                         ) % PRIME_NUMBER_4
                     )
-                    * (u64)params->header.kernelSize
-                    * (u64)params->header.allocatedKernelSize
+                    * (u64)params->kernel.size
+                    * (u64)params->kernel.allocatedSize
                     * (u64)imageSize
                     * PRIME_NUMBER_2
                 ) ^ PHYSICAL_MAGIC_MASK
@@ -483,15 +483,15 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
                 (
                     (
                         (
-                            (u64)params->header.kernelLocation
+                            (u64)params->kernel.location
                             + (u64)params->memoryMapEntries
                             + (u64)unavailableMemoryAreas
                             + (u64)address
                             + (u64)params->pciRomImages
                         ) % PRIME_NUMBER_4
                     )
-                    * (u64)params->header.kernelSize
-                    * (u64)params->header.allocatedKernelSize
+                    * (u64)params->kernel.size
+                    * (u64)params->kernel.allocatedSize
                     * (u64)imageSize
                     * PRIME_NUMBER_1
                 ) ^ PHYSICAL_MAGIC_MASK
@@ -548,15 +548,15 @@ NgosStatus findRandomVirtualAddress(BootParams *params, MemoryArea *unavailableM
                 (
                     (
                         (
-                            (u64)params->header.kernelLocation
+                            (u64)params->kernel.location
                             + (u64)params->memoryMapEntries
                             + (u64)unavailableMemoryAreas
                             + (u64)address
                             + (u64)params->pciRomImages
                         ) % PRIME_NUMBER_4
                     )
-                    * (u64)params->header.kernelSize
-                    * (u64)params->header.allocatedKernelSize
+                    * (u64)params->kernel.size
+                    * (u64)params->kernel.allocatedSize
                     * (u64)imageSize
                     * PRIME_NUMBER_3
                 ) ^ VIRTUAL_MAGIC_MASK

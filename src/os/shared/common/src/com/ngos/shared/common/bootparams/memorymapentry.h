@@ -1,27 +1,27 @@
-#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRY_H
-#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRY_H
-
-
-
-#include <com/ngos/shared/common/bootparams/memorymapentrytype.h>
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-struct MemoryMapEntry
-{
-    address_t          start;
-    u64                size;
-    MemoryMapEntryType type;
-
-
-
-    inline address_t end()
-    {
-        return start + size;
-    }
-};
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRY_H                                                                                                                                               // Colorize: green
+#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRY_H                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/bootparams/memorymapentrytype.h>                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct MemoryMapEntry                                                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    MemoryMapEntryType type;                                                                                                                                                                             // Colorize: green
+    good_Address_t     start;                                                                                                                                                                            // Colorize: green
+    good_I64           size;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    inline good_Address_t end()                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return start + size;                                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRY_H                                                                                                                                             // Colorize: green

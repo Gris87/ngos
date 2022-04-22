@@ -8,6 +8,7 @@
 #include <com/ngos/shared/common/bootparams/bootparams.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
+#include <com/ngos/shared/common/memory/memory.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 
 
@@ -89,9 +90,7 @@ u64 extractKernel(KernelDescriptor *kernelDescriptor, BootParams *params, u8 *de
     //
     // We don't need it anymore. Resetted for safety
     //
-    params->header.kernelLocation      = 0;
-    params->header.kernelSize          = 0;
-    params->header.allocatedKernelSize = 0;
+    memzero(&params->kernel, sizeof(params->kernel));
 
 
 

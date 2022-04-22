@@ -8,7 +8,7 @@
 #include <com/ngos/shared/common/assets/assetentry.h>
 #include <com/ngos/shared/common/assets/assets.h>
 #include <com/ngos/shared/common/bootparams/bootparams.h>
-#include <com/ngos/shared/common/bootparams/bootparamsheader.h>
+#include <com/ngos/shared/common/bootparams/kernelinfo.h>
 #include <com/ngos/shared/common/bootparams/memorymapentry.h>
 #include <com/ngos/shared/common/bootparams/memorymapentrytype.h>
 #include <com/ngos/shared/common/bootparams/pciromimagewithinfo.h>
@@ -1308,8 +1308,8 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(BmpCompressionMethod),                                              4);
         TEST_ASSERT_EQUALS(sizeof(BmpHeader),                                                         14);
         TEST_ASSERT_EQUALS(sizeof(BmpInformationHeader),                                              40);
-        TEST_ASSERT_EQUALS(sizeof(BootParams),                                                        624);
-        TEST_ASSERT_EQUALS(sizeof(BootParamsHeader),                                                  32);
+        TEST_ASSERT_EQUALS(sizeof(BootParams),                                                        616);
+        TEST_ASSERT_EQUALS(sizeof(KernelInfo),                                                        24);
         TEST_ASSERT_EQUALS(sizeof(Button),                                                            224);
         TEST_ASSERT_EQUALS(sizeof(Console),                                                           1);
         TEST_ASSERT_EQUALS(sizeof(ConsoleWidget),                                                     96);

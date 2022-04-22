@@ -1,28 +1,28 @@
-#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_PCIROMIMAGEWITHINFO_H
-#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_PCIROMIMAGEWITHINFO_H
-
-
-
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-struct PciRomImageWithInfo
-{
-    PciRomImageWithInfo *next;
-
-    u16 vendorId;
-    u16 deviceId;
-
-    u64 segmentNumber;
-    u64 busNumber;
-    u64 deviceNumber;
-    u64 functionNumber;
-
-    u64 romSize;
-    u8  romImage[0];
-};
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_PCIROMIMAGEWITHINFO_H
+#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_PCIROMIMAGEWITHINFO_H                                                                                                                                          // Colorize: green
+#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_PCIROMIMAGEWITHINFO_H                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct PciRomImageWithInfo                                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    PciRomImageWithInfo *next;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    good_U16 vendorId;                                                                                                                                                                                   // Colorize: green
+    good_U16 deviceId;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    good_U64 segmentNumber;                                                                                                                                                                              // Colorize: green
+    good_U64 busNumber;                                                                                                                                                                                  // Colorize: green
+    good_U64 deviceNumber;                                                                                                                                                                               // Colorize: green
+    good_U64 functionNumber;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    good_I64 romSize;                                                                                                                                                                                    // Colorize: green
+    good_U8  romImage[0];                                                                                                                                                                                // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_PCIROMIMAGEWITHINFO_H                                                                                                                                        // Colorize: green

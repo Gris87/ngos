@@ -808,7 +808,7 @@ src/os/shared/common/src/com/ngos/shared/common/assets/assetentry.h
 src/os/shared/common/src/com/ngos/shared/common/assets/assets.cpp
 src/os/shared/common/src/com/ngos/shared/common/assets/assets.h
 src/os/shared/common/src/com/ngos/shared/common/bootparams/bootparams.h
-src/os/shared/common/src/com/ngos/shared/common/bootparams/bootparamsheader.h
+src/os/shared/common/src/com/ngos/shared/common/bootparams/kernelinfo.h
 src/os/shared/common/src/com/ngos/shared/common/bootparams/memorymapentry.h
 src/os/shared/common/src/com/ngos/shared/common/bootparams/memorymapentrytype.h
 src/os/shared/common/src/com/ngos/shared/common/bootparams/pciromimagewithinfo.h

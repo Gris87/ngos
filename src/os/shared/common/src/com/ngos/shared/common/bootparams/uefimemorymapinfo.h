@@ -1,21 +1,21 @@
-#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_UEFIMEMORYMAPINFO_H
-#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_UEFIMEMORYMAPINFO_H
-
-
-
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/uefi/uefimemorydescriptor.h>
-
-
-
-struct UefiMemoryMapInfo
-{
-    UefiMemoryDescriptor *map;
-    u64                   size;
-    u64                   descriptorSize;
-    u32                   descriptorVersion;
-};
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_UEFIMEMORYMAPINFO_H
+#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_UEFIMEMORYMAPINFO_H                                                                                                                                            // Colorize: green
+#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_UEFIMEMORYMAPINFO_H                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/uefi/uefimemorydescriptor.h>                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct UefiMemoryMapInfo                                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    UefiMemoryDescriptor *map;                                                                                                                                                                           // Colorize: green
+    good_U64                   size;                                                                                                                                                                     // Colorize: green
+    good_U64                   descriptorSize;                                                                                                                                                           // Colorize: green
+    good_U32                   descriptorVersion;                                                                                                                                                        // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_UEFIMEMORYMAPINFO_H                                                                                                                                          // Colorize: green

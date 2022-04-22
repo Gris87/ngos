@@ -1,63 +1,63 @@
-#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRYTYPE_H
-#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRYTYPE_H
-
-
-
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class MemoryMapEntryType: u8
-{
-    NONE               = 0,
-    RAM                = 1,
-    ACPI               = 2,
-    NVS                = 3,
-    PERSISTENT_MEMORY  = 4,
-    UNUSABLE           = 5,
-    RESERVED           = 6,
-    RESERVED_BY_KERNEL = 7
-};
-
-
-
-inline const char8* enumToString(MemoryMapEntryType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    switch (type)
-    {
-        case MemoryMapEntryType::NONE:               return "NONE";
-        case MemoryMapEntryType::RAM:                return "RAM";
-        case MemoryMapEntryType::ACPI:               return "ACPI";
-        case MemoryMapEntryType::NVS:                return "NVS";
-        case MemoryMapEntryType::PERSISTENT_MEMORY:  return "PERSISTENT_MEMORY";
-        case MemoryMapEntryType::UNUSABLE:           return "UNUSABLE";
-        case MemoryMapEntryType::RESERVED:           return "RESERVED";
-        case MemoryMapEntryType::RESERVED_BY_KERNEL: return "RESERVED_BY_KERNEL";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(MemoryMapEntryType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[26];
-
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRYTYPE_H
+#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRYTYPE_H                                                                                                                                           // Colorize: green
+#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRYTYPE_H                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class MemoryMapEntryType: u8                                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE               = 0,                                                                                                                                                                              // Colorize: green
+    RAM                = 1,                                                                                                                                                                              // Colorize: green
+    ACPI               = 2,                                                                                                                                                                              // Colorize: green
+    NVS                = 3,                                                                                                                                                                              // Colorize: green
+    PERSISTENT_MEMORY  = 4,                                                                                                                                                                              // Colorize: green
+    UNUSABLE           = 5,                                                                                                                                                                              // Colorize: green
+    RESERVED           = 6,                                                                                                                                                                              // Colorize: green
+    RESERVED_BY_KERNEL = 7                                                                                                                                                                               // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const good_Char8* enumToString(MemoryMapEntryType type) // TEST: NO                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (type)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case MemoryMapEntryType::NONE:               return "NONE";                                                                                                                                      // Colorize: green
+        case MemoryMapEntryType::RAM:                return "RAM";                                                                                                                                       // Colorize: green
+        case MemoryMapEntryType::ACPI:               return "ACPI";                                                                                                                                      // Colorize: green
+        case MemoryMapEntryType::NVS:                return "NVS";                                                                                                                                       // Colorize: green
+        case MemoryMapEntryType::PERSISTENT_MEMORY:  return "PERSISTENT_MEMORY";                                                                                                                         // Colorize: green
+        case MemoryMapEntryType::UNUSABLE:           return "UNUSABLE";                                                                                                                                  // Colorize: green
+        case MemoryMapEntryType::RESERVED:           return "RESERVED";                                                                                                                                  // Colorize: green
+        case MemoryMapEntryType::RESERVED_BY_KERNEL: return "RESERVED_BY_KERNEL";                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const good_Char8* enumToFullString(MemoryMapEntryType type) // TEST: NO                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static good_Char8 res[26];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRYTYPE_H                                                                                                                                         // Colorize: green

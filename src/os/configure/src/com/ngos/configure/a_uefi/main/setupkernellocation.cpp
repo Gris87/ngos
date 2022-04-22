@@ -69,7 +69,7 @@ NgosStatus setupKernelLocation(BootParams *params)
     // image->imageSize == Boot part + .reloc section + Configure part + [De]compressed Kernel part
     // params->header.kernelLocation == image->imageBase + Boot part + .reloc section
     // So imageSize will be equal to Configure part + [De]compressed Kernel part
-    u64 imageSize = image->imageSize - (params->header.kernelLocation - (address_t)image->imageBase); // Remove Boot part and .reloc section
+    u64 imageSize = image->imageSize - (params->kernel.location - (address_t)image->imageBase); // Remove Boot part and .reloc section
 
 
 
@@ -105,11 +105,11 @@ NgosStatus setupKernelLocation(BootParams *params)
 
 
     // Copy whole image except Boot part and .reloc section to address
-    memcpy((void *)address, (void *)params->header.kernelLocation, imageSize);
+    memcpy((void *)address, (void *)params->kernel.location, imageSize);
 
-    params->header.kernelLocation      = address;
-    params->header.kernelSize          = imageSize;
-    params->header.allocatedKernelSize = allocSize;
+    params->kernel.location      = address;
+    params->kernel.size          = imageSize;
+    params->kernel.allocatedSize = allocSize;
 
 
 

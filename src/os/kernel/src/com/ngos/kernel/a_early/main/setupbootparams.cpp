@@ -29,17 +29,13 @@ NgosStatus setupBootParams(BootParams *params)
 
     // Validation
     {
-        EARLY_LVVV(("bootParams.header.signature           == 0x%016llX", bootParams.header.signature));
-        EARLY_LVVV(("bootParams.header.kernelLocation      == 0x%016llX", bootParams.header.kernelLocation));
-        EARLY_LVVV(("bootParams.header.kernelSize          == %u",        bootParams.header.kernelSize));
-        EARLY_LVVV(("bootParams.header.allocatedKernelSize == %u",        bootParams.header.allocatedKernelSize));
+        EARLY_LVVV(("bootParams.kernel.kernelLocation      == 0x%016llX", bootParams.header.kernelLocation));
+        EARLY_LVVV(("bootParams.kernel.kernelSize          == %u",        bootParams.header.kernelSize));
+        EARLY_LVVV(("bootParams.kernel.allocatedKernelSize == %u",        bootParams.header.allocatedKernelSize));
 
-
-
-        EARLY_TEST_ASSERT(bootParams.header.signature           == BOOT_PARAMS_HEADER_SIGNATURE, NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(bootParams.header.kernelLocation      == 0,                            NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(bootParams.header.kernelSize          == 0,                            NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(bootParams.header.allocatedKernelSize == 0,                            NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(bootParams.kernel.location      == 0, NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(bootParams.kernel.size          == 0, NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(bootParams.kernel.allocatedSize == 0, NgosStatus::ASSERTION);
     }
 
 

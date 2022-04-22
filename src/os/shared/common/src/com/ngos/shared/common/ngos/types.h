@@ -32,17 +32,17 @@ typedef unsigned short     good_U16;
 typedef unsigned int       good_U32;
 typedef unsigned long long good_U64;
 
-typedef char     good_char8;
-typedef char16_t good_char16;
+typedef char     good_Char8;
+typedef char16_t good_Char16;
 
-typedef u64 good_address_t;
-typedef u64 good_enum_t;
+typedef u64 good_Address_t;
+typedef u64 good_Enum_t;
 
 
 
 #ifndef NGOS_DEVTOOLS_APPLICATION // Defined in pro file
 typedef long unsigned int size_t;
-typedef long unsigned int good_size_t; // TODO: Delete it
+typedef long unsigned int good_Size_t; // TODO: Delete it
 #endif
 
 

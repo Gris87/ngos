@@ -1,32 +1,32 @@
-#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_BOOTPARAMS_H
-#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_BOOTPARAMS_H
-
-
-
-#include <com/ngos/shared/common/bootparams/bootparamsheader.h>
-#include <com/ngos/shared/common/bootparams/memorymapentry.h>
-#include <com/ngos/shared/common/bootparams/pciromimagewithinfo.h>
-#include <com/ngos/shared/common/bootparams/uefiinfo.h>
-#include <com/ngos/shared/common/uefi/uefigraphicsoutputprotocol.h>
-
-
-
-#define HARDWARE_ID_LENGTH 512
-
-
-
-struct BootParams
-{
-    BootParamsHeader             header;
-    UefiInfo                     uefi;
-    u64                          screensCount;
-    UefiGraphicsOutputProtocol **screens;
-    PciRomImageWithInfo         *pciRomImages;
-    i64                          memoryMapEntriesCount;
-    MemoryMapEntry              *memoryMapEntries;
-    char8                        hardwareId[HARDWARE_ID_LENGTH];
-};
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_BOOTPARAMS_H
+#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_BOOTPARAMS_H                                                                                                                                                   // Colorize: green
+#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_BOOTPARAMS_H                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/bootparams/kernelinfo.h>                                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/bootparams/memorymapentry.h>                                                                                                                                            // Colorize: green
+#include <com/ngos/shared/common/bootparams/pciromimagewithinfo.h>                                                                                                                                       // Colorize: green
+#include <com/ngos/shared/common/bootparams/uefiinfo.h>                                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/uefi/uefigraphicsoutputprotocol.h>                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define HARDWARE_ID_LENGTH 512                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct BootParams // TODO: Need to check for useless data                                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    KernelInfo                   kernel;                                                                                                                                                                 // Colorize: green
+    UefiInfo                     uefi;                                                                                                                                                                   // Colorize: green
+    good_I64                     screensCount;                                                                                                                                                           // Colorize: green
+    UefiGraphicsOutputProtocol **screens;                                                                                                                                                                // Colorize: green
+    PciRomImageWithInfo         *pciRomImages;                                                                                                                               // Colorize: green
+    good_I64                     memoryMapEntriesCount;                                                                                                                                                  // Colorize: green
+    MemoryMapEntry              *memoryMapEntries;                                                                                                                                                       // Colorize: green
+    good_Char8                   hardwareId[HARDWARE_ID_LENGTH];                                                                                                                                         // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_BOOTPARAMS_H                                                                                                                                                 // Colorize: green

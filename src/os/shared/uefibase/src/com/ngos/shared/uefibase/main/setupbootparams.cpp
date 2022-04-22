@@ -15,10 +15,9 @@ NgosStatus setupBootParams(BootParams *params, u64 kernelLocation)
 
 
 
-    memzero(params, sizeof(BootParams));
+    memzero(params, sizeof(*params));
 
-    params->header.signature      = BOOT_PARAMS_HEADER_SIGNATURE;
-    params->header.kernelLocation = kernelLocation;
+    params->kernel.location = kernelLocation;
 
 
 
