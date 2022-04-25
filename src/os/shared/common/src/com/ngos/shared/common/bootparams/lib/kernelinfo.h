@@ -1,5 +1,5 @@
-#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_KERNELINFO_H                                                                                                                                             // Colorize: green
-#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_KERNELINFO_H                                                                                                                                             // Colorize: green
+#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_LIB_KERNELINFO_H                                                                                                                                             // Colorize: green
+#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_LIB_KERNELINFO_H                                                                                                                                             // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -16,4 +16,4 @@ struct KernelInfo                                                               
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_KERNELINFO_H                                                                                                                                           // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_LIB_KERNELINFO_H                                                                                                                                           // Colorize: green

@@ -1,5 +1,5 @@
-#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_UEFIMEMORYMAPINFO_H                                                                                                                                            // Colorize: green
-#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_UEFIMEMORYMAPINFO_H                                                                                                                                            // Colorize: green
+#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_LIB_UEFIMEMORYMAPINFO_H                                                                                                                                            // Colorize: green
+#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_LIB_UEFIMEMORYMAPINFO_H                                                                                                                                            // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -18,4 +18,4 @@ struct UefiMemoryMapInfo                                                        
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_UEFIMEMORYMAPINFO_H                                                                                                                                          // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_LIB_UEFIMEMORYMAPINFO_H                                                                                                                                          // Colorize: green

@@ -1,5 +1,5 @@
-#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRYTYPE_H                                                                                                                                           // Colorize: green
-#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRYTYPE_H                                                                                                                                           // Colorize: green
+#ifndef COM_NGOS_SHARED_COMMON_BOOTPARAMS_LIB_MEMORYMAPENTRYTYPE_H                                                                                                                                           // Colorize: green
+#define COM_NGOS_SHARED_COMMON_BOOTPARAMS_LIB_MEMORYMAPENTRYTYPE_H                                                                                                                                           // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -60,4 +60,4 @@ inline const good_Char8* enumToFullString(MemoryMapEntryType type) // TEST: NO  
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_MEMORYMAPENTRYTYPE_H                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_BOOTPARAMS_LIB_MEMORYMAPENTRYTYPE_H                                                                                                                                         // Colorize: green
