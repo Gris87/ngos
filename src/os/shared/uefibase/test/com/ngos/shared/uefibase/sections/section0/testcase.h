@@ -102,7 +102,7 @@ NgosStatus startTestSection0()
 
     CALL_TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
     CALL_TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
-    CALL_TEST_CASES(section0, com_ngos_shared_common_bootparams_memorymapentry);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_bootparams_lib_memorymapentry);
     CALL_TEST_CASES(section0, com_ngos_shared_common_checksum_adler);
     CALL_TEST_CASES(section0, com_ngos_shared_common_checksum_crc);
     CALL_TEST_CASES(section0, com_ngos_shared_common_checksum_lib_md5hash);
