@@ -5,15 +5,15 @@
 
 #include <buildconfig.h>
 #include <com/ngos/shared/common/asm/bitutils.h>
-#include <com/ngos/shared/common/assets/assetentry.h>
 #include <com/ngos/shared/common/assets/assets.h>
+#include <com/ngos/shared/common/assets/lib/assetentry.h>
 #include <com/ngos/shared/common/bootparams/bootparams.h>
-#include <com/ngos/shared/common/bootparams/kernelinfo.h>
-#include <com/ngos/shared/common/bootparams/memorymapentry.h>
-#include <com/ngos/shared/common/bootparams/memorymapentrytype.h>
-#include <com/ngos/shared/common/bootparams/pciromimagewithinfo.h>
-#include <com/ngos/shared/common/bootparams/uefiinfo.h>
-#include <com/ngos/shared/common/bootparams/uefimemorymapinfo.h>
+#include <com/ngos/shared/common/bootparams/lib/kernelinfo.h>
+#include <com/ngos/shared/common/bootparams/lib/memorymapentry.h>
+#include <com/ngos/shared/common/bootparams/lib/memorymapentrytype.h>
+#include <com/ngos/shared/common/bootparams/lib/pciromimagewithinfo.h>
+#include <com/ngos/shared/common/bootparams/lib/uefiinfo.h>
+#include <com/ngos/shared/common/bootparams/lib/uefimemorymapinfo.h>
 #include <com/ngos/shared/common/checksum/adler.h>
 #include <com/ngos/shared/common/checksum/crc.h>
 #include <com/ngos/shared/common/checksum/lib/md5hash.h>

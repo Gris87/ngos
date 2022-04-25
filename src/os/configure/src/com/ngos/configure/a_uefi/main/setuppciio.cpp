@@ -1,6 +1,6 @@
 #include "setuppciio.h"
 
-#include <com/ngos/shared/common/bootparams/pciromimagewithinfo.h>
+#include <com/ngos/shared/common/bootparams/lib/pciromimagewithinfo.h>
 #include <com/ngos/shared/common/memory/memory.h>
 #include <com/ngos/shared/common/pci/database/generated/pcivendor.h>
 #include <com/ngos/shared/common/pci/pciregister.h>
