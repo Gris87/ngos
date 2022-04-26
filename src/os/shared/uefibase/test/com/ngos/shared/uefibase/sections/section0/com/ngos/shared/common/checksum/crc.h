@@ -1,72 +1,72 @@
-#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CHECKSUM_CRC_H
-#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CHECKSUM_CRC_H
-
-
-
-#include <buildconfig.h>
-#include <com/ngos/shared/common/checksum/crc.h>
-#include <com/ngos/shared/uefibase/testengine.h>
-
-
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-
-
-
-TEST_CASES(section0, com_ngos_shared_common_checksum_crc);
-{
-    TEST_CASE("crc32()");
-    {
-        const char8 *str = "Hello";
-
-        u8 temp1[256];
-        u8 temp2[256];
-        u8 temp3[256];
-
-        for (good_I64 i = 0; i < 256; ++i)
-        {
-            temp1[i] = i * 37;
-            temp2[i] = i * 13;
-            temp3[i] = i * 19;
-        }
-
-        TEST_ASSERT_EQUALS(Crc::crc32((u8 *)str, strlen(str)),   0xF7D18982);
-        TEST_ASSERT_EQUALS(Crc::crc32(temp1,     sizeof(temp1)), 0x3BA79CCF);
-        TEST_ASSERT_EQUALS(Crc::crc32(temp2,     sizeof(temp2)), 0xA6C977D8);
-        TEST_ASSERT_EQUALS(Crc::crc32(temp3,     sizeof(temp3)), 0x981FA0FF);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("crc64()");
-    {
-        const char8 *str = "Hello";
-
-        u8 temp1[256];
-        u8 temp2[256];
-        u8 temp3[256];
-
-        for (good_I64 i = 0; i < 256; ++i)
-        {
-            temp1[i] = i * 37;
-            temp2[i] = i * 13;
-            temp3[i] = i * 19;
-        }
-
-        TEST_ASSERT_EQUALS(Crc::crc64((u8 *)str, strlen(str)),   0x51CF5C3BC87BACC8);
-        TEST_ASSERT_EQUALS(Crc::crc64(temp1,     sizeof(temp1)), 0x795E41105C8EC855);
-        TEST_ASSERT_EQUALS(Crc::crc64(temp2,     sizeof(temp2)), 0xC9ABC0CE4C2FEF10);
-        TEST_ASSERT_EQUALS(Crc::crc64(temp3,     sizeof(temp3)), 0x7D487F5A6914336D);
-    }
-    TEST_CASE_END();
-}
-TEST_CASES_END();
-
-
-
-#endif
-
-
-
-#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CHECKSUM_CRC_H
+#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CHECKSUM_CRC_H                                                                                                                 // Colorize: green
+#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CHECKSUM_CRC_H                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <buildconfig.h>                                                                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/common/checksum/crc.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/uefibase/testengine.h>                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TEST_CASES(section0, com_ngos_shared_common_checksum_crc);                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    TEST_CASE("crc32()");                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        const good_Char8 *str = "Hello";                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp1[256];                                                                                                                                                                              // Colorize: green
+        good_U8 temp2[256];                                                                                                                                                                              // Colorize: green
+        good_U8 temp3[256];                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 256; ++i)                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp1[i] = i * 37;                                                                                                                                                                           // Colorize: green
+            temp2[i] = i * 13;                                                                                                                                                                           // Colorize: green
+            temp3[i] = i * 19;                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(Crc::crc32(reinterpret_cast<const good_U8 *>(str), strlen(str)),   0xF7D18982);                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(Crc::crc32(temp1,                                  sizeof(temp1)), 0x3BA79CCF);                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(Crc::crc32(temp2,                                  sizeof(temp2)), 0xA6C977D8);                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(Crc::crc32(temp3,                                  sizeof(temp3)), 0x981FA0FF);                                                                                               // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("crc64()");                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        const good_Char8 *str = "Hello";                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 temp1[256];                                                                                                                                                                              // Colorize: green
+        good_U8 temp2[256];                                                                                                                                                                              // Colorize: green
+        good_U8 temp3[256];                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < 256; ++i)                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp1[i] = i * 37;                                                                                                                                                                           // Colorize: green
+            temp2[i] = i * 13;                                                                                                                                                                           // Colorize: green
+            temp3[i] = i * 19;                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(Crc::crc64(reinterpret_cast<const good_U8 *>(str), strlen(str)),   0x51CF5C3BC87BACC8);                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(Crc::crc64(temp1,                                  sizeof(temp1)), 0x795E41105C8EC855);                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(Crc::crc64(temp2,                                  sizeof(temp2)), 0xC9ABC0CE4C2FEF10);                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(Crc::crc64(temp3,                                  sizeof(temp3)), 0x7D487F5A6914336D);                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+TEST_CASES_END();                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CHECKSUM_CRC_H                                                                                                               // Colorize: green

@@ -1,132 +1,113 @@
-#ifndef COM_NGOS_SHARED_COMMON_CHECKSUM_LIB_MD5HASH_H
-#define COM_NGOS_SHARED_COMMON_CHECKSUM_LIB_MD5HASH_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/memory/memory.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-struct Md5Hash
-{
-    Md5Hash()
-    {
-        COMMON_LT((""));
-
-
-
-        quads[0] = 0;
-        quads[1] = 0;
-    }
-
-    Md5Hash(u64 quad1, u64 quad2)
-    {
-        COMMON_LT((" | quad1 = %u, quad2 = %u", quad1, quad2));
-
-
-
-        quads[0] = quad1;
-        quads[1] = quad2;
-    }
-
-    Md5Hash(u8 data[16])
-    {
-        COMMON_LT((" | data = ..."));
-
-
-
-        u64 *quad = (u64 *)data;
-
-        quads[0] = quad[0];
-        quads[1] = quad[1];
-    }
-
-    bool operator==(const Md5Hash &another) const
-    {
-        COMMON_LT((" | another = ..."));
-
-
-
-        return quads[0] == another.quads[0]
-                &&
-                quads[1] == another.quads[1];
-    }
-
-
-
-    union
-    {
-        u8  bytes[16];
-        u32 dwords[4];
-        u64 quads[2];
-    };
-};
-
-
-
-inline const char8* md5HashToString(const Md5Hash &hash) // TEST: NO
-{
-    // COMMON_LT((" | hash = ...")); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[33];
-
-    i64 length = sprintf(res, "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X"
-                            , hash.bytes[0]
-                            , hash.bytes[1]
-                            , hash.bytes[2]
-                            , hash.bytes[3]
-                            , hash.bytes[4]
-                            , hash.bytes[5]
-                            , hash.bytes[6]
-                            , hash.bytes[7]
-                            , hash.bytes[8]
-                            , hash.bytes[9]
-                            , hash.bytes[10]
-                            , hash.bytes[11]
-                            , hash.bytes[12]
-                            , hash.bytes[13]
-                            , hash.bytes[14]
-                            , hash.bytes[15]
-            );
-
-    AVOID_UNUSED(length);
-
-    COMMON_TEST_ASSERT(length == 32,              nullptr);
-    COMMON_TEST_ASSERT(length == sizeof(res) - 1, nullptr);
-
-
-
-    return res;
-}
-
-
-
-inline const char8* md5HashToStringAsConstructor(const Md5Hash &hash) // TEST: NO
-{
-    // COMMON_LT((" | hash = ...")); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[48];
-
-    i64 length = sprintf(res, "Md5Hash(0x%016llX, 0x%016llX)", hash.quads[0], hash.quads[1]);
-
-    AVOID_UNUSED(length);
-
-    COMMON_TEST_ASSERT(length == 47,              nullptr);
-    COMMON_TEST_ASSERT(length == sizeof(res) - 1, nullptr);
-
-
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CHECKSUM_LIB_MD5HASH_H
+#ifndef COM_NGOS_SHARED_COMMON_CHECKSUM_LIB_MD5HASH_H                                                                                                                                                    // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CHECKSUM_LIB_MD5HASH_H                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/hex/hex.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/memory/memory.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct Md5Hash                                                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Md5Hash()                                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((""));                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        quads[0] = 0;                                                                                                                                                                                    // Colorize: green
+        quads[1] = 0;                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Md5Hash(good_U64 quad1, good_U64 quad2)                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | quad1 = %u, quad2 = %u", quad1, quad2));                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        quads[0] = quad1;                                                                                                                                                                                // Colorize: green
+        quads[1] = quad2;                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Md5Hash(good_U8 data[16])                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | data = ..."));                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U64 *quad = reinterpret_cast<good_U64 *>(data);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        quads[0] = quad[0];                                                                                                                                                                              // Colorize: green
+        quads[1] = quad[1];                                                                                                                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool operator==(const Md5Hash &another) const                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | another = ..."));                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return quads[0] == another.quads[0]                                                                                                                                                              // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                quads[1] == another.quads[1];                                                                                                                                                            // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    union                                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U8  bytes[16];                                                                                                                                                                              // Colorize: green
+        good_U32 dwords[4];                                                                                                                                                                              // Colorize: green
+        good_U64 quads[2];                                                                                                                                                                               // Colorize: green
+    };                                                                                                                                                                                                   // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const good_Char8* md5HashToString(const Md5Hash &hash)                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | hash = ...")); // Commented to avoid bad looking logs                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static good_Char8 res[33];                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_TEST_ASSERT(sizeof(res) == sizeof(hash.bytes) * 2 + 1, nullptr);                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT_EXECUTION(Hex::toString(hash.bytes, sizeof(hash.bytes), res, sizeof(res), false), nullptr);                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const good_Char8* md5HashToStringAsConstructor(const Md5Hash &hash)                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | hash = ...")); // Commented to avoid bad looking logs                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static good_Char8 res[48];                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    i64 length = sprintf(res, "Md5Hash(0x%016llX, 0x%016llX)", hash.quads[0], hash.quads[1]);                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    AVOID_UNUSED(length);                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_TEST_ASSERT(length == 47,              nullptr);                                                                                                                                              // Colorize: green
+    COMMON_TEST_ASSERT(length == sizeof(res) - 1, nullptr);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CHECKSUM_LIB_MD5HASH_H                                                                                                                                                  // Colorize: green

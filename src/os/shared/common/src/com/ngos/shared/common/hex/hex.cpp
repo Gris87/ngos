@@ -7,7 +7,7 @@
 
 
 
-NgosStatus Hex::toString(u8 *data, i64 size, char8 *buffer, i64 bufferSize, bool ellipsis)
+NgosStatus Hex::toString(const u8 *data, i64 size, char8 *buffer, i64 bufferSize, bool ellipsis)
 {
     COMMON_LT((" | data = 0x%p, size = %d, buffer = 0x%p, bufferSize = %d, ellipsis = %u", data, size, buffer, bufferSize, ellipsis));
 
@@ -74,7 +74,7 @@ NgosStatus Hex::toString(u8 *data, i64 size, char8 *buffer, i64 bufferSize, bool
     return NgosStatus::OK;
 }
 
-NgosStatus Hex::toString(u8 *data, i64 size, char8 **buffer, i64 maxBufferSize, bool ellipsis)
+NgosStatus Hex::toString(const u8 *data, i64 size, char8 **buffer, i64 maxBufferSize, bool ellipsis)
 {
     COMMON_LT((" | data = 0x%p, size = %d, buffer = 0x%p, maxBufferSize = %d, ellipsis = %u", data, size, buffer, maxBufferSize, ellipsis));
 

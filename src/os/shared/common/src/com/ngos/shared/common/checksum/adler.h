@@ -1,18 +1,18 @@
-#ifndef COM_NGOS_SHARED_COMMON_CHECKSUM_ADLER_H
-#define COM_NGOS_SHARED_COMMON_CHECKSUM_ADLER_H
-
-
-
-#include <com/ngos/shared/common/ngos/status.h>
-
-
-
-class Adler
-{
-public:
-    static u32 adler32(u8 *data, u64 length);
-};
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CHECKSUM_ADLER_H
+#ifndef COM_NGOS_SHARED_COMMON_CHECKSUM_ADLER_H                                                                                                                                                          // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CHECKSUM_ADLER_H                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/status.h>                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class Adler                                                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    static good_U32 adler32(const good_U8 *data, good_I64 length);                                                                                                                                             // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CHECKSUM_ADLER_H                                                                                                                                                        // Colorize: green

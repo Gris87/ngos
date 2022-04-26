@@ -1,43 +1,44 @@
-#include "adler.h"
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-
-
-
-u32 Adler::adler32(u8 *data, u64 length)
-{
-    COMMON_LT((" | data = 0x%p, length = %u", data, length));
-
-    COMMON_ASSERT(data,       "data is null",   0);
-    COMMON_ASSERT(length > 0, "length is zero", 0);
-
-
-
-    u64 s1 = 1;
-    u64 s2 = 0;
-
-    while (length)
-    {
-        // at least 380368439 sums can be done before the sums overflow, saving a lot of module divisions
-        //
-        u64 count =  length > 380368439 ? 380368439 : length;
-        length    -= count;
-
-        while (count)
-        {
-            s1 += *data;
-            s2 += s1;
-
-            ++data;
-            --count;
-        }
-
-        s1 %= 65521;
-        s2 %= 65521;
-    }
-
-
-
-    return (s2 << 16) | s1;
-}
+#include "adler.h"                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/utils.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+good_U32 Adler::adler32(const good_U8 *data, good_I64 length)                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | data = 0x%p, length = %d", data, length));                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(data != nullptr, "data is null",      0);                                                                                                                                              // Colorize: green
+    COMMON_ASSERT(length >= 0,     "length is invalid", 0);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    good_U64 s1 = 1;                                                                                                                                                                                     // Colorize: green
+    good_U64 s2 = 0;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (length > 0)                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // at least 380368439 sums can be done before the sums overflow, saving a lot of module divisions                                                                                                // Colorize: green
+        //                                                                                                                                                                                               // Colorize: green
+        good_I64 count =  MIN(length, 380368439);                                                                                                                                                        // Colorize: green
+        length    -= count;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (count > 0)                                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            s1 += *data;                                                                                                                                                                                 // Colorize: green
+            s2 += s1;                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ++data;                                                                                                                                                                                      // Colorize: green
+            --count;                                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        s1 %= 65521;                                                                                                                                                                                     // Colorize: green
+        s2 %= 65521;                                                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return (s2 << 16) | s1;                                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

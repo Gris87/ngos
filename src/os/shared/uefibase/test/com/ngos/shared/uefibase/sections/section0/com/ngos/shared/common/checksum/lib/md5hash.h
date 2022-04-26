@@ -1,157 +1,192 @@
-#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CHECKSUM_LIB_MD5HASH_H
-#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CHECKSUM_LIB_MD5HASH_H
-
-
-
-#include <buildconfig.h>
-#include <com/ngos/shared/common/checksum/lib/md5hash.h>
-#include <com/ngos/shared/uefibase/testengine.h>
-
-
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-
-
-
-TEST_CASES(section0, com_ngos_shared_common_checksum_lib_md5hash);
-{
-    TEST_CASE("Md5Hash()");
-    {
-        u8 bytes[16] = { 11, 12, 13, 14, 15, 16, 17, 18, 19, 110, 111, 112, 113, 114, 115, 116 };
-
-        Md5Hash temp1;
-        Md5Hash temp2(0x0102030405060708, 0x090A0B0C0D0E0F00);
-        Md5Hash temp3(0xAABBCCDDEEFF1122, 0x33445566778899AC);
-        Md5Hash temp4(bytes);
-
-
-
-        TEST_ASSERT_EQUALS(temp1.quads[0], 0);
-        TEST_ASSERT_EQUALS(temp1.quads[1], 0);
-
-        TEST_ASSERT_EQUALS(temp1.dwords[0], 0);
-        TEST_ASSERT_EQUALS(temp1.dwords[1], 0);
-        TEST_ASSERT_EQUALS(temp1.dwords[2], 0);
-        TEST_ASSERT_EQUALS(temp1.dwords[3], 0);
-
-        TEST_ASSERT_EQUALS(temp1.bytes[0],  0);
-        TEST_ASSERT_EQUALS(temp1.bytes[1],  0);
-        TEST_ASSERT_EQUALS(temp1.bytes[2],  0);
-        TEST_ASSERT_EQUALS(temp1.bytes[3],  0);
-        TEST_ASSERT_EQUALS(temp1.bytes[4],  0);
-        TEST_ASSERT_EQUALS(temp1.bytes[5],  0);
-        TEST_ASSERT_EQUALS(temp1.bytes[6],  0);
-        TEST_ASSERT_EQUALS(temp1.bytes[7],  0);
-        TEST_ASSERT_EQUALS(temp1.bytes[8],  0);
-        TEST_ASSERT_EQUALS(temp1.bytes[9],  0);
-        TEST_ASSERT_EQUALS(temp1.bytes[10], 0);
-        TEST_ASSERT_EQUALS(temp1.bytes[11], 0);
-        TEST_ASSERT_EQUALS(temp1.bytes[12], 0);
-        TEST_ASSERT_EQUALS(temp1.bytes[13], 0);
-        TEST_ASSERT_EQUALS(temp1.bytes[14], 0);
-        TEST_ASSERT_EQUALS(temp1.bytes[15], 0);
-
-
-
-        TEST_ASSERT_EQUALS(temp2.quads[0], 0x0102030405060708);
-        TEST_ASSERT_EQUALS(temp2.quads[1], 0x090A0B0C0D0E0F00);
-
-        TEST_ASSERT_EQUALS(temp2.dwords[0], 0x05060708);
-        TEST_ASSERT_EQUALS(temp2.dwords[1], 0x01020304);
-        TEST_ASSERT_EQUALS(temp2.dwords[2], 0x0D0E0F00);
-        TEST_ASSERT_EQUALS(temp2.dwords[3], 0x090A0B0C);
-
-        TEST_ASSERT_EQUALS(temp2.bytes[0],  0x08);
-        TEST_ASSERT_EQUALS(temp2.bytes[1],  0x07);
-        TEST_ASSERT_EQUALS(temp2.bytes[2],  0x06);
-        TEST_ASSERT_EQUALS(temp2.bytes[3],  0x05);
-        TEST_ASSERT_EQUALS(temp2.bytes[4],  0x04);
-        TEST_ASSERT_EQUALS(temp2.bytes[5],  0x03);
-        TEST_ASSERT_EQUALS(temp2.bytes[6],  0x02);
-        TEST_ASSERT_EQUALS(temp2.bytes[7],  0x01);
-        TEST_ASSERT_EQUALS(temp2.bytes[8],  0x00);
-        TEST_ASSERT_EQUALS(temp2.bytes[9],  0x0F);
-        TEST_ASSERT_EQUALS(temp2.bytes[10], 0x0E);
-        TEST_ASSERT_EQUALS(temp2.bytes[11], 0x0D);
-        TEST_ASSERT_EQUALS(temp2.bytes[12], 0x0C);
-        TEST_ASSERT_EQUALS(temp2.bytes[13], 0x0B);
-        TEST_ASSERT_EQUALS(temp2.bytes[14], 0x0A);
-        TEST_ASSERT_EQUALS(temp2.bytes[15], 0x09);
-
-
-
-        TEST_ASSERT_EQUALS(temp3.quads[0], 0xAABBCCDDEEFF1122);
-        TEST_ASSERT_EQUALS(temp3.quads[1], 0x33445566778899AC);
-
-        TEST_ASSERT_EQUALS(temp3.dwords[0], 0xEEFF1122);
-        TEST_ASSERT_EQUALS(temp3.dwords[1], 0xAABBCCDD);
-        TEST_ASSERT_EQUALS(temp3.dwords[2], 0x778899AC);
-        TEST_ASSERT_EQUALS(temp3.dwords[3], 0x33445566);
-
-        TEST_ASSERT_EQUALS(temp3.bytes[0],  0x22);
-        TEST_ASSERT_EQUALS(temp3.bytes[1],  0x11);
-        TEST_ASSERT_EQUALS(temp3.bytes[2],  0xFF);
-        TEST_ASSERT_EQUALS(temp3.bytes[3],  0xEE);
-        TEST_ASSERT_EQUALS(temp3.bytes[4],  0xDD);
-        TEST_ASSERT_EQUALS(temp3.bytes[5],  0xCC);
-        TEST_ASSERT_EQUALS(temp3.bytes[6],  0xBB);
-        TEST_ASSERT_EQUALS(temp3.bytes[7],  0xAA);
-        TEST_ASSERT_EQUALS(temp3.bytes[8],  0xAC);
-        TEST_ASSERT_EQUALS(temp3.bytes[9],  0x99);
-        TEST_ASSERT_EQUALS(temp3.bytes[10], 0x88);
-        TEST_ASSERT_EQUALS(temp3.bytes[11], 0x77);
-        TEST_ASSERT_EQUALS(temp3.bytes[12], 0x66);
-        TEST_ASSERT_EQUALS(temp3.bytes[13], 0x55);
-        TEST_ASSERT_EQUALS(temp3.bytes[14], 0x44);
-        TEST_ASSERT_EQUALS(temp3.bytes[15], 0x33);
-
-
-
-        TEST_ASSERT_EQUALS(temp4.quads[0], 0x1211100F0E0D0C0B);
-        TEST_ASSERT_EQUALS(temp4.quads[1], 0x74737271706F6E13);
-
-        TEST_ASSERT_EQUALS(temp4.dwords[0], 0x0E0D0C0B);
-        TEST_ASSERT_EQUALS(temp4.dwords[1], 0x1211100F);
-        TEST_ASSERT_EQUALS(temp4.dwords[2], 0x706F6E13);
-        TEST_ASSERT_EQUALS(temp4.dwords[3], 0x74737271);
-
-        TEST_ASSERT_EQUALS(temp4.bytes[0],  0x0B);
-        TEST_ASSERT_EQUALS(temp4.bytes[1],  0x0C);
-        TEST_ASSERT_EQUALS(temp4.bytes[2],  0x0D);
-        TEST_ASSERT_EQUALS(temp4.bytes[3],  0x0E);
-        TEST_ASSERT_EQUALS(temp4.bytes[4],  0x0F);
-        TEST_ASSERT_EQUALS(temp4.bytes[5],  0x10);
-        TEST_ASSERT_EQUALS(temp4.bytes[6],  0x11);
-        TEST_ASSERT_EQUALS(temp4.bytes[7],  0x12);
-        TEST_ASSERT_EQUALS(temp4.bytes[8],  0x13);
-        TEST_ASSERT_EQUALS(temp4.bytes[9],  0x6E);
-        TEST_ASSERT_EQUALS(temp4.bytes[10], 0x6F);
-        TEST_ASSERT_EQUALS(temp4.bytes[11], 0x70);
-        TEST_ASSERT_EQUALS(temp4.bytes[12], 0x71);
-        TEST_ASSERT_EQUALS(temp4.bytes[13], 0x72);
-        TEST_ASSERT_EQUALS(temp4.bytes[14], 0x73);
-        TEST_ASSERT_EQUALS(temp4.bytes[15], 0x74);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("operator==()");
-    {
-        TEST_ASSERT_EQUALS(Md5Hash(0x0102030405060708, 0x090A0B0C0D0E0F00) == Md5Hash(0x0102030405060708, 0x090A0B0C0D0E0F00), true);
-        TEST_ASSERT_EQUALS(Md5Hash(0xAABBCCDDEEFF1122, 0x33445566778899AC) == Md5Hash(0xAABBCCDDEEFF1122, 0x33445566778899AC), true);
-
-        TEST_ASSERT_EQUALS(Md5Hash(0x0102030405060708, 0x090A0B0C0D0E0F00) == Md5Hash(0xAABBCCDDEEFF1122, 0x33445566778899AC), false);
-        TEST_ASSERT_EQUALS(Md5Hash(0xAABBCCDDEEFF1122, 0x33445566778899AC) == Md5Hash(0x0102030405060708, 0x090A0B0C0D0E0F00), false);
-    }
-    TEST_CASE_END();
-}
-TEST_CASES_END();
-
-
-
-#endif
-
-
-
-#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CHECKSUM_LIB_MD5HASH_H
+#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CHECKSUM_LIB_MD5HASH_H                                                                                                         // Colorize: green
+#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CHECKSUM_LIB_MD5HASH_H                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <buildconfig.h>                                                                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/common/checksum/lib/md5hash.h>                                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/uefibase/testengine.h>                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TEST_CASES(section0, com_ngos_shared_common_checksum_lib_md5hash);                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    TEST_CASE("Md5Hash()");                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Check first Md5Hash                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Md5Hash temp;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_EQUALS(temp.quads[0], 0);                                                                                                                                                        // Colorize: green
+            TEST_ASSERT_EQUALS(temp.quads[1], 0);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[0], 0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[1], 0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[2], 0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[3], 0);                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[0],  0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[1],  0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[2],  0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[3],  0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[4],  0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[5],  0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[6],  0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[7],  0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[8],  0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[9],  0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[10], 0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[11], 0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[12], 0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[13], 0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[14], 0);                                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[15], 0);                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check second Md5Hash                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Md5Hash temp(0x0102030405060708, 0x090A0B0C0D0E0F00);                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_EQUALS(temp.quads[0], 0x0102030405060708);                                                                                                                                      // Colorize: green
+            TEST_ASSERT_EQUALS(temp.quads[1], 0x090A0B0C0D0E0F00);                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[0], 0x05060708);                                                                                                                                             // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[1], 0x01020304);                                                                                                                                             // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[2], 0x0D0E0F00);                                                                                                                                             // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[3], 0x090A0B0C);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[0],  0x08);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[1],  0x07);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[2],  0x06);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[3],  0x05);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[4],  0x04);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[5],  0x03);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[6],  0x02);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[7],  0x01);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[8],  0x00);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[9],  0x0F);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[10], 0x0E);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[11], 0x0D);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[12], 0x0C);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[13], 0x0B);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[14], 0x0A);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[15], 0x09);                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check third Md5Hash                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Md5Hash temp(0xAABBCCDDEEFF1122, 0x33445566778899AC);                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_EQUALS(temp.quads[0], 0xAABBCCDDEEFF1122);                                                                                                                                      // Colorize: green
+            TEST_ASSERT_EQUALS(temp.quads[1], 0x33445566778899AC);                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[0], 0xEEFF1122);                                                                                                                                             // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[1], 0xAABBCCDD);                                                                                                                                             // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[2], 0x778899AC);                                                                                                                                             // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[3], 0x33445566);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[0],  0x22);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[1],  0x11);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[2],  0xFF);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[3],  0xEE);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[4],  0xDD);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[5],  0xCC);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[6],  0xBB);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[7],  0xAA);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[8],  0xAC);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[9],  0x99);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[10], 0x88);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[11], 0x77);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[12], 0x66);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[13], 0x55);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[14], 0x44);                                                                                                                                                   // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[15], 0x33);                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check fourth Md5Hash                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_U8 bytes[16] = { 11, 12, 13, 14, 15, 16, 17, 18, 19, 110, 111, 112, 113, 114, 115, 116 };                                                                                               // Colorize: green
+            Md5Hash temp(bytes);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_EQUALS(temp.quads[0], 0x1211100F0E0D0C0B);                                                                                                                                       // Colorize: green
+            TEST_ASSERT_EQUALS(temp.quads[1], 0x74737271706F6E13);                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[0], 0x0E0D0C0B);                                                                                                                                              // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[1], 0x1211100F);                                                                                                                                              // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[2], 0x706F6E13);                                                                                                                                              // Colorize: green
+            TEST_ASSERT_EQUALS(temp.dwords[3], 0x74737271);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[0],  0x0B);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[1],  0x0C);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[2],  0x0D);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[3],  0x0E);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[4],  0x0F);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[5],  0x10);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[6],  0x11);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[7],  0x12);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[8],  0x13);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[9],  0x6E);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[10], 0x6F);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[11], 0x70);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[12], 0x71);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[13], 0x72);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[14], 0x73);                                                                                                                                                    // Colorize: green
+            TEST_ASSERT_EQUALS(temp.bytes[15], 0x74);                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("operator==()");                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        TEST_ASSERT_EQUALS(Md5Hash(0x0102030405060708, 0x090A0B0C0D0E0F00) == Md5Hash(0x0102030405060708, 0x090A0B0C0D0E0F00), true);                                                                    // Colorize: green
+        TEST_ASSERT_EQUALS(Md5Hash(0xAABBCCDDEEFF1122, 0x33445566778899AC) == Md5Hash(0xAABBCCDDEEFF1122, 0x33445566778899AC), true);                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(Md5Hash(0x0102030405060708, 0x090A0B0C0D0E0F00) == Md5Hash(0xAABBCCDDEEFF1122, 0x33445566778899AC), false);                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(Md5Hash(0xAABBCCDDEEFF1122, 0x33445566778899AC) == Md5Hash(0x0102030405060708, 0x090A0B0C0D0E0F00), false);                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("md5HashToString()");                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        TEST_ASSERT_EQUALS(strequal(md5HashToString(Md5Hash(0x0102030405060708, 0x090A0B0C0D0E0F00)), "0807060504030201000F0E0D0C0B0A09"), true);                                                        // Colorize: green
+        TEST_ASSERT_EQUALS(strequal(md5HashToString(Md5Hash(0xAABBCCDDEEFF1122, 0x33445566778899AC)), "2211FFEEDDCCBBAAAC99887766554433"), true);                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(strequal(md5HashToString(Md5Hash(0x0102030405060708, 0x090A0B0C0D0E0F00)), "2211FFEEDDCCBBAAAC99887766554433"), false);                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(strequal(md5HashToString(Md5Hash(0xAABBCCDDEEFF1122, 0x33445566778899AC)), "0807060504030201000F0E0D0C0B0A09"), false);                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("md5HashToStringAsConstructor()");                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        TEST_ASSERT_EQUALS(strequal(md5HashToStringAsConstructor(Md5Hash(0x0102030405060708, 0x090A0B0C0D0E0F00)), "Md5Hash(0x0102030405060708, 0x090A0B0C0D0E0F00)"), true);                            // Colorize: green
+        TEST_ASSERT_EQUALS(strequal(md5HashToStringAsConstructor(Md5Hash(0xAABBCCDDEEFF1122, 0x33445566778899AC)), "Md5Hash(0xAABBCCDDEEFF1122, 0x33445566778899AC)"), true);                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(strequal(md5HashToStringAsConstructor(Md5Hash(0x0102030405060708, 0x090A0B0C0D0E0F00)), "Md5Hash(0xAABBCCDDEEFF1122, 0x33445566778899AC)"), false);                           // Colorize: green
+        TEST_ASSERT_EQUALS(strequal(md5HashToStringAsConstructor(Md5Hash(0xAABBCCDDEEFF1122, 0x33445566778899AC)), "Md5Hash(0x0102030405060708, 0x090A0B0C0D0E0F00)"), false);                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+TEST_CASES_END();                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CHECKSUM_LIB_MD5HASH_H                                                                                                       // Colorize: green

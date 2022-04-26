@@ -1,43 +1,43 @@
-#ifndef COM_NGOS_SHARED_COMMON_CHECKSUM_MD5_H
-#define COM_NGOS_SHARED_COMMON_CHECKSUM_MD5_H
-
-
-
-#include <com/ngos/shared/common/checksum/lib/md5hash.h>
-#include <com/ngos/shared/common/ngos/status.h>
-
-
-
-#define MD5_BLOCK_SIZE 64
-
-
-
-class MD5
-{
-public:
-    MD5();
-    ~MD5(); // TEST: NO
-
-    static Md5Hash md5(u8 *data, u64 length);
-
-    NgosStatus update(u8 *data, u64 length);
-    NgosStatus finish();
-
-    Md5Hash getResult() const;
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-public:
-#else
-private:
-#endif
-    NgosStatus transform(u8 *block);
-
-    bool    mFinished;
-    u8      mBuffer[MD5_BLOCK_SIZE];
-    u64     mCount;
-    Md5Hash mResult;
-};
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CHECKSUM_MD5_H
+#ifndef COM_NGOS_SHARED_COMMON_CHECKSUM_MD5_H                                                                                                                                                            // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CHECKSUM_MD5_H                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/checksum/lib/md5hash.h>                                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/common/ngos/status.h>                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define MD5_BLOCK_SIZE 64                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class MD5                                                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    MD5();                                                                                                                                                                                               // Colorize: green
+    ~MD5(); // TEST: NO                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static Md5Hash md5(const good_U8 *data, good_I64 length);                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    NgosStatus update(const good_U8 *data, good_I64 length);                                                                                                                                             // Colorize: green
+    NgosStatus finish();                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Md5Hash getResult() const;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+    NgosStatus transform(const good_U8 *block);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool    mFinished;                                                                                                                                                                                   // Colorize: green
+    good_U8      mBuffer[MD5_BLOCK_SIZE];                                                                                                                                                                // Colorize: green
+    good_I64     mCount;                                                                                                                                                                                 // Colorize: green
+    Md5Hash mResult;                                                                                                                                                                                     // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CHECKSUM_MD5_H                                                                                                                                                          // Colorize: green
