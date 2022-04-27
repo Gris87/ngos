@@ -10,7 +10,7 @@
 class Adler                                                                                                                                                                                              // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
 public:                                                                                                                                                                                                  // Colorize: green
-    static good_U32 adler32(const good_U8 *data, good_I64 length);                                                                                                                                             // Colorize: green
+    static good_U32 adler32(const void *data, good_I64 length);                                                                                                                                             // Colorize: green
 };                                                                                                                                                                                                       // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
