@@ -1,100 +1,100 @@
-#ifndef COM_NGOS_SHARED_COMMON_CONTAINERS_LIB_MAPELEMENT_H
-#define COM_NGOS_SHARED_COMMON_CONTAINERS_LIB_MAPELEMENT_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/status.h>
-
-
-
-template <typename Key, typename Value>
-class MapElement
-{
-public:
-    MapElement(const Key &key, const Value &value);
-    ~MapElement(); // TEST: NO
-
-    const Key& getKey() const;
-    NgosStatus setKey(const Key &key);
-
-    const Value& getValue() const;
-    NgosStatus setValue(const Value &value);
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-public:
-#else
-private:
-#endif
-    Key   mKey;
-    Value mValue;
-};
-
-
-
-template <typename Key, typename Value>
-MapElement<Key, Value>::MapElement(const Key &key, const Value &value)
-    : mKey(key)
-    , mValue(value)
-{
-    COMMON_LT((" | key = ..., value = ..."));
-}
-
-template <typename Key, typename Value>
-MapElement<Key, Value>::~MapElement()
-{
-    COMMON_LT((""));
-}
-
-template <typename Key, typename Value>
-const Key& MapElement<Key, Value>::getKey() const
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return mKey;
-}
-
-template <typename Key, typename Value>
-NgosStatus MapElement<Key, Value>::setKey(const Key &key)
-{
-    // COMMON_LT((" | key = ...")); // Commented to avoid too frequent logs
-
-
-
-    mKey = key;
-
-
-
-    return NgosStatus::OK;
-}
-
-template <typename Key, typename Value>
-const Value& MapElement<Key, Value>::getValue() const
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return mValue;
-}
-
-template <typename Key, typename Value>
-NgosStatus MapElement<Key, Value>::setValue(const Value &value)
-{
-    // COMMON_LT((" | value = ...")); // Commented to avoid too frequent logs
-
-
-
-    mValue = value;
-
-
-
-    return NgosStatus::OK;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CONTAINERS_LIB_MAPELEMENT_H
+#ifndef COM_NGOS_SHARED_COMMON_CONTAINERS_LIB_MAPELEMENT_H                                                                                                                                               // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CONTAINERS_LIB_MAPELEMENT_H                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/status.h>                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template <typename Key, typename Value>                                                                                                                                                                  // Colorize: green
+class MapElement                                                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    MapElement(const Key &key, const Value &value);                                                                                                                                                      // Colorize: green
+    ~MapElement(); // TEST: NO                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    const Key& getKey() const;                                                                                                                                                                           // Colorize: green
+    NgosStatus setKey(const Key &key);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    const Value& getValue() const;                                                                                                                                                                       // Colorize: green
+    NgosStatus setValue(const Value &value);                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+    Key   mKey;                                                                                                                                                                                          // Colorize: green
+    Value mValue;                                                                                                                                                                                        // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template <typename Key, typename Value>                                                                                                                                                                  // Colorize: green
+MapElement<Key, Value>::MapElement(const Key &key, const Value &value)                                                                                                                                   // Colorize: green
+    : mKey(key)                                                                                                                                                                                          // Colorize: green
+    , mValue(value)                                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | key = ..., value = ..."));                                                                                                                                                            // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template <typename Key, typename Value>                                                                                                                                                                  // Colorize: green
+MapElement<Key, Value>::~MapElement()                                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template <typename Key, typename Value>                                                                                                                                                                  // Colorize: green
+const Key& MapElement<Key, Value>::getKey() const                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return mKey;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template <typename Key, typename Value>                                                                                                                                                                  // Colorize: green
+NgosStatus MapElement<Key, Value>::setKey(const Key &key)                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | key = ...")); // Commented to avoid too frequent logs                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mKey = key;                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template <typename Key, typename Value>                                                                                                                                                                  // Colorize: green
+const Value& MapElement<Key, Value>::getValue() const                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return mValue;                                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template <typename Key, typename Value>                                                                                                                                                                  // Colorize: green
+NgosStatus MapElement<Key, Value>::setValue(const Value &value)                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | value = ...")); // Commented to avoid too frequent logs                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mValue = value;                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CONTAINERS_LIB_MAPELEMENT_H                                                                                                                                             // Colorize: green

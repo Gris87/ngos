@@ -1,602 +1,593 @@
-#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CONTAINERS_LIST_H
-#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CONTAINERS_LIST_H
-
-
-
-#include <buildconfig.h>
-#include <com/ngos/shared/common/containers/list.h>
-#include <com/ngos/shared/uefibase/testengine.h>
-
-
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-
-
-
-TEST_CASES(section0, com_ngos_shared_common_containers_list);
-{
-    TEST_CASE("List()");
-    {
-        List<u8> temp;
-
-        TEST_ASSERT_EQUALS(temp.mHead, nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail, nullptr);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("append()");
-    {
-        List<u8> temp;
-
-        TEST_ASSERT_EQUALS(temp.mHead, nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail, nullptr);
-
-
-
-        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
-
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);
-        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);
-        TEST_ASSERT_EQUALS(temp.mHead,     temp.mTail);
-
-        TEST_ASSERT_EQUALS(temp.mHead->getData(),     1);
-        TEST_ASSERT_EQUALS(temp.mHead->getNext(),     nullptr);
-        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), nullptr);
-
-
-
-        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
-
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);
-        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, temp.mTail);
-
-        TEST_ASSERT_EQUALS(temp.mHead->getData(),     1);
-        TEST_ASSERT_EQUALS(temp.mHead->getNext(),     temp.mTail);
-        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail->getData(),     7);
-        TEST_ASSERT_EQUALS(temp.mTail->getNext(),     nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail->getPrevious(), temp.mHead);
-
-
-
-        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
-
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);
-        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, temp.mTail);
-
-        TEST_ASSERT_EQUALS(temp.mHead->getData(),                1);
-        TEST_ASSERT_EQUALS(temp.mHead->getNext(),                temp.mTail->getPrevious());
-        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(),            nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail->getData(),                9);
-        TEST_ASSERT_EQUALS(temp.mTail->getNext(),                nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail->getPrevious(),            temp.mHead->getNext());
-        TEST_ASSERT_EQUALS(temp.mHead->getNext()->getData(),     7);
-        TEST_ASSERT_EQUALS(temp.mHead->getNext()->getNext(),     temp.mTail);
-        TEST_ASSERT_EQUALS(temp.mHead->getNext()->getPrevious(), temp.mHead);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("prepend()");
-    {
-        List<u8> temp;
-
-        TEST_ASSERT_EQUALS(temp.mHead, nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail, nullptr);
-
-
-
-        TEST_ASSERT_EQUALS(temp.prepend(1), NgosStatus::OK);
-
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);
-        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);
-        TEST_ASSERT_EQUALS(temp.mHead,     temp.mTail);
-
-        TEST_ASSERT_EQUALS(temp.mHead->getData(),     1);
-        TEST_ASSERT_EQUALS(temp.mHead->getNext(),     nullptr);
-        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), nullptr);
-
-
-
-        TEST_ASSERT_EQUALS(temp.prepend(7), NgosStatus::OK);
-
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);
-        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, temp.mTail);
-
-        TEST_ASSERT_EQUALS(temp.mHead->getData(),     7);
-        TEST_ASSERT_EQUALS(temp.mHead->getNext(),     temp.mTail);
-        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail->getData(),     1);
-        TEST_ASSERT_EQUALS(temp.mTail->getNext(),     nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail->getPrevious(), temp.mHead);
-
-
-
-        TEST_ASSERT_EQUALS(temp.prepend(9), NgosStatus::OK);
-
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);
-        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, temp.mTail);
-
-        TEST_ASSERT_EQUALS(temp.mHead->getData(),                9);
-        TEST_ASSERT_EQUALS(temp.mHead->getNext(),                temp.mTail->getPrevious());
-        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(),            nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail->getData(),                1);
-        TEST_ASSERT_EQUALS(temp.mTail->getNext(),                nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail->getPrevious(),            temp.mHead->getNext());
-        TEST_ASSERT_EQUALS(temp.mHead->getNext()->getData(),     7);
-        TEST_ASSERT_EQUALS(temp.mHead->getNext()->getNext(),     temp.mTail);
-        TEST_ASSERT_EQUALS(temp.mHead->getNext()->getPrevious(), temp.mHead);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("remove()");
-    {
-        List<u8> temp;
-
-        TEST_ASSERT_EQUALS(temp.mHead, nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail, nullptr);
-
-
-
-        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
-
-
-
-        ListElement<u8> *el1 = temp.mHead;
-        ListElement<u8> *el2 = el1->mNext;
-        ListElement<u8> *el3 = el2->mNext;
-        ListElement<u8> *el4 = el3->mNext;
-        ListElement<u8> *el5 = el4->mNext;
-
-        TEST_ASSERT_EQUALS(el1,            temp.mHead);
-        TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);
-        TEST_ASSERT_EQUALS(el1->mNext,     el2);
-        TEST_ASSERT_EQUALS(el1->mData,     5);
-
-        TEST_ASSERT_EQUALS(el2->mPrevious, el1);
-        TEST_ASSERT_EQUALS(el2->mNext,     el3);
-        TEST_ASSERT_EQUALS(el2->mData,     9);
-
-        TEST_ASSERT_EQUALS(el3->mPrevious, el2);
-        TEST_ASSERT_EQUALS(el3->mNext,     el4);
-        TEST_ASSERT_EQUALS(el3->mData,     3);
-
-        TEST_ASSERT_EQUALS(el4->mPrevious, el3);
-        TEST_ASSERT_EQUALS(el4->mNext,     el5);
-        TEST_ASSERT_EQUALS(el4->mData,     1);
-
-        TEST_ASSERT_EQUALS(el5,            temp.mTail);
-        TEST_ASSERT_EQUALS(el5->mPrevious, el4);
-        TEST_ASSERT_EQUALS(el5->mNext,     nullptr);
-        TEST_ASSERT_EQUALS(el5->mData,     7);
-
-
-
-        TEST_ASSERT_EQUALS(temp.remove(7), NgosStatus::OK);
-
-
-
-        TEST_ASSERT_EQUALS(el1,            temp.mHead);
-        TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);
-        TEST_ASSERT_EQUALS(el1->mNext,     el2);
-        TEST_ASSERT_EQUALS(el1->mData,     5);
-
-        TEST_ASSERT_EQUALS(el2->mPrevious, el1);
-        TEST_ASSERT_EQUALS(el2->mNext,     el3);
-        TEST_ASSERT_EQUALS(el2->mData,     9);
-
-        TEST_ASSERT_EQUALS(el3->mPrevious, el2);
-        TEST_ASSERT_EQUALS(el3->mNext,     el4);
-        TEST_ASSERT_EQUALS(el3->mData,     3);
-
-        TEST_ASSERT_EQUALS(el4,            temp.mTail);
-        TEST_ASSERT_EQUALS(el4->mPrevious, el3);
-        TEST_ASSERT_EQUALS(el4->mNext,     nullptr);
-        TEST_ASSERT_EQUALS(el4->mData,     1);
-
-
-
-        TEST_ASSERT_EQUALS(temp.remove(3), NgosStatus::OK);
-
-
-
-        TEST_ASSERT_EQUALS(el1,            temp.mHead);
-        TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);
-        TEST_ASSERT_EQUALS(el1->mNext,     el2);
-        TEST_ASSERT_EQUALS(el1->mData,     5);
-
-        TEST_ASSERT_EQUALS(el2->mPrevious, el1);
-        TEST_ASSERT_EQUALS(el2->mNext,     el4);
-        TEST_ASSERT_EQUALS(el2->mData,     9);
-
-        TEST_ASSERT_EQUALS(el4,            temp.mTail);
-        TEST_ASSERT_EQUALS(el4->mPrevious, el2);
-        TEST_ASSERT_EQUALS(el4->mNext,     nullptr);
-        TEST_ASSERT_EQUALS(el4->mData,     1);
-
-
-
-        TEST_ASSERT_EQUALS(temp.remove(9), NgosStatus::OK);
-
-
-
-        TEST_ASSERT_EQUALS(el1,            temp.mHead);
-        TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);
-        TEST_ASSERT_EQUALS(el1->mNext,     el4);
-        TEST_ASSERT_EQUALS(el1->mData,     5);
-
-        TEST_ASSERT_EQUALS(el4,            temp.mTail);
-        TEST_ASSERT_EQUALS(el4->mPrevious, el1);
-        TEST_ASSERT_EQUALS(el4->mNext,     nullptr);
-        TEST_ASSERT_EQUALS(el4->mData,     1);
-
-
-
-        TEST_ASSERT_EQUALS(temp.remove(5), NgosStatus::OK);
-
-
-
-        TEST_ASSERT_EQUALS(el4,            temp.mHead);
-        TEST_ASSERT_EQUALS(el4,            temp.mTail);
-        TEST_ASSERT_EQUALS(el4->mPrevious, nullptr);
-        TEST_ASSERT_EQUALS(el4->mNext,     nullptr);
-        TEST_ASSERT_EQUALS(el4->mData,     1);
-
-
-
-        TEST_ASSERT_EQUALS(temp.remove(1), NgosStatus::OK);
-
-
-
-        TEST_ASSERT_EQUALS(temp.mHead, nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail, nullptr);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("clear()");
-    {
-        List<u8> temp;
-
-        TEST_ASSERT_EQUALS(temp.mHead, nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail, nullptr);
-
-
-
-        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
-
-        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);
-        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);
-
-
-
-        TEST_ASSERT_EQUALS(temp.clear(), NgosStatus::OK);
-
-
-
-        TEST_ASSERT_EQUALS(temp.mHead, nullptr);
-        TEST_ASSERT_EQUALS(temp.mTail, nullptr);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("moveToEnd()");
-    {
-        List<u8> temp;
-
-        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
-
-
-
-        ListElement<u8> *el1 = temp.mHead;
-        ListElement<u8> *el2 = el1->mNext;
-        ListElement<u8> *el3 = el2->mNext;
-        ListElement<u8> *el4 = el3->mNext;
-        ListElement<u8> *el5 = el4->mNext;
-
-        TEST_ASSERT_EQUALS(el1,            temp.mHead);
-        TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);
-        TEST_ASSERT_EQUALS(el1->mNext,     el2);
-        TEST_ASSERT_EQUALS(el1->mData,     5);
-
-        TEST_ASSERT_EQUALS(el2->mPrevious, el1);
-        TEST_ASSERT_EQUALS(el2->mNext,     el3);
-        TEST_ASSERT_EQUALS(el2->mData,     9);
-
-        TEST_ASSERT_EQUALS(el3->mPrevious, el2);
-        TEST_ASSERT_EQUALS(el3->mNext,     el4);
-        TEST_ASSERT_EQUALS(el3->mData,     3);
-
-        TEST_ASSERT_EQUALS(el4->mPrevious, el3);
-        TEST_ASSERT_EQUALS(el4->mNext,     el5);
-        TEST_ASSERT_EQUALS(el4->mData,     1);
-
-        TEST_ASSERT_EQUALS(el5,            temp.mTail);
-        TEST_ASSERT_EQUALS(el5->mPrevious, el4);
-        TEST_ASSERT_EQUALS(el5->mNext,     nullptr);
-        TEST_ASSERT_EQUALS(el5->mData,     7);
-
-
-
-        TEST_ASSERT_EQUALS(temp.moveToEnd(5), NgosStatus::OK);
-
-
-
-        TEST_ASSERT_EQUALS(el1,            temp.mTail);
-        TEST_ASSERT_EQUALS(el1->mPrevious, el5);
-        TEST_ASSERT_EQUALS(el1->mNext,     nullptr);
-        TEST_ASSERT_EQUALS(el1->mData,     5);
-
-        TEST_ASSERT_EQUALS(el2,            temp.mHead);
-        TEST_ASSERT_EQUALS(el2->mPrevious, nullptr);
-        TEST_ASSERT_EQUALS(el2->mNext,     el3);
-        TEST_ASSERT_EQUALS(el2->mData,     9);
-
-        TEST_ASSERT_EQUALS(el3->mPrevious, el2);
-        TEST_ASSERT_EQUALS(el3->mNext,     el4);
-        TEST_ASSERT_EQUALS(el3->mData,     3);
-
-        TEST_ASSERT_EQUALS(el4->mPrevious, el3);
-        TEST_ASSERT_EQUALS(el4->mNext,     el5);
-        TEST_ASSERT_EQUALS(el4->mData,     1);
-
-        TEST_ASSERT_EQUALS(el5->mPrevious, el4);
-        TEST_ASSERT_EQUALS(el5->mNext,     el1);
-        TEST_ASSERT_EQUALS(el5->mData,     7);
-
-
-
-        TEST_ASSERT_EQUALS(temp.moveToEnd(3), NgosStatus::OK);
-
-
-
-        TEST_ASSERT_EQUALS(el1->mPrevious, el5);
-        TEST_ASSERT_EQUALS(el1->mNext,     el3);
-        TEST_ASSERT_EQUALS(el1->mData,     5);
-
-        TEST_ASSERT_EQUALS(el2,            temp.mHead);
-        TEST_ASSERT_EQUALS(el2->mPrevious, nullptr);
-        TEST_ASSERT_EQUALS(el2->mNext,     el4);
-        TEST_ASSERT_EQUALS(el2->mData,     9);
-
-        TEST_ASSERT_EQUALS(el3,            temp.mTail);
-        TEST_ASSERT_EQUALS(el3->mPrevious, el1);
-        TEST_ASSERT_EQUALS(el3->mNext,     nullptr);
-        TEST_ASSERT_EQUALS(el3->mData,     3);
-
-        TEST_ASSERT_EQUALS(el4->mPrevious, el2);
-        TEST_ASSERT_EQUALS(el4->mNext,     el5);
-        TEST_ASSERT_EQUALS(el4->mData,     1);
-
-        TEST_ASSERT_EQUALS(el5->mPrevious, el4);
-        TEST_ASSERT_EQUALS(el5->mNext,     el1);
-        TEST_ASSERT_EQUALS(el5->mData,     7);
-
-
-
-        TEST_ASSERT_EQUALS(temp.moveToEnd(3), NgosStatus::OK);
-
-
-
-        TEST_ASSERT_EQUALS(el1->mPrevious, el5);
-        TEST_ASSERT_EQUALS(el1->mNext,     el3);
-        TEST_ASSERT_EQUALS(el1->mData,     5);
-
-        TEST_ASSERT_EQUALS(el2,            temp.mHead);
-        TEST_ASSERT_EQUALS(el2->mPrevious, nullptr);
-        TEST_ASSERT_EQUALS(el2->mNext,     el4);
-        TEST_ASSERT_EQUALS(el2->mData,     9);
-
-        TEST_ASSERT_EQUALS(el3,            temp.mTail);
-        TEST_ASSERT_EQUALS(el3->mPrevious, el1);
-        TEST_ASSERT_EQUALS(el3->mNext,     nullptr);
-        TEST_ASSERT_EQUALS(el3->mData,     3);
-
-        TEST_ASSERT_EQUALS(el4->mPrevious, el2);
-        TEST_ASSERT_EQUALS(el4->mNext,     el5);
-        TEST_ASSERT_EQUALS(el4->mData,     1);
-
-        TEST_ASSERT_EQUALS(el5->mPrevious, el4);
-        TEST_ASSERT_EQUALS(el5->mNext,     el1);
-        TEST_ASSERT_EQUALS(el5->mData,     7);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("sort()");
-    {
-        List<u8> temp;
-
-        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);
-
-
-
-        ListElement<u8> *el1 = temp.mHead;
-        ListElement<u8> *el2 = el1->mNext;
-        ListElement<u8> *el3 = el2->mNext;
-        ListElement<u8> *el4 = el3->mNext;
-        ListElement<u8> *el5 = el4->mNext;
-
-        TEST_ASSERT_EQUALS(el1,            temp.mHead);
-        TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);
-        TEST_ASSERT_EQUALS(el1->mNext,     el2);
-        TEST_ASSERT_EQUALS(el1->mData,     5);
-
-        TEST_ASSERT_EQUALS(el2->mPrevious, el1);
-        TEST_ASSERT_EQUALS(el2->mNext,     el3);
-        TEST_ASSERT_EQUALS(el2->mData,     9);
-
-        TEST_ASSERT_EQUALS(el3->mPrevious, el2);
-        TEST_ASSERT_EQUALS(el3->mNext,     el4);
-        TEST_ASSERT_EQUALS(el3->mData,     3);
-
-        TEST_ASSERT_EQUALS(el4->mPrevious, el3);
-        TEST_ASSERT_EQUALS(el4->mNext,     el5);
-        TEST_ASSERT_EQUALS(el4->mData,     1);
-
-        TEST_ASSERT_EQUALS(el5,            temp.mTail);
-        TEST_ASSERT_EQUALS(el5->mPrevious, el4);
-        TEST_ASSERT_EQUALS(el5->mNext,     nullptr);
-        TEST_ASSERT_EQUALS(el5->mData,     7);
-
-
-
-        TEST_ASSERT_EQUALS(temp.sort(), NgosStatus::OK);
-
-
-
-        ListElement<u8> *newEl1 = temp.mHead;
-        ListElement<u8> *newEl2 = newEl1->mNext;
-        ListElement<u8> *newEl3 = newEl2->mNext;
-        ListElement<u8> *newEl4 = newEl3->mNext;
-        ListElement<u8> *newEl5 = newEl4->mNext;
-
-        TEST_ASSERT_EQUALS(newEl1,            temp.mHead);
-        TEST_ASSERT_EQUALS(newEl1->mPrevious, nullptr);
-        TEST_ASSERT_EQUALS(newEl1->mNext,     newEl2);
-        TEST_ASSERT_EQUALS(newEl1->mData,     1);
-        TEST_ASSERT_EQUALS(newEl1,            el4);
-
-        TEST_ASSERT_EQUALS(newEl2->mPrevious, newEl1);
-        TEST_ASSERT_EQUALS(newEl2->mNext,     newEl3);
-        TEST_ASSERT_EQUALS(newEl2->mData,     3);
-        TEST_ASSERT_EQUALS(newEl2,            el3);
-
-        TEST_ASSERT_EQUALS(newEl3->mPrevious, newEl2);
-        TEST_ASSERT_EQUALS(newEl3->mNext,     newEl4);
-        TEST_ASSERT_EQUALS(newEl3->mData,     5);
-        TEST_ASSERT_EQUALS(newEl3,            el1);
-
-        TEST_ASSERT_EQUALS(newEl4->mPrevious, newEl3);
-        TEST_ASSERT_EQUALS(newEl4->mNext,     newEl5);
-        TEST_ASSERT_EQUALS(newEl4->mData,     7);
-        TEST_ASSERT_EQUALS(newEl4,            el5);
-
-        TEST_ASSERT_EQUALS(newEl5,            temp.mTail);
-        TEST_ASSERT_EQUALS(newEl5->mPrevious, newEl4);
-        TEST_ASSERT_EQUALS(newEl5->mNext,     nullptr);
-        TEST_ASSERT_EQUALS(newEl5->mData,     9);
-        TEST_ASSERT_EQUALS(newEl5,            el2);
-
-
-
-        TEST_ASSERT_EQUALS(temp.sort([](const u8 &first, const u8 &second)
-        {
-            UEFI_LT((" | first = %u, second = %u", first, second));
-
-
-
-            return first > second;
-        }), NgosStatus::OK);
-
-
-
-        newEl1 = temp.mHead;
-        newEl2 = newEl1->mNext;
-        newEl3 = newEl2->mNext;
-        newEl4 = newEl3->mNext;
-        newEl5 = newEl4->mNext;
-
-        TEST_ASSERT_EQUALS(newEl1,            temp.mHead);
-        TEST_ASSERT_EQUALS(newEl1->mPrevious, nullptr);
-        TEST_ASSERT_EQUALS(newEl1->mNext,     newEl2);
-        TEST_ASSERT_EQUALS(newEl1->mData,     9);
-        TEST_ASSERT_EQUALS(newEl1,            el2);
-
-        TEST_ASSERT_EQUALS(newEl2->mPrevious, newEl1);
-        TEST_ASSERT_EQUALS(newEl2->mNext,     newEl3);
-        TEST_ASSERT_EQUALS(newEl2->mData,     7);
-        TEST_ASSERT_EQUALS(newEl2,            el5);
-
-        TEST_ASSERT_EQUALS(newEl3->mPrevious, newEl2);
-        TEST_ASSERT_EQUALS(newEl3->mNext,     newEl4);
-        TEST_ASSERT_EQUALS(newEl3->mData,     5);
-        TEST_ASSERT_EQUALS(newEl3,            el1);
-
-        TEST_ASSERT_EQUALS(newEl4->mPrevious, newEl3);
-        TEST_ASSERT_EQUALS(newEl4->mNext,     newEl5);
-        TEST_ASSERT_EQUALS(newEl4->mData,     3);
-        TEST_ASSERT_EQUALS(newEl4,            el3);
-
-        TEST_ASSERT_EQUALS(newEl5,            temp.mTail);
-        TEST_ASSERT_EQUALS(newEl5->mPrevious, newEl4);
-        TEST_ASSERT_EQUALS(newEl5->mNext,     nullptr);
-        TEST_ASSERT_EQUALS(newEl5->mData,     1);
-        TEST_ASSERT_EQUALS(newEl5,            el4);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("isEmpty()");
-    {
-        List<u8> temp;
-
-        TEST_ASSERT_EQUALS(temp.isEmpty(), true);
-
-        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(temp.isEmpty(), false);
-
-        TEST_ASSERT_EQUALS(temp.clear(), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(temp.isEmpty(), true);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("getHead()/getTail()");
-    {
-        List<u8> temp;
-
-        TEST_ASSERT_EQUALS(temp.getHead(), nullptr);
-        TEST_ASSERT_EQUALS(temp.getTail(), nullptr);
-
-
-
-        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);
-
-        TEST_ASSERT_NOT_EQUALS(temp.getHead(), nullptr);
-        TEST_ASSERT_NOT_EQUALS(temp.getTail(), nullptr);
-        TEST_ASSERT_EQUALS(temp.getHead(),     temp.getTail());
-    }
-    TEST_CASE_END();
-}
-TEST_CASES_END();
-
-
-
-#endif
-
-
-
-#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CONTAINERS_LIST_H
+#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CONTAINERS_LIST_H                                                                                                              // Colorize: green
+#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CONTAINERS_LIST_H                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <buildconfig.h>                                                                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/common/containers/list.h>                                                                                                                                                      // Colorize: green
+#include <com/ngos/shared/uefibase/testengine.h>                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TEST_CASES(section0, com_ngos_shared_common_containers_list);                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    TEST_CASE("List()");                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        List<good_U8> temp;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead, nullptr);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail, nullptr);                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("append()");                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        List<good_U8> temp;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead, nullptr);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail, nullptr);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead,     temp.mTail);                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getData(),     1);                                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getNext(),     nullptr);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), nullptr);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, temp.mTail);                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getData(),     1);                                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getNext(),     temp.mTail);                                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), nullptr);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail->getData(),     7);                                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail->getNext(),     nullptr);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail->getPrevious(), temp.mHead);                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, temp.mTail);                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getData(),                1);                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getNext(),                temp.mTail->getPrevious());                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(),            nullptr);                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail->getData(),                9);                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail->getNext(),                nullptr);                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail->getPrevious(),            temp.mHead->getNext());                                                                                                                 // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getNext()->getData(),     7);                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getNext()->getNext(),     temp.mTail);                                                                                                                            // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getNext()->getPrevious(), temp.mHead);                                                                                                                            // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("prepend()");                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        List<good_U8> temp;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead, nullptr);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail, nullptr);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.prepend(1), NgosStatus::OK);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead,     temp.mTail);                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getData(),     1);                                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getNext(),     nullptr);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), nullptr);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.prepend(7), NgosStatus::OK);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, temp.mTail);                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getData(),     7);                                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getNext(),     temp.mTail);                                                                                                                                       // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(), nullptr);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail->getData(),     1);                                                                                                                                                // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail->getNext(),     nullptr);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail->getPrevious(), temp.mHead);                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.prepend(9), NgosStatus::OK);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, temp.mTail);                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getData(),                9);                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getNext(),                temp.mTail->getPrevious());                                                                                                             // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getPrevious(),            nullptr);                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail->getData(),                1);                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail->getNext(),                nullptr);                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail->getPrevious(),            temp.mHead->getNext());                                                                                                                 // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getNext()->getData(),     7);                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getNext()->getNext(),     temp.mTail);                                                                                                                            // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead->getNext()->getPrevious(), temp.mHead);                                                                                                                            // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("remove()");                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        List<good_U8> temp;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ListElement<good_U8> *el1 = temp.mHead;                                                                                                                                                          // Colorize: green
+        ListElement<good_U8> *el2 = el1->mNext;                                                                                                                                                          // Colorize: green
+        ListElement<good_U8> *el3 = el2->mNext;                                                                                                                                                          // Colorize: green
+        ListElement<good_U8> *el4 = el3->mNext;                                                                                                                                                          // Colorize: green
+        ListElement<good_U8> *el5 = el4->mNext;                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1,            temp.mHead);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mNext,     el2);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mData,     5);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mPrevious, el1);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mNext,     el3);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mData,     9);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mPrevious, el2);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mNext,     el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mData,     3);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mPrevious, el3);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mNext,     el5);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mData,     1);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5,            temp.mTail);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mPrevious, el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mNext,     nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mData,     7);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.remove(7), NgosStatus::OK);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1,            temp.mHead);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mNext,     el2);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mData,     5);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mPrevious, el1);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mNext,     el3);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mData,     9);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mPrevious, el2);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mNext,     el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mData,     3);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4,            temp.mTail);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mPrevious, el3);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mNext,     nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mData,     1);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.remove(3), NgosStatus::OK);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1,            temp.mHead);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mNext,     el2);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mData,     5);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mPrevious, el1);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mNext,     el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mData,     9);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4,            temp.mTail);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mPrevious, el2);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mNext,     nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mData,     1);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.remove(9), NgosStatus::OK);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1,            temp.mHead);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mNext,     el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mData,     5);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4,            temp.mTail);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mPrevious, el1);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mNext,     nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mData,     1);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.remove(5), NgosStatus::OK);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4,            temp.mHead);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el4,            temp.mTail);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mPrevious, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mNext,     nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mData,     1);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.remove(1), NgosStatus::OK);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead, nullptr);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail, nullptr);                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("clear()");                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        List<good_U8> temp;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead, nullptr);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail, nullptr);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mHead, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.mTail, nullptr);                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.clear(), NgosStatus::OK);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mHead, nullptr);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mTail, nullptr);                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("moveToEnd()");                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        List<good_U8> temp;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ListElement<good_U8> *el1 = temp.mHead;                                                                                                                                                          // Colorize: green
+        ListElement<good_U8> *el2 = el1->mNext;                                                                                                                                                          // Colorize: green
+        ListElement<good_U8> *el3 = el2->mNext;                                                                                                                                                          // Colorize: green
+        ListElement<good_U8> *el4 = el3->mNext;                                                                                                                                                          // Colorize: green
+        ListElement<good_U8> *el5 = el4->mNext;                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1,            temp.mHead);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mNext,     el2);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mData,     5);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mPrevious, el1);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mNext,     el3);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mData,     9);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mPrevious, el2);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mNext,     el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mData,     3);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mPrevious, el3);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mNext,     el5);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mData,     1);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5,            temp.mTail);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mPrevious, el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mNext,     nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mData,     7);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.moveToEnd(5), NgosStatus::OK);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1,            temp.mTail);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mPrevious, el5);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mNext,     nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mData,     5);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2,            temp.mHead);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mPrevious, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mNext,     el3);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mData,     9);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mPrevious, el2);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mNext,     el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mData,     3);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mPrevious, el3);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mNext,     el5);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mData,     1);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mPrevious, el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mNext,     el1);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mData,     7);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.moveToEnd(3), NgosStatus::OK);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mPrevious, el5);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mNext,     el3);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mData,     5);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2,            temp.mHead);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mPrevious, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mNext,     el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mData,     9);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3,            temp.mTail);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mPrevious, el1);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mNext,     nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mData,     3);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mPrevious, el2);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mNext,     el5);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mData,     1);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mPrevious, el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mNext,     el1);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mData,     7);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.moveToEnd(3), NgosStatus::OK);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mPrevious, el5);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mNext,     el3);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mData,     5);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2,            temp.mHead);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mPrevious, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mNext,     el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mData,     9);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3,            temp.mTail);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mPrevious, el1);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mNext,     nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mData,     3);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mPrevious, el2);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mNext,     el5);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mData,     1);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mPrevious, el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mNext,     el1);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mData,     7);                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("sort()");                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        List<good_U8> temp;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(3), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(7), NgosStatus::OK);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ListElement<good_U8> *el1 = temp.mHead;                                                                                                                                                          // Colorize: green
+        ListElement<good_U8> *el2 = el1->mNext;                                                                                                                                                          // Colorize: green
+        ListElement<good_U8> *el3 = el2->mNext;                                                                                                                                                          // Colorize: green
+        ListElement<good_U8> *el4 = el3->mNext;                                                                                                                                                          // Colorize: green
+        ListElement<good_U8> *el5 = el4->mNext;                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1,            temp.mHead);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mNext,     el2);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el1->mData,     5);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mPrevious, el1);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mNext,     el3);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el2->mData,     9);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mPrevious, el2);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mNext,     el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el3->mData,     3);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mPrevious, el3);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mNext,     el5);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el4->mData,     1);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5,            temp.mTail);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mPrevious, el4);                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mNext,     nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(el5->mData,     7);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.sort(), NgosStatus::OK);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ListElement<good_U8> *newEl1 = temp.mHead;                                                                                                                                                       // Colorize: green
+        ListElement<good_U8> *newEl2 = newEl1->mNext;                                                                                                                                                    // Colorize: green
+        ListElement<good_U8> *newEl3 = newEl2->mNext;                                                                                                                                                    // Colorize: green
+        ListElement<good_U8> *newEl4 = newEl3->mNext;                                                                                                                                                    // Colorize: green
+        ListElement<good_U8> *newEl5 = newEl4->mNext;                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(newEl1,            temp.mHead);                                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(newEl1->mPrevious, nullptr);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(newEl1->mNext,     newEl2);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl1->mData,     1);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_EQUALS(newEl1,            el4);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(newEl2->mPrevious, newEl1);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl2->mNext,     newEl3);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl2->mData,     3);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_EQUALS(newEl2,            el3);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(newEl3->mPrevious, newEl2);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl3->mNext,     newEl4);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl3->mData,     5);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_EQUALS(newEl3,            el1);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(newEl4->mPrevious, newEl3);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl4->mNext,     newEl5);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl4->mData,     7);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_EQUALS(newEl4,            el5);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(newEl5,            temp.mTail);                                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(newEl5->mPrevious, newEl4);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl5->mNext,     nullptr);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(newEl5->mData,     9);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_EQUALS(newEl5,            el2);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.sort([](const good_U8 &first, const good_U8 &second)                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return first > second;                                                                                                                                                                       // Colorize: green
+        }), NgosStatus::OK);                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        newEl1 = temp.mHead;                                                                                                                                                                             // Colorize: green
+        newEl2 = newEl1->mNext;                                                                                                                                                                          // Colorize: green
+        newEl3 = newEl2->mNext;                                                                                                                                                                          // Colorize: green
+        newEl4 = newEl3->mNext;                                                                                                                                                                          // Colorize: green
+        newEl5 = newEl4->mNext;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(newEl1,            temp.mHead);                                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(newEl1->mPrevious, nullptr);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(newEl1->mNext,     newEl2);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl1->mData,     9);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_EQUALS(newEl1,            el2);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(newEl2->mPrevious, newEl1);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl2->mNext,     newEl3);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl2->mData,     7);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_EQUALS(newEl2,            el5);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(newEl3->mPrevious, newEl2);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl3->mNext,     newEl4);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl3->mData,     5);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_EQUALS(newEl3,            el1);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(newEl4->mPrevious, newEl3);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl4->mNext,     newEl5);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl4->mData,     3);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_EQUALS(newEl4,            el3);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(newEl5,            temp.mTail);                                                                                                                                               // Colorize: green
+        TEST_ASSERT_EQUALS(newEl5->mPrevious, newEl4);                                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(newEl5->mNext,     nullptr);                                                                                                                                                  // Colorize: green
+        TEST_ASSERT_EQUALS(newEl5->mData,     1);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_EQUALS(newEl5,            el4);                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("isEmpty()");                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        List<good_U8> temp;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.isEmpty(), true);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.isEmpty(), false);                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.clear(), NgosStatus::OK);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.isEmpty(), true);                                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("getHead()/getTail()");                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        List<good_U8> temp;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.getHead(), nullptr);                                                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(temp.getTail(), nullptr);                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.append(1), NgosStatus::OK);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.getHead(), nullptr);                                                                                                                                                 // Colorize: green
+        TEST_ASSERT_NOT_EQUALS(temp.getTail(), nullptr);                                                                                                                                                 // Colorize: green
+        TEST_ASSERT_EQUALS(temp.getHead(),     temp.getTail());                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+TEST_CASES_END();                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CONTAINERS_LIST_H                                                                                                            // Colorize: green

@@ -1,71 +1,71 @@
-#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CONTAINERS_LIB_MAPELEMENT_H
-#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CONTAINERS_LIB_MAPELEMENT_H
-
-
-
-#include <buildconfig.h>
-#include <com/ngos/shared/common/containers/lib/mapelement.h>
-#include <com/ngos/shared/uefibase/testengine.h>
-
-
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-
-
-
-TEST_CASES(section0, com_ngos_shared_common_containers_lib_mapelement);
-{
-    TEST_CASE("MapElement()");
-    {
-        MapElement<u8, u32> temp(5,   123456);
-        MapElement<u8, u32> temp2(10, 654321);
-
-        TEST_ASSERT_EQUALS(temp.mKey,   5);
-        TEST_ASSERT_EQUALS(temp.mValue, 123456);
-
-        TEST_ASSERT_EQUALS(temp2.mKey,   10);
-        TEST_ASSERT_EQUALS(temp2.mValue, 654321);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("getKey()/setKey()");
-    {
-        MapElement<u8, u32> temp(3, 77777);
-
-        TEST_ASSERT_EQUALS(temp.mKey,     3);
-        TEST_ASSERT_EQUALS(temp.getKey(), 3);
-
-        TEST_ASSERT_EQUALS(temp.setKey(100), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(temp.mKey,     100);
-        TEST_ASSERT_EQUALS(temp.getKey(), 100);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("getValue()/setValue()");
-    {
-        MapElement<u8, u32> temp(3, 77777);
-
-        TEST_ASSERT_EQUALS(temp.mValue,     77777);
-        TEST_ASSERT_EQUALS(temp.getValue(), 77777);
-
-        TEST_ASSERT_EQUALS(temp.setValue(100), NgosStatus::OK);
-
-        TEST_ASSERT_EQUALS(temp.mValue,     100);
-        TEST_ASSERT_EQUALS(temp.getValue(), 100);
-    }
-    TEST_CASE_END();
-}
-TEST_CASES_END();
-
-
-
-#endif
-
-
-
-#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CONTAINERS_LIB_MAPELEMENT_H
+#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CONTAINERS_LIB_MAPELEMENT_H                                                                                                    // Colorize: green
+#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CONTAINERS_LIB_MAPELEMENT_H                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <buildconfig.h>                                                                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/common/containers/lib/mapelement.h>                                                                                                                                            // Colorize: green
+#include <com/ngos/shared/uefibase/testengine.h>                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TEST_CASES(section0, com_ngos_shared_common_containers_lib_mapelement);                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    TEST_CASE("MapElement()");                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        MapElement<good_U8, good_U32> temp(5,   123456);                                                                                                                                                 // Colorize: green
+        MapElement<good_U8, good_U32> temp2(10, 654321);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mKey,   5);                                                                                                                                                              // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mValue, 123456);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp2.mKey,   10);                                                                                                                                                            // Colorize: green
+        TEST_ASSERT_EQUALS(temp2.mValue, 654321);                                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("getKey()/setKey()");                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        MapElement<good_U8, good_U32> temp(3, 77777);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mKey,     3);                                                                                                                                                            // Colorize: green
+        TEST_ASSERT_EQUALS(temp.getKey(), 3);                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.setKey(100), NgosStatus::OK);                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mKey,     100);                                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(temp.getKey(), 100);                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("getValue()/setValue()");                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        MapElement<good_U8, good_U32> temp(3, 77777);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mValue,     77777);                                                                                                                                                      // Colorize: green
+        TEST_ASSERT_EQUALS(temp.getValue(), 77777);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.setValue(100), NgosStatus::OK);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.mValue,     100);                                                                                                                                                        // Colorize: green
+        TEST_ASSERT_EQUALS(temp.getValue(), 100);                                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+TEST_CASES_END();                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_CONTAINERS_LIB_MAPELEMENT_H                                                                                                  // Colorize: green

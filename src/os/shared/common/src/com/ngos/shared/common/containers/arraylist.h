@@ -1,594 +1,657 @@
-#ifndef COM_NGOS_SHARED_COMMON_CONTAINERS_ARRAYLIST_H
-#define COM_NGOS_SHARED_COMMON_CONTAINERS_ARRAYLIST_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/memory/malloc.h>
-
-
-
-#define ARRAY_LIST_DEFAULT_CAPACITY 4
-
-
-
-template<typename T>
-class ArrayList
-{
-public:
-    typedef bool (*element_comparator) (const T &first, const T &second);
-
-    ArrayList();
-    ~ArrayList(); // TEST: NO
-
-    NgosStatus append(const T &value);
-    NgosStatus prepend(const T &value);
-    NgosStatus insert(i64 index, const T &value);
-    NgosStatus removeAt(i64 index);
-
-    NgosStatus clear();
-
-    NgosStatus sort();
-    NgosStatus sort(element_comparator comparator);
-
-    i64 indexOf(const T &value) const;
-
-    const T& first() const;
-    const T& last() const;
-    const T& at(i64 index) const;
-    T& operator[](i64 index);
-
-    i64 getSize() const;
-    bool isEmpty() const;
-
-    NgosStatus setCapacity(i64 capacity);
-    i64 getCapacity() const;
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-public:
-#else
-private:
-#endif
-    NgosStatus extendCapacity();
-    NgosStatus quickSort(i64 left, i64 right);
-    NgosStatus quickSort(i64 left, i64 right, element_comparator comparator);
-
-    i64  mCapacity;
-    i64  mSize;
-    T   *mValues;
-};
-
-
-
-template<typename T>
-ArrayList<T>::ArrayList()
-    : mCapacity(0)
-    , mSize(0)
-    , mValues(nullptr)
-{
-    COMMON_LT((""));
-}
-
-template<typename T>
-ArrayList<T>::~ArrayList()
-{
-    COMMON_LT((""));
-
-
-
-    if (mValues != nullptr)
-    {
-        COMMON_ASSERT_EXECUTION(free(mValues));
-    }
-}
-
-template<typename T>
-NgosStatus ArrayList<T>::append(const T &value)
-{
-    // COMMON_LT((" | value = ...")); // Commented to avoid too frequent logs
-
-
-
-    COMMON_ASSERT_EXECUTION(extendCapacity(), NgosStatus::ASSERTION);
-
-    mValues[mSize] = value;
-
-    ++mSize;
-
-
-
-    return NgosStatus::OK;
-}
-
-template<typename T>
-NgosStatus ArrayList<T>::prepend(const T &value)
-{
-    // COMMON_LT((" | value = ...")); // Commented to avoid too frequent logs
-
-
-
-    COMMON_ASSERT_EXECUTION(extendCapacity(), NgosStatus::ASSERTION);
-
-    for (good_I64 i = mSize; i > 0; --i)
-    {
-        mValues[i] = mValues[i - 1];
-    }
-
-    mValues[0] = value;
-
-    ++mSize;
-
-
-
-    return NgosStatus::OK;
-}
-
-template<typename T>
-NgosStatus ArrayList<T>::insert(i64 index, const T &value)
-{
-    // COMMON_LT((" | index = %d, value = ...", index)); // Commented to avoid too frequent logs
-
-
-
-    if (index >= mSize)
-    {
-        return append(value);
-    }
-
-    if (index <= 0)
-    {
-        return prepend(value);
-    }
-
-
-
-    COMMON_ASSERT_EXECUTION(extendCapacity(), NgosStatus::ASSERTION);
-
-    for (good_I64 i = mSize; i > index; --i)
-    {
-        mValues[i] = mValues[i - 1];
-    }
-
-    mValues[index] = value;
-
-    ++mSize;
-
-
-
-    return NgosStatus::OK;
-}
-
-template<typename T>
-NgosStatus ArrayList<T>::removeAt(i64 index)
-{
-    // COMMON_LT((" | index = %d", index)); // Commented to avoid too frequent logs
-
-
-
-    if (
-        index >= 0
-        &&
-        index < mSize
-       )
-    {
-        if (mSize == 1)
-        {
-            COMMON_ASSERT_EXECUTION(clear(), NgosStatus::ASSERTION);
-
-            return NgosStatus::OK;
-        }
-
-
-
-        for (good_I64 i = index + 1; i < mSize; ++i)
-        {
-            mValues[i - 1] = mValues[i];
-        }
-
-        --mSize;
-
-
-
-        return NgosStatus::OK;
-    }
-
-
-
-    return NgosStatus::NO_EFFECT;
-}
-
-template<typename T>
-NgosStatus ArrayList<T>::clear()
-{
-    COMMON_LT((""));
-
-
-
-    if (mValues != nullptr)
-    {
-        COMMON_TEST_ASSERT(mCapacity > 0, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(mSize     > 0, NgosStatus::ASSERTION);
-
-        COMMON_ASSERT_EXECUTION(free(mValues), NgosStatus::ASSERTION);
-
-        mCapacity = 0;
-        mSize     = 0;
-        mValues   = nullptr;
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-template<typename T>
-NgosStatus ArrayList<T>::sort()
-{
-    COMMON_LT((""));
-
-
-
-    if (mSize < 2)
-    {
-        return NgosStatus::OK;
-    }
-
-
-
-    return quickSort(0, mSize - 1);
-}
-
-template<typename T>
-NgosStatus ArrayList<T>::sort(element_comparator comparator)
-{
-    COMMON_LT((" | comparator = 0x%p", comparator));
-
-    COMMON_ASSERT(comparator, "comparator is null", NgosStatus::ASSERTION);
-
-
-
-    if (mSize < 2)
-    {
-        return NgosStatus::OK;
-    }
-
-
-
-    return quickSort(0, mSize - 1, comparator);
-}
-
-template<typename T>
-i64 ArrayList<T>::indexOf(const T &value) const
-{
-    COMMON_LT((" | value = ..."));
-
-
-
-    for (good_I64 i = 0; i < mSize; ++i)
-    {
-        if (mValues[i] == value)
-        {
-            return i;
-        }
-    }
-
-
-
-    return -1;
-}
-
-template<typename T>
-const T& ArrayList<T>::first() const
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-    COMMON_ASSERT(!isEmpty(), "list is empty", mValues[0]);
-
-
-
-    return mValues[0];
-}
-
-template<typename T>
-const T& ArrayList<T>::last() const
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-    COMMON_ASSERT(!isEmpty(), "list is empty", mValues[0]);
-
-
-
-    return mValues[mSize - 1];
-}
-
-template<typename T>
-const T& ArrayList<T>::at(i64 index) const
-{
-    // COMMON_LT((" | index = %d", index)); // Commented to avoid too frequent logs
-
-    COMMON_ASSERT(index >= 0 && index < mSize, "index is invalid", mValues[index]);
-
-
-
-    return mValues[index];
-}
-
-template<typename T>
-T& ArrayList<T>::operator[](i64 index)
-{
-    // COMMON_LT((" | index = %d", index)); // Commented to avoid too frequent logs
-
-    COMMON_ASSERT(index >= 0 && index < mSize, "index is invalid", mValues[index]);
-
-
-
-    return mValues[index];
-}
-
-template<typename T>
-i64 ArrayList<T>::getSize() const
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return mSize;
-}
-
-template<typename T>
-bool ArrayList<T>::isEmpty() const
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return mSize == 0;
-}
-
-template<typename T>
-NgosStatus ArrayList<T>::setCapacity(i64 capacity)
-{
-    COMMON_LT((" | capacity = %d", capacity));
-
-    COMMON_ASSERT(capacity >= 0, "capacity is invalid", NgosStatus::ASSERTION);
-
-
-
-    if (capacity > mCapacity)
-    {
-        if (mCapacity > 0)
-        {
-            mValues = (T *)realloc(mValues, mCapacity * sizeof(T), capacity * sizeof(T));
-        }
-        else
-        {
-            mValues = (T *)malloc(capacity * sizeof(T));
-        }
-
-        COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
-
-        mCapacity = capacity;
-    }
-    else
-    if (capacity < mCapacity)
-    {
-        mCapacity = capacity;
-
-        if (mCapacity > 0)
-        {
-            if (mSize > mCapacity)
-            {
-                mSize = mCapacity;
-            }
-        }
-        else
-        {
-            COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
-
-            COMMON_ASSERT_EXECUTION(free(mValues), NgosStatus::ASSERTION);
-            mValues = nullptr;
-
-            mSize = 0;
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-template<typename T>
-i64 ArrayList<T>::getCapacity() const
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return mCapacity;
-}
-
-template<typename T>
-NgosStatus ArrayList<T>::extendCapacity()
-{
-    COMMON_LT((""));
-
-
-
-    if (mSize >= mCapacity)
-    {
-        if (mCapacity > 0)
-        {
-            u64 oldSize = mCapacity * sizeof(T);
-            mCapacity   = mCapacity * 2;
-            u64 newSize = mCapacity * sizeof(T);
-
-            mValues = (T *)realloc(mValues, oldSize, newSize);
-        }
-        else
-        {
-            mCapacity = ARRAY_LIST_DEFAULT_CAPACITY;
-
-            mValues = (T *)malloc(mCapacity * sizeof(T));
-        }
-
-        COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-template<typename T>
-NgosStatus ArrayList<T>::quickSort(i64 left, i64 right)
-{
-    COMMON_LT((" | left = %d, right = %d", left, right));
-
-    COMMON_ASSERT(left  < mSize, "left is invalid",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(right < mSize, "right is invalid", NgosStatus::ASSERTION);
-    COMMON_ASSERT(left  < right, "left is invalid",  NgosStatus::ASSERTION);
-
-
-
-    if (left + 1 == right)
-    {
-        if (mValues[right] < mValues[left])
-        {
-            T temp         = mValues[left];
-            mValues[left]  = mValues[right];
-            mValues[right] = temp;
-        }
-    }
-    else
-    {
-        i64 i = left;
-        i64 j = right;
-
-        T pivot = mValues[(left + right) / 2];
-
-
-
-        while (i <= j)
-        {
-            while (mValues[i] < pivot)
-            {
-                ++i;
-            }
-
-            while (pivot < mValues[j])
-            {
-                --j;
-            }
-
-            if (i <= j)
-            {
-                if (i != j)
-                {
-                    T temp     = mValues[i];
-                    mValues[i] = mValues[j];
-                    mValues[j] = temp;
-                }
-
-                ++i;
-                --j;
-            }
-        }
-
-
-
-        if (left < j)
-        {
-            COMMON_ASSERT_EXECUTION(quickSort(left, j), NgosStatus::ASSERTION);
-        }
-
-        if (i < right)
-        {
-            COMMON_ASSERT_EXECUTION(quickSort(i, right), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-template<typename T>
-NgosStatus ArrayList<T>::quickSort(i64 left, i64 right, element_comparator comparator)
-{
-    COMMON_LT((" | left = %d, right = %d, comparator = 0x%p", left, right, comparator));
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    COMMON_ASSERT(left  < mSize,         "left is invalid",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(right < mSize,         "right is invalid",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(left  < right,         "left is invalid",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(comparator != nullptr, "comparator is null", NgosStatus::ASSERTION);
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    if (left + 1 == right)
-    {
-        if (comparator(mValues[right], mValues[left]))
-        {
-            T temp         = mValues[left];
-            mValues[left]  = mValues[right];
-            mValues[right] = temp;
-        }
-    }
-    else
-    {
-        i64 i = left;
-        i64 j = right;
-
-        T pivot = mValues[(left + right) / 2];
-
-
-
-        while (i <= j)
-        {
-            while (comparator(mValues[i], pivot))
-            {
-                ++i;
-            }
-
-            while (comparator(pivot, mValues[j]))
-            {
-                --j;
-            }
-
-            if (i <= j)
-            {
-                if (i != j)
-                {
-                    T temp     = mValues[i];
-                    mValues[i] = mValues[j];
-                    mValues[j] = temp;
-                }
-
-                ++i;
-                --j;
-            }
-        }
-
-
-
-        if (left < j)
-        {
-            COMMON_ASSERT_EXECUTION(quickSort(left, j, comparator), NgosStatus::ASSERTION);
-        }
-
-        if (i < right)
-        {
-            COMMON_ASSERT_EXECUTION(quickSort(i, right, comparator), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CONTAINERS_ARRAYLIST_H
+#ifndef COM_NGOS_SHARED_COMMON_CONTAINERS_ARRAYLIST_H                                                                                                                                                    // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CONTAINERS_ARRAYLIST_H                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/memory/malloc.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define ARRAY_LIST_DEFAULT_CAPACITY 4                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+class ArrayList                                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    typedef bool (*element_comparator) (const T &first, const T &second);                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ArrayList();                                                                                                                                                                                         // Colorize: green
+    ~ArrayList(); // TEST: NO                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    NgosStatus append(const T &value);                                                                                                                                                                   // Colorize: green
+    NgosStatus prepend(const T &value);                                                                                                                                                                  // Colorize: green
+    NgosStatus insert(good_I64 index, const T &value);                                                                                                                                                   // Colorize: green
+    NgosStatus removeAt(good_I64 index);                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    NgosStatus clear();                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    NgosStatus sort();                                                                                                                                                                                   // Colorize: green
+    NgosStatus sort(element_comparator comparator);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    good_I64 indexOf(const T &value) const;                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    const T& first() const;                                                                                                                                                                              // Colorize: green
+    const T& last() const;                                                                                                                                                                               // Colorize: green
+    const T& at(good_I64 index) const;                                                                                                                                                                   // Colorize: green
+    T& operator[](good_I64 index);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    good_I64 getSize() const;                                                                                                                                                                            // Colorize: green
+    bool isEmpty() const;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    NgosStatus setCapacity(good_I64 capacity);                                                                                                                                                           // Colorize: green
+    good_I64 getCapacity() const;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+    NgosStatus extendCapacity();                                                                                                                                                                         // Colorize: green
+    NgosStatus quickSort(good_I64 left, good_I64 right);                                                                                                                                                 // Colorize: green
+    NgosStatus quickSort(good_I64 left, good_I64 right, element_comparator comparator);                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    good_I64  mCapacity;                                                                                                                                                                                 // Colorize: green
+    good_I64  mSize;                                                                                                                                                                                     // Colorize: green
+    T   *mValues;                                                                                                                                                                                        // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+ArrayList<T>::ArrayList()                                                                                                                                                                                // Colorize: green
+    : mCapacity(0)                                                                                                                                                                                       // Colorize: green
+    , mSize(0)                                                                                                                                                                                           // Colorize: green
+    , mValues(nullptr)                                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+ArrayList<T>::~ArrayList()                                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Free memory                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mValues != nullptr)                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_ASSERT_EXECUTION(free(mValues));                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus ArrayList<T>::append(const T &value)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | value = ...")); // Commented to avoid too frequent logs                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT_EXECUTION(extendCapacity(), NgosStatus::ASSERTION);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Add new element                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        mValues[mSize] = value;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ++mSize;                                                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus ArrayList<T>::prepend(const T &value)                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | value = ...")); // Commented to avoid too frequent logs                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT_EXECUTION(extendCapacity(), NgosStatus::ASSERTION);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Add new element                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (good_I64 i = mSize; i > 0; --i)                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mValues[i] = mValues[i - 1];                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mValues[0] = value;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ++mSize;                                                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus ArrayList<T>::insert(good_I64 index, const T &value)                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | index = %d, value = ...", index)); // Commented to avoid too frequent logs                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Use append or prepend if possible                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (index >= mSize)                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return append(value);                                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (index <= 0)                                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return prepend(value);                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT_EXECUTION(extendCapacity(), NgosStatus::ASSERTION);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Add new element                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (good_I64 i = mSize; i > index; --i)                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mValues[i] = mValues[i - 1];                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mValues[index] = value;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ++mSize;                                                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus ArrayList<T>::removeAt(good_I64 index)                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | index = %d", index)); // Commented to avoid too frequent logs                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (                                                                                                                                                                                                 // Colorize: green
+        index >= 0                                                                                                                                                                                       // Colorize: green
+        &&                                                                                                                                                                                               // Colorize: green
+        index < mSize                                                                                                                                                                                    // Colorize: green
+       )                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Clear if we are removing last element                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (mSize == 1)                                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_ASSERT_EXECUTION(clear(), NgosStatus::ASSERTION);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return NgosStatus::OK;                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Remove element                                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            for (good_I64 i = index + 1; i < mSize; ++i)                                                                                                                                                 // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                mValues[i - 1] = mValues[i];                                                                                                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            --mSize;                                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::OK;                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::NO_EFFECT;                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus ArrayList<T>::clear()                                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (mValues != nullptr)                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_TEST_ASSERT(mCapacity > 0, NgosStatus::ASSERTION);                                                                                                                                        // Colorize: green
+        COMMON_TEST_ASSERT(mSize     > 0, NgosStatus::ASSERTION);                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT_EXECUTION(free(mValues), NgosStatus::ASSERTION);                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mCapacity = 0;                                                                                                                                                                                   // Colorize: green
+        mSize     = 0;                                                                                                                                                                                   // Colorize: green
+        mValues   = nullptr;                                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus ArrayList<T>::sort()                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // There is no need to sort list with 1 element                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mSize < 2)                                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return NgosStatus::OK;                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return quickSort(0, mSize - 1);                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus ArrayList<T>::sort(element_comparator comparator)                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | comparator = 0x%p", comparator));                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(comparator != nullptr, "comparator is null", NgosStatus::ASSERTION);                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // There is no need to sort list with 1 element                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mSize < 2)                                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return NgosStatus::OK;                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return quickSort(0, mSize - 1, comparator);                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+good_I64 ArrayList<T>::indexOf(const T &value) const                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | value = ..."));                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Search for element                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (good_I64 i = 0; i < mSize; ++i)                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (mValues[i] == value)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                return i;                                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return -1;                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+const T& ArrayList<T>::first() const                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(!isEmpty(), "list is empty", mValues[0]);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return mValues[0];                                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+const T& ArrayList<T>::last() const                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(!isEmpty(), "list is empty", mValues[0]);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return mValues[mSize - 1];                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+const T& ArrayList<T>::at(good_I64 index) const                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | index = %d", index)); // Commented to avoid too frequent logs                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(index >= 0 && index < mSize, "index is invalid", mValues[index]);                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return mValues[index];                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+T& ArrayList<T>::operator[](good_I64 index)                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | index = %d", index)); // Commented to avoid too frequent logs                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(index >= 0 && index < mSize, "index is invalid", mValues[index]);                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return mValues[index];                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+good_I64 ArrayList<T>::getSize() const                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return mSize;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+bool ArrayList<T>::isEmpty() const                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return mSize == 0;                                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus ArrayList<T>::setCapacity(good_I64 capacity)                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | capacity = %d", capacity));                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(capacity >= 0, "capacity is invalid", NgosStatus::ASSERTION);                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (capacity > mCapacity)                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Increase capacity                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (mCapacity > 0)                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                mValues = reinterpret_cast<T *>(realloc(mValues, mCapacity * sizeof(T), capacity * sizeof(T)));                                                                                          // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(mValues == nullptr, NgosStatus::ASSERTION);                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                mValues = reinterpret_cast<T *>(malloc(capacity * sizeof(T)));                                                                                                                           // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            mCapacity = capacity;                                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    if (capacity < mCapacity)                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Decrease capacity                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mCapacity = capacity;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (mCapacity > 0)                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (mSize > mCapacity)                                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    mSize = mCapacity;                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                // Free memory                                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    COMMON_ASSERT_EXECUTION(free(mValues), NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                    mValues = nullptr;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    mSize = 0;                                                                                                                                                                           // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+good_I64 ArrayList<T>::getCapacity() const                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return mCapacity;                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus ArrayList<T>::extendCapacity()                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (mSize >= mCapacity)                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mCapacity > 0)                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Extend capacity twice                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                good_I64 oldSize = mCapacity * sizeof(T);                                                                                                                                                // Colorize: green
+                mCapacity   = mCapacity * 2;                                                                                                                                                             // Colorize: green
+                good_I64 newSize = mCapacity * sizeof(T);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                mValues = reinterpret_cast<T *>(realloc(mValues, oldSize, newSize));                                                                                                                     // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Allocate new buffer with default capacity                                                                                                                                                 // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                mCapacity = ARRAY_LIST_DEFAULT_CAPACITY;                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                mValues = reinterpret_cast<T *>(malloc(mCapacity * sizeof(T)));                                                                                                                          // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus ArrayList<T>::quickSort(good_I64 left, good_I64 right)                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | left = %d, right = %d", left, right));                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(left  < mSize, "left is invalid",  NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+    COMMON_ASSERT(right < mSize, "right is invalid", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+    COMMON_ASSERT(left  < right, "left is invalid",  NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (left + 1 == right)                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Compare and swap block with 2 elements                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (mValues[right] < mValues[left])                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                T temp         = mValues[left];                                                                                                                                                          // Colorize: green
+                mValues[left]  = mValues[right];                                                                                                                                                         // Colorize: green
+                mValues[right] = temp;                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_I64 i = left;                                                                                                                                                                               // Colorize: green
+        good_I64 j = right;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        T pivot = mValues[(left + right) / 2];                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Swap elements that sorted incorrectly comparing with pivot                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            while (i <= j)                                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                while (mValues[i] < pivot)                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                while (pivot < mValues[j])                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    --j;                                                                                                                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (i <= j)                                                                                                                                                                              // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (i != j)                                                                                                                                                                          // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        T temp     = mValues[i];                                                                                                                                                         // Colorize: green
+                        mValues[i] = mValues[j];                                                                                                                                                         // Colorize: green
+                        mValues[j] = temp;                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                    --j;                                                                                                                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Perform quick sort on left and right parts                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (left < j)                                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_ASSERT_EXECUTION(quickSort(left, j), NgosStatus::ASSERTION);                                                                                                                      // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (i < right)                                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_ASSERT_EXECUTION(quickSort(i, right), NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus ArrayList<T>::quickSort(good_I64 left, good_I64 right, element_comparator comparator)                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | left = %d, right = %d, comparator = 0x%p", left, right, comparator));                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                               // Colorize: green
+    COMMON_ASSERT(left  < mSize,         "left is invalid",    NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+    COMMON_ASSERT(right < mSize,         "right is invalid",   NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+    COMMON_ASSERT(left  < right,         "left is invalid",    NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+    COMMON_ASSERT(comparator != nullptr, "comparator is null", NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+    // Ignore CppAlignmentVerifier [END]                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (left + 1 == right)                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Compare and swap block with 2 elements                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (comparator(mValues[right], mValues[left]))                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                T temp         = mValues[left];                                                                                                                                                          // Colorize: green
+                mValues[left]  = mValues[right];                                                                                                                                                         // Colorize: green
+                mValues[right] = temp;                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_I64 i = left;                                                                                                                                                                               // Colorize: green
+        good_I64 j = right;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        T pivot = mValues[(left + right) / 2];                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Swap elements that sorted incorrectly comparing with pivot                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            while (i <= j)                                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                while (comparator(mValues[i], pivot))                                                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                while (comparator(pivot, mValues[j]))                                                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    --j;                                                                                                                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (i <= j)                                                                                                                                                                              // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (i != j)                                                                                                                                                                          // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        T temp     = mValues[i];                                                                                                                                                         // Colorize: green
+                        mValues[i] = mValues[j];                                                                                                                                                         // Colorize: green
+                        mValues[j] = temp;                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                    --j;                                                                                                                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Perform quick sort on left and right parts                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (left < j)                                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_ASSERT_EXECUTION(quickSort(left, j, comparator), NgosStatus::ASSERTION);                                                                                                          // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (i < right)                                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_ASSERT_EXECUTION(quickSort(i, right, comparator), NgosStatus::ASSERTION);                                                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CONTAINERS_ARRAYLIST_H                                                                                                                                                  // Colorize: green
