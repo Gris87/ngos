@@ -1,423 +1,467 @@
-#ifndef COM_NGOS_SHARED_COMMON_CONTAINERS_LIST_H
-#define COM_NGOS_SHARED_COMMON_CONTAINERS_LIST_H
-
-
-
-#include <com/ngos/shared/common/containers/lib/listelement.h>
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/memory/malloc.h>
-
-
-
-template<typename T>
-class List
-{
-public:
-    typedef bool (*element_comparator) (const T &first, const T &second);
-
-    List();
-    ~List(); // TEST: NO
-
-    NgosStatus append(const T &value);
-    NgosStatus prepend(const T &value);
-
-    NgosStatus remove(const T &value);
-
-    NgosStatus clear();
-
-    NgosStatus moveToEnd(const T &value);
-    NgosStatus sort();
-    NgosStatus sort(element_comparator comparator);
-
-    bool isEmpty() const;
-
-    ListElement<T>* getHead() const;
-    ListElement<T>* getTail() const;
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-public:
-#else
-private:
-#endif
-    ListElement<T> *mHead;
-    ListElement<T> *mTail;
-};
-
-
-
-template<typename T>
-List<T>::List()
-    : mHead(nullptr)
-    , mTail(nullptr)
-{
-    COMMON_LT((""));
-}
-
-template<typename T>
-List<T>::~List()
-{
-    COMMON_LT((""));
-
-
-
-    COMMON_ASSERT_EXECUTION(clear());
-}
-
-template<typename T>
-NgosStatus List<T>::append(const T &value)
-{
-    // COMMON_LT((" | value = ...")); // Commented to avoid too frequent logs
-
-
-
-    ListElement<T> *element = new ListElement<T>(value);
-
-    if (mHead)
-    {
-        COMMON_ASSERT_EXECUTION(mTail->setNext(element),     NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(element->setPrevious(mTail), NgosStatus::ASSERTION);
-    }
-    else
-    {
-        mHead = element;
-    }
-
-    mTail = element;
-
-
-
-    return NgosStatus::OK;
-}
-
-template<typename T>
-NgosStatus List<T>::prepend(const T &value)
-{
-    // COMMON_LT((" | value = ...")); // Commented to avoid too frequent logs
-
-
-
-    ListElement<T> *element = new ListElement<T>(value);
-
-    if (mHead)
-    {
-        COMMON_ASSERT_EXECUTION(mHead->setPrevious(element), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(element->setNext(mHead),     NgosStatus::ASSERTION);
-    }
-    else
-    {
-        mTail = element;
-    }
-
-    mHead = element;
-
-
-
-    return NgosStatus::OK;
-}
-
-template<typename T>
-NgosStatus List<T>::remove(const T &value)
-{
-    COMMON_LT((" | value = ..."));
-
-
-
-    if (mHead)
-    {
-        if (mTail->getData() == value)
-        {
-            if (mHead == mTail)
-            {
-                delete mHead;
-
-                mHead = nullptr;
-                mTail = nullptr;
-            }
-            else
-            {
-                ListElement<T> *temp = mTail;
-
-                mTail = mTail->getPrevious();
-                COMMON_ASSERT_EXECUTION(mTail->setNext(nullptr), NgosStatus::ASSERTION);
-
-                delete temp;
-            }
-        }
-        else
-        if (mHead->getData() == value)
-        {
-            ListElement<T> *temp = mHead;
-
-            mHead = mHead->getNext();
-            COMMON_ASSERT_EXECUTION(mHead->setPrevious(nullptr), NgosStatus::ASSERTION);
-
-            delete temp;
-        }
-        else
-        {
-            ListElement<T> *element = mHead->getNext();
-
-            while (element != mTail)
-            {
-                if (element->getData() == value)
-                {
-                    COMMON_ASSERT_EXECUTION(element->getPrevious()->setNext(element->getNext()),     NgosStatus::ASSERTION);
-                    COMMON_ASSERT_EXECUTION(element->getNext()->setPrevious(element->getPrevious()), NgosStatus::ASSERTION);
-
-                    delete element;
-
-                    break;
-                }
-
-                element = element->getNext();
-            }
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-template<typename T>
-NgosStatus List<T>::clear()
-{
-    COMMON_LT((""));
-
-
-
-    ListElement<T> *element = mHead;
-
-    while (element)
-    {
-        ListElement<T> *temp = element;
-
-        element = element->getNext();
-
-        delete temp;
-    }
-
-    mHead = nullptr;
-    mTail = nullptr;
-
-
-
-    return NgosStatus::OK;
-}
-
-template<typename T>
-NgosStatus List<T>::moveToEnd(const T &value)
-{
-    COMMON_LT((" | value = ..."));
-
-
-
-    if (mHead != mTail)
-    {
-        if (mHead->getData() == value)
-        {
-            ListElement<T> *newHead = mHead->getNext();
-
-            COMMON_ASSERT_EXECUTION(newHead->setPrevious(nullptr), NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(mTail->setNext(mHead),         NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(mHead->setPrevious(mTail),     NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(mHead->setNext(nullptr),       NgosStatus::ASSERTION);
-
-            mTail = mHead;
-            mHead = newHead;
-        }
-        else
-        {
-            ListElement<T> *element = mHead->getNext();
-
-            while (element != mTail)
-            {
-                if (element->getData() == value)
-                {
-                    COMMON_TEST_ASSERT(element->getPrevious() != nullptr, NgosStatus::ASSERTION);
-                    COMMON_TEST_ASSERT(element->getNext()     != nullptr, NgosStatus::ASSERTION);
-
-                    COMMON_ASSERT_EXECUTION(element->getPrevious()->setNext(element->getNext()),     NgosStatus::ASSERTION);
-                    COMMON_ASSERT_EXECUTION(element->getNext()->setPrevious(element->getPrevious()), NgosStatus::ASSERTION);
-
-                    COMMON_ASSERT_EXECUTION(mTail->setNext(element),     NgosStatus::ASSERTION);
-                    COMMON_ASSERT_EXECUTION(element->setPrevious(mTail), NgosStatus::ASSERTION);
-                    COMMON_ASSERT_EXECUTION(element->setNext(nullptr),   NgosStatus::ASSERTION);
-
-                    mTail = element;
-
-                    break;
-                }
-
-                element = element->getNext();
-            }
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-template<typename T>
-NgosStatus List<T>::sort()
-{
-    COMMON_LT((""));
-
-
-
-    ListElement<T> *cur = mHead;
-
-    while (cur)
-    {
-        ListElement<T> *min  = cur;
-        ListElement<T> *cur2 = cur->getNext();
-
-        while (cur2)
-        {
-            if (cur2->getData() < min->getData())
-            {
-                min = cur2;
-            }
-
-            cur2 = cur2->getNext();
-        }
-
-
-
-        if (cur != min)
-        {
-            if (min->getPrevious())
-            {
-                min->getPrevious()->setNext(min->getNext());
-            }
-
-            if (min->getNext())
-            {
-                min->getNext()->setPrevious(min->getPrevious());
-            }
-
-            if (cur->getPrevious())
-            {
-                cur->getPrevious()->setNext(min);
-            }
-            else
-            {
-                mHead = min;
-            }
-
-            min->setPrevious(cur->getPrevious());
-            min->setNext(cur);
-            cur->setPrevious(min);
-        }
-        else
-        {
-            mTail = cur;
-            cur   = cur->getNext();
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-template<typename T>
-NgosStatus List<T>::sort(element_comparator comparator)
-{
-    COMMON_LT((" | comparator = 0x%p", comparator));
-
-    COMMON_ASSERT(comparator, "comparator is null", NgosStatus::ASSERTION);
-
-
-
-    ListElement<T> *cur = mHead;
-
-    while (cur)
-    {
-        ListElement<T> *min  = cur;
-        ListElement<T> *cur2 = cur->getNext();
-
-        while (cur2)
-        {
-            if (comparator(cur2->getData(), min->getData()))
-            {
-                min = cur2;
-            }
-
-            cur2 = cur2->getNext();
-        }
-
-
-
-        if (cur != min)
-        {
-            if (min->getPrevious())
-            {
-                min->getPrevious()->setNext(min->getNext());
-            }
-
-            if (min->getNext())
-            {
-                min->getNext()->setPrevious(min->getPrevious());
-            }
-
-            if (cur->getPrevious())
-            {
-                cur->getPrevious()->setNext(min);
-            }
-            else
-            {
-                mHead = min;
-            }
-
-            min->setPrevious(cur->getPrevious());
-            min->setNext(cur);
-            cur->setPrevious(min);
-        }
-        else
-        {
-            mTail = cur;
-            cur   = cur->getNext();
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-template<typename T>
-bool List<T>::isEmpty() const
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return mHead == nullptr;
-}
-
-template<typename T>
-ListElement<T>* List<T>::getHead() const
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return mHead;
-}
-
-template<typename T>
-ListElement<T>* List<T>::getTail() const
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return mTail;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CONTAINERS_LIST_H
+#ifndef COM_NGOS_SHARED_COMMON_CONTAINERS_LIST_H                                                                                                                                                         // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CONTAINERS_LIST_H                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/containers/lib/listelement.h>                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/memory/malloc.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+class List                                                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    typedef bool (*element_comparator) (const T &first, const T &second);                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    List();                                                                                                                                                                                              // Colorize: green
+    ~List(); // TEST: NO                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    NgosStatus append(const T &value);                                                                                                                                                                   // Colorize: green
+    NgosStatus prepend(const T &value);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    NgosStatus remove(const T &value);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    NgosStatus clear();                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    NgosStatus moveToEnd(const T &value);                                                                                                                                                                // Colorize: green
+    NgosStatus sort();                                                                                                                                                                                   // Colorize: green
+    NgosStatus sort(element_comparator comparator);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool isEmpty() const;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ListElement<T>* getHead() const;                                                                                                                                                                     // Colorize: green
+    ListElement<T>* getTail() const;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+    ListElement<T> *mHead;                                                                                                                                                                               // Colorize: green
+    ListElement<T> *mTail;                                                                                                                                                                               // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+List<T>::List()                                                                                                                                                                                          // Colorize: green
+    : mHead(nullptr)                                                                                                                                                                                     // Colorize: green
+    , mTail(nullptr)                                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+List<T>::~List()                                                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Free memory                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_ASSERT_EXECUTION(clear());                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus List<T>::append(const T &value)                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | value = ...")); // Commented to avoid too frequent logs                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ListElement<T> *element = new ListElement<T>(value);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (mHead != nullptr)                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_TEST_ASSERT(mTail != nullptr, NgosStatus::ASSERTION);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT_EXECUTION(mTail->setNext(element),     NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+        COMMON_ASSERT_EXECUTION(element->setPrevious(mTail), NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        mHead = element;                                                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mTail = element;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus List<T>::prepend(const T &value)                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | value = ...")); // Commented to avoid too frequent logs                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ListElement<T> *element = new ListElement<T>(value);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (mHead != nullptr)                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_TEST_ASSERT(mTail != nullptr, NgosStatus::ASSERTION);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT_EXECUTION(mHead->setPrevious(element), NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+        COMMON_ASSERT_EXECUTION(element->setNext(mHead),     NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        mTail = element;                                                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mHead = element;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus List<T>::remove(const T &value)                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | value = ..."));                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (mHead != nullptr)                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHead->getData() == value)                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Delete head or clear the list completely                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (mHead == mTail)                                                                                                                                                                      // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    delete mHead;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    mHead = nullptr;                                                                                                                                                                     // Colorize: green
+                    mTail = nullptr;                                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ListElement<T> *temp = mHead;                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    mHead = mHead->getNext();                                                                                                                                                            // Colorize: green
+                    COMMON_ASSERT_EXECUTION(mHead->setPrevious(nullptr), NgosStatus::ASSERTION);                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    delete temp;                                                                                                                                                                         // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Search for element and delete it                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                ListElement<T> *element = mHead->getNext();                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                while (element != nullptr)                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (element->getData() == value)                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_TEST_ASSERT(element->getPrevious() != nullptr, NgosStatus::ASSERTION);                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        COMMON_ASSERT_EXECUTION(element->getPrevious()->setNext(element->getNext()), NgosStatus::ASSERTION);                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (element == mTail)                                                                                                                                                            // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            mTail = mTail->getPrevious();                                                                                                                                                // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            COMMON_TEST_ASSERT(element->getNext() != nullptr, NgosStatus::ASSERTION);                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            COMMON_ASSERT_EXECUTION(element->getNext()->setPrevious(element->getPrevious()), NgosStatus::ASSERTION);                                                                     // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        delete element;                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    element = element->getNext();                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus List<T>::clear()                                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate over elements and delete them                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        ListElement<T> *element = mHead;                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (element != nullptr)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            ListElement<T> *temp = element;                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            element = element->getNext();                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            delete temp;                                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mHead = nullptr;                                                                                                                                                                                     // Colorize: green
+    mTail = nullptr;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus List<T>::moveToEnd(const T &value)                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | value = ..."));                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (mHead != mTail)                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHead->getData() == value)                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Move head to the end                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                ListElement<T> *newHead = mHead->getNext();                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                COMMON_ASSERT_EXECUTION(newHead->setPrevious(nullptr), NgosStatus::ASSERTION);                                                                                                           // Colorize: green
+                COMMON_ASSERT_EXECUTION(mTail->setNext(mHead),         NgosStatus::ASSERTION);                                                                                                           // Colorize: green
+                COMMON_ASSERT_EXECUTION(mHead->setPrevious(mTail),     NgosStatus::ASSERTION);                                                                                                           // Colorize: green
+                COMMON_ASSERT_EXECUTION(mHead->setNext(nullptr),       NgosStatus::ASSERTION);                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                mTail = mHead;                                                                                                                                                                           // Colorize: green
+                mHead = newHead;                                                                                                                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Search for element and move it to the end                                                                                                                                                 // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                ListElement<T> *element = mHead->getNext();                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                while (element != mTail)                                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (element->getData() == value)                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_TEST_ASSERT(element->getPrevious() != nullptr, NgosStatus::ASSERTION);                                                                                                    // Colorize: green
+                        COMMON_TEST_ASSERT(element->getNext()     != nullptr, NgosStatus::ASSERTION);                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        COMMON_ASSERT_EXECUTION(element->getPrevious()->setNext(element->getNext()),     NgosStatus::ASSERTION);                                                                         // Colorize: green
+                        COMMON_ASSERT_EXECUTION(element->getNext()->setPrevious(element->getPrevious()), NgosStatus::ASSERTION);                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        COMMON_ASSERT_EXECUTION(mTail->setNext(element),     NgosStatus::ASSERTION);                                                                                                     // Colorize: green
+                        COMMON_ASSERT_EXECUTION(element->setPrevious(mTail), NgosStatus::ASSERTION);                                                                                                     // Colorize: green
+                        COMMON_ASSERT_EXECUTION(element->setNext(nullptr),   NgosStatus::ASSERTION);                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        mTail = element;                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    element = element->getNext();                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus List<T>::sort()                                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ListElement<T> *cur = mHead;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (cur != nullptr)                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        ListElement<T> *min = cur;                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Search for minimal element                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            ListElement<T> *cur2 = cur->getNext();                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (cur2 != nullptr)                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (cur2->getData() < min->getData())                                                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    min = cur2;                                                                                                                                                                          // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                cur2 = cur2->getNext();                                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Put minimal element before current                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (cur != min)                                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (min->getPrevious() != nullptr)                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    min->getPrevious()->setNext(min->getNext());                                                                                                                                         // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (min->getNext() != nullptr)                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    min->getNext()->setPrevious(min->getPrevious());                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (cur->getPrevious() != nullptr)                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    cur->getPrevious()->setNext(min);                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    mHead = min;                                                                                                                                                                         // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                min->setPrevious(cur->getPrevious());                                                                                                                                                    // Colorize: green
+                min->setNext(cur);                                                                                                                                                                       // Colorize: green
+                cur->setPrevious(min);                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                mTail = cur;                                                                                                                                                                             // Colorize: green
+                cur   = cur->getNext();                                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+NgosStatus List<T>::sort(element_comparator comparator)                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | comparator = 0x%p", comparator));                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(comparator != nullptr, "comparator is null", NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ListElement<T> *cur = mHead;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (cur != nullptr)                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        ListElement<T> *min = cur;                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Search for minimal element                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            ListElement<T> *cur2 = cur->getNext();                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (cur2 != nullptr)                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (comparator(cur2->getData(), min->getData()))                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    min = cur2;                                                                                                                                                                          // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                cur2 = cur2->getNext();                                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Put minimal element before current                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (cur != min)                                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (min->getPrevious() != nullptr)                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    min->getPrevious()->setNext(min->getNext());                                                                                                                                         // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (min->getNext() != nullptr)                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    min->getNext()->setPrevious(min->getPrevious());                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (cur->getPrevious() != nullptr)                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    cur->getPrevious()->setNext(min);                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    mHead = min;                                                                                                                                                                         // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                min->setPrevious(cur->getPrevious());                                                                                                                                                    // Colorize: green
+                min->setNext(cur);                                                                                                                                                                       // Colorize: green
+                cur->setPrevious(min);                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                mTail = cur;                                                                                                                                                                             // Colorize: green
+                cur   = cur->getNext();                                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+bool List<T>::isEmpty() const                                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return mHead == nullptr;                                                                                                                                                                             // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+ListElement<T>* List<T>::getHead() const                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return mHead;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+template<typename T>                                                                                                                                                                                     // Colorize: green
+ListElement<T>* List<T>::getTail() const                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return mTail;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CONTAINERS_LIST_H                                                                                                                                                       // Colorize: green
