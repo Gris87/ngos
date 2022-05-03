@@ -1,22 +1,22 @@
-#ifndef COM_NGOS_SHARED_COMMON_CONSOLE_LIB_GLYPHDATA_H
-#define COM_NGOS_SHARED_COMMON_CONSOLE_LIB_GLYPHDATA_H
-
-
-
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-struct GlyphData
-{
-    u8 width;
-    i8 bitmapLeft;
-    i8 bitmapTop;
-    u8 bitmapWidth;
-    u8 bitmapHeight;
-    u8 bitmap[0];
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CONSOLE_LIB_GLYPHDATA_H
+#ifndef COM_NGOS_SHARED_COMMON_CONSOLE_LIB_GLYPHDATA_H                                                                                                                                                   // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CONSOLE_LIB_GLYPHDATA_H                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct GlyphData                                                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    good_U8 width;                                                                                                                                                                                       // Colorize: green
+    good_I8 bitmapLeft;                                                                                                                                                                                  // Colorize: green
+    good_I8 bitmapTop;                                                                                                                                                                                   // Colorize: green
+    good_U8 bitmapWidth;                                                                                                                                                                                 // Colorize: green
+    good_U8 bitmapHeight;                                                                                                                                                                                // Colorize: green
+    good_U8 bitmap[0];                                                                                                                                                                                   // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CONSOLE_LIB_GLYPHDATA_H                                                                                                                                                 // Colorize: green

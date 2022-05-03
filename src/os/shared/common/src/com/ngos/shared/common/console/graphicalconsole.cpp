@@ -1,372 +1,437 @@
-#include "graphicalconsole.h"
-
-#include <com/ngos/shared/common/assets/assets.h>
-#include <com/ngos/shared/common/console/lib/glyphdata.h>
-#include <com/ngos/shared/common/graphics/graphics.h>
-#include <com/ngos/shared/common/graphics/image.h>
-#include <com/ngos/shared/common/graphics/rgbapixel.h>
-#include <com/ngos/shared/common/graphics/rgbpixel.h>
-#include <com/ngos/shared/common/gui/gui.h>
-#include <com/ngos/shared/common/gui/widgets/misc/consolewidget.h>
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/memory/memory.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-#define CHAR_HEIGHT   20
-#define SIDE_MARGIN   1
-#define BOTTOM_MARGIN 5
-
-
-
-ConsoleWidget *GraphicalConsole::sConsoleWidget;
-Image         *GraphicalConsole::sTextImage;
-u16            GraphicalConsole::sPositionX;
-u16            GraphicalConsole::sPaddingLeft;
-u16            GraphicalConsole::sPaddingTop;
-u16           *GraphicalConsole::sGlyphOffsets;
-
-
-
-NgosStatus GraphicalConsole::init()
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    if (!sConsoleWidget)
-    {
-        u16 *temp     = sGlyphOffsets; // To avoid infinite loop
-        sGlyphOffsets = nullptr;       // To avoid infinite loop
-
-
-
-        ScreenWidget *screenWidget = GUI::getMainScreenWidget();
-        u64           screenWidth  = screenWidget->getWidth();
-        u64           screenHeight = screenWidget->getHeight();
-
-        i64 consolePositionX = screenWidth  * GRAPHICAL_CONSOLE_POSITION_X_PERCENT / 100;
-        i64 consolePositionY = screenHeight * GRAPHICAL_CONSOLE_POSITION_Y_PERCENT / 100;
-        u64 consoleWidth     = screenWidth  * GRAPHICAL_CONSOLE_WIDTH_PERCENT      / 100;
-        u64 consoleHeight    = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT     / 100;
-
-
-
-        AssetEntry *asset = Assets::getAssetEntry("images/console.9.png");
-        COMMON_TEST_ASSERT(asset != nullptr, NgosStatus::ASSERTION);
-
-        Image *consoleImage;
-        COMMON_ASSERT_EXECUTION(Graphics::loadImage(asset->content, asset->contentSize, true, &consoleImage), NgosStatus::ASSERTION);
-
-
-
-        sConsoleWidget = new ConsoleWidget(consoleImage, screenWidget);
-
-        COMMON_ASSERT_EXECUTION(sConsoleWidget->setPosition(consolePositionX, consolePositionY), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(sConsoleWidget->setSize(consoleWidth, consoleHeight),            NgosStatus::ASSERTION);
-
-
-
-        NinePatch *patch = consoleImage->getNinePatch();
-
-        sPaddingLeft      = patch->getPaddingLeft();
-        sPaddingTop       = patch->getPaddingTop();
-        u16 paddingRight  = patch->getPaddingRight();
-        u16 paddingBottom = patch->getPaddingBottom();
-
-
-
-        sTextImage = new Image(consoleWidth - sPaddingLeft - paddingRight, consoleHeight - sPaddingTop - paddingBottom, true, false);
-        COMMON_ASSERT_EXECUTION(sTextImage->clearBuffer(), NgosStatus::ASSERTION);
-
-
-
-        sGlyphOffsets = temp; // To avoid infinite loop
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus GraphicalConsole::readyToPrint()
-{
-    COMMON_LT((""));
-
-
-
-    AssetEntry *asset = Assets::getAssetEntry("glyphs/console.bin");
-    COMMON_TEST_ASSERT(asset, NgosStatus::ASSERTION);
-
-
-
-    sPositionX    = SIDE_MARGIN;
-    sGlyphOffsets = (u16 *)asset->content;
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus GraphicalConsole::print(char8 ch)
-{
-    // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(sTextImage, "sTextImage is null", NgosStatus::ASSERTION);
-
-
-
-    if (ch == '\n')
-    {
-        COMMON_ASSERT_EXECUTION(newLineWithoutCaretReturn(), NgosStatus::ASSERTION);
-    }
-    else
-    if (ch == '\r')
-    {
-        sPositionX = SIDE_MARGIN;
-    }
-    else
-    if (ch >= 0x20 && ch < 0x7F)
-    {
-        GlyphData *glyphData = (GlyphData *)((address_t)sGlyphOffsets + sGlyphOffsets[ch - 0x20]);
-
-
-
-        if (sPositionX + glyphData->width > sTextImage->getWidth() - SIDE_MARGIN)
-        {
-            COMMON_ASSERT_EXECUTION(newLine(), NgosStatus::ASSERTION);
-        }
-
-
-
-        i16  charPosX   = sPositionX + glyphData->bitmapLeft;
-        i16  charPosY   = sTextImage->getHeight() - BOTTOM_MARGIN - glyphData->bitmapTop;
-        u8  *bitmapByte = glyphData->bitmap;
-
-        COMMON_TEST_ASSERT(charPosX                           >= 0,                       NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(charPosX + glyphData->bitmapWidth  <= sTextImage->getWidth(),  NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(charPosY                           >= 0,                       NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= sTextImage->getHeight(), NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(glyphData->bitmapHeight            <= CHAR_HEIGHT,             NgosStatus::ASSERTION);
-
-
-
-        for (good_I64 i = 0; i < glyphData->bitmapHeight; ++i)
-        {
-            for (good_I64 j = 0; j < glyphData->bitmapWidth; ++j)
-            {
-                RgbaPixel *pixel = &sTextImage->getRgbaBuffer()[(charPosY + i) * sTextImage->getWidth() + charPosX + j];
-
-                COMMON_TEST_ASSERT((address_t)pixel >= (address_t)sTextImage->getBuffer() + sTextImage->getBufferSize() - (CHAR_HEIGHT + BOTTOM_MARGIN) * sTextImage->getStride()
-                                    &&
-                                    (address_t)pixel <= (address_t)sTextImage->getBuffer() + sTextImage->getBufferSize() - sizeof(RgbaPixel), NgosStatus::ASSERTION);
-
-
-
-                pixel->red   = 0xFF;
-                pixel->green = 0xFF;
-                pixel->blue  = 0xFF;
-                pixel->alpha = *bitmapByte;
-
-                ++bitmapByte;
-            }
-        }
-
-        sPositionX += glyphData->width;
-    }
-    else
-    {
-        COMMON_LW(("Non-printable character found: 0x%02X", ch));
-
-        return NgosStatus::UNEXPECTED_BEHAVIOUR;
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus GraphicalConsole::print(const char8 *str)
-{
-    // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(str, "str is null", NgosStatus::ASSERTION);
-
-
-
-    while (*str)
-    {
-        if (*str == '\n')
-        {
-            COMMON_ASSERT_EXECUTION(print('\r'), NgosStatus::ASSERTION);
-        }
-
-        COMMON_ASSERT_EXECUTION(print(*str), NgosStatus::ASSERTION);
-
-        ++str;
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus GraphicalConsole::println()
-{
-    // COMMON_LT(("")); // Commented to avoid bad looking logs
-
-
-
-    COMMON_ASSERT_EXECUTION(newLine(), NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus GraphicalConsole::println(char8 ch)
-{
-    // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs
-
-
-
-    COMMON_ASSERT_EXECUTION(print(ch), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(newLine(), NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus GraphicalConsole::println(const char8 *str)
-{
-    // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(str, "str is null", NgosStatus::ASSERTION);
-
-
-
-    COMMON_ASSERT_EXECUTION(print(str), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(newLine(),  NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus GraphicalConsole::noMorePrint()
-{
-    COMMON_LT((""));
-
-
-
-    COMMON_TEST_ASSERT(sGlyphOffsets, NgosStatus::ASSERTION);
-
-    sGlyphOffsets = nullptr;
-
-
-
-    if (sConsoleWidget)
-    {
-        COMMON_TEST_ASSERT(sTextImage, NgosStatus::ASSERTION);
-
-
-
-        COMMON_ASSERT_EXECUTION(GUI::getMainScreenWidget()->getChildren().remove(sConsoleWidget), NgosStatus::ASSERTION);
-
-        delete sConsoleWidget->getPanelImage();
-        delete sConsoleWidget;
-        delete sTextImage;
-
-
-
-        sConsoleWidget = nullptr;
-        sTextImage     = nullptr;
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-bool GraphicalConsole::canPrint()
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return sGlyphOffsets;
-}
-
-NgosStatus GraphicalConsole::newLineWithoutCaretReturn()
-{
-    // COMMON_LT(("")); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(sTextImage, "sTextImage is null", NgosStatus::ASSERTION);
-
-
-
-    Image *ownResultImage = sConsoleWidget->getOwnResultImage();
-    Image *resultImage    = sConsoleWidget->getResultImage();
-
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
-                                ownResultImage->getBuffer(),
-                                resultImage->getBuffer(),
-                                ownResultImage->getWidth(),
-                                ownResultImage->getHeight(),
-                                resultImage->getWidth(),
-                                resultImage->getHeight(),
-                                ownResultImage->getBytesPerPixel(),
-                                resultImage->getBytesPerPixel(),
-                                true,
-                                0, 0,
-                                sPaddingLeft,
-                                sPaddingTop,
-                                sPaddingLeft + sTextImage->getWidth(),
-                                sPaddingTop + sTextImage->getHeight()),
-                            NgosStatus::ASSERTION);
-
-    COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(
-                                sTextImage->getBuffer(),
-                                resultImage->getBuffer(),
-                                sTextImage->getWidth(),
-                                sTextImage->getHeight(),
-                                resultImage->getWidth(),
-                                resultImage->getHeight(),
-                                sTextImage->getBytesPerPixel(),
-                                resultImage->getBytesPerPixel(),
-                                false,
-                                sPaddingLeft,
-                                sPaddingTop),
-                            NgosStatus::ASSERTION);
-
-    COMMON_ASSERT_EXECUTION(sConsoleWidget->update(sPaddingLeft, sPaddingTop, sTextImage->getWidth(), sTextImage->getHeight()), NgosStatus::ASSERTION);
-
-
-
-    u32 lineByteSize = (CHAR_HEIGHT + BOTTOM_MARGIN) * sTextImage->getStride();
-
-    memcpy((void *)sTextImage->getBuffer(), (void *)(sTextImage->getBuffer() + lineByteSize), sTextImage->getBufferSize() - lineByteSize);
-    memzero((void *)(sTextImage->getBuffer() + sTextImage->getBufferSize() - lineByteSize), lineByteSize);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus GraphicalConsole::newLine()
-{
-    // COMMON_LT(("")); // Commented to avoid bad looking logs
-
-
-
-    COMMON_ASSERT_EXECUTION(newLineWithoutCaretReturn(), NgosStatus::ASSERTION);
-
-    sPositionX = SIDE_MARGIN;
-
-
-
-    return NgosStatus::OK;
-}
+#include "graphicalconsole.h"                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/assets/assets.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/console/lib/glyphdata.h>                                                                                                                                                // Colorize: green
+#include <com/ngos/shared/common/graphics/graphics.h>                                                                                                                                                    // Colorize: green
+#include <com/ngos/shared/common/graphics/image.h>                                                                                                                                                       // Colorize: green
+#include <com/ngos/shared/common/graphics/rgbapixel.h>                                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/graphics/rgbpixel.h>                                                                                                                                                    // Colorize: green
+#include <com/ngos/shared/common/gui/gui.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/gui/widgets/misc/consolewidget.h>                                                                                                                                       // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/memory/memory.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define CHAR_HEIGHT   20                                                                                                                                                                                 // Colorize: green
+#define SIDE_MARGIN   1                                                                                                                                                                                  // Colorize: green
+#define BOTTOM_MARGIN 5                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+ConsoleWidget *GraphicalConsole::sConsoleWidget;                                                                                                                                                         // Colorize: green
+Image         *GraphicalConsole::sTextImage;                                                                                                                                                             // Colorize: green
+good_I64       GraphicalConsole::sPositionX;                                                                                                                                                             // Colorize: green
+good_I64       GraphicalConsole::sPaddingLeft;                                                                                                                                                           // Colorize: green
+good_I64       GraphicalConsole::sPaddingTop;                                                                                                                                                            // Colorize: green
+good_U16      *GraphicalConsole::sGlyphOffsets;                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus GraphicalConsole::init()                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (sConsoleWidget == nullptr)                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_U16 *temp;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Reset sGlyphOffsets to avoid infinite loop                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            temp          = sGlyphOffsets;                                                                                                                                                                        // Colorize: green
+            sGlyphOffsets = nullptr;                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ScreenWidget *screenWidget = GUI::getMainScreenWidget();                                                                                                                                         // Colorize: green
+        good_I64      screenWidth  = screenWidget->getWidth();                                                                                                                                           // Colorize: green
+        good_I64      screenHeight = screenWidget->getHeight();                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_I64 consolePositionX = screenWidth  * GRAPHICAL_CONSOLE_POSITION_X_PERCENT / 100;                                                                                                                // Colorize: green
+        good_I64 consolePositionY = screenHeight * GRAPHICAL_CONSOLE_POSITION_Y_PERCENT / 100;                                                                                                                // Colorize: green
+        good_I64 consoleWidth     = screenWidth  * GRAPHICAL_CONSOLE_WIDTH_PERCENT      / 100;                                                                                                                // Colorize: green
+        good_I64 consoleHeight    = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT     / 100;                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        Image *consoleImage;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Load console image from assets                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            AssetEntry *asset = Assets::getAssetEntry("images/console.9.png");                                                                                                                           // Colorize: green
+            COMMON_TEST_ASSERT(asset != nullptr, NgosStatus::ASSERTION);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_ASSERT_EXECUTION(Graphics::loadImage(asset->content, asset->contentSize, true, &consoleImage), NgosStatus::ASSERTION);                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Create console widget and setup geometry                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            sConsoleWidget = new ConsoleWidget(consoleImage, screenWidget);                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_ASSERT_EXECUTION(sConsoleWidget->setPosition(consolePositionX, consolePositionY), NgosStatus::ASSERTION);                                                                             // Colorize: green
+            COMMON_ASSERT_EXECUTION(sConsoleWidget->setSize(consoleWidth, consoleHeight),            NgosStatus::ASSERTION);                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_I64 paddingRight;                                                                                                                                                                           // Colorize: green
+        good_I64 paddingBottom;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Get padding                                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            NinePatch *patch = consoleImage->getNinePatch();                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            sPaddingLeft  = patch->getPaddingLeft();                                                                                                                                                     // Colorize: green
+            sPaddingTop   = patch->getPaddingTop();                                                                                                                                                      // Colorize: green
+            paddingRight  = patch->getPaddingRight();                                                                                                                                                    // Colorize: green
+            paddingBottom = patch->getPaddingBottom();                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Create buffer for text image                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            sTextImage = new Image(consoleWidth - sPaddingLeft - paddingRight, consoleHeight - sPaddingTop - paddingBottom, true, false);                                                                // Colorize: green
+            COMMON_ASSERT_EXECUTION(sTextImage->clearBuffer(), NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        sPositionX = SIDE_MARGIN;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Restore sGlyphOffsets                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            sGlyphOffsets = temp;                                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus GraphicalConsole::readyToPrint()                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Update position of glyphs                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        AssetEntry *asset = Assets::getAssetEntry("glyphs/console.bin");                                                                                                                                     // Colorize: green
+        COMMON_TEST_ASSERT(asset != nullptr, NgosStatus::ASSERTION);                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+        sGlyphOffsets = reinterpret_cast<good_U16 *>(asset->content);                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus GraphicalConsole::print(good_Char8 ch)                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(sTextImage != nullptr, "sTextImage is null", NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (ch == '\n')                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_ASSERT_EXECUTION(newLineWithoutCaretReturn(), NgosStatus::ASSERTION);                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    if (ch == '\r')                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        sPositionX = SIDE_MARGIN;                                                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    if (ch >= 0x20 && ch < 0x7F)                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        GlyphData *glyphData = reinterpret_cast<GlyphData *>(reinterpret_cast<good_U8 *>(sGlyphOffsets) + sGlyphOffsets[ch - 0x20]);                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Go to next line when we are on the edge                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (sPositionX + glyphData->width > sTextImage->getWidth() - SIDE_MARGIN)                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_ASSERT_EXECUTION(newLine(), NgosStatus::ASSERTION);                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_I64  charPosX   = sPositionX + glyphData->bitmapLeft;                                                                                                                                       // Colorize: green
+        good_I64  charPosY   = sTextImage->getHeight() - BOTTOM_MARGIN - glyphData->bitmapTop;                                                                                                           // Colorize: green
+        good_U8  *bitmapByte = glyphData->bitmap;                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Validation                                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(charPosX                           >= 0,                       NgosStatus::ASSERTION);                                                                                    // Colorize: green
+            COMMON_TEST_ASSERT(charPosX + glyphData->bitmapWidth  <= sTextImage->getWidth(),  NgosStatus::ASSERTION);                                                                                    // Colorize: green
+            COMMON_TEST_ASSERT(charPosY                           >= 0,                       NgosStatus::ASSERTION);                                                                                    // Colorize: green
+            COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= sTextImage->getHeight(), NgosStatus::ASSERTION);                                                                                    // Colorize: green
+            COMMON_TEST_ASSERT(glyphData->bitmapHeight            <= CHAR_HEIGHT,             NgosStatus::ASSERTION);                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < glyphData->bitmapHeight; ++i)                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            for (good_I64 j = 0; j < glyphData->bitmapWidth; ++j)                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                RgbaPixel *pixel;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Take pixel to update                                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    pixel = &sTextImage->getRgbaBuffer()[(charPosY + i) * sTextImage->getWidth() + charPosX + j];                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    COMMON_TEST_ASSERT(reinterpret_cast<good_U8 *>(pixel) >= sTextImage->getBuffer() + sTextImage->getBufferSize() - (CHAR_HEIGHT + BOTTOM_MARGIN) * sTextImage->getStride(), NgosStatus::ASSERTION); // Colorize: green
+                    COMMON_TEST_ASSERT(reinterpret_cast<good_U8 *>(pixel) <= sTextImage->getBuffer() + sTextImage->getBufferSize() - sizeof(RgbaPixel),                                       NgosStatus::ASSERTION); // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Update pixel color                                                                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    pixel->red   = 0xFF;                                                                                                                                                                 // Colorize: green
+                    pixel->green = 0xFF;                                                                                                                                                                 // Colorize: green
+                    pixel->blue  = 0xFF;                                                                                                                                                                 // Colorize: green
+                    pixel->alpha = *bitmapByte;                                                                                                                                                          // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++bitmapByte;                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        sPositionX += glyphData->width;                                                                                                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LW(("Non-printable character found: 0x%02X", ch));                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return NgosStatus::UNEXPECTED_BEHAVIOUR;                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus GraphicalConsole::print(const good_Char8 *str)                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(str != nullptr, "str is null", NgosStatus::ASSERTION);                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (*str != 0)                                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (*str == '\n')                                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_ASSERT_EXECUTION(newLine(), NgosStatus::ASSERTION);                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ++str;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            continue;                                                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT_EXECUTION(print(*str), NgosStatus::ASSERTION);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ++str;                                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus GraphicalConsole::println()                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid bad looking logs                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT_EXECUTION(newLine(), NgosStatus::ASSERTION);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus GraphicalConsole::println(good_Char8 ch)                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | ch = %c", ch)); // Commented to avoid bad looking logs                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT_EXECUTION(print(ch), NgosStatus::ASSERTION);                                                                                                                                           // Colorize: green
+    COMMON_ASSERT_EXECUTION(newLine(), NgosStatus::ASSERTION);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus GraphicalConsole::println(const good_Char8 *str)                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(str != nullptr, "str is null", NgosStatus::ASSERTION);                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT_EXECUTION(print(str), NgosStatus::ASSERTION);                                                                                                                                          // Colorize: green
+    COMMON_ASSERT_EXECUTION(newLine(),  NgosStatus::ASSERTION);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus GraphicalConsole::noMorePrint()                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_TEST_ASSERT(sGlyphOffsets != nullptr, NgosStatus::ASSERTION);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sGlyphOffsets = nullptr;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (sConsoleWidget != nullptr)                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_TEST_ASSERT(sTextImage != nullptr, NgosStatus::ASSERTION);                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT_EXECUTION(GUI::getMainScreenWidget()->getChildren().remove(sConsoleWidget), NgosStatus::ASSERTION);                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        delete sConsoleWidget->getPanelImage();                                                                                                                                                          // Colorize: green
+        delete sConsoleWidget;                                                                                                                                                                           // Colorize: green
+        delete sTextImage;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        sConsoleWidget = nullptr;                                                                                                                                                                        // Colorize: green
+        sTextImage     = nullptr;                                                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool GraphicalConsole::canPrint()                                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return sGlyphOffsets != nullptr;                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus GraphicalConsole::newLineWithoutCaretReturn()                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid bad looking logs                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(sTextImage != nullptr, "sTextImage is null", NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Image *ownResultImage = sConsoleWidget->getOwnResultImage();                                                                                                                                         // Colorize: green
+    Image *resultImage    = sConsoleWidget->getResultImage();                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Clean text area with console widget own result image                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(                                                                                                                                                // Colorize: green
+                                    ownResultImage->getBuffer(),                                                                                                                                         // Colorize: green
+                                    resultImage->getBuffer(),                                                                                                                                            // Colorize: green
+                                    ownResultImage->getWidth(),                                                                                                                                          // Colorize: green
+                                    ownResultImage->getHeight(),                                                                                                                                         // Colorize: green
+                                    resultImage->getWidth(),                                                                                                                                             // Colorize: green
+                                    resultImage->getHeight(),                                                                                                                                            // Colorize: green
+                                    ownResultImage->getBytesPerPixel(),                                                                                                                                  // Colorize: green
+                                    resultImage->getBytesPerPixel(),                                                                                                                                     // Colorize: green
+                                    true,                                                                                                                                                                // Colorize: green
+                                    0, 0,                                                                                                                                                                // Colorize: green
+                                    sPaddingLeft,                                                                                                                                                        // Colorize: green
+                                    sPaddingTop,                                                                                                                                                         // Colorize: green
+                                    sPaddingLeft + sTextImage->getWidth(),                                                                                                                               // Colorize: green
+                                    sPaddingTop + sTextImage->getHeight()),                                                                                                                              // Colorize: green
+                                NgosStatus::ASSERTION);                                                                                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Apply text image above result image to display text                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_ASSERT_EXECUTION(Graphics::insertImageRaw(                                                                                                                                                // Colorize: green
+                                    sTextImage->getBuffer(),                                                                                                                                             // Colorize: green
+                                    resultImage->getBuffer(),                                                                                                                                            // Colorize: green
+                                    sTextImage->getWidth(),                                                                                                                                              // Colorize: green
+                                    sTextImage->getHeight(),                                                                                                                                             // Colorize: green
+                                    resultImage->getWidth(),                                                                                                                                             // Colorize: green
+                                    resultImage->getHeight(),                                                                                                                                            // Colorize: green
+                                    sTextImage->getBytesPerPixel(),                                                                                                                                      // Colorize: green
+                                    resultImage->getBytesPerPixel(),                                                                                                                                     // Colorize: green
+                                    false,                                                                                                                                                               // Colorize: green
+                                    sPaddingLeft,                                                                                                                                                        // Colorize: green
+                                    sPaddingTop),                                                                                                                                                        // Colorize: green
+                                NgosStatus::ASSERTION);                                                                                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Trigger update on updated console widget area                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_ASSERT_EXECUTION(sConsoleWidget->update(sPaddingLeft, sPaddingTop, sTextImage->getWidth(), sTextImage->getHeight()), NgosStatus::ASSERTION);                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Move text image to one line above and clean up buffer for next line                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_I64 lineByteSize = (CHAR_HEIGHT + BOTTOM_MARGIN) * sTextImage->getStride();                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        memcpy(sTextImage->getBuffer(), sTextImage->getBuffer() + lineByteSize, sTextImage->getBufferSize() - lineByteSize);                                                           // Colorize: green
+        memzero(sTextImage->getBuffer() + sTextImage->getBufferSize() - lineByteSize, lineByteSize);                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus GraphicalConsole::newLine()                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid bad looking logs                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT_EXECUTION(newLineWithoutCaretReturn(), NgosStatus::ASSERTION);                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sPositionX = SIDE_MARGIN;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

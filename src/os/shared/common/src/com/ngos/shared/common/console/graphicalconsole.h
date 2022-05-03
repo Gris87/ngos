@@ -1,52 +1,52 @@
-#ifndef COM_NGOS_SHARED_COMMON_CONSOLE_GRAPHICALCONSOLE_H
-#define COM_NGOS_SHARED_COMMON_CONSOLE_GRAPHICALCONSOLE_H
-
-
-
-#include <com/ngos/shared/common/ngos/status.h>
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-#define GRAPHICAL_CONSOLE_POSITION_X_PERCENT 10
-#define GRAPHICAL_CONSOLE_POSITION_Y_PERCENT 70
-#define GRAPHICAL_CONSOLE_WIDTH_PERCENT      80
-#define GRAPHICAL_CONSOLE_HEIGHT_PERCENT     30
-
-
-
-class ConsoleWidget;
-class Image;
-
-
-
-class GraphicalConsole
-{
-public:
-    static NgosStatus init(); // TEST: NO
-    static NgosStatus readyToPrint(); // TEST: NO
-
-    static NgosStatus print(char8 ch); // TEST: NO
-    static NgosStatus print(const char8 *str); // TEST: NO
-    static NgosStatus println(); // TEST: NO
-    static NgosStatus println(char8 ch); // TEST: NO
-    static NgosStatus println(const char8 *str); // TEST: NO
-
-    static NgosStatus noMorePrint(); // TEST: NO
-    static bool canPrint(); // TEST: NO
-
-private:
-    static NgosStatus newLineWithoutCaretReturn(); // TEST: NO
-    static NgosStatus newLine(); // TEST: NO
-
-    static ConsoleWidget *sConsoleWidget;
-    static Image         *sTextImage;
-    static u16            sPositionX;
-    static u16            sPaddingLeft;
-    static u16            sPaddingTop;
-    static u16           *sGlyphOffsets;
-};
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CONSOLE_GRAPHICALCONSOLE_H
+#ifndef COM_NGOS_SHARED_COMMON_CONSOLE_GRAPHICALCONSOLE_H                                                                                                                                                // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CONSOLE_GRAPHICALCONSOLE_H                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/status.h>                                                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define GRAPHICAL_CONSOLE_POSITION_X_PERCENT 10                                                                                                                                                          // Colorize: green
+#define GRAPHICAL_CONSOLE_POSITION_Y_PERCENT 70                                                                                                                                                          // Colorize: green
+#define GRAPHICAL_CONSOLE_WIDTH_PERCENT      80                                                                                                                                                          // Colorize: green
+#define GRAPHICAL_CONSOLE_HEIGHT_PERCENT     30                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class ConsoleWidget;                                                                                                                                                                                     // Colorize: green
+class Image;                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class GraphicalConsole                                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    static NgosStatus init(); // TEST: NO                                                                                                                                                                // Colorize: green
+    static NgosStatus readyToPrint(); // TEST: NO                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static NgosStatus print(good_Char8 ch); // TEST: NO                                                                                                                                                       // Colorize: green
+    static NgosStatus print(const good_Char8 *str); // TEST: NO                                                                                                                                               // Colorize: green
+    static NgosStatus println(); // TEST: NO                                                                                                                                                             // Colorize: green
+    static NgosStatus println(good_Char8 ch); // TEST: NO                                                                                                                                                     // Colorize: green
+    static NgosStatus println(const good_Char8 *str); // TEST: NO                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static NgosStatus noMorePrint(); // TEST: NO                                                                                                                                                         // Colorize: green
+    static bool canPrint(); // TEST: NO                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    static NgosStatus newLineWithoutCaretReturn(); // TEST: NO                                                                                                                                           // Colorize: green
+    static NgosStatus newLine(); // TEST: NO                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static ConsoleWidget *sConsoleWidget;                                                                                                                                                                // Colorize: green
+    static Image         *sTextImage;                                                                                                                                                                    // Colorize: green
+    static good_I64       sPositionX;                                                                                                                                                                    // Colorize: green
+    static good_I64       sPaddingLeft;                                                                                                                                                                  // Colorize: green
+    static good_I64       sPaddingTop;                                                                                                                                                                   // Colorize: green
+    static good_U16      *sGlyphOffsets;                                                                                                                                                                 // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CONSOLE_GRAPHICALCONSOLE_H                                                                                                                                              // Colorize: green

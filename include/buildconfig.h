@@ -267,7 +267,7 @@
  ***                                                                                                                                                                                                     // Colorize: green
  *** Default: OPTION_LOG_LEVEL_DEBUG                                                                                                                                                                     // Colorize: green
  ***/                                                                                                                                                                                                    // Colorize: green
-#define NGOS_BUILD_LOG_LEVEL OPTION_LOG_LEVEL_DEBUG                                                                                                                                                      // Colorize: green
+#define NGOS_BUILD_LOG_LEVEL OPTION_LOG_LEVEL_VERY_VERY_VERBOSE                                                                                                                                                      // Colorize: green
 #else                                                                                                                                                                                                    // Colorize: green
 #define NGOS_BUILD_LOG_LEVEL OPTION_LOG_LEVEL_ERROR                                                                                                                                                      // Colorize: green
 #endif                                                                                                                                                                                                   // Colorize: green

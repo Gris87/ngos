@@ -1,43 +1,44 @@
-#ifndef COM_NGOS_SHARED_COMMON_CONSOLE_CONSOLE_H
-#define COM_NGOS_SHARED_COMMON_CONSOLE_CONSOLE_H
-
-
-
-#include <com/ngos/shared/common/bootparams/bootparams.h>
-#include <com/ngos/shared/common/graphics/rgbapixel.h>
-#include <com/ngos/shared/common/ngos/status.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/uefi/uefigraphicsoutputprotocol.h>
-
-
-
-class Console
-{
-public:
-    static NgosStatus init(BootParams *params, RgbaPixel *doubleBuffer, u64 doubleBufferSize); // TEST: NO
-    static NgosStatus init(); // TEST: NO
-
-    static NgosStatus print(char8 ch); // TEST: NO
-    static NgosStatus print(const char8 *str); // TEST: NO
-    static NgosStatus println(); // TEST: NO
-    static NgosStatus println(char8 ch); // TEST: NO
-    static NgosStatus println(const char8 *str); // TEST: NO
-
-    static NgosStatus noMorePrint(); // TEST: NO
-    static bool canPrint(); // TEST: NO
-
-private:
-    static NgosStatus newLineWithoutCaretReturn(); // TEST: NO
-    static NgosStatus newLine(); // TEST: NO
-
-    static UefiGraphicsOutputProtocol *sScreenGop;
-    static RgbaPixel                  *sDoubleBuffer;
-    static RgbaPixel                  *sLastLineBuffer;
-    static u64                         sLastLineBufferSize;
-    static u16                         sScreenPosX;
-    static u16                        *sGlyphOffsets;
-};
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CONSOLE_CONSOLE_H
+#ifndef COM_NGOS_SHARED_COMMON_CONSOLE_CONSOLE_H                                                                                                                                                         // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CONSOLE_CONSOLE_H                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/bootparams/bootparams.h>                                                                                                                                                // Colorize: green
+#include <com/ngos/shared/common/graphics/rgbapixel.h>                                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/ngos/status.h>                                                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/uefi/uefigraphicsoutputprotocol.h>                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class Console                                                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+#ifndef BUILD_TARGET_KERNEL // Defined in pro file                                                                                                                                                       // Colorize: green
+    static NgosStatus init(BootParams *params); // TEST: NO                                                                                                                                              // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+    static NgosStatus init(); // TEST: NO                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static NgosStatus print(good_Char8 ch); // TEST: NO                                                                                                                                                       // Colorize: green
+    static NgosStatus print(const good_Char8 *str); // TEST: NO                                                                                                                                               // Colorize: green
+    static NgosStatus println(); // TEST: NO                                                                                                                                                             // Colorize: green
+    static NgosStatus println(good_Char8 ch); // TEST: NO                                                                                                                                                     // Colorize: green
+    static NgosStatus println(const good_Char8 *str); // TEST: NO                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static NgosStatus noMorePrint(); // TEST: NO                                                                                                                                                         // Colorize: green
+    static bool canPrint(); // TEST: NO                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    static NgosStatus newLineWithoutCaretReturn(); // TEST: NO                                                                                                                                           // Colorize: green
+    static NgosStatus newLine(); // TEST: NO                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static UefiGraphicsOutputProtocol *sScreenGop;                                                                                                                                                       // Colorize: green
+    static RgbaPixel                  *sLineBuffer;                                                                                                                                                  // Colorize: green
+    static good_I64                    sLineBufferSize;                                                                                                                                              // Colorize: green
+    static good_I64                    sPositionX;                                                                                                                                                      // Colorize: green
+    static good_U16                   *sGlyphOffsets;                                                                                                                                                    // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CONSOLE_CONSOLE_H                                                                                                                                                       // Colorize: green
