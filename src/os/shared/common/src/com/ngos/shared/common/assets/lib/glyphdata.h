@@ -1,5 +1,5 @@
-#ifndef COM_NGOS_SHARED_COMMON_CONSOLE_LIB_GLYPHDATA_H                                                                                                                                                   // Colorize: green
-#define COM_NGOS_SHARED_COMMON_CONSOLE_LIB_GLYPHDATA_H                                                                                                                                                   // Colorize: green
+#ifndef COM_NGOS_SHARED_COMMON_ASSETS_LIB_GLYPHDATA_H                                                                                                                                                    // Colorize: green
+#define COM_NGOS_SHARED_COMMON_ASSETS_LIB_GLYPHDATA_H                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -19,4 +19,4 @@ struct GlyphData                                                                
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#endif // COM_NGOS_SHARED_COMMON_CONSOLE_LIB_GLYPHDATA_H                                                                                                                                                 // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_ASSETS_LIB_GLYPHDATA_H                                                                                                                                                  // Colorize: green

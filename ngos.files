@@ -807,6 +807,8 @@ src/os/shared/common/src/com/ngos/shared/common/assets/assets.cpp
 src/os/shared/common/src/com/ngos/shared/common/assets/assets.h
 src/os/shared/common/src/com/ngos/shared/common/assets/lib/assetentriescount.h
 src/os/shared/common/src/com/ngos/shared/common/assets/lib/assetentry.h
+src/os/shared/common/src/com/ngos/shared/common/assets/lib/glyphdata.h
+src/os/shared/common/src/com/ngos/shared/common/assets/lib/glyphoffset.h
 src/os/shared/common/src/com/ngos/shared/common/bootparams/bootparams.h
 src/os/shared/common/src/com/ngos/shared/common/bootparams/lib/kernelinfo.h
 src/os/shared/common/src/com/ngos/shared/common/bootparams/lib/memorymapentry.h
@@ -827,7 +829,6 @@ src/os/shared/common/src/com/ngos/shared/common/console/console.cpp
 src/os/shared/common/src/com/ngos/shared/common/console/console.h
 src/os/shared/common/src/com/ngos/shared/common/console/graphicalconsole.cpp
 src/os/shared/common/src/com/ngos/shared/common/console/graphicalconsole.h
-src/os/shared/common/src/com/ngos/shared/common/console/lib/glyphdata.h
 src/os/shared/common/src/com/ngos/shared/common/containers/arraylist.h
 src/os/shared/common/src/com/ngos/shared/common/containers/lib/listelement.h
 src/os/shared/common/src/com/ngos/shared/common/containers/lib/mapelement.h
@@ -5417,7 +5418,7 @@ src/os/shared/uefibase/src/com/ngos/shared/uefibase/uefi/uefipointerdevices.cpp
 src/os/shared/uefibase/src/com/ngos/shared/uefibase/uefi/uefipointerdevices.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/asmutils.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/bitutils.h
-src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bootparams/memorymapentry.h
+src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bootparams/lib/memorymapentry.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/adler.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/crc.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/lib/md5hash.h
