@@ -1,6 +1,6 @@
 #include <buildconfig.h>
-#include <com/ngos/shared/common/cpu/flags.h>
-#include <com/ngos/shared/common/cpu/msr/msrregisters.h>
+#include <com/ngos/shared/common/cpu/lib/flags.h>
+#include <com/ngos/shared/common/msr/msrregisters.h>
 #include <com/ngos/shared/common/gdt/segments.h>
 #include <com/ngos/shared/common/idt/macros.h>
 #include <com/ngos/kernel/other/kerneldefines.h>

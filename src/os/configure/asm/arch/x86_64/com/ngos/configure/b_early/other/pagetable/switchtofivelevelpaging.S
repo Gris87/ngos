@@ -1,5 +1,5 @@
 #include <buildconfig.h>
-#include <com/ngos/shared/common/cpu/flags.h>
+#include <com/ngos/shared/common/cpu/lib/flags.h>
 #include <com/ngos/shared/common/gdt/segments.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
                                                                                 #

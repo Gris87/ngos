@@ -3,7 +3,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#include <com/ngos/shared/common/cpu/x86bugword.h>                                                                                                                                                       // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/x86bugword.h>                                                                                                                                                       // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green

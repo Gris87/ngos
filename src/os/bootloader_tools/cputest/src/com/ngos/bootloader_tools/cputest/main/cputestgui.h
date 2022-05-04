@@ -6,7 +6,7 @@
 #include <com/ngos/bootloader_tools/cputest/other/testtype.h>
 #include <com/ngos/shared/common/bootparams/bootparams.h>
 #include <com/ngos/shared/common/containers/arraylist.h>
-#include <com/ngos/shared/common/cpu/x86feature.h>
+#include <com/ngos/shared/common/cpu/lib/x86feature.h>
 #include <com/ngos/shared/common/gui/widgets/controls/button.h>
 #include <com/ngos/shared/common/gui/widgets/controls/tablewidget.h>
 #include <com/ngos/shared/common/gui/widgets/controls/tabwidget.h>

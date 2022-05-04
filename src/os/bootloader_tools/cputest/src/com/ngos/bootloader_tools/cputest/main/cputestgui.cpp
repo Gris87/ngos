@@ -3,7 +3,7 @@
 #include <com/ngos/bootloader_tools/cputest/main/cputest.h>
 #include <com/ngos/bootloader_tools/cputest/tests/testbase.h>
 #include <com/ngos/shared/common/cpu/cpu.h>
-#include <com/ngos/shared/common/cpu/generated/x86featuresnames.h>
+#include <com/ngos/shared/common/cpu/lib/generated/x86featuresnames.h>
 #include <com/ngos/shared/common/graphics/graphics.h>
 #include <com/ngos/shared/common/gui/gui.h>
 #include <com/ngos/shared/common/gui/widgets/misc/labelwidget.h>

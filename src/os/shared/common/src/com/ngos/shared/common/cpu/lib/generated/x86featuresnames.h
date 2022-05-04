@@ -3,7 +3,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#include <com/ngos/shared/common/cpu/x86featureword.h>                                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/x86featureword.h>                                                                                                                                                   // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green

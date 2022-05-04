@@ -3,10 +3,10 @@
 
 
 
-#include <com/ngos/shared/common/cpu/cpufamily.h>
-#include <com/ngos/shared/common/cpu/cpuvendor.h>
-#include <com/ngos/shared/common/cpu/x86bug.h>
-#include <com/ngos/shared/common/cpu/x86feature.h>
+#include <com/ngos/shared/common/cpu/lib/cpufamily.h>
+#include <com/ngos/shared/common/cpu/lib/cpuvendor.h>
+#include <com/ngos/shared/common/cpu/lib/x86bug.h>
+#include <com/ngos/shared/common/cpu/lib/x86feature.h>
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/ngos/types.h>
 

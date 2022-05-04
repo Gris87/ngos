@@ -3,7 +3,7 @@
 
 
 
-#include <com/ngos/shared/common/cpu/cpuvendor.h>
+#include <com/ngos/shared/common/cpu/lib/cpuvendor.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>

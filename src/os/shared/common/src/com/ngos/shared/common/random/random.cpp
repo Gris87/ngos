@@ -2,7 +2,7 @@
                                                                                                                                                                                                          // Colorize: green
 #include <com/ngos/shared/common/asm/asmutils.h>                                                                                                                                                         // Colorize: green
 #include <com/ngos/shared/common/cpu/cpu.h>                                                                                                                                                              // Colorize: green
-#include <com/ngos/shared/common/cpu/x86feature.h>                                                                                                                                                       // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/x86feature.h>                                                                                                                                                       // Colorize: green
 #include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
 #include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
                                                                                                                                                                                                          // Colorize: green

@@ -2,7 +2,7 @@
 
 #include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/cpu/cpu.h>
-#include <com/ngos/shared/common/cpu/flags.h>
+#include <com/ngos/shared/common/cpu/lib/flags.h>
 #include <com/ngos/shared/uefibase/uefi/uefiassert.h>
 #include <com/ngos/shared/uefibase/uefi/uefilog.h>
 

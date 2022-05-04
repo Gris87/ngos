@@ -3,7 +3,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#include <com/ngos/shared/common/cpu/cpufamily.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/cpufamily.h>                                                                                                                                                        // Colorize: green
 #include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
 #include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
 #include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green

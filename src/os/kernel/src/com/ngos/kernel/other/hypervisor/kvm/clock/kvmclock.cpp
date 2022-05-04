@@ -2,7 +2,7 @@
 
 #include <com/ngos/kernel/other/cpu/hotplug/cpuhotplug.h>
 #include <com/ngos/kernel/other/hypervisor/kvm/kvm.h>
-#include <com/ngos/shared/common/cpu/msr/msrregisters.h>
+#include <com/ngos/shared/common/msr/msrregisters.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 
