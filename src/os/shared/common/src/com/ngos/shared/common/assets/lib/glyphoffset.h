@@ -1,5 +1,5 @@
-#ifndef COM_NGOS_SHARED_ASSETS_CONSOLE_LIB_GLYPHOFFSET_H                                                                                                                                                 // Colorize: green
-#define COM_NGOS_SHARED_ASSETS_CONSOLE_LIB_GLYPHOFFSET_H                                                                                                                                                 // Colorize: green
+#ifndef COM_NGOS_SHARED_COMMON_ASSETS_LIB_GLYPHOFFSET_H                                                                                                                                                 // Colorize: green
+#define COM_NGOS_SHARED_COMMON_ASSETS_LIB_GLYPHOFFSET_H                                                                                                                                                 // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -14,4 +14,4 @@ struct GlyphOffset                                                              
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#endif // COM_NGOS_SHARED_ASSETS_CONSOLE_LIB_GLYPHOFFSET_H                                                                                                                                               // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_ASSETS_LIB_GLYPHOFFSET_H                                                                                                                                               // Colorize: green
