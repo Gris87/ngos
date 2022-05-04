@@ -7,6 +7,8 @@
 #include <com/ngos/shared/common/asm/bitutils.h>
 #include <com/ngos/shared/common/assets/assets.h>
 #include <com/ngos/shared/common/assets/lib/assetentry.h>
+#include <com/ngos/shared/common/assets/lib/glyphdata.h>
+#include <com/ngos/shared/common/assets/lib/glyphoffset.h>
 #include <com/ngos/shared/common/bootparams/bootparams.h>
 #include <com/ngos/shared/common/bootparams/lib/kernelinfo.h>
 #include <com/ngos/shared/common/bootparams/lib/memorymapentry.h>
@@ -20,7 +22,6 @@
 #include <com/ngos/shared/common/checksum/md5.h>
 #include <com/ngos/shared/common/console/console.h>
 #include <com/ngos/shared/common/console/graphicalconsole.h>
-#include <com/ngos/shared/common/console/lib/glyphdata.h>
 #include <com/ngos/shared/common/containers/arraylist.h>
 #include <com/ngos/shared/common/containers/list.h>
 #include <com/ngos/shared/common/containers/map.h>
@@ -1523,6 +1524,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(GdtDescriptor),                                                     8);
         TEST_ASSERT_EQUALS(sizeof(GdtRegister),                                                       10);
         TEST_ASSERT_EQUALS(sizeof(GlyphData),                                                         5);
+        TEST_ASSERT_EQUALS(sizeof(GlyphOffset),                                                       2);
         TEST_ASSERT_EQUALS(sizeof(GptData),                                                           24);
         TEST_ASSERT_EQUALS(sizeof(GptEntry),                                                          128);
         TEST_ASSERT_EQUALS(sizeof(GptHeader),                                                         96);

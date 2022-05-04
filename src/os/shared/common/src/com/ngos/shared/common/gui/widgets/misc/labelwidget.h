@@ -5,6 +5,7 @@
 
 #include <com/ngos/shared/common/gui/widgets/widget.h>
 
+#include <com/ngos/shared/common/assets/lib/glyphoffset.h>
 #include <com/ngos/shared/common/gui/other/horizontalalignment.h>
 #include <com/ngos/shared/common/gui/other/verticalalignment.h>
 
@@ -35,7 +36,7 @@ private:
     i64 applyVerticalAlignment(i64 fullHeight, i64 targetHeight); // TEST: NO
 
     const char8         *mText;
-    u16                 *mGlyphOffsets;
+    GlyphOffset         *mGlyphOffsets;
     RgbaPixel            mColor;
     HorizontalAlignment  mHorizontalAlignment;
     VerticalAlignment    mVerticalAlignment;

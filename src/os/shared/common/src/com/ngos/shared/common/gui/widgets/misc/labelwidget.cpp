@@ -1,7 +1,7 @@
 #include "labelwidget.h"
 
 #include <com/ngos/shared/common/assets/assets.h>
-#include <com/ngos/shared/common/console/lib/glyphdata.h>
+#include <com/ngos/shared/common/assets/lib/glyphdata.h>
 #include <com/ngos/shared/common/graphics/graphics.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
@@ -32,7 +32,7 @@ LabelWidget::LabelWidget(const char8 *text, Widget *parent)
     AssetEntry *asset = Assets::getAssetEntry("glyphs/gui.bin");
     COMMON_TEST_ASSERT(asset);
 
-    mGlyphOffsets = (u16 *)asset->content;
+    mGlyphOffsets = reinterpret_cast<GlyphOffset *>(asset->content);
 }
 
 LabelWidget::~LabelWidget()
@@ -79,7 +79,7 @@ NgosStatus LabelWidget::repaint()
         else
         if (ch >= 0x20 && ch < 0x7F)
         {
-            GlyphData *glyphData = (GlyphData *)((address_t)mGlyphOffsets + mGlyphOffsets[ch - 0x20]);
+            GlyphData *glyphData = (GlyphData *)((address_t)mGlyphOffsets + mGlyphOffsets[ch - 0x20].offset);
 
             curX += glyphData->width;
 
@@ -154,7 +154,7 @@ NgosStatus LabelWidget::repaint()
             else
             if (ch >= 0x20 && ch < 0x7F)
             {
-                GlyphData *glyphData = (GlyphData *)((address_t)mGlyphOffsets + mGlyphOffsets[ch - 0x20]);
+                GlyphData *glyphData = (GlyphData *)((address_t)mGlyphOffsets + mGlyphOffsets[ch - 0x20].offset);
 
 
 
