@@ -13,6 +13,7 @@
 enum class PciSubDevice14E41751: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_102809D4 = 0x102809D4,
     SUBDEVICE_14E45045 = 0x14E45045,
     SUBDEVICE_14E45250 = 0x14E45250,
     SUBDEVICE_14E4D142 = 0x14E4D142
@@ -29,6 +30,7 @@ inline const char8* enumToString(PciSubDevice14E41751 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice14E41751::NONE:               return "NONE";
+        case PciSubDevice14E41751::SUBDEVICE_102809D4: return "SUBDEVICE_102809D4";
         case PciSubDevice14E41751::SUBDEVICE_14E45045: return "SUBDEVICE_14E45045";
         case PciSubDevice14E41751::SUBDEVICE_14E45250: return "SUBDEVICE_14E45250";
         case PciSubDevice14E41751::SUBDEVICE_14E4D142: return "SUBDEVICE_14E4D142";
@@ -62,6 +64,7 @@ inline const char8* enumToHumanString(PciSubDevice14E41751 subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice14E41751::SUBDEVICE_102809D4: return "PowerEdge XR11/XR12 LOM";
         case PciSubDevice14E41751::SUBDEVICE_14E45045: return "NetXtreme-E BCM57504 4x25G OCP3.0";
         case PciSubDevice14E41751::SUBDEVICE_14E45250: return "NetXtreme-E BCM57504 4x25G KR Mezz";
         case PciSubDevice14E41751::SUBDEVICE_14E4D142: return "NetXtreme-E P425D BCM57504 4x25G SFP28 PCIE";

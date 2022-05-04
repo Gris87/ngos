@@ -13,7 +13,8 @@
 enum class PciSubDevice102215E6: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
-    SUBDEVICE_102215E4 = 0x102215E4
+    SUBDEVICE_102215E4 = 0x102215E4,
+    SUBDEVICE_EA50CE19 = 0xEA50CE19
 };
 
 
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciSubDevice102215E6 subDevice) // TEST: NO
     {
         case PciSubDevice102215E6::NONE:               return "NONE";
         case PciSubDevice102215E6::SUBDEVICE_102215E4: return "SUBDEVICE_102215E4";
+        case PciSubDevice102215E6::SUBDEVICE_EA50CE19: return "SUBDEVICE_EA50CE19";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice102215E6 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice102215E6::SUBDEVICE_102215E4: return "Raven/Raven2/Renoir Sensor Fusion Hub";
+        case PciSubDevice102215E6::SUBDEVICE_EA50CE19: return "mCOM10-L1900";
 
         default: return "Unknown device";
     }

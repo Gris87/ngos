@@ -49,6 +49,7 @@ enum class PciSubDevice80861521: u32 // Ignore CppEnumVerifier
     SUBDEVICE_193D1080 = 0x193D1080,
     SUBDEVICE_1BD4001D = 0x1BD4001D,
     SUBDEVICE_1BD40035 = 0x1BD40035,
+    SUBDEVICE_1BD40066 = 0x1BD40066,
     SUBDEVICE_80860001 = 0x80860001,
     SUBDEVICE_80860002 = 0x80860002,
     SUBDEVICE_80860003 = 0x80860003,
@@ -56,6 +57,7 @@ enum class PciSubDevice80861521: u32 // Ignore CppEnumVerifier
     SUBDEVICE_808600A2 = 0x808600A2,
     SUBDEVICE_808600A3 = 0x808600A3,
     SUBDEVICE_808600AA = 0x808600AA,
+    SUBDEVICE_80864017 = 0x80864017,
     SUBDEVICE_80865001 = 0x80865001,
     SUBDEVICE_80865002 = 0x80865002,
     SUBDEVICE_80865003 = 0x80865003
@@ -108,6 +110,7 @@ inline const char8* enumToString(PciSubDevice80861521 subDevice) // TEST: NO
         case PciSubDevice80861521::SUBDEVICE_193D1080: return "SUBDEVICE_193D1080";
         case PciSubDevice80861521::SUBDEVICE_1BD4001D: return "SUBDEVICE_1BD4001D";
         case PciSubDevice80861521::SUBDEVICE_1BD40035: return "SUBDEVICE_1BD40035";
+        case PciSubDevice80861521::SUBDEVICE_1BD40066: return "SUBDEVICE_1BD40066";
         case PciSubDevice80861521::SUBDEVICE_80860001: return "SUBDEVICE_80860001";
         case PciSubDevice80861521::SUBDEVICE_80860002: return "SUBDEVICE_80860002";
         case PciSubDevice80861521::SUBDEVICE_80860003: return "SUBDEVICE_80860003";
@@ -115,6 +118,7 @@ inline const char8* enumToString(PciSubDevice80861521 subDevice) // TEST: NO
         case PciSubDevice80861521::SUBDEVICE_808600A2: return "SUBDEVICE_808600A2";
         case PciSubDevice80861521::SUBDEVICE_808600A3: return "SUBDEVICE_808600A3";
         case PciSubDevice80861521::SUBDEVICE_808600AA: return "SUBDEVICE_808600AA";
+        case PciSubDevice80861521::SUBDEVICE_80864017: return "SUBDEVICE_80864017";
         case PciSubDevice80861521::SUBDEVICE_80865001: return "SUBDEVICE_80865001";
         case PciSubDevice80861521::SUBDEVICE_80865002: return "SUBDEVICE_80865002";
         case PciSubDevice80861521::SUBDEVICE_80865003: return "SUBDEVICE_80865003";
@@ -184,6 +188,7 @@ inline const char8* enumToHumanString(PciSubDevice80861521 subDevice) // TEST: N
         case PciSubDevice80861521::SUBDEVICE_193D1080: return "NIC-ETH360T-3S-4P";
         case PciSubDevice80861521::SUBDEVICE_1BD4001D: return "1G base-T QP EP014Ti1 Adapter";
         case PciSubDevice80861521::SUBDEVICE_1BD40035: return "1G base-T QP EP014Ti1 Adapter";
+        case PciSubDevice80861521::SUBDEVICE_1BD40066: return "F014I350";
         case PciSubDevice80861521::SUBDEVICE_80860001: return "Ethernet Server Adapter I350-T4";
         case PciSubDevice80861521::SUBDEVICE_80860002: return "Ethernet Server Adapter I350-T2";
         case PciSubDevice80861521::SUBDEVICE_80860003: return "Ethernet Network Adapter I350-T4 for OCP NIC 3.0";
@@ -191,6 +196,7 @@ inline const char8* enumToHumanString(PciSubDevice80861521 subDevice) // TEST: N
         case PciSubDevice80861521::SUBDEVICE_808600A2: return "Ethernet Server Adapter I350-T2";
         case PciSubDevice80861521::SUBDEVICE_808600A3: return "Ethernet Network Adapter I350-T4 for OCP NIC 3.0";
         case PciSubDevice80861521::SUBDEVICE_808600AA: return "Ethernet Network Adapter I350-T4 for OCP NIC 3.0";
+        case PciSubDevice80861521::SUBDEVICE_80864017: return "Ethernet Network Adapter I350-T4 for OCP NIC 3.0";
         case PciSubDevice80861521::SUBDEVICE_80865001: return "Ethernet Server Adapter I350-T4";
         case PciSubDevice80861521::SUBDEVICE_80865002: return "Ethernet Server Adapter I350-T2";
         case PciSubDevice80861521::SUBDEVICE_80865003: return "Ethernet 1G 4P I350-t OCP";

@@ -13,9 +13,11 @@
 enum class PciSubDevice1002731F: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_10020B36 = 0x10020B36,
     SUBDEVICE_14582313 = 0x14582313,
     SUBDEVICE_16825701 = 0x16825701,
     SUBDEVICE_18495120 = 0x18495120,
+    SUBDEVICE_1DA2E409 = 0x1DA2E409,
     SUBDEVICE_1DA2E411 = 0x1DA2E411
 };
 
@@ -30,9 +32,11 @@ inline const char8* enumToString(PciSubDevice1002731F subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice1002731F::NONE:               return "NONE";
+        case PciSubDevice1002731F::SUBDEVICE_10020B36: return "SUBDEVICE_10020B36";
         case PciSubDevice1002731F::SUBDEVICE_14582313: return "SUBDEVICE_14582313";
         case PciSubDevice1002731F::SUBDEVICE_16825701: return "SUBDEVICE_16825701";
         case PciSubDevice1002731F::SUBDEVICE_18495120: return "SUBDEVICE_18495120";
+        case PciSubDevice1002731F::SUBDEVICE_1DA2E409: return "SUBDEVICE_1DA2E409";
         case PciSubDevice1002731F::SUBDEVICE_1DA2E411: return "SUBDEVICE_1DA2E411";
 
         default: return "UNKNOWN";
@@ -64,9 +68,11 @@ inline const char8* enumToHumanString(PciSubDevice1002731F subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice1002731F::SUBDEVICE_10020B36: return "Reference RX 5700 XT";
         case PciSubDevice1002731F::SUBDEVICE_14582313: return "Radeon RX 5700 XT Gaming OC";
         case PciSubDevice1002731F::SUBDEVICE_16825701: return "RX 5700 XT RAW II";
         case PciSubDevice1002731F::SUBDEVICE_18495120: return "Radeon RX 5600 XT";
+        case PciSubDevice1002731F::SUBDEVICE_1DA2E409: return "Sapphire Technology Limited Navi 10 [Radeon RX 5600 OEM/5600 XT / 5700/5700 XT]";
         case PciSubDevice1002731F::SUBDEVICE_1DA2E411: return "Radeon RX 5600 XT";
 
         default: return "Unknown device";

@@ -1,59 +1,43 @@
-// This file generated with the code_generator
-// Please do not modify it manually
-#include "x86bugsnames.h"
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/utils.h>
-
-
-
-const char8* x86BugsNames[(enum_t)x86BugWord::MAXIMUM * 32];
-
-
-
-NgosStatus initX86BugsNames()
-{
-    COMMON_LT((""));
-
-
-
-    // word 0
-
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 0)]  = "test";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 1)]  = "cpu_meltdown";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 2)]  = "spectre_v1";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 3)]  = "spectre_v2";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 4)]  = "spec_store_bypass";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 5)]  = "l1tf";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 6)]  = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 7)]  = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 8)]  = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 9)]  = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 10)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 11)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 12)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 13)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 14)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 15)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 16)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 17)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 18)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 19)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 20)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 21)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 22)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 23)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 24)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 25)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 26)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 27)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 28)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 29)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 30)] = "";
-    x86BugsNames[WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 31)] = "";
-
-
-
-    return NgosStatus::OK;
-}
+// This file generated with the code_generator                                                                                                                                                           // Colorize: green
+// Please do not modify it manually                                                                                                                                                                      // Colorize: green
+#include "x86bugsnames.h"                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const char8* x86BugsNames[static_cast<enum_t>(x86BugWord::MAXIMUM) * 32] =                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // word 0                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "test",                  // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 0)                                                                                                                               // Colorize: green
+    "cpu_meltdown",          // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 1)                                                                                                                               // Colorize: green
+    "spectre_v1",            // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 2)                                                                                                                               // Colorize: green
+    "spectre_v2",            // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 3)                                                                                                                               // Colorize: green
+    "spec_store_bypass",     // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 4)                                                                                                                               // Colorize: green
+    "l1tf",                  // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 5)                                                                                                                               // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 6)                                                                                                                               // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 7)                                                                                                                               // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 8)                                                                                                                               // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 9)                                                                                                                               // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 10)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 11)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 12)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 13)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 14)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 15)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 16)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 17)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 18)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 19)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 20)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 21)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 22)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 23)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 24)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 25)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 26)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 27)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 28)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 29)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 30)                                                                                                                              // Colorize: green
+    "",                      // WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 31)                                                                                                                              // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green

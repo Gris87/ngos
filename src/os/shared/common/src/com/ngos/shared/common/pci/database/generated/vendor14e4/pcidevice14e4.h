@@ -360,6 +360,7 @@ enum class PciDevice14E4: u16 // Ignore CppEnumVerifier
     DEVICE_441F = 0x441F,
     DEVICE_4420 = 0x4420,
     DEVICE_4421 = 0x4421,
+    DEVICE_4425 = 0x4425,
     DEVICE_4430 = 0x4430,
     DEVICE_4432 = 0x4432,
     DEVICE_4464 = 0x4464,
@@ -415,6 +416,7 @@ enum class PciDevice14E4: u16 // Ignore CppEnumVerifier
     DEVICE_9027 = 0x9027,
     DEVICE_A8D8 = 0xA8D8,
     DEVICE_AA52 = 0xAA52,
+    DEVICE_B080 = 0xB080,
     DEVICE_B302 = 0xB302,
     DEVICE_B334 = 0xB334,
     DEVICE_B370 = 0xB370,
@@ -433,6 +435,10 @@ enum class PciDevice14E4: u16 // Ignore CppEnumVerifier
     DEVICE_B880 = 0xB880,
     DEVICE_B960 = 0xB960,
     DEVICE_B990 = 0xB990,
+    DEVICE_B996 = 0xB996,
+    DEVICE_B998 = 0xB998,
+    DEVICE_B999 = 0xB999,
+    DEVICE_C909 = 0xC909,
     DEVICE_D802 = 0xD802,
     DEVICE_D804 = 0xD804
 };
@@ -700,6 +706,7 @@ inline const char8* enumToString(PciDevice14E4 device) // TEST: NO
         case PciDevice14E4::DEVICE_441F: return "DEVICE_441F";
         case PciDevice14E4::DEVICE_4420: return "DEVICE_4420";
         case PciDevice14E4::DEVICE_4421: return "DEVICE_4421";
+        case PciDevice14E4::DEVICE_4425: return "DEVICE_4425";
         case PciDevice14E4::DEVICE_4430: return "DEVICE_4430";
         case PciDevice14E4::DEVICE_4432: return "DEVICE_4432";
         case PciDevice14E4::DEVICE_4464: return "DEVICE_4464";
@@ -755,6 +762,7 @@ inline const char8* enumToString(PciDevice14E4 device) // TEST: NO
         case PciDevice14E4::DEVICE_9027: return "DEVICE_9027";
         case PciDevice14E4::DEVICE_A8D8: return "DEVICE_A8D8";
         case PciDevice14E4::DEVICE_AA52: return "DEVICE_AA52";
+        case PciDevice14E4::DEVICE_B080: return "DEVICE_B080";
         case PciDevice14E4::DEVICE_B302: return "DEVICE_B302";
         case PciDevice14E4::DEVICE_B334: return "DEVICE_B334";
         case PciDevice14E4::DEVICE_B370: return "DEVICE_B370";
@@ -773,6 +781,10 @@ inline const char8* enumToString(PciDevice14E4 device) // TEST: NO
         case PciDevice14E4::DEVICE_B880: return "DEVICE_B880";
         case PciDevice14E4::DEVICE_B960: return "DEVICE_B960";
         case PciDevice14E4::DEVICE_B990: return "DEVICE_B990";
+        case PciDevice14E4::DEVICE_B996: return "DEVICE_B996";
+        case PciDevice14E4::DEVICE_B998: return "DEVICE_B998";
+        case PciDevice14E4::DEVICE_B999: return "DEVICE_B999";
+        case PciDevice14E4::DEVICE_C909: return "DEVICE_C909";
         case PciDevice14E4::DEVICE_D802: return "DEVICE_D802";
         case PciDevice14E4::DEVICE_D804: return "DEVICE_D804";
 
@@ -983,7 +995,7 @@ inline const char8* enumToHumanString(PciDevice14E4 device) // TEST: NO
         case PciDevice14E4::DEVICE_1802: return "BCM57508 NetXtreme-E Ethernet Partition";
         case PciDevice14E4::DEVICE_1803: return "BCM57502 NetXtreme-E RDMA Partition";
         case PciDevice14E4::DEVICE_1804: return "BCM57504 NetXtreme-E RDMA Partition";
-        case PciDevice14E4::DEVICE_1805: return "BCM57508 NetXtreme-E NGM2100D 2x100G KR Mezz RDMA Partition";
+        case PciDevice14E4::DEVICE_1805: return "BCM57508 NetXtreme-E RDMA Partition";
         case PciDevice14E4::DEVICE_1806: return "BCM5750X NetXtreme-E Ethernet Virtual Function";
         case PciDevice14E4::DEVICE_1807: return "BCM5750X NetXtreme-E RDMA Virtual Function";
         case PciDevice14E4::DEVICE_1808: return "BCM5750X NetXtreme-E Ethernet Virtual Function";
@@ -1057,6 +1069,7 @@ inline const char8* enumToHumanString(PciDevice14E4 device) // TEST: NO
         case PciDevice14E4::DEVICE_441F: return "BCM4361 802.11ac Dual-Band Wireless Network Controller";
         case PciDevice14E4::DEVICE_4420: return "BCM4361 802.11ac 2.4 GHz Wireless Network Controller";
         case PciDevice14E4::DEVICE_4421: return "BCM4361 802.11ac 5 GHz Wireless Network Controller";
+        case PciDevice14E4::DEVICE_4425: return "BRCM4378 Wireless Network Adapter";
         case PciDevice14E4::DEVICE_4430: return "BCM44xx CardBus iLine32 HomePNA 2.0";
         case PciDevice14E4::DEVICE_4432: return "BCM4432 CardBus 10/100BaseT";
         case PciDevice14E4::DEVICE_4464: return "BCM4364 802.11ac Wireless Network Adapter";
@@ -1112,6 +1125,7 @@ inline const char8* enumToHumanString(PciDevice14E4 device) // TEST: NO
         case PciDevice14E4::DEVICE_9027: return "CN99xx [ThunderX2] Integrated AHCI/SATA 3 Host Controller";
         case PciDevice14E4::DEVICE_A8D8: return "BCM43224/5 Wireless Network Adapter";
         case PciDevice14E4::DEVICE_AA52: return "BCM43602 802.11ac Wireless LAN SoC";
+        case PciDevice14E4::DEVICE_B080: return "BCM56080 Firelight2 Switch ASIC";
         case PciDevice14E4::DEVICE_B302: return "BCM56302 StrataXGS 24x1GE 2x10GE Switch Controller";
         case PciDevice14E4::DEVICE_B334: return "BCM56334 StrataXGS 24x1GE 4x10GE Switch Controller";
         case PciDevice14E4::DEVICE_B370: return "BCM56370 Switch ASIC";
@@ -1130,6 +1144,10 @@ inline const char8* enumToHumanString(PciDevice14E4 device) // TEST: NO
         case PciDevice14E4::DEVICE_B880: return "BCM56880 Switch ASIC";
         case PciDevice14E4::DEVICE_B960: return "Broadcom BCM56960 Switch ASIC";
         case PciDevice14E4::DEVICE_B990: return "BCM56990 Switch ASIC";
+        case PciDevice14E4::DEVICE_B996: return "BCM56996 Tomahawk4G 106G Switch ASIC";
+        case PciDevice14E4::DEVICE_B998: return "BCM56998 Tomahawk4GT 106G Switch ASIC";
+        case PciDevice14E4::DEVICE_B999: return "BCM56999 Tomahawk4D 106G Switch ASIC";
+        case PciDevice14E4::DEVICE_C909: return "BCM78909 Switch ASIC";
         case PciDevice14E4::DEVICE_D802: return "BCM58802 Stingray 50Gb Ethernet SoC";
         case PciDevice14E4::DEVICE_D804: return "BCM58804 Stingray 100Gb Ethernet SoC";
 
@@ -1399,6 +1417,7 @@ inline const char8* enumToHumanString(PciDevice14E4 device, u16 subsystemVendorI
         case PciDevice14E4::DEVICE_441F: return "Unknown device";
         case PciDevice14E4::DEVICE_4420: return "Unknown device";
         case PciDevice14E4::DEVICE_4421: return "Unknown device";
+        case PciDevice14E4::DEVICE_4425: return "Unknown device";
         case PciDevice14E4::DEVICE_4430: return "Unknown device";
         case PciDevice14E4::DEVICE_4432: return "Unknown device";
         case PciDevice14E4::DEVICE_4464: return "Unknown device";
@@ -1454,6 +1473,7 @@ inline const char8* enumToHumanString(PciDevice14E4 device, u16 subsystemVendorI
         case PciDevice14E4::DEVICE_9027: return "Unknown device";
         case PciDevice14E4::DEVICE_A8D8: return "Unknown device";
         case PciDevice14E4::DEVICE_AA52: return "Unknown device";
+        case PciDevice14E4::DEVICE_B080: return "Unknown device";
         case PciDevice14E4::DEVICE_B302: return "Unknown device";
         case PciDevice14E4::DEVICE_B334: return "Unknown device";
         case PciDevice14E4::DEVICE_B370: return "Unknown device";
@@ -1472,6 +1492,10 @@ inline const char8* enumToHumanString(PciDevice14E4 device, u16 subsystemVendorI
         case PciDevice14E4::DEVICE_B880: return "Unknown device";
         case PciDevice14E4::DEVICE_B960: return "Unknown device";
         case PciDevice14E4::DEVICE_B990: return "Unknown device";
+        case PciDevice14E4::DEVICE_B996: return "Unknown device";
+        case PciDevice14E4::DEVICE_B998: return "Unknown device";
+        case PciDevice14E4::DEVICE_B999: return "Unknown device";
+        case PciDevice14E4::DEVICE_C909: return "Unknown device";
         case PciDevice14E4::DEVICE_D802: return enumToHumanString((PciSubDevice14E4D802)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice14E4::DEVICE_D804: return "Unknown device";
 

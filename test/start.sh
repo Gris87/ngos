@@ -1,7 +1,7 @@
 #!/bin/bash
                                                                                                                                                                                                          # Colorize: green
 # This script starts kernel testing                                                                                                                                                                      # Colorize: green
-# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Author: Maxim Shvetsov                                                                                                                                                                                  # Colorize: green
 # Usage: ./start.sh                                                                                                                                                                                      # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green

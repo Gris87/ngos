@@ -103,6 +103,7 @@ enum class PciDevice1014: u16 // Ignore CppEnumVerifier
     DEVICE_021B = 0x021B,
     DEVICE_021C = 0x021C,
     DEVICE_0233 = 0x0233,
+    DEVICE_025A = 0x025A,
     DEVICE_028C = 0x028C,
     DEVICE_02A1 = 0x02A1,
     DEVICE_02BD = 0x02BD,
@@ -206,6 +207,7 @@ inline const char8* enumToString(PciDevice1014 device) // TEST: NO
         case PciDevice1014::DEVICE_021B: return "DEVICE_021B";
         case PciDevice1014::DEVICE_021C: return "DEVICE_021C";
         case PciDevice1014::DEVICE_0233: return "DEVICE_0233";
+        case PciDevice1014::DEVICE_025A: return "DEVICE_025A";
         case PciDevice1014::DEVICE_028C: return "DEVICE_028C";
         case PciDevice1014::DEVICE_02A1: return "DEVICE_02A1";
         case PciDevice1014::DEVICE_02BD: return "DEVICE_02BD";
@@ -326,6 +328,7 @@ inline const char8* enumToHumanString(PciDevice1014 device) // TEST: NO
         case PciDevice1014::DEVICE_021B: return "GXT6500P Graphics Adapter";
         case PciDevice1014::DEVICE_021C: return "GXT4500P Graphics Adapter";
         case PciDevice1014::DEVICE_0233: return "GXT135P Graphics Adapter";
+        case PciDevice1014::DEVICE_025A: return "Drone card";
         case PciDevice1014::DEVICE_028C: return "Citrine chipset SCSI controller";
         case PciDevice1014::DEVICE_02A1: return "Calgary PCI-X Host Bridge";
         case PciDevice1014::DEVICE_02BD: return "Obsidian chipset SCSI controller";
@@ -431,6 +434,7 @@ inline const char8* enumToHumanString(PciDevice1014 device, u16 subsystemVendorI
         case PciDevice1014::DEVICE_021B: return "Unknown device";
         case PciDevice1014::DEVICE_021C: return "Unknown device";
         case PciDevice1014::DEVICE_0233: return "Unknown device";
+        case PciDevice1014::DEVICE_025A: return "Unknown device";
         case PciDevice1014::DEVICE_028C: return enumToHumanString((PciSubDevice1014028C)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1014::DEVICE_02A1: return "Unknown device";
         case PciDevice1014::DEVICE_02BD: return enumToHumanString((PciSubDevice101402BD)(subsystemVendorID << 16 | subDeviceId));

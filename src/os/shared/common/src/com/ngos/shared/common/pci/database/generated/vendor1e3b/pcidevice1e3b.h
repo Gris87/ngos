@@ -6,6 +6,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1e3b/pcisubdevice1e3b0600.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1e3b/pcisubdevice1e3b1098.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
@@ -14,6 +15,7 @@
 enum class PciDevice1E3B: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
+    DEVICE_0600 = 0x0600,
     DEVICE_1098 = 0x1098
 };
 
@@ -28,6 +30,7 @@ inline const char8* enumToString(PciDevice1E3B device) // TEST: NO
     switch (device)
     {
         case PciDevice1E3B::NONE:        return "NONE";
+        case PciDevice1E3B::DEVICE_0600: return "DEVICE_0600";
         case PciDevice1E3B::DEVICE_1098: return "DEVICE_1098";
 
         default: return "UNKNOWN";
@@ -59,6 +62,7 @@ inline const char8* enumToHumanString(PciDevice1E3B device) // TEST: NO
 
     switch (device)
     {
+        case PciDevice1E3B::DEVICE_0600: return "NVMe SSD Controller DPU600";
         case PciDevice1E3B::DEVICE_1098: return "Haishen NVMe SSD";
 
         default: return "Unknown device";
@@ -75,6 +79,7 @@ inline const char8* enumToHumanString(PciDevice1E3B device, u16 subsystemVendorI
 
     switch (device)
     {
+        case PciDevice1E3B::DEVICE_0600: return enumToHumanString((PciSubDevice1E3B0600)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1E3B::DEVICE_1098: return enumToHumanString((PciSubDevice1E3B1098)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";

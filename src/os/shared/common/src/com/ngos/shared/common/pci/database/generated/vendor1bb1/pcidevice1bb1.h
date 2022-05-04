@@ -18,7 +18,8 @@ enum class PciDevice1BB1: u16 // Ignore CppEnumVerifier
     DEVICE_005D = 0x005D,
     DEVICE_0100 = 0x0100,
     DEVICE_5012 = 0x5012,
-    DEVICE_5016 = 0x5016
+    DEVICE_5016 = 0x5016,
+    DEVICE_5018 = 0x5018
 };
 
 
@@ -36,6 +37,7 @@ inline const char8* enumToString(PciDevice1BB1 device) // TEST: NO
         case PciDevice1BB1::DEVICE_0100: return "DEVICE_0100";
         case PciDevice1BB1::DEVICE_5012: return "DEVICE_5012";
         case PciDevice1BB1::DEVICE_5016: return "DEVICE_5016";
+        case PciDevice1BB1::DEVICE_5018: return "DEVICE_5018";
 
         default: return "UNKNOWN";
     }
@@ -70,6 +72,7 @@ inline const char8* enumToHumanString(PciDevice1BB1 device) // TEST: NO
         case PciDevice1BB1::DEVICE_0100: return "Nytro Flash Storage";
         case PciDevice1BB1::DEVICE_5012: return "FireCuda 510 SSD";
         case PciDevice1BB1::DEVICE_5016: return "FireCuda 520 SSD";
+        case PciDevice1BB1::DEVICE_5018: return "FireCuda 530 SSD";
 
         default: return "Unknown device";
     }
@@ -89,6 +92,7 @@ inline const char8* enumToHumanString(PciDevice1BB1 device, u16 subsystemVendorI
         case PciDevice1BB1::DEVICE_0100: return enumToHumanString((PciSubDevice1BB10100)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1BB1::DEVICE_5012: return "Unknown device";
         case PciDevice1BB1::DEVICE_5016: return "Unknown device";
+        case PciDevice1BB1::DEVICE_5018: return "Unknown device";
 
         default: return "Unknown device";
     }

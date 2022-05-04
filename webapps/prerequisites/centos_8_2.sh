@@ -1,7 +1,7 @@
 #!/bin/bash
                                                                                                                                                                                                          # Colorize: green
 # This script helps to install webapps prerequisites on CentOS 8.2                                                                                                                                       # Colorize: green
-# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Author: Maxim Shvetsov                                                                                                                                                                                  # Colorize: green
 # Usage: sudo ./centos_8_2.sh                                                                                                                                                                            # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green

@@ -14,6 +14,7 @@ enum class PciDevice1A29: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_4338 = 0x4338,
+    DEVICE_43A0 = 0x43A0,
     DEVICE_4E36 = 0x4E36,
     DEVICE_4E37 = 0x4E37
 };
@@ -30,6 +31,7 @@ inline const char8* enumToString(PciDevice1A29 device) // TEST: NO
     {
         case PciDevice1A29::NONE:        return "NONE";
         case PciDevice1A29::DEVICE_4338: return "DEVICE_4338";
+        case PciDevice1A29::DEVICE_43A0: return "DEVICE_43A0";
         case PciDevice1A29::DEVICE_4E36: return "DEVICE_4E36";
         case PciDevice1A29::DEVICE_4E37: return "DEVICE_4E37";
 
@@ -63,6 +65,7 @@ inline const char8* enumToHumanString(PciDevice1A29 device) // TEST: NO
     switch (device)
     {
         case PciDevice1A29::DEVICE_4338: return "CP8 Content Processor ASIC";
+        case PciDevice1A29::DEVICE_43A0: return "CP9 Content Processor ASIC";
         case PciDevice1A29::DEVICE_4E36: return "NP6 Network Processor";
         case PciDevice1A29::DEVICE_4E37: return "NP7 Network Processor";
 

@@ -51,11 +51,13 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice10000087.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice1000008f.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice10000097.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100000a5.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100000ab.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100000ac.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100000af.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100000b2.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100000c4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100000c9.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100000ce.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100000cf.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100000d0.h>
@@ -78,6 +80,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100010e1.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100010e2.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100010e3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100010e6.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice10001960.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice1000c012.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -161,6 +164,7 @@ enum class PciDevice1000: u16 // Ignore CppEnumVerifier
     DEVICE_0095 = 0x0095,
     DEVICE_0096 = 0x0096,
     DEVICE_0097 = 0x0097,
+    DEVICE_00A5 = 0x00A5,
     DEVICE_00AB = 0x00AB,
     DEVICE_00AC = 0x00AC,
     DEVICE_00AE = 0x00AE,
@@ -230,7 +234,8 @@ enum class PciDevice1000: u16 // Ignore CppEnumVerifier
     DEVICE_3050 = 0x3050,
     DEVICE_6001 = 0x6001,
     DEVICE_C010 = 0xC010,
-    DEVICE_C012 = 0xC012
+    DEVICE_C012 = 0xC012,
+    DEVICE_C030 = 0xC030
 };
 
 
@@ -318,6 +323,7 @@ inline const char8* enumToString(PciDevice1000 device) // TEST: NO
         case PciDevice1000::DEVICE_0095: return "DEVICE_0095";
         case PciDevice1000::DEVICE_0096: return "DEVICE_0096";
         case PciDevice1000::DEVICE_0097: return "DEVICE_0097";
+        case PciDevice1000::DEVICE_00A5: return "DEVICE_00A5";
         case PciDevice1000::DEVICE_00AB: return "DEVICE_00AB";
         case PciDevice1000::DEVICE_00AC: return "DEVICE_00AC";
         case PciDevice1000::DEVICE_00AE: return "DEVICE_00AE";
@@ -388,6 +394,7 @@ inline const char8* enumToString(PciDevice1000 device) // TEST: NO
         case PciDevice1000::DEVICE_6001: return "DEVICE_6001";
         case PciDevice1000::DEVICE_C010: return "DEVICE_C010";
         case PciDevice1000::DEVICE_C012: return "DEVICE_C012";
+        case PciDevice1000::DEVICE_C030: return "DEVICE_C030";
 
         default: return "UNKNOWN";
     }
@@ -492,6 +499,7 @@ inline const char8* enumToHumanString(PciDevice1000 device) // TEST: NO
         case PciDevice1000::DEVICE_0095: return "SAS3108 PCI-Express Fusion-MPT SAS-3";
         case PciDevice1000::DEVICE_0096: return "SAS3004 PCI-Express Fusion-MPT SAS-3";
         case PciDevice1000::DEVICE_0097: return "SAS3008 PCI-Express Fusion-MPT SAS-3";
+        case PciDevice1000::DEVICE_00A5: return "Fusion-MPT 24GSAS/PCIe SAS40xx";
         case PciDevice1000::DEVICE_00AB: return "SAS3516 Fusion-MPT Tri-Mode RAID On Chip (ROC)";
         case PciDevice1000::DEVICE_00AC: return "SAS3416 Fusion-MPT Tri-Mode I/O Controller Chip (IOC)";
         case PciDevice1000::DEVICE_00AE: return "SAS3508 Fusion-MPT Tri-Mode RAID On Chip (ROC)";
@@ -562,6 +570,7 @@ inline const char8* enumToHumanString(PciDevice1000 device) // TEST: NO
         case PciDevice1000::DEVICE_6001: return "DX1 Multiformat Broadcast HD/SD Encoder/Decoder";
         case PciDevice1000::DEVICE_C010: return "PEX88048 50 lane, 50 port, PCI Express Gen 4.0 ExpressFabric Platform";
         case PciDevice1000::DEVICE_C012: return "PEX880xx PCIe Gen 4 Switch";
+        case PciDevice1000::DEVICE_C030: return "PEX890xx PCIe Gen 5 Switch";
 
         default: return "Unknown device";
     }
@@ -651,6 +660,7 @@ inline const char8* enumToHumanString(PciDevice1000 device, u16 subsystemVendorI
         case PciDevice1000::DEVICE_0095: return "Unknown device";
         case PciDevice1000::DEVICE_0096: return "Unknown device";
         case PciDevice1000::DEVICE_0097: return enumToHumanString((PciSubDevice10000097)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1000::DEVICE_00A5: return enumToHumanString((PciSubDevice100000A5)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1000::DEVICE_00AB: return enumToHumanString((PciSubDevice100000AB)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1000::DEVICE_00AC: return enumToHumanString((PciSubDevice100000AC)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1000::DEVICE_00AE: return "Unknown device";
@@ -667,7 +677,7 @@ inline const char8* enumToHumanString(PciDevice1000 device, u16 subsystemVendorI
         case PciDevice1000::DEVICE_00C6: return "Unknown device";
         case PciDevice1000::DEVICE_00C7: return "Unknown device";
         case PciDevice1000::DEVICE_00C8: return "Unknown device";
-        case PciDevice1000::DEVICE_00C9: return "Unknown device";
+        case PciDevice1000::DEVICE_00C9: return enumToHumanString((PciSubDevice100000C9)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1000::DEVICE_00CE: return enumToHumanString((PciSubDevice100000CE)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1000::DEVICE_00CF: return enumToHumanString((PciSubDevice100000CF)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1000::DEVICE_00D0: return enumToHumanString((PciSubDevice100000D0)(subsystemVendorID << 16 | subDeviceId));
@@ -714,13 +724,14 @@ inline const char8* enumToHumanString(PciDevice1000 device, u16 subsystemVendorI
         case PciDevice1000::DEVICE_10E3: return enumToHumanString((PciSubDevice100010E3)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1000::DEVICE_10E4: return "Unknown device";
         case PciDevice1000::DEVICE_10E5: return "Unknown device";
-        case PciDevice1000::DEVICE_10E6: return "Unknown device";
+        case PciDevice1000::DEVICE_10E6: return enumToHumanString((PciSubDevice100010E6)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1000::DEVICE_10E7: return "Unknown device";
         case PciDevice1000::DEVICE_1960: return enumToHumanString((PciSubDevice10001960)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1000::DEVICE_3050: return "Unknown device";
         case PciDevice1000::DEVICE_6001: return "Unknown device";
         case PciDevice1000::DEVICE_C010: return "Unknown device";
         case PciDevice1000::DEVICE_C012: return enumToHumanString((PciSubDevice1000C012)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1000::DEVICE_C030: return "Unknown device";
 
         default: return "Unknown device";
     }

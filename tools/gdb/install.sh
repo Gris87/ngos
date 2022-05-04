@@ -1,7 +1,7 @@
 #!/bin/bash
                                                                                                                                                                                                          # Colorize: green
 # This script helps to install useful GDB commands                                                                                                                                                       # Colorize: green
-# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Author: Maxim Shvetsov                                                                                                                                                                                  # Colorize: green
 # Usage: ./install.sh                                                                                                                                                                                    # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green

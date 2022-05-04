@@ -59,7 +59,7 @@ inline const char8* enumToHumanString(PciSubClass12 subClass) // TEST: NO
     switch (subClass)
     {
         case PciSubClass12::SUB_CLASS_00: return "Processing accelerators - Processing accelerators";
-        case PciSubClass12::SUB_CLASS_01: return "Processing accelerators - AI Inference Accelerator";
+        case PciSubClass12::SUB_CLASS_01: return "Processing accelerators - SNIA Smart Data Accelerator Interface (SDXI) controller";
 
         default: return "Processing accelerators";
     }

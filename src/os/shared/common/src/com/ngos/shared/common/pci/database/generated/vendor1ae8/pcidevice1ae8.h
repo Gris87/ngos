@@ -33,10 +33,14 @@ enum class PciDevice1AE8: u16 // Ignore CppEnumVerifier
     DEVICE_0A57 = 0x0A57,
     DEVICE_0A58 = 0x0A58,
     DEVICE_0A5A = 0x0A5A,
+    DEVICE_0A64 = 0x0A64,
     DEVICE_0B52 = 0x0B52,
     DEVICE_0B53 = 0x0B53,
     DEVICE_0B61 = 0x0B61,
     DEVICE_0B63 = 0x0B63,
+    DEVICE_0B64 = 0x0B64,
+    DEVICE_0B65 = 0x0B65,
+    DEVICE_0B66 = 0x0B66,
     DEVICE_0E42 = 0x0E42,
     DEVICE_0E44 = 0x0E44
 };
@@ -72,10 +76,14 @@ inline const char8* enumToString(PciDevice1AE8 device) // TEST: NO
         case PciDevice1AE8::DEVICE_0A57: return "DEVICE_0A57";
         case PciDevice1AE8::DEVICE_0A58: return "DEVICE_0A58";
         case PciDevice1AE8::DEVICE_0A5A: return "DEVICE_0A5A";
+        case PciDevice1AE8::DEVICE_0A64: return "DEVICE_0A64";
         case PciDevice1AE8::DEVICE_0B52: return "DEVICE_0B52";
         case PciDevice1AE8::DEVICE_0B53: return "DEVICE_0B53";
         case PciDevice1AE8::DEVICE_0B61: return "DEVICE_0B61";
         case PciDevice1AE8::DEVICE_0B63: return "DEVICE_0B63";
+        case PciDevice1AE8::DEVICE_0B64: return "DEVICE_0B64";
+        case PciDevice1AE8::DEVICE_0B65: return "DEVICE_0B65";
+        case PciDevice1AE8::DEVICE_0B66: return "DEVICE_0B66";
         case PciDevice1AE8::DEVICE_0E42: return "DEVICE_0E42";
         case PciDevice1AE8::DEVICE_0E44: return "DEVICE_0E44";
 
@@ -128,10 +136,14 @@ inline const char8* enumToHumanString(PciDevice1AE8 device) // TEST: NO
         case PciDevice1AE8::DEVICE_0A57: return "microEnable 5 AQ8-CXP6D";
         case PciDevice1AE8::DEVICE_0A58: return "microEnable 5 VD8-CL";
         case PciDevice1AE8::DEVICE_0A5A: return "microEnable 5 AD8-CL";
+        case PciDevice1AE8::DEVICE_0A64: return "imaWorx CXP-12 Quad";
         case PciDevice1AE8::DEVICE_0B52: return "mE5 Abacus 4G Base";
         case PciDevice1AE8::DEVICE_0B53: return "mE5 Abacus 4G Base II";
         case PciDevice1AE8::DEVICE_0B61: return "mE6 Abacus 4TG";
         case PciDevice1AE8::DEVICE_0B63: return "CXP-12 Interface Card 1C";
+        case PciDevice1AE8::DEVICE_0B64: return "CXP-12 Interface Card 4C";
+        case PciDevice1AE8::DEVICE_0B65: return "CXP-12 Interface Card 2C";
+        case PciDevice1AE8::DEVICE_0B66: return "CXP-12 LightBridge 2C";
         case PciDevice1AE8::DEVICE_0E42: return "microEnable IV AQ4-GE";
         case PciDevice1AE8::DEVICE_0E44: return "microEnable IV VQ4-GE";
 

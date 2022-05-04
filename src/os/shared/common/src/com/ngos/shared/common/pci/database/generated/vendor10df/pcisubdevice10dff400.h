@@ -23,6 +23,8 @@ enum class PciSubDevice10DFF400: u32 // Ignore CppEnumVerifier
     SUBDEVICE_10DFF411 = 0x10DFF411,
     SUBDEVICE_10DFF418 = 0x10DFF418,
     SUBDEVICE_10DFF419 = 0x10DFF419,
+    SUBDEVICE_10DFF421 = 0x10DFF421,
+    SUBDEVICE_10DFF422 = 0x10DFF422,
     SUBDEVICE_159002D5 = 0x159002D5,
     SUBDEVICE_159002D6 = 0x159002D6
 };
@@ -48,6 +50,8 @@ inline const char8* enumToString(PciSubDevice10DFF400 subDevice) // TEST: NO
         case PciSubDevice10DFF400::SUBDEVICE_10DFF411: return "SUBDEVICE_10DFF411";
         case PciSubDevice10DFF400::SUBDEVICE_10DFF418: return "SUBDEVICE_10DFF418";
         case PciSubDevice10DFF400::SUBDEVICE_10DFF419: return "SUBDEVICE_10DFF419";
+        case PciSubDevice10DFF400::SUBDEVICE_10DFF421: return "SUBDEVICE_10DFF421";
+        case PciSubDevice10DFF400::SUBDEVICE_10DFF422: return "SUBDEVICE_10DFF422";
         case PciSubDevice10DFF400::SUBDEVICE_159002D5: return "SUBDEVICE_159002D5";
         case PciSubDevice10DFF400::SUBDEVICE_159002D6: return "SUBDEVICE_159002D6";
 
@@ -90,6 +94,8 @@ inline const char8* enumToHumanString(PciSubDevice10DFF400 subDevice) // TEST: N
         case PciSubDevice10DFF400::SUBDEVICE_10DFF411: return "LPe35000-M2-D 1-Port 32Gb Fibre Channel Adapter";
         case PciSubDevice10DFF400::SUBDEVICE_10DFF418: return "LPe35000-M2-L 1-Port 32Gb PCIe Fibre Channel Adapter";
         case PciSubDevice10DFF400::SUBDEVICE_10DFF419: return "LPe35002-M2-L 2-Port 32Gb PCIe Fibre Channel Adapter";
+        case PciSubDevice10DFF400::SUBDEVICE_10DFF421: return "LPe36002-M2-L 2-Port 64Gb PCIe Fibre Channel Adapter";
+        case PciSubDevice10DFF400::SUBDEVICE_10DFF422: return "LPe36002-M64-D 2-Port 64Gb Fibre Channel Adapter";
         case PciSubDevice10DFF400::SUBDEVICE_159002D5: return "StoreFabric SN1610E 1-Port 32Gb Fibre Channel Adapter";
         case PciSubDevice10DFF400::SUBDEVICE_159002D6: return "StoreFabric SN1610E 2-Port 32Gb Fibre Channel Adapter";
 

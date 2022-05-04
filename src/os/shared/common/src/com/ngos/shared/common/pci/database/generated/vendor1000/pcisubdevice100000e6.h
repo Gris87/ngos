@@ -21,8 +21,16 @@ enum class PciSubDevice100000E6: u32 // Ignore CppEnumVerifier
     SUBDEVICE_1028200C = 0x1028200C,
     SUBDEVICE_1028200D = 0x1028200D,
     SUBDEVICE_1028200E = 0x1028200E,
+    SUBDEVICE_10282170 = 0x10282170,
+    SUBDEVICE_10282175 = 0x10282175,
+    SUBDEVICE_10282197 = 0x10282197,
     SUBDEVICE_1D490205 = 0x1D490205,
-    SUBDEVICE_1D490206 = 0x1D490206
+    SUBDEVICE_1D490206 = 0x1D490206,
+    SUBDEVICE_1D490207 = 0x1D490207,
+    SUBDEVICE_1D490208 = 0x1D490208,
+    SUBDEVICE_1D490209 = 0x1D490209,
+    SUBDEVICE_80864050 = 0x80864050,
+    SUBDEVICE_80864070 = 0x80864070
 };
 
 
@@ -44,8 +52,16 @@ inline const char8* enumToString(PciSubDevice100000E6 subDevice) // TEST: NO
         case PciSubDevice100000E6::SUBDEVICE_1028200C: return "SUBDEVICE_1028200C";
         case PciSubDevice100000E6::SUBDEVICE_1028200D: return "SUBDEVICE_1028200D";
         case PciSubDevice100000E6::SUBDEVICE_1028200E: return "SUBDEVICE_1028200E";
+        case PciSubDevice100000E6::SUBDEVICE_10282170: return "SUBDEVICE_10282170";
+        case PciSubDevice100000E6::SUBDEVICE_10282175: return "SUBDEVICE_10282175";
+        case PciSubDevice100000E6::SUBDEVICE_10282197: return "SUBDEVICE_10282197";
         case PciSubDevice100000E6::SUBDEVICE_1D490205: return "SUBDEVICE_1D490205";
         case PciSubDevice100000E6::SUBDEVICE_1D490206: return "SUBDEVICE_1D490206";
+        case PciSubDevice100000E6::SUBDEVICE_1D490207: return "SUBDEVICE_1D490207";
+        case PciSubDevice100000E6::SUBDEVICE_1D490208: return "SUBDEVICE_1D490208";
+        case PciSubDevice100000E6::SUBDEVICE_1D490209: return "SUBDEVICE_1D490209";
+        case PciSubDevice100000E6::SUBDEVICE_80864050: return "SUBDEVICE_80864050";
+        case PciSubDevice100000E6::SUBDEVICE_80864070: return "SUBDEVICE_80864070";
 
         default: return "UNKNOWN";
     }
@@ -84,8 +100,16 @@ inline const char8* enumToHumanString(PciSubDevice100000E6 subDevice) // TEST: N
         case PciSubDevice100000E6::SUBDEVICE_1028200C: return "HBA355i Front";
         case PciSubDevice100000E6::SUBDEVICE_1028200D: return "HBA355e Adapter";
         case PciSubDevice100000E6::SUBDEVICE_1028200E: return "HBA350i MX";
+        case PciSubDevice100000E6::SUBDEVICE_10282170: return "HBA350i MM";
+        case PciSubDevice100000E6::SUBDEVICE_10282175: return "HBA350i Adapter";
+        case PciSubDevice100000E6::SUBDEVICE_10282197: return "HBA350i MM LP";
         case PciSubDevice100000E6::SUBDEVICE_1D490205: return "ThinkSystem 440-16i SAS/SATA PCIe Gen4 12Gb Internal HBA";
         case PciSubDevice100000E6::SUBDEVICE_1D490206: return "ThinkSystem 440-16e SAS/SATA PCIe Gen4 12Gb HBA";
+        case PciSubDevice100000E6::SUBDEVICE_1D490207: return "ThinkSystem 440-8i SAS/SATA PCIe Gen4 12Gb HBA";
+        case PciSubDevice100000E6::SUBDEVICE_1D490208: return "ThinkSystem 440-16i SAS/SATA PCIe Gen4 12Gb HBA";
+        case PciSubDevice100000E6::SUBDEVICE_1D490209: return "ThinkSystem 440-8e SAS/SATA PCIe Gen4 12Gb HBA";
+        case PciSubDevice100000E6::SUBDEVICE_80864050: return "Storage Controller RS3P4QF160J";
+        case PciSubDevice100000E6::SUBDEVICE_80864070: return "Storage Controller RS3P4GF016J";
 
         default: return "Unknown device";
     }

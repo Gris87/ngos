@@ -1,19 +1,14 @@
-#ifndef COM_NGOS_SHARED_COMMON_CPU_GENERATED_X86FEATURESNAMES_H
-#define COM_NGOS_SHARED_COMMON_CPU_GENERATED_X86FEATURESNAMES_H
-
-
-
-#include <com/ngos/shared/common/cpu/x86featureword.h>
-#include <com/ngos/shared/common/ngos/status.h>
-
-
-
-extern const char8* x86FeaturesNames[(enum_t)x86FeatureWord::MAXIMUM * 32]; // x86FeaturesNames declared in x86featuresnames.cpp file
-
-
-
-NgosStatus initX86FeaturesNames(); // TEST: NO
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CPU_GENERATED_X86FEATURESNAMES_H
+#ifndef COM_NGOS_SHARED_COMMON_CPU_GENERATED_X86FEATURESNAMES_H                                                                                                                                          // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CPU_GENERATED_X86FEATURESNAMES_H                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/cpu/x86featureword.h>                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+extern const char8* x86FeaturesNames[static_cast<enum_t>(x86FeatureWord::MAXIMUM) * 32]; // x86FeaturesNames declared in x86featuresnames.cpp file                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CPU_GENERATED_X86FEATURESNAMES_H                                                                                                                                        // Colorize: green

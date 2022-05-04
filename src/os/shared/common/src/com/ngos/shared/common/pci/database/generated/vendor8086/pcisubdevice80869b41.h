@@ -13,7 +13,8 @@
 enum class PciSubDevice80869B41: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
-    SUBDEVICE_102809BD = 0x102809BD
+    SUBDEVICE_102809BD = 0x102809BD,
+    SUBDEVICE_102809BE = 0x102809BE
 };
 
 
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciSubDevice80869B41 subDevice) // TEST: NO
     {
         case PciSubDevice80869B41::NONE:               return "NONE";
         case PciSubDevice80869B41::SUBDEVICE_102809BD: return "SUBDEVICE_102809BD";
+        case PciSubDevice80869B41::SUBDEVICE_102809BE: return "SUBDEVICE_102809BE";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice80869B41 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice80869B41::SUBDEVICE_102809BD: return "Latitude 7310";
+        case PciSubDevice80869B41::SUBDEVICE_102809BE: return "Latitude 7410";
 
         default: return "Unknown device";
     }

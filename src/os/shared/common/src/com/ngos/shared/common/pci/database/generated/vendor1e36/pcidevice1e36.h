@@ -16,6 +16,11 @@ enum class PciDevice1E36: u16 // Ignore CppEnumVerifier
     DEVICE_0001 = 0x0001,
     DEVICE_0002 = 0x0002,
     DEVICE_0003 = 0x0003,
+    DEVICE_0021 = 0x0021,
+    DEVICE_0022 = 0x0022,
+    DEVICE_0023 = 0x0023,
+    DEVICE_0024 = 0x0024,
+    DEVICE_8001 = 0x8001,
     DEVICE_8011 = 0x8011,
     DEVICE_8012 = 0x8012
 };
@@ -34,6 +39,11 @@ inline const char8* enumToString(PciDevice1E36 device) // TEST: NO
         case PciDevice1E36::DEVICE_0001: return "DEVICE_0001";
         case PciDevice1E36::DEVICE_0002: return "DEVICE_0002";
         case PciDevice1E36::DEVICE_0003: return "DEVICE_0003";
+        case PciDevice1E36::DEVICE_0021: return "DEVICE_0021";
+        case PciDevice1E36::DEVICE_0022: return "DEVICE_0022";
+        case PciDevice1E36::DEVICE_0023: return "DEVICE_0023";
+        case PciDevice1E36::DEVICE_0024: return "DEVICE_0024";
+        case PciDevice1E36::DEVICE_8001: return "DEVICE_8001";
         case PciDevice1E36::DEVICE_8011: return "DEVICE_8011";
         case PciDevice1E36::DEVICE_8012: return "DEVICE_8012";
 
@@ -69,6 +79,11 @@ inline const char8* enumToHumanString(PciDevice1E36 device) // TEST: NO
         case PciDevice1E36::DEVICE_0001: return "T10 [CloudBlazer]";
         case PciDevice1E36::DEVICE_0002: return "T11 [CloudBlazer]";
         case PciDevice1E36::DEVICE_0003: return "T10(QSFP-DD) [CloudBlazer]";
+        case PciDevice1E36::DEVICE_0021: return "T20(32GB) [CloudBlazer]";
+        case PciDevice1E36::DEVICE_0022: return "T20(64GB) [CloudBlazer]";
+        case PciDevice1E36::DEVICE_0023: return "T21(32GB) [CloudBlazer]";
+        case PciDevice1E36::DEVICE_0024: return "T21(64GB) [CloudBlazer]";
+        case PciDevice1E36::DEVICE_8001: return "I20 [CloudBlazer]";
         case PciDevice1E36::DEVICE_8011: return "I10 [CloudBlazer]";
         case PciDevice1E36::DEVICE_8012: return "I10L [CloudBlazer]";
 

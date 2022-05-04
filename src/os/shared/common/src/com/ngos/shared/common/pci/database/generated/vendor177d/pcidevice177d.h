@@ -95,6 +95,20 @@ enum class PciDevice177D: u16 // Ignore CppEnumVerifier
     DEVICE_A036 = 0xA036,
     DEVICE_A037 = 0xA037,
     DEVICE_A040 = 0xA040,
+    DEVICE_A059 = 0xA059,
+    DEVICE_A060 = 0xA060,
+    DEVICE_A061 = 0xA061,
+    DEVICE_A063 = 0xA063,
+    DEVICE_A064 = 0xA064,
+    DEVICE_A065 = 0xA065,
+    DEVICE_A09E = 0xA09E,
+    DEVICE_A0F2 = 0xA0F2,
+    DEVICE_A0F3 = 0xA0F3,
+    DEVICE_A0F6 = 0xA0F6,
+    DEVICE_A0F7 = 0xA0F7,
+    DEVICE_A0F8 = 0xA0F8,
+    DEVICE_A0FD = 0xA0FD,
+    DEVICE_A0FE = 0xA0FE,
     DEVICE_A100 = 0xA100,
     DEVICE_A200 = 0xA200,
     DEVICE_A300 = 0xA300,
@@ -190,6 +204,20 @@ inline const char8* enumToString(PciDevice177D device) // TEST: NO
         case PciDevice177D::DEVICE_A036: return "DEVICE_A036";
         case PciDevice177D::DEVICE_A037: return "DEVICE_A037";
         case PciDevice177D::DEVICE_A040: return "DEVICE_A040";
+        case PciDevice177D::DEVICE_A059: return "DEVICE_A059";
+        case PciDevice177D::DEVICE_A060: return "DEVICE_A060";
+        case PciDevice177D::DEVICE_A061: return "DEVICE_A061";
+        case PciDevice177D::DEVICE_A063: return "DEVICE_A063";
+        case PciDevice177D::DEVICE_A064: return "DEVICE_A064";
+        case PciDevice177D::DEVICE_A065: return "DEVICE_A065";
+        case PciDevice177D::DEVICE_A09E: return "DEVICE_A09E";
+        case PciDevice177D::DEVICE_A0F2: return "DEVICE_A0F2";
+        case PciDevice177D::DEVICE_A0F3: return "DEVICE_A0F3";
+        case PciDevice177D::DEVICE_A0F6: return "DEVICE_A0F6";
+        case PciDevice177D::DEVICE_A0F7: return "DEVICE_A0F7";
+        case PciDevice177D::DEVICE_A0F8: return "DEVICE_A0F8";
+        case PciDevice177D::DEVICE_A0FD: return "DEVICE_A0FD";
+        case PciDevice177D::DEVICE_A0FE: return "DEVICE_A0FE";
         case PciDevice177D::DEVICE_A100: return "DEVICE_A100";
         case PciDevice177D::DEVICE_A200: return "DEVICE_A200";
         case PciDevice177D::DEVICE_A300: return "DEVICE_A300";
@@ -302,6 +330,20 @@ inline const char8* enumToHumanString(PciDevice177D device) // TEST: NO
         case PciDevice177D::DEVICE_A036: return "ThunderX RAD (RAID acceleration engine) virtual function";
         case PciDevice177D::DEVICE_A037: return "THUNDERX ZIP virtual function";
         case PciDevice177D::DEVICE_A040: return "THUNDERX CPT Cryptographic Accelerator";
+        case PciDevice177D::DEVICE_A059: return "Octeon TX2 CGX (MAC)";
+        case PciDevice177D::DEVICE_A060: return "Octeon 10 RPM (MAC)";
+        case PciDevice177D::DEVICE_A061: return "Octeon Tx2 Loopback Interface (LBK)";
+        case PciDevice177D::DEVICE_A063: return "Octeon Tx2 RVU Physical Function";
+        case PciDevice177D::DEVICE_A064: return "Octeon Tx2 RVU Virtual Function";
+        case PciDevice177D::DEVICE_A065: return "Octeon Tx2 RVU Admin Function";
+        case PciDevice177D::DEVICE_A09E: return "Octeon 10 PTP controller";
+        case PciDevice177D::DEVICE_A0F2: return "Octeon 10 CPT Cryptographic Accelerator, Physical function";
+        case PciDevice177D::DEVICE_A0F3: return "Octeon 10 CPT Cryptographic Accelerator, Virtual function";
+        case PciDevice177D::DEVICE_A0F6: return "Octeon Tx2 SDP Physical Function";
+        case PciDevice177D::DEVICE_A0F7: return "Octeon Tx2 SDP Virtual Function";
+        case PciDevice177D::DEVICE_A0F8: return "Octeon Tx2 Loopback Interface Virtual Function (LBKVF)";
+        case PciDevice177D::DEVICE_A0FD: return "Octeon Tx2 CPT Cryptographic Accelerator, Physical function";
+        case PciDevice177D::DEVICE_A0FE: return "Octeon Tx2 CPT Cryptographic Accelerator, Virtual function";
         case PciDevice177D::DEVICE_A100: return "THUNDERX CN88XX 48 core SoC";
         case PciDevice177D::DEVICE_A200: return "OCTEON TX CN81XX/CN80XX";
         case PciDevice177D::DEVICE_A300: return "OCTEON TX CN83XX";
@@ -399,6 +441,20 @@ inline const char8* enumToHumanString(PciDevice177D device, u16 subsystemVendorI
         case PciDevice177D::DEVICE_A036: return "Unknown device";
         case PciDevice177D::DEVICE_A037: return "Unknown device";
         case PciDevice177D::DEVICE_A040: return "Unknown device";
+        case PciDevice177D::DEVICE_A059: return "Unknown device";
+        case PciDevice177D::DEVICE_A060: return "Unknown device";
+        case PciDevice177D::DEVICE_A061: return "Unknown device";
+        case PciDevice177D::DEVICE_A063: return "Unknown device";
+        case PciDevice177D::DEVICE_A064: return "Unknown device";
+        case PciDevice177D::DEVICE_A065: return "Unknown device";
+        case PciDevice177D::DEVICE_A09E: return "Unknown device";
+        case PciDevice177D::DEVICE_A0F2: return "Unknown device";
+        case PciDevice177D::DEVICE_A0F3: return "Unknown device";
+        case PciDevice177D::DEVICE_A0F6: return "Unknown device";
+        case PciDevice177D::DEVICE_A0F7: return "Unknown device";
+        case PciDevice177D::DEVICE_A0F8: return "Unknown device";
+        case PciDevice177D::DEVICE_A0FD: return "Unknown device";
+        case PciDevice177D::DEVICE_A0FE: return "Unknown device";
         case PciDevice177D::DEVICE_A100: return "Unknown device";
         case PciDevice177D::DEVICE_A200: return "Unknown device";
         case PciDevice177D::DEVICE_A300: return "Unknown device";

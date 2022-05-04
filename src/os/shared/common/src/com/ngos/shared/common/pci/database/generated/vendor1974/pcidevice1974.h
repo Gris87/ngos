@@ -16,7 +16,9 @@ enum class PciDevice1974: u16 // Ignore CppEnumVerifier
     DEVICE_0009 = 0x0009,
     DEVICE_0011 = 0x0011,
     DEVICE_0018 = 0x0018,
-    DEVICE_0019 = 0x0019
+    DEVICE_0019 = 0x0019,
+    DEVICE_001A = 0x001A,
+    DEVICE_001B = 0x001B
 };
 
 
@@ -34,6 +36,8 @@ inline const char8* enumToString(PciDevice1974 device) // TEST: NO
         case PciDevice1974::DEVICE_0011: return "DEVICE_0011";
         case PciDevice1974::DEVICE_0018: return "DEVICE_0018";
         case PciDevice1974::DEVICE_0019: return "DEVICE_0019";
+        case PciDevice1974::DEVICE_001A: return "DEVICE_001A";
+        case PciDevice1974::DEVICE_001B: return "DEVICE_001B";
 
         default: return "UNKNOWN";
     }
@@ -68,6 +72,8 @@ inline const char8* enumToHumanString(PciDevice1974 device) // TEST: NO
         case PciDevice1974::DEVICE_0011: return "FlexCard PMC-II Ethernet";
         case PciDevice1974::DEVICE_0018: return "FlexCard PXIe3";
         case PciDevice1974::DEVICE_0019: return "FlexCard PCIe3";
+        case PciDevice1974::DEVICE_001A: return "FlexCard PXIe Ethernet";
+        case PciDevice1974::DEVICE_001B: return "FlexCard PCIe Ethernet";
 
         default: return "Unknown device";
     }

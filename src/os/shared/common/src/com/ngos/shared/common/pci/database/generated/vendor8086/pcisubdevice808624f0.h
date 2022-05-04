@@ -27,6 +27,7 @@ enum class PciSubDevice808624F0: u32 // Ignore CppEnumVerifier
     SUBDEVICE_1CB80003 = 0x1CB80003,
     SUBDEVICE_1CB80004 = 0x1CB80004,
     SUBDEVICE_434E0001 = 0x434E0001,
+    SUBDEVICE_434E2628 = 0x434E2628,
     SUBDEVICE_80862628 = 0x80862628,
     SUBDEVICE_80862629 = 0x80862629,
     SUBDEVICE_8086262A = 0x8086262A,
@@ -58,6 +59,7 @@ inline const char8* enumToString(PciSubDevice808624F0 subDevice) // TEST: NO
         case PciSubDevice808624F0::SUBDEVICE_1CB80003: return "SUBDEVICE_1CB80003";
         case PciSubDevice808624F0::SUBDEVICE_1CB80004: return "SUBDEVICE_1CB80004";
         case PciSubDevice808624F0::SUBDEVICE_434E0001: return "SUBDEVICE_434E0001";
+        case PciSubDevice808624F0::SUBDEVICE_434E2628: return "SUBDEVICE_434E2628";
         case PciSubDevice808624F0::SUBDEVICE_80862628: return "SUBDEVICE_80862628";
         case PciSubDevice808624F0::SUBDEVICE_80862629: return "SUBDEVICE_80862629";
         case PciSubDevice808624F0::SUBDEVICE_8086262A: return "SUBDEVICE_8086262A";
@@ -105,7 +107,8 @@ inline const char8* enumToHumanString(PciSubDevice808624F0 subDevice) // TEST: N
         case PciSubDevice808624F0::SUBDEVICE_1CB80002: return "Omni-Path HFI Adapter 100 Series, 1 Port, PCIe x16, TC6600 Fixed Port";
         case PciSubDevice808624F0::SUBDEVICE_1CB80003: return "Omni-Path HFI Adapter 100 Series, 2 Port, 2 PCIe x16, Earth Simulation QSFP28";
         case PciSubDevice808624F0::SUBDEVICE_1CB80004: return "Omni-Path HFI Adapter 100 Series, 1 Port, PCIe x16, TC4600E QSFP28";
-        case PciSubDevice808624F0::SUBDEVICE_434E0001: return "Omni-Path HFI 100 Series, 1 Port, OCP 3.0 Adapter";
+        case PciSubDevice808624F0::SUBDEVICE_434E0001: return "Omni-Path HFI Adapter 100 Series, 1 Port, OCP 3.0";
+        case PciSubDevice808624F0::SUBDEVICE_434E2628: return "Omni-Path HFI Adapter 100 Series, 1 Port, PCIe x16";
         case PciSubDevice808624F0::SUBDEVICE_80862628: return "Omni-Path HFI Adapter 100 Series, 1 Port, PCIe x16";
         case PciSubDevice808624F0::SUBDEVICE_80862629: return "Omni-Path HFI Adapter 100 Series, 1 Port, PCIe x8";
         case PciSubDevice808624F0::SUBDEVICE_8086262A: return "Omni-Path HFI Adapter 100 Series, 2 Ports, Split PCIe x16";

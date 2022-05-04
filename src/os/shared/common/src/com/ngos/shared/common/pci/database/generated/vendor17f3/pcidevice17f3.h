@@ -27,6 +27,7 @@ enum class PciDevice17F3: u16 // Ignore CppEnumVerifier
     DEVICE_6013 = 0x6013,
     DEVICE_6020 = 0x6020,
     DEVICE_6021 = 0x6021,
+    DEVICE_6022 = 0x6022,
     DEVICE_6023 = 0x6023,
     DEVICE_6025 = 0x6025,
     DEVICE_6026 = 0x6026,
@@ -64,6 +65,7 @@ inline const char8* enumToString(PciDevice17F3 device) // TEST: NO
         case PciDevice17F3::DEVICE_6013: return "DEVICE_6013";
         case PciDevice17F3::DEVICE_6020: return "DEVICE_6020";
         case PciDevice17F3::DEVICE_6021: return "DEVICE_6021";
+        case PciDevice17F3::DEVICE_6022: return "DEVICE_6022";
         case PciDevice17F3::DEVICE_6023: return "DEVICE_6023";
         case PciDevice17F3::DEVICE_6025: return "DEVICE_6025";
         case PciDevice17F3::DEVICE_6026: return "DEVICE_6026";
@@ -118,6 +120,7 @@ inline const char8* enumToHumanString(PciDevice17F3 device) // TEST: NO
         case PciDevice17F3::DEVICE_6013: return "R6013 ISA Bridge";
         case PciDevice17F3::DEVICE_6020: return "R6020 North Bridge";
         case PciDevice17F3::DEVICE_6021: return "R6021 Host Bridge";
+        case PciDevice17F3::DEVICE_6022: return "R6022 Host Bridge";
         case PciDevice17F3::DEVICE_6023: return "R6023 Host Bridge";
         case PciDevice17F3::DEVICE_6025: return "R6025 Host Bridge";
         case PciDevice17F3::DEVICE_6026: return "R6026 Host Bridge";

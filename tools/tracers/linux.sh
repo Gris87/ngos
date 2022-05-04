@@ -1,7 +1,7 @@
 #!/bin/bash
                                                                                                                                                                                                          # Colorize: green
 # This script helps to trace over all linux kernel instructions                                                                                                                                          # Colorize: green
-# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Author: Maxim Shvetsov                                                                                                                                                                                  # Colorize: green
 # Usage: ./linux.sh                                                                                                                                                                                      # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green

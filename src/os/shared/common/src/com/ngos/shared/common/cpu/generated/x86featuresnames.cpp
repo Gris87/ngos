@@ -1,584 +1,568 @@
-// This file generated with the code_generator
-// Please do not modify it manually
-#include "x86featuresnames.h"
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/utils.h>
-
-
-
-const char8* x86FeaturesNames[(enum_t)x86FeatureWord::MAXIMUM * 32];
-
-
-
-NgosStatus initX86FeaturesNames()
-{
-    COMMON_LT((""));
-
-
-
-    // word 0
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 0)]  = "sse3";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 1)]  = "pclmulqdq";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 2)]  = "dtes64";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 3)]  = "monitor";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 4)]  = "ds_cpl";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 5)]  = "vmx";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 6)]  = "smx";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 7)]  = "est";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 8)]  = "tm2";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 9)]  = "ssse3";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 10)] = "cid";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 11)] = "sdbg";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 12)] = "fma";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 13)] = "cx16";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 14)] = "xtpr";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 15)] = "pdcm";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 16)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 17)] = "pcid";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 18)] = "dca";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 19)] = "sse4_1";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 20)] = "sse4_2";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 21)] = "x2apic";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 22)] = "movbe";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 23)] = "popcnt";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 24)] = "tsc_deadline_timer";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 25)] = "aes";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 26)] = "xsave";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 27)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 28)] = "avx";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 29)] = "f16c";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 30)] = "rdrand";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 31)] = "hypervisor";
-
-    // word 1
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 0)]  = "fpu";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 1)]  = "vme";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 2)]  = "de";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 3)]  = "pse";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 4)]  = "tsc";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 5)]  = "msr";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 6)]  = "pae";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 7)]  = "mce";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 8)]  = "cx8";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 9)]  = "apic";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 10)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 11)] = "sep";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 12)] = "mtrr";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 13)] = "pge";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 14)] = "mca";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 15)] = "cmov";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 16)] = "pat";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 17)] = "pse36";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 18)] = "pn";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 19)] = "clflush";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 20)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 21)] = "dts";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 22)] = "acpi";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 23)] = "mmx";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 24)] = "fxsr";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 25)] = "sse";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 26)] = "sse2";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 27)] = "ss";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 28)] = "ht";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 29)] = "tm";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 30)] = "ia64";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 31)] = "pbe";
-
-    // word 2
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 0)]  = "dtherm";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 1)]  = "ida";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 2)]  = "arat";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 3)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 4)]  = "pln";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 5)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 6)]  = "pts";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 7)]  = "hwp";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 8)]  = "hwp_notify";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 9)]  = "hwp_act_window";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 10)] = "hwp_epp";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 11)] = "hwp_pkg_req";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 12)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 13)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 14)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 15)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 16)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 17)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 18)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 19)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 20)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 21)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 22)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 23)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 24)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 25)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 26)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 27)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 28)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 29)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 30)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 31)] = "";
-
-    // word 3
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 0)]  = "fsgsbase";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 1)]  = "tsc_adjust";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 2)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 3)]  = "bmi1";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 4)]  = "hle";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 5)]  = "avx2";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 6)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 7)]  = "smep";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 8)]  = "bmi2";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 9)]  = "erms";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 10)] = "invpcid";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 11)] = "rtm";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 12)] = "cqm";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 13)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 14)] = "mpx";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 15)] = "rdt_a";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 16)] = "avx512f";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 17)] = "avx512dq";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 18)] = "rdseed";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 19)] = "adx";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 20)] = "smap";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 21)] = "avx512ifma";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 22)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 23)] = "clflushopt";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 24)] = "clwb";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 25)] = "intel_pt";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 26)] = "avx512pf";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 27)] = "avx512er";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 28)] = "avx512cd";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 29)] = "sha_ni";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 30)] = "avx512bw";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 31)] = "avx512vl";
-
-    // word 4
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 0)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 1)]  = "avx512vbmi";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 2)]  = "umip";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 3)]  = "pku";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 4)]  = "ospke";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 5)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 6)]  = "avx512_vbmi2";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 7)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 8)]  = "gfni";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 9)]  = "vaes";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 10)] = "vpclmulqdq";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 11)] = "avx512_vnni";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 12)] = "avx512_bitalg";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 13)] = "tme";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 14)] = "avx512_vpopcntdq";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 15)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 16)] = "la57";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 17)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 18)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 19)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 20)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 21)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 22)] = "rdpid";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 23)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 24)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 25)] = "cldemote";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 26)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 27)] = "movdiri";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 28)] = "movdir64b";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 29)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 30)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 31)] = "";
-
-    // word 5
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 0)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 1)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 2)]  = "avx512_4vnniw";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 3)]  = "avx512_4fmaps";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 4)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 5)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 6)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 7)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 8)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 9)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 10)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 11)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 12)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 13)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 14)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 15)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 16)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 17)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 18)] = "pconfig";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 19)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 20)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 21)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 22)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 23)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 24)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 25)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 26)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 27)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 28)] = "flush_l1d";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 29)] = "arch_capabilities";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 30)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 31)] = "";
-
-    // word 6
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 0)]  = "xsaveopt";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 1)]  = "xsavec";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 2)]  = "xgetbv1";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 3)]  = "xsaves";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 4)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 5)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 6)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 7)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 8)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 9)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 10)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 11)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 12)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 13)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 14)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 15)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 16)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 17)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 18)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 19)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 20)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 21)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 22)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 23)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 24)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 25)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 26)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 27)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 28)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 29)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 30)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 31)] = "";
-
-    // word 7
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 0)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 1)]  = "cqm_llc";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 2)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 3)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 4)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 5)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 6)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 7)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 8)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 9)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 10)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 11)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 12)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 13)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 14)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 15)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 16)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 17)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 18)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 19)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 20)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 21)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 22)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 23)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 24)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 25)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 26)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 27)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 28)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 29)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 30)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 31)] = "";
-
-    // word 8
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 0)]  = "cqm_occup_llc";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 1)]  = "cqm_mbm_total";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 2)]  = "cqm_mbm_local";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 3)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 4)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 5)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 6)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 7)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 8)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 9)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 10)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 11)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 12)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 13)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 14)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 15)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 16)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 17)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 18)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 19)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 20)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 21)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 22)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 23)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 24)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 25)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 26)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 27)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 28)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 29)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 30)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 31)] = "";
-
-    // word 9
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 0)]  = "lahf_lm";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 1)]  = "cmp_legacy";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 2)]  = "svm";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 3)]  = "extapic";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 4)]  = "cr8_legacy";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 5)]  = "abm";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 6)]  = "sse4a";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 7)]  = "misalignsse";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 8)]  = "3dnowprefetch";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 9)]  = "osvw";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 10)] = "ibs";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 11)] = "xop";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 12)] = "skinit";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 13)] = "wdt";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 14)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 15)] = "lwp";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 16)] = "fma4";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 17)] = "tce";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 18)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 19)] = "nodeid_msr";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 20)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 21)] = "tbm";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 22)] = "topoext";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 23)] = "perfctr_core";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 24)] = "perfctr_nb";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 25)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 26)] = "bpext";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 27)] = "ptsc";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 28)] = "perfctr_llc";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 29)] = "mwaitx";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 30)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 31)] = "";
-
-    // word 10
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 0)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 1)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 2)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 3)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 4)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 5)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 6)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 7)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 8)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 9)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 10)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 11)] = "syscall";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 12)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 13)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 14)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 15)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 16)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 17)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 18)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 19)] = "mp";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 20)] = "nx";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 21)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 22)] = "mmxext";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 23)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 24)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 25)] = "fxsr_opt";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 26)] = "pdpe1gb";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 27)] = "rdtscp";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 28)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 29)] = "lm";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 30)] = "3dnowext";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 31)] = "3dnow";
-
-    // word 11
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 0)]  = "overflow_recov";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 1)]  = "succor";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 2)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 3)]  = "smca";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 4)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 5)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 6)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 7)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 8)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 9)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 10)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 11)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 12)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 13)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 14)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 15)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 16)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 17)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 18)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 19)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 20)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 21)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 22)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 23)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 24)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 25)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 26)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 27)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 28)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 29)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 30)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 31)] = "";
-
-    // word 12
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 0)]  = "clzero";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 1)]  = "irperf";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 2)]  = "xsaveerptr";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 3)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 4)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 5)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 6)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 7)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 8)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 9)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 10)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 11)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 12)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 13)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 14)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 15)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 16)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 17)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 18)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 19)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 20)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 21)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 22)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 23)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 24)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 25)] = "virt_ssbd";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 26)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 27)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 28)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 29)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 30)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 31)] = "";
-
-    // word 13
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 0)]  = "npt";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 1)]  = "lbrv";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 2)]  = "svm_lock";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 3)]  = "nrip_save";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 4)]  = "tsc_scale";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 5)]  = "vmcb_clean";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 6)]  = "flushbyasid";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 7)]  = "decodeassists";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 8)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 9)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 10)] = "pausefilter";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 11)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 12)] = "pfthreshold";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 13)] = "avic";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 14)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 15)] = "v_vmsave_vmload";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 16)] = "vgif";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 17)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 18)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 19)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 20)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 21)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 22)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 23)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 24)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 25)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 26)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 27)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 28)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 29)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 30)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 31)] = "";
-
-    // word 14
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 0)]  = "aperfmperf";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 1)]  = "epb";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 2)]  = "cat_l3";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 3)]  = "cat_l2";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 4)]  = "cdp_l3";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 5)]  = "cdp_l2";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 6)]  = "mba";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 7)]  = "hw_pstate";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 8)]  = "cpb";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 9)]  = "proc_feedback";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 10)] = "sme";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 11)] = "sev";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 12)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 13)] = "ibrs";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 14)] = "ibpb";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 15)] = "stibp";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 16)] = "ssbd";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 17)] = "ibrs_enhanced";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 18)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 19)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 20)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 21)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 22)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 23)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 24)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 25)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 26)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 27)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 28)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 29)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 30)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 31)] = "";
-
-    // word 15
-
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 0)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 1)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 2)]  = "cpuid";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 3)]  = "constant_tsc";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 4)]  = "nonstop_tsc";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 5)]  = "nonstop_tsc_s3";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 6)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 7)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 8)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 9)]  = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 10)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 11)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 12)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 13)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 14)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 15)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 16)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 17)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 18)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 19)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 20)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 21)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 22)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 23)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 24)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 25)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 26)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 27)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 28)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 29)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 30)] = "";
-    x86FeaturesNames[WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 31)] = "";
-
-
-
-    return NgosStatus::OK;
-}
+// This file generated with the code_generator                                                                                                                                                           // Colorize: green
+// Please do not modify it manually                                                                                                                                                                      // Colorize: green
+#include "x86featuresnames.h"                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const char8* x86FeaturesNames[static_cast<enum_t>(x86FeatureWord::MAXIMUM) * 32] =                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // word 0                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "sse3",                  // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 0)                                                                                                                          // Colorize: green
+    "pclmulqdq",             // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 1)                                                                                                                          // Colorize: green
+    "dtes64",                // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 2)                                                                                                                          // Colorize: green
+    "monitor",               // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 3)                                                                                                                          // Colorize: green
+    "ds_cpl",                // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 4)                                                                                                                          // Colorize: green
+    "vmx",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 5)                                                                                                                          // Colorize: green
+    "smx",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 6)                                                                                                                          // Colorize: green
+    "est",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 7)                                                                                                                          // Colorize: green
+    "tm2",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 8)                                                                                                                          // Colorize: green
+    "ssse3",                 // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 9)                                                                                                                          // Colorize: green
+    "cid",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 10)                                                                                                                         // Colorize: green
+    "sdbg",                  // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 11)                                                                                                                         // Colorize: green
+    "fma",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 12)                                                                                                                         // Colorize: green
+    "cx16",                  // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 13)                                                                                                                         // Colorize: green
+    "xtpr",                  // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 14)                                                                                                                         // Colorize: green
+    "pdcm",                  // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 15)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 16)                                                                                                                         // Colorize: green
+    "pcid",                  // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 17)                                                                                                                         // Colorize: green
+    "dca",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 18)                                                                                                                         // Colorize: green
+    "sse4_1",                // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 19)                                                                                                                         // Colorize: green
+    "sse4_2",                // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 20)                                                                                                                         // Colorize: green
+    "x2apic",                // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 21)                                                                                                                         // Colorize: green
+    "movbe",                 // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 22)                                                                                                                         // Colorize: green
+    "popcnt",                // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 23)                                                                                                                         // Colorize: green
+    "tsc_deadline_timer",    // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 24)                                                                                                                         // Colorize: green
+    "aes",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 25)                                                                                                                         // Colorize: green
+    "xsave",                 // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 26)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 27)                                                                                                                         // Colorize: green
+    "avx",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 28)                                                                                                                         // Colorize: green
+    "f16c",                  // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 29)                                                                                                                         // Colorize: green
+    "rdrand",                // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 30)                                                                                                                         // Colorize: green
+    "hypervisor",            // WORD_BIT(x86FeatureWord::CPUID_00000001_ECX, 31)                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 1                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "fpu",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 0)                                                                                                                          // Colorize: green
+    "vme",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 1)                                                                                                                          // Colorize: green
+    "de",                    // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 2)                                                                                                                          // Colorize: green
+    "pse",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 3)                                                                                                                          // Colorize: green
+    "tsc",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 4)                                                                                                                          // Colorize: green
+    "msr",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 5)                                                                                                                          // Colorize: green
+    "pae",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 6)                                                                                                                          // Colorize: green
+    "mce",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 7)                                                                                                                          // Colorize: green
+    "cx8",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 8)                                                                                                                          // Colorize: green
+    "apic",                  // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 9)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 10)                                                                                                                         // Colorize: green
+    "sep",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 11)                                                                                                                         // Colorize: green
+    "mtrr",                  // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 12)                                                                                                                         // Colorize: green
+    "pge",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 13)                                                                                                                         // Colorize: green
+    "mca",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 14)                                                                                                                         // Colorize: green
+    "cmov",                  // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 15)                                                                                                                         // Colorize: green
+    "pat",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 16)                                                                                                                         // Colorize: green
+    "pse36",                 // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 17)                                                                                                                         // Colorize: green
+    "pn",                    // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 18)                                                                                                                         // Colorize: green
+    "clflush",               // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 19)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 20)                                                                                                                         // Colorize: green
+    "dts",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 21)                                                                                                                         // Colorize: green
+    "acpi",                  // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 22)                                                                                                                         // Colorize: green
+    "mmx",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 23)                                                                                                                         // Colorize: green
+    "fxsr",                  // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 24)                                                                                                                         // Colorize: green
+    "sse",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 25)                                                                                                                         // Colorize: green
+    "sse2",                  // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 26)                                                                                                                         // Colorize: green
+    "ss",                    // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 27)                                                                                                                         // Colorize: green
+    "ht",                    // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 28)                                                                                                                         // Colorize: green
+    "tm",                    // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 29)                                                                                                                         // Colorize: green
+    "ia64",                  // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 30)                                                                                                                         // Colorize: green
+    "pbe",                   // WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 31)                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 2                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "dtherm",                // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 0)                                                                                                                          // Colorize: green
+    "ida",                   // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 1)                                                                                                                          // Colorize: green
+    "arat",                  // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 2)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 3)                                                                                                                          // Colorize: green
+    "pln",                   // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 4)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 5)                                                                                                                          // Colorize: green
+    "pts",                   // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 6)                                                                                                                          // Colorize: green
+    "hwp",                   // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 7)                                                                                                                          // Colorize: green
+    "hwp_notify",            // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 8)                                                                                                                          // Colorize: green
+    "hwp_act_window",        // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 9)                                                                                                                          // Colorize: green
+    "hwp_epp",               // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 10)                                                                                                                         // Colorize: green
+    "hwp_pkg_req",           // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 11)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 12)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 13)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 14)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 15)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 16)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 17)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 18)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 19)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 20)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 21)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 22)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 23)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 24)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 25)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 26)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 27)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 28)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 29)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 30)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000006_EAX, 31)                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 3                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "fsgsbase",              // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 0)                                                                                                                          // Colorize: green
+    "tsc_adjust",            // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 1)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 2)                                                                                                                          // Colorize: green
+    "bmi1",                  // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 3)                                                                                                                          // Colorize: green
+    "hle",                   // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 4)                                                                                                                          // Colorize: green
+    "avx2",                  // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 5)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 6)                                                                                                                          // Colorize: green
+    "smep",                  // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 7)                                                                                                                          // Colorize: green
+    "bmi2",                  // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 8)                                                                                                                          // Colorize: green
+    "erms",                  // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 9)                                                                                                                          // Colorize: green
+    "invpcid",               // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 10)                                                                                                                         // Colorize: green
+    "rtm",                   // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 11)                                                                                                                         // Colorize: green
+    "cqm",                   // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 12)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 13)                                                                                                                         // Colorize: green
+    "mpx",                   // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 14)                                                                                                                         // Colorize: green
+    "rdt_a",                 // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 15)                                                                                                                         // Colorize: green
+    "avx512f",               // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 16)                                                                                                                         // Colorize: green
+    "avx512dq",              // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 17)                                                                                                                         // Colorize: green
+    "rdseed",                // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 18)                                                                                                                         // Colorize: green
+    "adx",                   // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 19)                                                                                                                         // Colorize: green
+    "smap",                  // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 20)                                                                                                                         // Colorize: green
+    "avx512ifma",            // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 21)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 22)                                                                                                                         // Colorize: green
+    "clflushopt",            // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 23)                                                                                                                         // Colorize: green
+    "clwb",                  // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 24)                                                                                                                         // Colorize: green
+    "intel_pt",              // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 25)                                                                                                                         // Colorize: green
+    "avx512pf",              // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 26)                                                                                                                         // Colorize: green
+    "avx512er",              // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 27)                                                                                                                         // Colorize: green
+    "avx512cd",              // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 28)                                                                                                                         // Colorize: green
+    "sha_ni",                // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 29)                                                                                                                         // Colorize: green
+    "avx512bw",              // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 30)                                                                                                                         // Colorize: green
+    "avx512vl",              // WORD_BIT(x86FeatureWord::CPUID_00000007_EBX, 31)                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 4                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 0)                                                                                                                          // Colorize: green
+    "avx512vbmi",            // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 1)                                                                                                                          // Colorize: green
+    "umip",                  // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 2)                                                                                                                          // Colorize: green
+    "pku",                   // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 3)                                                                                                                          // Colorize: green
+    "ospke",                 // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 4)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 5)                                                                                                                          // Colorize: green
+    "avx512_vbmi2",          // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 6)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 7)                                                                                                                          // Colorize: green
+    "gfni",                  // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 8)                                                                                                                          // Colorize: green
+    "vaes",                  // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 9)                                                                                                                          // Colorize: green
+    "vpclmulqdq",            // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 10)                                                                                                                         // Colorize: green
+    "avx512_vnni",           // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 11)                                                                                                                         // Colorize: green
+    "avx512_bitalg",         // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 12)                                                                                                                         // Colorize: green
+    "tme",                   // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 13)                                                                                                                         // Colorize: green
+    "avx512_vpopcntdq",      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 14)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 15)                                                                                                                         // Colorize: green
+    "la57",                  // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 16)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 17)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 18)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 19)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 20)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 21)                                                                                                                         // Colorize: green
+    "rdpid",                 // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 22)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 23)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 24)                                                                                                                         // Colorize: green
+    "cldemote",              // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 25)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 26)                                                                                                                         // Colorize: green
+    "movdiri",               // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 27)                                                                                                                         // Colorize: green
+    "movdir64b",             // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 28)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 29)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 30)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_ECX, 31)                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 5                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 0)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 1)                                                                                                                          // Colorize: green
+    "avx512_4vnniw",         // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 2)                                                                                                                          // Colorize: green
+    "avx512_4fmaps",         // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 3)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 4)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 5)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 6)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 7)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 8)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 9)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 10)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 11)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 12)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 13)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 14)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 15)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 16)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 17)                                                                                                                         // Colorize: green
+    "pconfig",               // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 18)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 19)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 20)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 21)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 22)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 23)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 24)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 25)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 26)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 27)                                                                                                                         // Colorize: green
+    "flush_l1d",             // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 28)                                                                                                                         // Colorize: green
+    "arch_capabilities",     // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 29)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 30)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_00000007_EDX, 31)                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 6                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "xsaveopt",              // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 0)                                                                                                                        // Colorize: green
+    "xsavec",                // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 1)                                                                                                                        // Colorize: green
+    "xgetbv1",               // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 2)                                                                                                                        // Colorize: green
+    "xsaves",                // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 3)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 4)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 5)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 6)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 7)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 8)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 9)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 10)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 11)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 12)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 13)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 14)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 15)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 16)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 17)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 18)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 19)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 20)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 21)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 22)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 23)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 24)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 25)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 26)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 27)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 28)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 29)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 30)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000D_1_EAX, 31)                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 7                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 0)                                                                                                                        // Colorize: green
+    "cqm_llc",               // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 1)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 2)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 3)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 4)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 5)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 6)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 7)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 8)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 9)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 10)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 11)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 12)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 13)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 14)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 15)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 16)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 17)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 18)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 19)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 20)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 21)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 22)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 23)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 24)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 25)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 26)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 27)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 28)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 29)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 30)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_0_EDX, 31)                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 8                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "cqm_occup_llc",         // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 0)                                                                                                                        // Colorize: green
+    "cqm_mbm_total",         // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 1)                                                                                                                        // Colorize: green
+    "cqm_mbm_local",         // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 2)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 3)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 4)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 5)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 6)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 7)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 8)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 9)                                                                                                                        // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 10)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 11)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 12)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 13)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 14)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 15)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 16)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 17)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 18)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 19)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 20)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 21)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 22)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 23)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 24)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 25)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 26)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 27)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 28)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 29)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 30)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_0000000F_1_EDX, 31)                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 9                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "lahf_lm",               // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 0)                                                                                                                          // Colorize: green
+    "cmp_legacy",            // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 1)                                                                                                                          // Colorize: green
+    "svm",                   // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 2)                                                                                                                          // Colorize: green
+    "extapic",               // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 3)                                                                                                                          // Colorize: green
+    "cr8_legacy",            // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 4)                                                                                                                          // Colorize: green
+    "abm",                   // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 5)                                                                                                                          // Colorize: green
+    "sse4a",                 // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 6)                                                                                                                          // Colorize: green
+    "misalignsse",           // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 7)                                                                                                                          // Colorize: green
+    "3dnowprefetch",         // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 8)                                                                                                                          // Colorize: green
+    "osvw",                  // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 9)                                                                                                                          // Colorize: green
+    "ibs",                   // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 10)                                                                                                                         // Colorize: green
+    "xop",                   // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 11)                                                                                                                         // Colorize: green
+    "skinit",                // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 12)                                                                                                                         // Colorize: green
+    "wdt",                   // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 13)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 14)                                                                                                                         // Colorize: green
+    "lwp",                   // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 15)                                                                                                                         // Colorize: green
+    "fma4",                  // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 16)                                                                                                                         // Colorize: green
+    "tce",                   // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 17)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 18)                                                                                                                         // Colorize: green
+    "nodeid_msr",            // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 19)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 20)                                                                                                                         // Colorize: green
+    "tbm",                   // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 21)                                                                                                                         // Colorize: green
+    "topoext",               // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 22)                                                                                                                         // Colorize: green
+    "perfctr_core",          // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 23)                                                                                                                         // Colorize: green
+    "perfctr_nb",            // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 24)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 25)                                                                                                                         // Colorize: green
+    "bpext",                 // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 26)                                                                                                                         // Colorize: green
+    "ptsc",                  // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 27)                                                                                                                         // Colorize: green
+    "perfctr_llc",           // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 28)                                                                                                                         // Colorize: green
+    "mwaitx",                // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 29)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 30)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_ECX, 31)                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 10                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 0)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 1)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 2)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 3)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 4)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 5)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 6)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 7)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 8)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 9)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 10)                                                                                                                         // Colorize: green
+    "syscall",               // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 11)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 12)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 13)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 14)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 15)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 16)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 17)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 18)                                                                                                                         // Colorize: green
+    "mp",                    // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 19)                                                                                                                         // Colorize: green
+    "nx",                    // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 20)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 21)                                                                                                                         // Colorize: green
+    "mmxext",                // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 22)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 23)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 24)                                                                                                                         // Colorize: green
+    "fxsr_opt",              // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 25)                                                                                                                         // Colorize: green
+    "pdpe1gb",               // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 26)                                                                                                                         // Colorize: green
+    "rdtscp",                // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 27)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 28)                                                                                                                         // Colorize: green
+    "lm",                    // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 29)                                                                                                                         // Colorize: green
+    "3dnowext",              // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 30)                                                                                                                         // Colorize: green
+    "3dnow",                 // WORD_BIT(x86FeatureWord::CPUID_80000001_EDX, 31)                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 11                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "overflow_recov",        // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 0)                                                                                                                          // Colorize: green
+    "succor",                // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 1)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 2)                                                                                                                          // Colorize: green
+    "smca",                  // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 3)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 4)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 5)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 6)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 7)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 8)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 9)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 10)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 11)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 12)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 13)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 14)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 15)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 16)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 17)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 18)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 19)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 20)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 21)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 22)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 23)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 24)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 25)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 26)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 27)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 28)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 29)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 30)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000007_EBX, 31)                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 12                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "clzero",                // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 0)                                                                                                                          // Colorize: green
+    "irperf",                // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 1)                                                                                                                          // Colorize: green
+    "xsaveerptr",            // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 2)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 3)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 4)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 5)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 6)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 7)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 8)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 9)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 10)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 11)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 12)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 13)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 14)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 15)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 16)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 17)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 18)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 19)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 20)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 21)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 22)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 23)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 24)                                                                                                                         // Colorize: green
+    "virt_ssbd",             // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 25)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 26)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 27)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 28)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 29)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 30)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_80000008_EBX, 31)                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 13                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "npt",                   // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 0)                                                                                                                          // Colorize: green
+    "lbrv",                  // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 1)                                                                                                                          // Colorize: green
+    "svm_lock",              // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 2)                                                                                                                          // Colorize: green
+    "nrip_save",             // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 3)                                                                                                                          // Colorize: green
+    "tsc_scale",             // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 4)                                                                                                                          // Colorize: green
+    "vmcb_clean",            // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 5)                                                                                                                          // Colorize: green
+    "flushbyasid",           // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 6)                                                                                                                          // Colorize: green
+    "decodeassists",         // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 7)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 8)                                                                                                                          // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 9)                                                                                                                          // Colorize: green
+    "pausefilter",           // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 10)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 11)                                                                                                                         // Colorize: green
+    "pfthreshold",           // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 12)                                                                                                                         // Colorize: green
+    "avic",                  // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 13)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 14)                                                                                                                         // Colorize: green
+    "v_vmsave_vmload",       // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 15)                                                                                                                         // Colorize: green
+    "vgif",                  // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 16)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 17)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 18)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 19)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 20)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 21)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 22)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 23)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 24)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 25)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 26)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 27)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 28)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 29)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 30)                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::CPUID_8000000A_EDX, 31)                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 14                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "aperfmperf",            // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 0)                                                                                                                        // Colorize: green
+    "epb",                   // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 1)                                                                                                                        // Colorize: green
+    "cat_l3",                // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 2)                                                                                                                        // Colorize: green
+    "cat_l2",                // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 3)                                                                                                                        // Colorize: green
+    "cdp_l3",                // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 4)                                                                                                                        // Colorize: green
+    "cdp_l2",                // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 5)                                                                                                                        // Colorize: green
+    "mba",                   // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 6)                                                                                                                        // Colorize: green
+    "hw_pstate",             // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 7)                                                                                                                        // Colorize: green
+    "cpb",                   // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 8)                                                                                                                        // Colorize: green
+    "proc_feedback",         // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 9)                                                                                                                        // Colorize: green
+    "sme",                   // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 10)                                                                                                                       // Colorize: green
+    "sev",                   // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 11)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 12)                                                                                                                       // Colorize: green
+    "ibrs",                  // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 13)                                                                                                                       // Colorize: green
+    "ibpb",                  // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 14)                                                                                                                       // Colorize: green
+    "stibp",                 // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 15)                                                                                                                       // Colorize: green
+    "ssbd",                  // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 16)                                                                                                                       // Colorize: green
+    "ibrs_enhanced",         // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 17)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 18)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 19)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 20)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 21)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 22)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 23)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 24)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 25)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 26)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 27)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 28)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 29)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 30)                                                                                                                       // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_AUXILIARY_FLAGS, 31)                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // word 15                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 0)                                                                                                                            // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 1)                                                                                                                            // Colorize: green
+    "cpuid",                 // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 2)                                                                                                                            // Colorize: green
+    "constant_tsc",          // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 3)                                                                                                                            // Colorize: green
+    "nonstop_tsc",           // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 4)                                                                                                                            // Colorize: green
+    "nonstop_tsc_s3",        // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 5)                                                                                                                            // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 6)                                                                                                                            // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 7)                                                                                                                            // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 8)                                                                                                                            // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 9)                                                                                                                            // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 10)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 11)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 12)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 13)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 14)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 15)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 16)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 17)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 18)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 19)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 20)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 21)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 22)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 23)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 24)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 25)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 26)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 27)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 28)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 29)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 30)                                                                                                                           // Colorize: green
+    "",                      // WORD_BIT(x86FeatureWord::NGOS_OTHER_FLAGS, 31)                                                                                                                           // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green

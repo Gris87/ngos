@@ -13,6 +13,7 @@
 enum class PciSubDevice144DA808: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_144DA801 = 0x144DA801,
     SUBDEVICE_1D49403B = 0x1D49403B
 };
 
@@ -27,6 +28,7 @@ inline const char8* enumToString(PciSubDevice144DA808 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice144DA808::NONE:               return "NONE";
+        case PciSubDevice144DA808::SUBDEVICE_144DA801: return "SUBDEVICE_144DA801";
         case PciSubDevice144DA808::SUBDEVICE_1D49403B: return "SUBDEVICE_1D49403B";
 
         default: return "UNKNOWN";
@@ -58,6 +60,7 @@ inline const char8* enumToHumanString(PciSubDevice144DA808 subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice144DA808::SUBDEVICE_144DA801: return "SSD 970 EVO Plus 1TB";
         case PciSubDevice144DA808::SUBDEVICE_1D49403B: return "Thinksystem U.2 PM983 NVMe SSD";
 
         default: return "Unknown device";

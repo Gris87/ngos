@@ -21,7 +21,10 @@ enum class PciSubDevice1DD81007: u32 // Ignore CppEnumVerifier
     SUBDEVICE_1DD8400A = 0x1DD8400A,
     SUBDEVICE_1DD8400C = 0x1DD8400C,
     SUBDEVICE_1DD8400D = 0x1DD8400D,
-    SUBDEVICE_1DD8400E = 0x1DD8400E
+    SUBDEVICE_1DD8400E = 0x1DD8400E,
+    SUBDEVICE_1DD84014 = 0x1DD84014,
+    SUBDEVICE_1DD85001 = 0x1DD85001,
+    SUBDEVICE_1DD85003 = 0x1DD85003
 };
 
 
@@ -44,6 +47,9 @@ inline const char8* enumToString(PciSubDevice1DD81007 subDevice) // TEST: NO
         case PciSubDevice1DD81007::SUBDEVICE_1DD8400C: return "SUBDEVICE_1DD8400C";
         case PciSubDevice1DD81007::SUBDEVICE_1DD8400D: return "SUBDEVICE_1DD8400D";
         case PciSubDevice1DD81007::SUBDEVICE_1DD8400E: return "SUBDEVICE_1DD8400E";
+        case PciSubDevice1DD81007::SUBDEVICE_1DD84014: return "SUBDEVICE_1DD84014";
+        case PciSubDevice1DD81007::SUBDEVICE_1DD85001: return "SUBDEVICE_1DD85001";
+        case PciSubDevice1DD81007::SUBDEVICE_1DD85003: return "SUBDEVICE_1DD85003";
 
         default: return "UNKNOWN";
     }
@@ -83,6 +89,9 @@ inline const char8* enumToHumanString(PciSubDevice1DD81007 subDevice) // TEST: N
         case PciSubDevice1DD81007::SUBDEVICE_1DD8400C: return "DSC-25 10/25G 2-port 4G RAM 8G eMMC G1 Services Card";
         case PciSubDevice1DD81007::SUBDEVICE_1DD8400D: return "DSP DSC-100 Ent 100Gb Card";
         case PciSubDevice1DD81007::SUBDEVICE_1DD8400E: return "DSC-25 10/25G 2-port 4G RAM 8G eMMC G1 Services Card";
+        case PciSubDevice1DD81007::SUBDEVICE_1DD84014: return "DSC-100 40/100G 2-port 8G RAM 16G eMMC G1 Services Card";
+        case PciSubDevice1DD81007::SUBDEVICE_1DD85001: return "DSC2-200 50/100/200G 2-port 32G RAM 64G eMMC G2 Services Card";
+        case PciSubDevice1DD81007::SUBDEVICE_1DD85003: return "DSC2-200 50/100/200G 2-port 32G RAM 64G eMMC G2 Services Card";
 
         default: return "Unknown device";
     }

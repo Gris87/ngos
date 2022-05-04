@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d6a/pcisubdevice1d6a07b1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d6a/pcisubdevice1d6a94c0.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1d6a/pcisubdevice1d6ad107.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
@@ -21,6 +23,7 @@ enum class PciDevice1D6A: u16 // Ignore CppEnumVerifier
     DEVICE_11B1 = 0x11B1,
     DEVICE_12B1 = 0x12B1,
     DEVICE_87B1 = 0x87B1,
+    DEVICE_94C0 = 0x94C0,
     DEVICE_D107 = 0xD107,
     DEVICE_D108 = 0xD108
 };
@@ -43,6 +46,7 @@ inline const char8* enumToString(PciDevice1D6A device) // TEST: NO
         case PciDevice1D6A::DEVICE_11B1: return "DEVICE_11B1";
         case PciDevice1D6A::DEVICE_12B1: return "DEVICE_12B1";
         case PciDevice1D6A::DEVICE_87B1: return "DEVICE_87B1";
+        case PciDevice1D6A::DEVICE_94C0: return "DEVICE_94C0";
         case PciDevice1D6A::DEVICE_D107: return "DEVICE_D107";
         case PciDevice1D6A::DEVICE_D108: return "DEVICE_D108";
 
@@ -82,6 +86,7 @@ inline const char8* enumToHumanString(PciDevice1D6A device) // TEST: NO
         case PciDevice1D6A::DEVICE_11B1: return "AQC111 NBase-T/IEEE 802.3bz Ethernet Controller [AQtion]";
         case PciDevice1D6A::DEVICE_12B1: return "AQC112 NBase-T/IEEE 802.3bz Ethernet Controller [AQtion]";
         case PciDevice1D6A::DEVICE_87B1: return "AQC107 NBase-T/IEEE 802.3bz Ethernet Controller [AQtion]";
+        case PciDevice1D6A::DEVICE_94C0: return "AQC113CS NBase-T/IEEE 802.3bz Ethernet Controller [AQtion]";
         case PciDevice1D6A::DEVICE_D107: return "AQC107 NBase-T/IEEE 802.3bz Ethernet Controller [AQtion]";
         case PciDevice1D6A::DEVICE_D108: return "AQC108 NBase-T/IEEE 802.3bz Ethernet Controller [AQtion]";
 
@@ -101,11 +106,12 @@ inline const char8* enumToHumanString(PciDevice1D6A device, u16 subsystemVendorI
     {
         case PciDevice1D6A::DEVICE_0001: return "Unknown device";
         case PciDevice1D6A::DEVICE_00B1: return "Unknown device";
-        case PciDevice1D6A::DEVICE_07B1: return "Unknown device";
+        case PciDevice1D6A::DEVICE_07B1: return enumToHumanString((PciSubDevice1D6A07B1)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1D6A::DEVICE_08B1: return "Unknown device";
         case PciDevice1D6A::DEVICE_11B1: return "Unknown device";
         case PciDevice1D6A::DEVICE_12B1: return "Unknown device";
         case PciDevice1D6A::DEVICE_87B1: return "Unknown device";
+        case PciDevice1D6A::DEVICE_94C0: return enumToHumanString((PciSubDevice1D6A94C0)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1D6A::DEVICE_D107: return enumToHumanString((PciSubDevice1D6AD107)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1D6A::DEVICE_D108: return "Unknown device";
 

@@ -1,7 +1,7 @@
 #!/bin/bash
                                                                                                                                                                                                          # Colorize: green
 # This script helps to simplify Git usage                                                                                                                                                                # Colorize: green
-# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Author: Maxim Shvetsov                                                                                                                                                                                  # Colorize: green
 # Usage: ./scripts/pull.sh                                                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green

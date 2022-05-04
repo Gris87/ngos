@@ -245,7 +245,7 @@ inline const char8* enumToHumanString(PciDevice10B9 device) // TEST: NO
         case PciDevice10B9::DEVICE_1449: return "M1449";
         case PciDevice10B9::DEVICE_1451: return "M1451";
         case PciDevice10B9::DEVICE_1461: return "M1461";
-        case PciDevice10B9::DEVICE_1489: return "M1489";
+        case PciDevice10B9::DEVICE_1489: return "M1489 Cache-Memory PCI Controller (CMP) [FinALi 486] CPU to PCI bridge";
         case PciDevice10B9::DEVICE_1511: return "M1511 [Aladdin]";
         case PciDevice10B9::DEVICE_1512: return "M1512 [Aladdin]";
         case PciDevice10B9::DEVICE_1513: return "M1513 [Aladdin]";

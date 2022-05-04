@@ -184,7 +184,7 @@ inline const char8* enumToHumanString(PciSubDevice100267DF subDevice) // TEST: N
         case PciSubDevice100267DF::SUBDEVICE_18495030: return "Phantom Gaming D Radeon RX580 8G OC";
         case PciSubDevice100267DF::SUBDEVICE_1DA2E353: return "Radeon RX 570 Pulse 4GB";
         case PciSubDevice100267DF::SUBDEVICE_1DA2E366: return "Nitro+ Radeon RX 570/580/590";
-        case PciSubDevice100267DF::SUBDEVICE_1DA2E387: return "Radeon RX 570 Pulse 4GB";
+        case PciSubDevice100267DF::SUBDEVICE_1DA2E387: return "Radeon RX 580 Pulse 4GB";
 
         default: return "Unknown device";
     }

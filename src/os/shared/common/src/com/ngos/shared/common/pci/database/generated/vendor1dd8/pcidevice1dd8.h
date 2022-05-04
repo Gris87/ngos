@@ -6,11 +6,14 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1dd8/pcisubdevice1dd80002.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1dd8/pcisubdevice1dd81000.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1dd8/pcisubdevice1dd81001.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1dd8/pcisubdevice1dd81002.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1dd8/pcisubdevice1dd81003.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1dd8/pcisubdevice1dd81004.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1dd8/pcisubdevice1dd81005.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1dd8/pcisubdevice1dd81006.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1dd8/pcisubdevice1dd81007.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
@@ -19,11 +22,14 @@
 enum class PciDevice1DD8: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
+    DEVICE_0002 = 0x0002,
     DEVICE_1000 = 0x1000,
     DEVICE_1001 = 0x1001,
     DEVICE_1002 = 0x1002,
     DEVICE_1003 = 0x1003,
     DEVICE_1004 = 0x1004,
+    DEVICE_1005 = 0x1005,
+    DEVICE_1006 = 0x1006,
     DEVICE_1007 = 0x1007
 };
 
@@ -38,11 +44,14 @@ inline const char8* enumToString(PciDevice1DD8 device) // TEST: NO
     switch (device)
     {
         case PciDevice1DD8::NONE:        return "NONE";
+        case PciDevice1DD8::DEVICE_0002: return "DEVICE_0002";
         case PciDevice1DD8::DEVICE_1000: return "DEVICE_1000";
         case PciDevice1DD8::DEVICE_1001: return "DEVICE_1001";
         case PciDevice1DD8::DEVICE_1002: return "DEVICE_1002";
         case PciDevice1DD8::DEVICE_1003: return "DEVICE_1003";
         case PciDevice1DD8::DEVICE_1004: return "DEVICE_1004";
+        case PciDevice1DD8::DEVICE_1005: return "DEVICE_1005";
+        case PciDevice1DD8::DEVICE_1006: return "DEVICE_1006";
         case PciDevice1DD8::DEVICE_1007: return "DEVICE_1007";
 
         default: return "UNKNOWN";
@@ -74,11 +83,14 @@ inline const char8* enumToHumanString(PciDevice1DD8 device) // TEST: NO
 
     switch (device)
     {
+        case PciDevice1DD8::DEVICE_0002: return "DSC2 Elba Upstream Port";
         case PciDevice1DD8::DEVICE_1000: return "DSC Capri Upstream Port";
         case PciDevice1DD8::DEVICE_1001: return "DSC Virtual Downstream Port";
         case PciDevice1DD8::DEVICE_1002: return "DSC Ethernet Controller";
         case PciDevice1DD8::DEVICE_1003: return "DSC Ethernet Controller VF";
         case PciDevice1DD8::DEVICE_1004: return "DSC Management Controller";
+        case PciDevice1DD8::DEVICE_1005: return "DSC NVMe Controller";
+        case PciDevice1DD8::DEVICE_1006: return "DSC NVMe Controller VF";
         case PciDevice1DD8::DEVICE_1007: return "DSC Storage Accelerator";
 
         default: return "Unknown device";
@@ -95,11 +107,14 @@ inline const char8* enumToHumanString(PciDevice1DD8 device, u16 subsystemVendorI
 
     switch (device)
     {
+        case PciDevice1DD8::DEVICE_0002: return enumToHumanString((PciSubDevice1DD80002)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1DD8::DEVICE_1000: return enumToHumanString((PciSubDevice1DD81000)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1DD8::DEVICE_1001: return enumToHumanString((PciSubDevice1DD81001)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1DD8::DEVICE_1002: return enumToHumanString((PciSubDevice1DD81002)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1DD8::DEVICE_1003: return enumToHumanString((PciSubDevice1DD81003)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1DD8::DEVICE_1004: return enumToHumanString((PciSubDevice1DD81004)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1DD8::DEVICE_1005: return enumToHumanString((PciSubDevice1DD81005)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1DD8::DEVICE_1006: return enumToHumanString((PciSubDevice1DD81006)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1DD8::DEVICE_1007: return enumToHumanString((PciSubDevice1DD81007)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";

@@ -13,6 +13,7 @@
 enum class PciSubDevice80861533: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_10280B35 = 0x10280B35,
     SUBDEVICE_103C0003 = 0x103C0003,
     SUBDEVICE_10590180 = 0x10590180,
     SUBDEVICE_10937706 = 0x10937706,
@@ -34,6 +35,7 @@ inline const char8* enumToString(PciSubDevice80861533 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice80861533::NONE:               return "NONE";
+        case PciSubDevice80861533::SUBDEVICE_10280B35: return "SUBDEVICE_10280B35";
         case PciSubDevice80861533::SUBDEVICE_103C0003: return "SUBDEVICE_103C0003";
         case PciSubDevice80861533::SUBDEVICE_10590180: return "SUBDEVICE_10590180";
         case PciSubDevice80861533::SUBDEVICE_10937706: return "SUBDEVICE_10937706";
@@ -72,6 +74,7 @@ inline const char8* enumToHumanString(PciSubDevice80861533 subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice80861533::SUBDEVICE_10280B35: return "I210 Gigabit Network Connection";
         case PciSubDevice80861533::SUBDEVICE_103C0003: return "Ethernet I210-T1 GbE NIC";
         case PciSubDevice80861533::SUBDEVICE_10590180: return "RD10019 1GbE interface";
         case PciSubDevice80861533::SUBDEVICE_10937706: return "Compact Vision System Ethernet Adapter";

@@ -67,7 +67,7 @@ inline const char8* enumToHumanString(PciSubDevice808602F0 subDevice) // TEST: N
         case PciSubDevice808602F0::SUBDEVICE_80860034: return "Wireless-AC 9560 160MHz";
         case PciSubDevice808602F0::SUBDEVICE_80860070: return "Wi-Fi 6 AX201 160MHz";
         case PciSubDevice808602F0::SUBDEVICE_80860074: return "Wi-Fi 6 AX201 160MHz";
-        case PciSubDevice808602F0::SUBDEVICE_80864070: return "Wireless-AC 9462 80MHz";
+        case PciSubDevice808602F0::SUBDEVICE_80864070: return "Wi-Fi 6 AX201 160MHz";
 
         default: return "Unknown device";
     }

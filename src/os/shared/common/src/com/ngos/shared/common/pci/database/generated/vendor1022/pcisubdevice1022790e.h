@@ -16,6 +16,7 @@ enum class PciSubDevice1022790E: u32 // Ignore CppEnumVerifier
     SUBDEVICE_103C8615 = 0x103C8615,
     SUBDEVICE_1043876B = 0x1043876B,
     SUBDEVICE_14627C37 = 0x14627C37,
+    SUBDEVICE_15D9790E = 0x15D9790E,
     SUBDEVICE_17AA5124 = 0x17AA5124,
     SUBDEVICE_EA50CE19 = 0xEA50CE19
 };
@@ -34,6 +35,7 @@ inline const char8* enumToString(PciSubDevice1022790E subDevice) // TEST: NO
         case PciSubDevice1022790E::SUBDEVICE_103C8615: return "SUBDEVICE_103C8615";
         case PciSubDevice1022790E::SUBDEVICE_1043876B: return "SUBDEVICE_1043876B";
         case PciSubDevice1022790E::SUBDEVICE_14627C37: return "SUBDEVICE_14627C37";
+        case PciSubDevice1022790E::SUBDEVICE_15D9790E: return "SUBDEVICE_15D9790E";
         case PciSubDevice1022790E::SUBDEVICE_17AA5124: return "SUBDEVICE_17AA5124";
         case PciSubDevice1022790E::SUBDEVICE_EA50CE19: return "SUBDEVICE_EA50CE19";
 
@@ -69,6 +71,7 @@ inline const char8* enumToHumanString(PciSubDevice1022790E subDevice) // TEST: N
         case PciSubDevice1022790E::SUBDEVICE_103C8615: return "Pavilion Laptop 15-cw1xxx";
         case PciSubDevice1022790E::SUBDEVICE_1043876B: return "PRIME B450M-A Motherboard";
         case PciSubDevice1022790E::SUBDEVICE_14627C37: return "X570-A PRO motherboard";
+        case PciSubDevice1022790E::SUBDEVICE_15D9790E: return "H12SSL-i";
         case PciSubDevice1022790E::SUBDEVICE_17AA5124: return "ThinkPad E595";
         case PciSubDevice1022790E::SUBDEVICE_EA50CE19: return "mCOM10-L1900";
 

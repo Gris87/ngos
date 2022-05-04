@@ -13,6 +13,7 @@
 enum class PciDevice1458: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
+    DEVICE_22E8 = 0x22E8,
     DEVICE_3483 = 0x3483
 };
 
@@ -27,6 +28,7 @@ inline const char8* enumToString(PciDevice1458 device) // TEST: NO
     switch (device)
     {
         case PciDevice1458::NONE:        return "NONE";
+        case PciDevice1458::DEVICE_22E8: return "DEVICE_22E8";
         case PciDevice1458::DEVICE_3483: return "DEVICE_3483";
 
         default: return "UNKNOWN";
@@ -58,6 +60,7 @@ inline const char8* enumToHumanString(PciDevice1458 device) // TEST: NO
 
     switch (device)
     {
+        case PciDevice1458::DEVICE_22E8: return "Ellesmere [Radeon RX 480]";
         case PciDevice1458::DEVICE_3483: return "USB 3.0 Controller (VIA VL80x-based xHCI Controller)";
 
         default: return "Unknown device";

@@ -1,138 +1,138 @@
-#ifndef COM_NGOS_SHARED_COMMON_CPU_MODEL_INTELCPUMODEL_H
-#define COM_NGOS_SHARED_COMMON_CPU_MODEL_INTELCPUMODEL_H
-
-
-
-#include <com/ngos/shared/common/cpu/cpufamily.h>
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-// Taken from https://en.wikichip.org/wiki/intel/cpuid
-enum class IntelCpuModel: u8 // Ignore CppEnumVerifier
-{
-    NONE                              = 0,
-    FAMILY_6_HASWELL_S                = 60,
-    FAMILY_6_BROADWELL_U_Y_S          = 61,
-    FAMILY_6_IVY_BRIDGE_SERVER        = 62,
-    FAMILY_6_HASWELL_SERVER           = 63,
-    FAMILY_6_HASWELL_ULT              = 69,
-    FAMILY_6_HASWELL_GT3E             = 70,
-    FAMILY_6_BROADWELL_H_C_W          = 71,
-    FAMILY_6_TANGIER                  = 74,
-    FAMILY_6_CHERRY_TRAIL             = 76,
-    FAMILY_6_BRASWELL                 = 76,
-    FAMILY_6_AVOTON                   = 77,
-    FAMILY_6_RANGELEY                 = 77,
-    FAMILY_6_SKYLAKE_Y_U              = 78,
-    FAMILY_6_BROADWELL_SERVER_E_EP_EX = 79,
-    FAMILY_6_SKYLAKE_SERVER           = 85,
-    FAMILY_6_CASCADE_LAKE             = 85,
-    FAMILY_6_COOPER_LAKE              = 85,
-    FAMILY_6_BROADWELL_SERVER_DE      = 86,
-    FAMILY_6_KNIGHTS_LANDING          = 87,
-    FAMILY_6_ANNIEDALE                = 90,
-    FAMILY_6_AIRMONT_MID              = 90,
-    FAMILY_6_APOLLO_LAKE              = 92,
-    FAMILY_6_SOFIA                    = 93,
-    FAMILY_6_SKYLAKE_DT_H_S           = 94,
-    FAMILY_6_DENVERTON                = 95,
-    FAMILY_6_CANNON_LAKE              = 102,
-    FAMILY_6_ICE_LAKE_SERVER_DE       = 106,
-    FAMILY_6_ICE_LAKE_SERVER_SP       = 108,
-    FAMILY_6_GEMINI_LAKE              = 122,
-    FAMILY_6_ICE_LAKE_Y               = 125,
-    FAMILY_6_ICE_LAKE_U               = 126,
-    FAMILY_6_KNIGHTS_MILL             = 133,
-    FAMILY_6_ELKHART_LAKE             = 134,
-    FAMILY_6_KABY_LAKE_Y_U            = 142,
-    FAMILY_6_COFFEE_LAKE_U            = 142,
-    FAMILY_6_WHISKEY_LAKE             = 142,
-    FAMILY_6_AMBER_LAKE               = 142,
-    FAMILY_6_COMET_LAKE               = 142,
-    FAMILY_6_KABY_LAKE_DT_H_S_X       = 158,
-    FAMILY_6_COFFEE_LAKE_S_H_E        = 158
-};
-
-
-
-inline const char8* enumToString(CpuFamily family, IntelCpuModel model) // TEST: NO
-{
-    // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs
-
-
-
-    if (model == IntelCpuModel::NONE)
-    {
-        return "NONE";
-    }
-
-
-
-    switch (family)
-    {
-        case CpuFamily::INTEL_FAMILY_6:
-        {
-            switch (model)
-            {
-                case IntelCpuModel::FAMILY_6_HASWELL_S:                return "FAMILY_6_HASWELL_S";
-                case IntelCpuModel::FAMILY_6_BROADWELL_U_Y_S:          return "FAMILY_6_BROADWELL_U_Y_S";
-                case IntelCpuModel::FAMILY_6_IVY_BRIDGE_SERVER:        return "FAMILY_6_IVY_BRIDGE_SERVER";
-                case IntelCpuModel::FAMILY_6_HASWELL_SERVER:           return "FAMILY_6_HASWELL_SERVER";
-                case IntelCpuModel::FAMILY_6_HASWELL_ULT:              return "FAMILY_6_HASWELL_ULT";
-                case IntelCpuModel::FAMILY_6_HASWELL_GT3E:             return "FAMILY_6_HASWELL_GT3E";
-                case IntelCpuModel::FAMILY_6_BROADWELL_H_C_W:          return "FAMILY_6_BROADWELL_H_C_W";
-                case IntelCpuModel::FAMILY_6_TANGIER:                  return "FAMILY_6_TANGIER";
-                case IntelCpuModel::FAMILY_6_CHERRY_TRAIL:             return "FAMILY_6_CHERRY_TRAIL";
-                case IntelCpuModel::FAMILY_6_AVOTON:                   return "FAMILY_6_AVOTON";
-                case IntelCpuModel::FAMILY_6_SKYLAKE_Y_U:              return "FAMILY_6_SKYLAKE_Y_U";
-                case IntelCpuModel::FAMILY_6_BROADWELL_SERVER_E_EP_EX: return "FAMILY_6_BROADWELL_SERVER_E_EP_EX";
-                case IntelCpuModel::FAMILY_6_COOPER_LAKE:              return "FAMILY_6_COOPER_LAKE";
-                case IntelCpuModel::FAMILY_6_BROADWELL_SERVER_DE:      return "FAMILY_6_BROADWELL_SERVER_DE";
-                case IntelCpuModel::FAMILY_6_KNIGHTS_LANDING:          return "FAMILY_6_KNIGHTS_LANDING";
-                case IntelCpuModel::FAMILY_6_ANNIEDALE:                return "FAMILY_6_ANNIEDALE";
-                case IntelCpuModel::FAMILY_6_APOLLO_LAKE:              return "FAMILY_6_APOLLO_LAKE";
-                case IntelCpuModel::FAMILY_6_SOFIA:                    return "FAMILY_6_SOFIA";
-                case IntelCpuModel::FAMILY_6_SKYLAKE_DT_H_S:           return "FAMILY_6_SKYLAKE_DT_H_S";
-                case IntelCpuModel::FAMILY_6_DENVERTON:                return "FAMILY_6_DENVERTON";
-                case IntelCpuModel::FAMILY_6_CANNON_LAKE:              return "FAMILY_6_CANNON_LAKE";
-                case IntelCpuModel::FAMILY_6_ICE_LAKE_SERVER_DE:       return "FAMILY_6_ICE_LAKE_SERVER_DE";
-                case IntelCpuModel::FAMILY_6_ICE_LAKE_SERVER_SP:       return "FAMILY_6_ICE_LAKE_SERVER_SP";
-                case IntelCpuModel::FAMILY_6_GEMINI_LAKE:              return "FAMILY_6_GEMINI_LAKE";
-                case IntelCpuModel::FAMILY_6_ICE_LAKE_Y:               return "FAMILY_6_ICE_LAKE_Y";
-                case IntelCpuModel::FAMILY_6_ICE_LAKE_U:               return "FAMILY_6_ICE_LAKE_U";
-                case IntelCpuModel::FAMILY_6_KNIGHTS_MILL:             return "FAMILY_6_KNIGHTS_MILL";
-                case IntelCpuModel::FAMILY_6_ELKHART_LAKE:             return "FAMILY_6_ELKHART_LAKE";
-                case IntelCpuModel::FAMILY_6_COMET_LAKE:               return "FAMILY_6_COMET_LAKE";
-                case IntelCpuModel::FAMILY_6_COFFEE_LAKE_S_H_E:        return "FAMILY_6_COFFEE_LAKE_S_H_E";
-
-                default: return "UNKNOWN";
-            }
-        }
-        break;
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(CpuFamily family, IntelCpuModel model) // TEST: NO
-{
-    // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[41];
-
-    sprintf(res, "0x%02X (%s)", (u8)model, enumToString(family, model));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CPU_MODEL_INTELCPUMODEL_H
+#ifndef COM_NGOS_SHARED_COMMON_CPU_MODEL_INTELCPUMODEL_H                                                                                                                                                 // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CPU_MODEL_INTELCPUMODEL_H                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/cpu/cpufamily.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+// Taken from https://en.wikichip.org/wiki/intel/cpuid                                                                                                                                                   // Colorize: green
+enum class IntelCpuModel: good_U8 // Ignore CppEnumVerifier                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE                              = 0,                                                                                                                                                               // Colorize: green
+    FAMILY_6_HASWELL_S                = 60,                                                                                                                                                              // Colorize: green
+    FAMILY_6_BROADWELL_U_Y_S          = 61,                                                                                                                                                              // Colorize: green
+    FAMILY_6_IVY_BRIDGE_SERVER        = 62,                                                                                                                                                              // Colorize: green
+    FAMILY_6_HASWELL_SERVER           = 63,                                                                                                                                                              // Colorize: green
+    FAMILY_6_HASWELL_ULT              = 69,                                                                                                                                                              // Colorize: green
+    FAMILY_6_HASWELL_GT3E             = 70,                                                                                                                                                              // Colorize: green
+    FAMILY_6_BROADWELL_H_C_W          = 71,                                                                                                                                                              // Colorize: green
+    FAMILY_6_TANGIER                  = 74,                                                                                                                                                              // Colorize: green
+    FAMILY_6_CHERRY_TRAIL             = 76,                                                                                                                                                              // Colorize: green
+    FAMILY_6_BRASWELL                 = 76,                                                                                                                                                              // Colorize: green
+    FAMILY_6_AVOTON                   = 77,                                                                                                                                                              // Colorize: green
+    FAMILY_6_RANGELEY                 = 77,                                                                                                                                                              // Colorize: green
+    FAMILY_6_SKYLAKE_Y_U              = 78,                                                                                                                                                              // Colorize: green
+    FAMILY_6_BROADWELL_SERVER_E_EP_EX = 79,                                                                                                                                                              // Colorize: green
+    FAMILY_6_SKYLAKE_SERVER           = 85,                                                                                                                                                              // Colorize: green
+    FAMILY_6_CASCADE_LAKE             = 85,                                                                                                                                                              // Colorize: green
+    FAMILY_6_COOPER_LAKE              = 85,                                                                                                                                                              // Colorize: green
+    FAMILY_6_BROADWELL_SERVER_DE      = 86,                                                                                                                                                              // Colorize: green
+    FAMILY_6_KNIGHTS_LANDING          = 87,                                                                                                                                                              // Colorize: green
+    FAMILY_6_ANNIEDALE                = 90,                                                                                                                                                              // Colorize: green
+    FAMILY_6_AIRMONT_MID              = 90,                                                                                                                                                              // Colorize: green
+    FAMILY_6_APOLLO_LAKE              = 92,                                                                                                                                                              // Colorize: green
+    FAMILY_6_SOFIA                    = 93,                                                                                                                                                              // Colorize: green
+    FAMILY_6_SKYLAKE_DT_H_S           = 94,                                                                                                                                                              // Colorize: green
+    FAMILY_6_DENVERTON                = 95,                                                                                                                                                              // Colorize: green
+    FAMILY_6_CANNON_LAKE              = 102,                                                                                                                                                             // Colorize: green
+    FAMILY_6_ICE_LAKE_SERVER_DE       = 106,                                                                                                                                                             // Colorize: green
+    FAMILY_6_ICE_LAKE_SERVER_SP       = 108,                                                                                                                                                             // Colorize: green
+    FAMILY_6_GEMINI_LAKE              = 122,                                                                                                                                                             // Colorize: green
+    FAMILY_6_ICE_LAKE_Y               = 125,                                                                                                                                                             // Colorize: green
+    FAMILY_6_ICE_LAKE_U               = 126,                                                                                                                                                             // Colorize: green
+    FAMILY_6_KNIGHTS_MILL             = 133,                                                                                                                                                             // Colorize: green
+    FAMILY_6_ELKHART_LAKE             = 134,                                                                                                                                                             // Colorize: green
+    FAMILY_6_KABY_LAKE_Y_U            = 142,                                                                                                                                                             // Colorize: green
+    FAMILY_6_COFFEE_LAKE_U            = 142,                                                                                                                                                             // Colorize: green
+    FAMILY_6_WHISKEY_LAKE             = 142,                                                                                                                                                             // Colorize: green
+    FAMILY_6_AMBER_LAKE               = 142,                                                                                                                                                             // Colorize: green
+    FAMILY_6_COMET_LAKE               = 142,                                                                                                                                                             // Colorize: green
+    FAMILY_6_KABY_LAKE_DT_H_S_X       = 158,                                                                                                                                                             // Colorize: green
+    FAMILY_6_COFFEE_LAKE_S_H_E        = 158                                                                                                                                                              // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const good_Char8* enumToString(CpuFamily family, IntelCpuModel model) // TEST: NO                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (model == IntelCpuModel::NONE)                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return "NONE";                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (family)                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case CpuFamily::INTEL_FAMILY_6:                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            switch (model)                                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                case IntelCpuModel::FAMILY_6_HASWELL_S:                return "FAMILY_6_HASWELL_S";                                                                                                      // Colorize: green
+                case IntelCpuModel::FAMILY_6_BROADWELL_U_Y_S:          return "FAMILY_6_BROADWELL_U_Y_S";                                                                                                // Colorize: green
+                case IntelCpuModel::FAMILY_6_IVY_BRIDGE_SERVER:        return "FAMILY_6_IVY_BRIDGE_SERVER";                                                                                              // Colorize: green
+                case IntelCpuModel::FAMILY_6_HASWELL_SERVER:           return "FAMILY_6_HASWELL_SERVER";                                                                                                 // Colorize: green
+                case IntelCpuModel::FAMILY_6_HASWELL_ULT:              return "FAMILY_6_HASWELL_ULT";                                                                                                    // Colorize: green
+                case IntelCpuModel::FAMILY_6_HASWELL_GT3E:             return "FAMILY_6_HASWELL_GT3E";                                                                                                   // Colorize: green
+                case IntelCpuModel::FAMILY_6_BROADWELL_H_C_W:          return "FAMILY_6_BROADWELL_H_C_W";                                                                                                // Colorize: green
+                case IntelCpuModel::FAMILY_6_TANGIER:                  return "FAMILY_6_TANGIER";                                                                                                        // Colorize: green
+                case IntelCpuModel::FAMILY_6_CHERRY_TRAIL:             return "FAMILY_6_CHERRY_TRAIL";                                                                                                   // Colorize: green
+                case IntelCpuModel::FAMILY_6_AVOTON:                   return "FAMILY_6_AVOTON";                                                                                                         // Colorize: green
+                case IntelCpuModel::FAMILY_6_SKYLAKE_Y_U:              return "FAMILY_6_SKYLAKE_Y_U";                                                                                                    // Colorize: green
+                case IntelCpuModel::FAMILY_6_BROADWELL_SERVER_E_EP_EX: return "FAMILY_6_BROADWELL_SERVER_E_EP_EX";                                                                                       // Colorize: green
+                case IntelCpuModel::FAMILY_6_COOPER_LAKE:              return "FAMILY_6_COOPER_LAKE";                                                                                                    // Colorize: green
+                case IntelCpuModel::FAMILY_6_BROADWELL_SERVER_DE:      return "FAMILY_6_BROADWELL_SERVER_DE";                                                                                            // Colorize: green
+                case IntelCpuModel::FAMILY_6_KNIGHTS_LANDING:          return "FAMILY_6_KNIGHTS_LANDING";                                                                                                // Colorize: green
+                case IntelCpuModel::FAMILY_6_ANNIEDALE:                return "FAMILY_6_ANNIEDALE";                                                                                                      // Colorize: green
+                case IntelCpuModel::FAMILY_6_APOLLO_LAKE:              return "FAMILY_6_APOLLO_LAKE";                                                                                                    // Colorize: green
+                case IntelCpuModel::FAMILY_6_SOFIA:                    return "FAMILY_6_SOFIA";                                                                                                          // Colorize: green
+                case IntelCpuModel::FAMILY_6_SKYLAKE_DT_H_S:           return "FAMILY_6_SKYLAKE_DT_H_S";                                                                                                 // Colorize: green
+                case IntelCpuModel::FAMILY_6_DENVERTON:                return "FAMILY_6_DENVERTON";                                                                                                      // Colorize: green
+                case IntelCpuModel::FAMILY_6_CANNON_LAKE:              return "FAMILY_6_CANNON_LAKE";                                                                                                    // Colorize: green
+                case IntelCpuModel::FAMILY_6_ICE_LAKE_SERVER_DE:       return "FAMILY_6_ICE_LAKE_SERVER_DE";                                                                                             // Colorize: green
+                case IntelCpuModel::FAMILY_6_ICE_LAKE_SERVER_SP:       return "FAMILY_6_ICE_LAKE_SERVER_SP";                                                                                             // Colorize: green
+                case IntelCpuModel::FAMILY_6_GEMINI_LAKE:              return "FAMILY_6_GEMINI_LAKE";                                                                                                    // Colorize: green
+                case IntelCpuModel::FAMILY_6_ICE_LAKE_Y:               return "FAMILY_6_ICE_LAKE_Y";                                                                                                     // Colorize: green
+                case IntelCpuModel::FAMILY_6_ICE_LAKE_U:               return "FAMILY_6_ICE_LAKE_U";                                                                                                     // Colorize: green
+                case IntelCpuModel::FAMILY_6_KNIGHTS_MILL:             return "FAMILY_6_KNIGHTS_MILL";                                                                                                   // Colorize: green
+                case IntelCpuModel::FAMILY_6_ELKHART_LAKE:             return "FAMILY_6_ELKHART_LAKE";                                                                                                   // Colorize: green
+                case IntelCpuModel::FAMILY_6_COMET_LAKE:               return "FAMILY_6_COMET_LAKE";                                                                                                     // Colorize: green
+                case IntelCpuModel::FAMILY_6_COFFEE_LAKE_S_H_E:        return "FAMILY_6_COFFEE_LAKE_S_H_E";                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                default: return "UNKNOWN";                                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const good_Char8* enumToFullString(CpuFamily family, IntelCpuModel model) // TEST: NO                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static good_Char8 res[41];                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", static_cast<good_U8>(model), enumToString(family, model));                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CPU_MODEL_INTELCPUMODEL_H                                                                                                                                               // Colorize: green

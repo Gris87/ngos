@@ -13,7 +13,9 @@
 enum class PciDevice1D22: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
-    DEVICE_1380 = 0x1380
+    DEVICE_1380 = 0x1380,
+    DEVICE_3684 = 0x3684,
+    DEVICE_3685 = 0x3685
 };
 
 
@@ -28,6 +30,8 @@ inline const char8* enumToString(PciDevice1D22 device) // TEST: NO
     {
         case PciDevice1D22::NONE:        return "NONE";
         case PciDevice1D22::DEVICE_1380: return "DEVICE_1380";
+        case PciDevice1D22::DEVICE_3684: return "DEVICE_3684";
+        case PciDevice1D22::DEVICE_3685: return "DEVICE_3685";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +63,8 @@ inline const char8* enumToHumanString(PciDevice1D22 device) // TEST: NO
     switch (device)
     {
         case PciDevice1D22::DEVICE_1380: return "Cloud Storage Device";
+        case PciDevice1D22::DEVICE_3684: return "Kunlun AI Accelerator";
+        case PciDevice1D22::DEVICE_3685: return "Kunlun2 AI Accelerator [VF]";
 
         default: return "Unknown device";
     }

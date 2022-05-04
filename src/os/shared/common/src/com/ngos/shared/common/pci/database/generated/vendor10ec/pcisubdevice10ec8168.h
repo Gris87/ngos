@@ -27,6 +27,7 @@ enum class PciSubDevice10EC8168: u32 // Ignore CppEnumVerifier
     SUBDEVICE_103C2A6F = 0x103C2A6F,
     SUBDEVICE_103C825B = 0x103C825B,
     SUBDEVICE_103C8615 = 0x103C8615,
+    SUBDEVICE_103C8882 = 0x103C8882,
     SUBDEVICE_104311F5 = 0x104311F5,
     SUBDEVICE_104316D5 = 0x104316D5,
     SUBDEVICE_104381AA = 0x104381AA,
@@ -84,6 +85,7 @@ inline const char8* enumToString(PciSubDevice10EC8168 subDevice) // TEST: NO
         case PciSubDevice10EC8168::SUBDEVICE_103C2A6F: return "SUBDEVICE_103C2A6F";
         case PciSubDevice10EC8168::SUBDEVICE_103C825B: return "SUBDEVICE_103C825B";
         case PciSubDevice10EC8168::SUBDEVICE_103C8615: return "SUBDEVICE_103C8615";
+        case PciSubDevice10EC8168::SUBDEVICE_103C8882: return "SUBDEVICE_103C8882";
         case PciSubDevice10EC8168::SUBDEVICE_104311F5: return "SUBDEVICE_104311F5";
         case PciSubDevice10EC8168::SUBDEVICE_104316D5: return "SUBDEVICE_104316D5";
         case PciSubDevice10EC8168::SUBDEVICE_104381AA: return "SUBDEVICE_104381AA";
@@ -158,6 +160,7 @@ inline const char8* enumToHumanString(PciSubDevice10EC8168 subDevice) // TEST: N
         case PciSubDevice10EC8168::SUBDEVICE_103C2A6F: return "Asus IPIBL-LB Motherboard";
         case PciSubDevice10EC8168::SUBDEVICE_103C825B: return "OMEN-17-w001nv";
         case PciSubDevice10EC8168::SUBDEVICE_103C8615: return "Pavilion Laptop 15-cw1xxx";
+        case PciSubDevice10EC8168::SUBDEVICE_103C8882: return "HP ProDesk 405 G8 Desktop Mini PC";
         case PciSubDevice10EC8168::SUBDEVICE_104311F5: return "Notebook motherboard (one of many models)";
         case PciSubDevice10EC8168::SUBDEVICE_104316D5: return "U6V/U31J laptop";
         case PciSubDevice10EC8168::SUBDEVICE_104381AA: return "P5B";

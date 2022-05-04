@@ -12,6 +12,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor10df/pcisubdevice10dfe300.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor10df/pcisubdevice10dff100.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor10df/pcisubdevice10dff400.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10df/pcisubdevice10dff500.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor10df/pcisubdevice10dffc00.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor10df/pcisubdevice10dffd00.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -302,7 +303,7 @@ inline const char8* enumToHumanString(PciDevice10DF device, u16 subsystemVendorI
         case PciDevice10DF::DEVICE_F112: return "Unknown device";
         case PciDevice10DF::DEVICE_F180: return "Unknown device";
         case PciDevice10DF::DEVICE_F400: return enumToHumanString((PciSubDevice10DFF400)(subsystemVendorID << 16 | subDeviceId));
-        case PciDevice10DF::DEVICE_F500: return "Unknown device";
+        case PciDevice10DF::DEVICE_F500: return enumToHumanString((PciSubDevice10DFF500)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice10DF::DEVICE_F700: return "Unknown device";
         case PciDevice10DF::DEVICE_F701: return "Unknown device";
         case PciDevice10DF::DEVICE_F800: return "Unknown device";

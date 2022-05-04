@@ -15,6 +15,7 @@ enum class PciSubDevice10DFE300: u32 // Ignore CppEnumVerifier
     NONE               = 0,
     SUBDEVICE_10140614 = 0x10140614,
     SUBDEVICE_10140615 = 0x10140615,
+    SUBDEVICE_101406A0 = 0x101406A0,
     SUBDEVICE_10DFE300 = 0x10DFE300,
     SUBDEVICE_10DFE301 = 0x10DFE301,
     SUBDEVICE_10DFE310 = 0x10DFE310,
@@ -51,6 +52,7 @@ inline const char8* enumToString(PciSubDevice10DFE300 subDevice) // TEST: NO
         case PciSubDevice10DFE300::NONE:               return "NONE";
         case PciSubDevice10DFE300::SUBDEVICE_10140614: return "SUBDEVICE_10140614";
         case PciSubDevice10DFE300::SUBDEVICE_10140615: return "SUBDEVICE_10140615";
+        case PciSubDevice10DFE300::SUBDEVICE_101406A0: return "SUBDEVICE_101406A0";
         case PciSubDevice10DFE300::SUBDEVICE_10DFE300: return "SUBDEVICE_10DFE300";
         case PciSubDevice10DFE300::SUBDEVICE_10DFE301: return "SUBDEVICE_10DFE301";
         case PciSubDevice10DFE300::SUBDEVICE_10DFE310: return "SUBDEVICE_10DFE310";
@@ -104,6 +106,7 @@ inline const char8* enumToHumanString(PciSubDevice10DFE300 subDevice) // TEST: N
     {
         case PciSubDevice10DFE300::SUBDEVICE_10140614: return "PCIe3 4-Port 16Gb Fibre Channel Adapter for POWER (FC EN1C/EN1D; CCIN 578E)";
         case PciSubDevice10DFE300::SUBDEVICE_10140615: return "PCIe3 2-Port 32Gb Fibre Channel Adapter for POWER (FC EN1A/EN1B; CCIN 578F)";
+        case PciSubDevice10DFE300::SUBDEVICE_101406A0: return "PCIe3 2-Port 16Gb Fibre Channel Adapter for POWER (FC EN1L/EN1M; CCIN 2CFC)";
         case PciSubDevice10DFE300::SUBDEVICE_10DFE300: return "LPe32002-M2 2-Port 32Gb Fibre Channel Adapter";
         case PciSubDevice10DFE300::SUBDEVICE_10DFE301: return "LPe32000-M2 1-Port 32Gb Fibre Channel Adapter";
         case PciSubDevice10DFE300::SUBDEVICE_10DFE310: return "LPe31002-M6 2-Port 16Gb Fibre Channel Adapter";

@@ -24,6 +24,7 @@
 enum class PciDevice8088: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
+    DEVICE_0100 = 0x0100,
     DEVICE_0101 = 0x0101,
     DEVICE_0102 = 0x0102,
     DEVICE_0103 = 0x0103,
@@ -59,6 +60,7 @@ inline const char8* enumToString(PciDevice8088 device) // TEST: NO
     switch (device)
     {
         case PciDevice8088::NONE:        return "NONE";
+        case PciDevice8088::DEVICE_0100: return "DEVICE_0100";
         case PciDevice8088::DEVICE_0101: return "DEVICE_0101";
         case PciDevice8088::DEVICE_0102: return "DEVICE_0102";
         case PciDevice8088::DEVICE_0103: return "DEVICE_0103";
@@ -111,6 +113,7 @@ inline const char8* enumToHumanString(PciDevice8088 device) // TEST: NO
 
     switch (device)
     {
+        case PciDevice8088::DEVICE_0100: return "WX1860AL-W Gigabit Ethernet Controller";
         case PciDevice8088::DEVICE_0101: return "WX1860A2 Gigabit Ethernet Controller";
         case PciDevice8088::DEVICE_0102: return "WX1860A2S Gigabit Ethernet Controller";
         case PciDevice8088::DEVICE_0103: return "WX1860A4 Gigabit Ethernet Controller";
@@ -148,6 +151,7 @@ inline const char8* enumToHumanString(PciDevice8088 device, u16 subsystemVendorI
 
     switch (device)
     {
+        case PciDevice8088::DEVICE_0100: return "Unknown device";
         case PciDevice8088::DEVICE_0101: return enumToHumanString((PciSubDevice80880101)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice8088::DEVICE_0102: return enumToHumanString((PciSubDevice80880102)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice8088::DEVICE_0103: return enumToHumanString((PciSubDevice80880103)(subsystemVendorID << 16 | subDeviceId));

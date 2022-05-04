@@ -39,6 +39,7 @@ enum class PciSubDevice10026779: u32 // Ignore CppEnumVerifier
     SUBDEVICE_174BE164 = 0x174BE164,
     SUBDEVICE_174BE180 = 0x174BE180,
     SUBDEVICE_174BE201 = 0x174BE201,
+    SUBDEVICE_17872311 = 0x17872311,
     SUBDEVICE_17AF8450 = 0x17AF8450,
     SUBDEVICE_1B0A9096 = 0x1B0A9096,
     SUBDEVICE_1B0A9097 = 0x1B0A9097,
@@ -85,6 +86,7 @@ inline const char8* enumToString(PciSubDevice10026779 subDevice) // TEST: NO
         case PciSubDevice10026779::SUBDEVICE_174BE164: return "SUBDEVICE_174BE164";
         case PciSubDevice10026779::SUBDEVICE_174BE180: return "SUBDEVICE_174BE180";
         case PciSubDevice10026779::SUBDEVICE_174BE201: return "SUBDEVICE_174BE201";
+        case PciSubDevice10026779::SUBDEVICE_17872311: return "SUBDEVICE_17872311";
         case PciSubDevice10026779::SUBDEVICE_17AF8450: return "SUBDEVICE_17AF8450";
         case PciSubDevice10026779::SUBDEVICE_1B0A9096: return "SUBDEVICE_1B0A9096";
         case PciSubDevice10026779::SUBDEVICE_1B0A9097: return "SUBDEVICE_1B0A9097";
@@ -148,6 +150,7 @@ inline const char8* enumToHumanString(PciSubDevice10026779 subDevice) // TEST: N
         case PciSubDevice10026779::SUBDEVICE_174BE164: return "Radeon HD 6450 1 GB DDR3";
         case PciSubDevice10026779::SUBDEVICE_174BE180: return "Radeon HD 6450";
         case PciSubDevice10026779::SUBDEVICE_174BE201: return "Radeon HD 6450";
+        case PciSubDevice10026779::SUBDEVICE_17872311: return "Radeon HD 6450";
         case PciSubDevice10026779::SUBDEVICE_17AF8450: return "Radeon HD 8450 OEM";
         case PciSubDevice10026779::SUBDEVICE_1B0A9096: return "Radeon HD 6450";
         case PciSubDevice10026779::SUBDEVICE_1B0A9097: return "Radeon HD 6450";

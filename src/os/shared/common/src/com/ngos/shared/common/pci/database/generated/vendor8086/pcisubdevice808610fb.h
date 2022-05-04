@@ -22,6 +22,7 @@ enum class PciSubDevice808610FB: u32 // Ignore CppEnumVerifier
     SUBDEVICE_103C2159 = 0x103C2159,
     SUBDEVICE_108E7B11 = 0x108E7B11,
     SUBDEVICE_1170004C = 0x1170004C,
+    SUBDEVICE_13741A08 = 0x13741A08,
     SUBDEVICE_15D90611 = 0x15D90611,
     SUBDEVICE_173411A9 = 0x173411A9,
     SUBDEVICE_17AA1071 = 0x17AA1071,
@@ -33,6 +34,7 @@ enum class PciSubDevice808610FB: u32 // Ignore CppEnumVerifier
     SUBDEVICE_1BD4001B = 0x1BD4001B,
     SUBDEVICE_1BD4002F = 0x1BD4002F,
     SUBDEVICE_1BD40032 = 0x1BD40032,
+    SUBDEVICE_1BD40067 = 0x1BD40067,
     SUBDEVICE_80860002 = 0x80860002,
     SUBDEVICE_80860003 = 0x80860003,
     SUBDEVICE_80860006 = 0x80860006,
@@ -64,6 +66,7 @@ inline const char8* enumToString(PciSubDevice808610FB subDevice) // TEST: NO
         case PciSubDevice808610FB::SUBDEVICE_103C2159: return "SUBDEVICE_103C2159";
         case PciSubDevice808610FB::SUBDEVICE_108E7B11: return "SUBDEVICE_108E7B11";
         case PciSubDevice808610FB::SUBDEVICE_1170004C: return "SUBDEVICE_1170004C";
+        case PciSubDevice808610FB::SUBDEVICE_13741A08: return "SUBDEVICE_13741A08";
         case PciSubDevice808610FB::SUBDEVICE_15D90611: return "SUBDEVICE_15D90611";
         case PciSubDevice808610FB::SUBDEVICE_173411A9: return "SUBDEVICE_173411A9";
         case PciSubDevice808610FB::SUBDEVICE_17AA1071: return "SUBDEVICE_17AA1071";
@@ -75,6 +78,7 @@ inline const char8* enumToString(PciSubDevice808610FB subDevice) // TEST: NO
         case PciSubDevice808610FB::SUBDEVICE_1BD4001B: return "SUBDEVICE_1BD4001B";
         case PciSubDevice808610FB::SUBDEVICE_1BD4002F: return "SUBDEVICE_1BD4002F";
         case PciSubDevice808610FB::SUBDEVICE_1BD40032: return "SUBDEVICE_1BD40032";
+        case PciSubDevice808610FB::SUBDEVICE_1BD40067: return "SUBDEVICE_1BD40067";
         case PciSubDevice808610FB::SUBDEVICE_80860002: return "SUBDEVICE_80860002";
         case PciSubDevice808610FB::SUBDEVICE_80860003: return "SUBDEVICE_80860003";
         case PciSubDevice808610FB::SUBDEVICE_80860006: return "SUBDEVICE_80860006";
@@ -123,6 +127,7 @@ inline const char8* enumToHumanString(PciSubDevice808610FB subDevice) // TEST: N
         case PciSubDevice808610FB::SUBDEVICE_103C2159: return "Ethernet 10Gb 2-port 562i Adapter";
         case PciSubDevice808610FB::SUBDEVICE_108E7B11: return "Ethernet Server Adapter X520-2";
         case PciSubDevice808610FB::SUBDEVICE_1170004C: return "82599 DP 10G Mezzanine Adapter";
+        case PciSubDevice808610FB::SUBDEVICE_13741A08: return "PE310G4SPI9/PE310G4SPI9L/PE310G4SPI9LA Quad Port Fiber 10 Gigabit Ethernet PCI Express Server Adapter";
         case PciSubDevice808610FB::SUBDEVICE_15D90611: return "AOC-STGN-i2S";
         case PciSubDevice808610FB::SUBDEVICE_173411A9: return "10 Gigabit Dual Port Network Connection";
         case PciSubDevice808610FB::SUBDEVICE_17AA1071: return "ThinkServer X520-2 AnyFabric";
@@ -134,6 +139,7 @@ inline const char8* enumToHumanString(PciSubDevice808610FB subDevice) // TEST: N
         case PciSubDevice808610FB::SUBDEVICE_1BD4001B: return "10G SFP+ DP ER102Fi4 Rack Adapter";
         case PciSubDevice808610FB::SUBDEVICE_1BD4002F: return "10G SFP+ DP EP102Fi4A Adapter";
         case PciSubDevice808610FB::SUBDEVICE_1BD40032: return "10G SFP+ DP EP102Fi4 Adapter";
+        case PciSubDevice808610FB::SUBDEVICE_1BD40067: return "F102I82599";
         case PciSubDevice808610FB::SUBDEVICE_80860002: return "Ethernet Server Adapter X520-DA2";
         case PciSubDevice808610FB::SUBDEVICE_80860003: return "Ethernet Server Adapter X520-2";
         case PciSubDevice808610FB::SUBDEVICE_80860006: return "Ethernet Server Adapter X520-1";

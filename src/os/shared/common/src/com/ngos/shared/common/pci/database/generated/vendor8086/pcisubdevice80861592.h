@@ -25,7 +25,11 @@ enum class PciSubDevice80861592: u32 // Ignore CppEnumVerifier
     SUBDEVICE_8086000B = 0x8086000B,
     SUBDEVICE_8086000C = 0x8086000C,
     SUBDEVICE_8086000D = 0x8086000D,
-    SUBDEVICE_8086000E = 0x8086000E
+    SUBDEVICE_8086000E = 0x8086000E,
+    SUBDEVICE_8086000F = 0x8086000F,
+    SUBDEVICE_80860010 = 0x80860010,
+    SUBDEVICE_80860011 = 0x80860011,
+    SUBDEVICE_80860012 = 0x80860012
 };
 
 
@@ -52,6 +56,10 @@ inline const char8* enumToString(PciSubDevice80861592 subDevice) // TEST: NO
         case PciSubDevice80861592::SUBDEVICE_8086000C: return "SUBDEVICE_8086000C";
         case PciSubDevice80861592::SUBDEVICE_8086000D: return "SUBDEVICE_8086000D";
         case PciSubDevice80861592::SUBDEVICE_8086000E: return "SUBDEVICE_8086000E";
+        case PciSubDevice80861592::SUBDEVICE_8086000F: return "SUBDEVICE_8086000F";
+        case PciSubDevice80861592::SUBDEVICE_80860010: return "SUBDEVICE_80860010";
+        case PciSubDevice80861592::SUBDEVICE_80860011: return "SUBDEVICE_80860011";
+        case PciSubDevice80861592::SUBDEVICE_80860012: return "SUBDEVICE_80860012";
 
         default: return "UNKNOWN";
     }
@@ -95,6 +103,10 @@ inline const char8* enumToHumanString(PciSubDevice80861592 subDevice) // TEST: N
         case PciSubDevice80861592::SUBDEVICE_8086000C: return "Ethernet 100G 2P E810-C OCP";
         case PciSubDevice80861592::SUBDEVICE_8086000D: return "Ethernet Network Adapter E810-L-Q2 for OCP 3.0";
         case PciSubDevice80861592::SUBDEVICE_8086000E: return "Ethernet Network Adapter E810-2C-Q2";
+        case PciSubDevice80861592::SUBDEVICE_8086000F: return "Ethernet Network Adapter E810-C-Q2T";
+        case PciSubDevice80861592::SUBDEVICE_80860010: return "Ethernet 100G 2P E810-C-stg Adapter";
+        case PciSubDevice80861592::SUBDEVICE_80860011: return "Ethernet Network Adapter E810-C-Q1 for OCP3.0";
+        case PciSubDevice80861592::SUBDEVICE_80860012: return "Ethernet 100G 2P E810-C-st Adapter";
 
         default: return "Unknown device";
     }

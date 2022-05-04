@@ -276,7 +276,10 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10027291.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10027300.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice1002731f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice100273af.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice100273bf.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice100273ff.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice1002743f.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10027910.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10027911.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10027917.h>
@@ -368,6 +371,7 @@ enum class PciDevice1002: u16 // Ignore CppEnumVerifier
     DEVICE_131C = 0x131C,
     DEVICE_131D = 0x131D,
     DEVICE_13E9 = 0x13E9,
+    DEVICE_13FE = 0x13FE,
     DEVICE_1478 = 0x1478,
     DEVICE_1479 = 0x1479,
     DEVICE_154C = 0x154C,
@@ -379,13 +383,17 @@ enum class PciDevice1002: u16 // Ignore CppEnumVerifier
     DEVICE_15DD = 0x15DD,
     DEVICE_15DE = 0x15DE,
     DEVICE_15DF = 0x15DF,
+    DEVICE_15E7 = 0x15E7,
     DEVICE_15FF = 0x15FF,
     DEVICE_1607 = 0x1607,
     DEVICE_1636 = 0x1636,
+    DEVICE_1637 = 0x1637,
     DEVICE_1638 = 0x1638,
     DEVICE_163F = 0x163F,
+    DEVICE_1640 = 0x1640,
     DEVICE_164C = 0x164C,
     DEVICE_164D = 0x164D,
+    DEVICE_1681 = 0x1681,
     DEVICE_1714 = 0x1714,
     DEVICE_3150 = 0x3150,
     DEVICE_3151 = 0x3151,
@@ -874,6 +882,7 @@ enum class PciDevice1002: u16 // Ignore CppEnumVerifier
     DEVICE_67CC = 0x67CC,
     DEVICE_67CF = 0x67CF,
     DEVICE_67D0 = 0x67D0,
+    DEVICE_67D4 = 0x67D4,
     DEVICE_67D7 = 0x67D7,
     DEVICE_67DF = 0x67DF,
     DEVICE_67E0 = 0x67E0,
@@ -1106,8 +1115,11 @@ enum class PciDevice1002: u16 // Ignore CppEnumVerifier
     DEVICE_7388 = 0x7388,
     DEVICE_738C = 0x738C,
     DEVICE_738E = 0x738E,
+    DEVICE_73A2 = 0x73A2,
     DEVICE_73A3 = 0x73A3,
     DEVICE_73A4 = 0x73A4,
+    DEVICE_73A5 = 0x73A5,
+    DEVICE_73AB = 0x73AB,
     DEVICE_73AF = 0x73AF,
     DEVICE_73BF = 0x73BF,
     DEVICE_73C3 = 0x73C3,
@@ -1115,11 +1127,16 @@ enum class PciDevice1002: u16 // Ignore CppEnumVerifier
     DEVICE_73DF = 0x73DF,
     DEVICE_73E0 = 0x73E0,
     DEVICE_73E1 = 0x73E1,
+    DEVICE_73E3 = 0x73E3,
     DEVICE_73E4 = 0x73E4,
+    DEVICE_73EF = 0x73EF,
     DEVICE_73FF = 0x73FF,
     DEVICE_7408 = 0x7408,
     DEVICE_740C = 0x740C,
     DEVICE_740F = 0x740F,
+    DEVICE_7421 = 0x7421,
+    DEVICE_7422 = 0x7422,
+    DEVICE_743F = 0x743F,
     DEVICE_7833 = 0x7833,
     DEVICE_7834 = 0x7834,
     DEVICE_7835 = 0x7835,
@@ -1448,6 +1465,7 @@ inline const char8* enumToString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_131C: return "DEVICE_131C";
         case PciDevice1002::DEVICE_131D: return "DEVICE_131D";
         case PciDevice1002::DEVICE_13E9: return "DEVICE_13E9";
+        case PciDevice1002::DEVICE_13FE: return "DEVICE_13FE";
         case PciDevice1002::DEVICE_1478: return "DEVICE_1478";
         case PciDevice1002::DEVICE_1479: return "DEVICE_1479";
         case PciDevice1002::DEVICE_154C: return "DEVICE_154C";
@@ -1459,13 +1477,17 @@ inline const char8* enumToString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_15DD: return "DEVICE_15DD";
         case PciDevice1002::DEVICE_15DE: return "DEVICE_15DE";
         case PciDevice1002::DEVICE_15DF: return "DEVICE_15DF";
+        case PciDevice1002::DEVICE_15E7: return "DEVICE_15E7";
         case PciDevice1002::DEVICE_15FF: return "DEVICE_15FF";
         case PciDevice1002::DEVICE_1607: return "DEVICE_1607";
         case PciDevice1002::DEVICE_1636: return "DEVICE_1636";
+        case PciDevice1002::DEVICE_1637: return "DEVICE_1637";
         case PciDevice1002::DEVICE_1638: return "DEVICE_1638";
         case PciDevice1002::DEVICE_163F: return "DEVICE_163F";
+        case PciDevice1002::DEVICE_1640: return "DEVICE_1640";
         case PciDevice1002::DEVICE_164C: return "DEVICE_164C";
         case PciDevice1002::DEVICE_164D: return "DEVICE_164D";
+        case PciDevice1002::DEVICE_1681: return "DEVICE_1681";
         case PciDevice1002::DEVICE_1714: return "DEVICE_1714";
         case PciDevice1002::DEVICE_3150: return "DEVICE_3150";
         case PciDevice1002::DEVICE_3151: return "DEVICE_3151";
@@ -1954,6 +1976,7 @@ inline const char8* enumToString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_67CC: return "DEVICE_67CC";
         case PciDevice1002::DEVICE_67CF: return "DEVICE_67CF";
         case PciDevice1002::DEVICE_67D0: return "DEVICE_67D0";
+        case PciDevice1002::DEVICE_67D4: return "DEVICE_67D4";
         case PciDevice1002::DEVICE_67D7: return "DEVICE_67D7";
         case PciDevice1002::DEVICE_67DF: return "DEVICE_67DF";
         case PciDevice1002::DEVICE_67E0: return "DEVICE_67E0";
@@ -2186,8 +2209,11 @@ inline const char8* enumToString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_7388: return "DEVICE_7388";
         case PciDevice1002::DEVICE_738C: return "DEVICE_738C";
         case PciDevice1002::DEVICE_738E: return "DEVICE_738E";
+        case PciDevice1002::DEVICE_73A2: return "DEVICE_73A2";
         case PciDevice1002::DEVICE_73A3: return "DEVICE_73A3";
         case PciDevice1002::DEVICE_73A4: return "DEVICE_73A4";
+        case PciDevice1002::DEVICE_73A5: return "DEVICE_73A5";
+        case PciDevice1002::DEVICE_73AB: return "DEVICE_73AB";
         case PciDevice1002::DEVICE_73AF: return "DEVICE_73AF";
         case PciDevice1002::DEVICE_73BF: return "DEVICE_73BF";
         case PciDevice1002::DEVICE_73C3: return "DEVICE_73C3";
@@ -2195,11 +2221,16 @@ inline const char8* enumToString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_73DF: return "DEVICE_73DF";
         case PciDevice1002::DEVICE_73E0: return "DEVICE_73E0";
         case PciDevice1002::DEVICE_73E1: return "DEVICE_73E1";
+        case PciDevice1002::DEVICE_73E3: return "DEVICE_73E3";
         case PciDevice1002::DEVICE_73E4: return "DEVICE_73E4";
+        case PciDevice1002::DEVICE_73EF: return "DEVICE_73EF";
         case PciDevice1002::DEVICE_73FF: return "DEVICE_73FF";
         case PciDevice1002::DEVICE_7408: return "DEVICE_7408";
         case PciDevice1002::DEVICE_740C: return "DEVICE_740C";
         case PciDevice1002::DEVICE_740F: return "DEVICE_740F";
+        case PciDevice1002::DEVICE_7421: return "DEVICE_7421";
+        case PciDevice1002::DEVICE_7422: return "DEVICE_7422";
+        case PciDevice1002::DEVICE_743F: return "DEVICE_743F";
         case PciDevice1002::DEVICE_7833: return "DEVICE_7833";
         case PciDevice1002::DEVICE_7834: return "DEVICE_7834";
         case PciDevice1002::DEVICE_7835: return "DEVICE_7835";
@@ -2545,6 +2576,7 @@ inline const char8* enumToHumanString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_131C: return "Kaveri [Radeon R7 Graphics]";
         case PciDevice1002::DEVICE_131D: return "Kaveri [Radeon R6 Graphics]";
         case PciDevice1002::DEVICE_13E9: return "Ariel";
+        case PciDevice1002::DEVICE_13FE: return "Cyan Skillfish";
         case PciDevice1002::DEVICE_1478: return "Navi 10 XL Upstream Port of PCI Express Switch";
         case PciDevice1002::DEVICE_1479: return "Navi 10 XL Downstream Port of PCI Express Switch";
         case PciDevice1002::DEVICE_154C: return "Kryptos [Radeon RX 350]";
@@ -2552,17 +2584,21 @@ inline const char8* enumToHumanString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_1551: return "Arlene";
         case PciDevice1002::DEVICE_1552: return "Pooky";
         case PciDevice1002::DEVICE_1561: return "Anubis";
-        case PciDevice1002::DEVICE_15D8: return "Picasso";
+        case PciDevice1002::DEVICE_15D8: return "Picasso/Raven 2 [Radeon Vega Series / Radeon Vega Mobile Series]";
         case PciDevice1002::DEVICE_15DD: return "Raven Ridge [Radeon Vega Series / Radeon Vega Mobile Series]";
         case PciDevice1002::DEVICE_15DE: return "Raven/Raven2/Fenghuang HDMI/DP Audio Controller";
         case PciDevice1002::DEVICE_15DF: return "Raven/Raven2/Fenghuang/Renoir Cryptographic Coprocessor";
+        case PciDevice1002::DEVICE_15E7: return "Barcelo";
         case PciDevice1002::DEVICE_15FF: return "Fenghuang [Zhongshan Subor Z+]";
         case PciDevice1002::DEVICE_1607: return "Arden";
         case PciDevice1002::DEVICE_1636: return "Renoir";
+        case PciDevice1002::DEVICE_1637: return "Renoir Radeon High Definition Audio Controller";
         case PciDevice1002::DEVICE_1638: return "Cezanne";
-        case PciDevice1002::DEVICE_163F: return "VanGogh";
+        case PciDevice1002::DEVICE_163F: return "VanGogh [AMD Custom GPU 0405]";
+        case PciDevice1002::DEVICE_1640: return "Rembrandt Radeon High Definition Audio Controller";
         case PciDevice1002::DEVICE_164C: return "Lucienne";
         case PciDevice1002::DEVICE_164D: return "Rembrandt";
+        case PciDevice1002::DEVICE_1681: return "Rembrandt [Radeon 680M]";
         case PciDevice1002::DEVICE_1714: return "BeaverCreek HDMI Audio [Radeon HD 6500D and 6400G-6600G series]";
         case PciDevice1002::DEVICE_3150: return "RV380/M24 [Mobility Radeon X600]";
         case PciDevice1002::DEVICE_3151: return "RV380 GL [FireMV 2400]";
@@ -2959,7 +2995,7 @@ inline const char8* enumToHumanString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_6609: return "Oland GL [FirePro W2100 / Barco MXRT 2600]";
         case PciDevice1002::DEVICE_6610: return "Oland XT [Radeon HD 8670 / R5 340X OEM / R7 250/350/350X OEM]";
         case PciDevice1002::DEVICE_6611: return "Oland [Radeon HD 8570 / R5 430 OEM / R7 240/340 / Radeon 520 OEM]";
-        case PciDevice1002::DEVICE_6613: return "Oland PRO [Radeon R7 240/340]";
+        case PciDevice1002::DEVICE_6613: return "Oland PRO [Radeon R7 240/340 / Radeon 520]";
         case PciDevice1002::DEVICE_6631: return "Oland";
         case PciDevice1002::DEVICE_6640: return "Saturn XT [FirePro M6100]";
         case PciDevice1002::DEVICE_6641: return "Saturn PRO [Radeon HD 8930M]";
@@ -2980,7 +3016,7 @@ inline const char8* enumToHumanString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_6667: return "Jet ULT [Radeon R5 M230]";
         case PciDevice1002::DEVICE_666F: return "Sun LE [Radeon HD 8550M / R5 M230]";
         case PciDevice1002::DEVICE_66A0: return "Vega 20 [Radeon Instinct]";
-        case PciDevice1002::DEVICE_66A1: return "Vega 20 WKS GL-XE [Radeon Pro VII]";
+        case PciDevice1002::DEVICE_66A1: return "Vega 20 [Radeon Pro VII/Radeon Instinct MI50 32GB]";
         case PciDevice1002::DEVICE_66A2: return "Vega 20";
         case PciDevice1002::DEVICE_66A3: return "Vega 20 [Radeon Pro Vega II/Radeon Pro Vega II Duo]";
         case PciDevice1002::DEVICE_66A7: return "Vega 20 [Radeon Pro Vega 20]";
@@ -3051,6 +3087,7 @@ inline const char8* enumToHumanString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_67CC: return "Ellesmere [Polaris10]";
         case PciDevice1002::DEVICE_67CF: return "Ellesmere [Polaris10]";
         case PciDevice1002::DEVICE_67D0: return "Ellesmere [Radeon Pro V7300X / V7350x2]";
+        case PciDevice1002::DEVICE_67D4: return "Ellesmere [Radeon Pro WX 7100 / Barco MXRT-8700]";
         case PciDevice1002::DEVICE_67D7: return "Ellesmere [Radeon Pro WX 5100 / Barco MXRT-6700]";
         case PciDevice1002::DEVICE_67DF: return "Ellesmere [Radeon RX 470/480/570/570X/580/580X/590]";
         case PciDevice1002::DEVICE_67E0: return "Baffin [Radeon Pro WX 4170]";
@@ -3281,22 +3318,30 @@ inline const char8* enumToHumanString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_7360: return "Navi 12 [Radeon Pro 5600M / V520]";
         case PciDevice1002::DEVICE_7362: return "Navi 12 [Radeon Pro V520]";
         case PciDevice1002::DEVICE_7388: return "Arcturus GL-XL";
-        case PciDevice1002::DEVICE_738C: return "Arcturus GL-XL [AMD Instinct MI100]";
-        case PciDevice1002::DEVICE_738E: return "Arcturus GL-XL";
-        case PciDevice1002::DEVICE_73A3: return "Navi 21 [Radeon PRO W6800]";
+        case PciDevice1002::DEVICE_738C: return "Arcturus GL-XL [Instinct MI100]";
+        case PciDevice1002::DEVICE_738E: return "Arcturus GL-XL [Instinct MI100]";
+        case PciDevice1002::DEVICE_73A2: return "Navi 21 Pro-XTA [Radeon Pro W6900X]";
+        case PciDevice1002::DEVICE_73A3: return "Navi 21 GL-XL [Radeon PRO W6800]";
         case PciDevice1002::DEVICE_73A4: return "Navi 21 USB";
+        case PciDevice1002::DEVICE_73A5: return "Navi 21 [Radeon RX 6950 XT]";
+        case PciDevice1002::DEVICE_73AB: return "Navi 21 Pro-XLA [Radeon Pro W6800X/Radeon Pro W6800X Duo]";
         case PciDevice1002::DEVICE_73AF: return "Navi 21 [Radeon RX 6900 XT]";
         case PciDevice1002::DEVICE_73BF: return "Navi 21 [Radeon RX 6800/6800 XT / 6900 XT]";
         case PciDevice1002::DEVICE_73C3: return "Navi 22";
         case PciDevice1002::DEVICE_73C4: return "Navi 22 USB";
-        case PciDevice1002::DEVICE_73DF: return "Navi 22 [Radeon RX 6700/6700 XT / 6800M]";
+        case PciDevice1002::DEVICE_73DF: return "Navi 22 [Radeon RX 6700/6700 XT/6750 XT / 6800M]";
         case PciDevice1002::DEVICE_73E0: return "Navi 23";
-        case PciDevice1002::DEVICE_73E1: return "Navi 23";
+        case PciDevice1002::DEVICE_73E1: return "Navi 23 WKS-XM [Radeon PRO W6600M]";
+        case PciDevice1002::DEVICE_73E3: return "Navi 23 WKS-XL [Radeon PRO W6600]";
         case PciDevice1002::DEVICE_73E4: return "Navi 23 USB";
+        case PciDevice1002::DEVICE_73EF: return "Navi 23 [Radeon RX 6650 XT]";
         case PciDevice1002::DEVICE_73FF: return "Navi 23 [Radeon RX 6600/6600 XT/6600M]";
         case PciDevice1002::DEVICE_7408: return "Aldebaran";
         case PciDevice1002::DEVICE_740C: return "Aldebaran";
         case PciDevice1002::DEVICE_740F: return "Aldebaran";
+        case PciDevice1002::DEVICE_7421: return "Navi 24 [Radeon PRO W6500M]";
+        case PciDevice1002::DEVICE_7422: return "Navi 24 [Radeon PRO W6400]";
+        case PciDevice1002::DEVICE_743F: return "Navi 24 [Radeon RX 6400 / 6500 XT]";
         case PciDevice1002::DEVICE_7833: return "RS350 Host Bridge";
         case PciDevice1002::DEVICE_7834: return "RS350 [Radeon 9100 PRO/XT IGP]";
         case PciDevice1002::DEVICE_7835: return "RS350M [Mobility Radeon 9000 IGP]";
@@ -3388,7 +3433,7 @@ inline const char8* enumToHumanString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_9552: return "RV710/M92 [Mobility Radeon HD 4330/4350/4550]";
         case PciDevice1002::DEVICE_9553: return "RV710/M92 [Mobility Radeon HD 4530/4570/545v]";
         case PciDevice1002::DEVICE_9555: return "RV710/M92 [Mobility Radeon HD 4350/4550]";
-        case PciDevice1002::DEVICE_9557: return "RV711 GL [FirePro RG220]";
+        case PciDevice1002::DEVICE_9557: return "RV711/M93 GL [FirePro RG220]";
         case PciDevice1002::DEVICE_955F: return "RV710/M92 [Mobility Radeon HD 4330]";
         case PciDevice1002::DEVICE_9580: return "RV630 [Radeon HD 2600 PRO]";
         case PciDevice1002::DEVICE_9581: return "RV630/M76 [Mobility Radeon HD 2600]";
@@ -3564,7 +3609,7 @@ inline const char8* enumToHumanString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_AB10: return "Lexa HDMI Audio";
         case PciDevice1002::DEVICE_AB18: return "Vega 12 HDMI Audio";
         case PciDevice1002::DEVICE_AB20: return "Vega 20 HDMI Audio [Radeon VII]";
-        case PciDevice1002::DEVICE_AB28: return "Navi 21 HDMI Audio [Radeon RX 6800/6800 XT / 6900 XT]";
+        case PciDevice1002::DEVICE_AB28: return "Navi 21/23 HDMI/DP Audio Controller";
         case PciDevice1002::DEVICE_AB38: return "Navi 10 HDMI Audio";
         case PciDevice1002::DEVICE_AC00: return "Theater 506 World-Wide Analog Decoder";
         case PciDevice1002::DEVICE_AC01: return "Theater 506 World-Wide Analog Decoder";
@@ -3627,6 +3672,7 @@ inline const char8* enumToHumanString(PciDevice1002 device, u16 subsystemVendorI
         case PciDevice1002::DEVICE_131C: return "Unknown device";
         case PciDevice1002::DEVICE_131D: return "Unknown device";
         case PciDevice1002::DEVICE_13E9: return "Unknown device";
+        case PciDevice1002::DEVICE_13FE: return "Unknown device";
         case PciDevice1002::DEVICE_1478: return "Unknown device";
         case PciDevice1002::DEVICE_1479: return "Unknown device";
         case PciDevice1002::DEVICE_154C: return enumToHumanString((PciSubDevice1002154C)(subsystemVendorID << 16 | subDeviceId));
@@ -3638,13 +3684,17 @@ inline const char8* enumToHumanString(PciDevice1002 device, u16 subsystemVendorI
         case PciDevice1002::DEVICE_15DD: return enumToHumanString((PciSubDevice100215DD)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1002::DEVICE_15DE: return enumToHumanString((PciSubDevice100215DE)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1002::DEVICE_15DF: return enumToHumanString((PciSubDevice100215DF)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1002::DEVICE_15E7: return "Unknown device";
         case PciDevice1002::DEVICE_15FF: return "Unknown device";
         case PciDevice1002::DEVICE_1607: return "Unknown device";
         case PciDevice1002::DEVICE_1636: return "Unknown device";
+        case PciDevice1002::DEVICE_1637: return "Unknown device";
         case PciDevice1002::DEVICE_1638: return "Unknown device";
         case PciDevice1002::DEVICE_163F: return "Unknown device";
+        case PciDevice1002::DEVICE_1640: return "Unknown device";
         case PciDevice1002::DEVICE_164C: return "Unknown device";
         case PciDevice1002::DEVICE_164D: return "Unknown device";
+        case PciDevice1002::DEVICE_1681: return "Unknown device";
         case PciDevice1002::DEVICE_1714: return enumToHumanString((PciSubDevice10021714)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1002::DEVICE_3150: return enumToHumanString((PciSubDevice10023150)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1002::DEVICE_3151: return "Unknown device";
@@ -4133,6 +4183,7 @@ inline const char8* enumToHumanString(PciDevice1002 device, u16 subsystemVendorI
         case PciDevice1002::DEVICE_67CC: return "Unknown device";
         case PciDevice1002::DEVICE_67CF: return "Unknown device";
         case PciDevice1002::DEVICE_67D0: return "Unknown device";
+        case PciDevice1002::DEVICE_67D4: return "Unknown device";
         case PciDevice1002::DEVICE_67D7: return "Unknown device";
         case PciDevice1002::DEVICE_67DF: return enumToHumanString((PciSubDevice100267DF)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1002::DEVICE_67E0: return enumToHumanString((PciSubDevice100267E0)(subsystemVendorID << 16 | subDeviceId));
@@ -4365,20 +4416,28 @@ inline const char8* enumToHumanString(PciDevice1002 device, u16 subsystemVendorI
         case PciDevice1002::DEVICE_7388: return "Unknown device";
         case PciDevice1002::DEVICE_738C: return "Unknown device";
         case PciDevice1002::DEVICE_738E: return "Unknown device";
+        case PciDevice1002::DEVICE_73A2: return "Unknown device";
         case PciDevice1002::DEVICE_73A3: return "Unknown device";
         case PciDevice1002::DEVICE_73A4: return "Unknown device";
-        case PciDevice1002::DEVICE_73AF: return "Unknown device";
+        case PciDevice1002::DEVICE_73A5: return "Unknown device";
+        case PciDevice1002::DEVICE_73AB: return "Unknown device";
+        case PciDevice1002::DEVICE_73AF: return enumToHumanString((PciSubDevice100273AF)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1002::DEVICE_73BF: return enumToHumanString((PciSubDevice100273BF)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1002::DEVICE_73C3: return "Unknown device";
         case PciDevice1002::DEVICE_73C4: return "Unknown device";
         case PciDevice1002::DEVICE_73DF: return "Unknown device";
         case PciDevice1002::DEVICE_73E0: return "Unknown device";
         case PciDevice1002::DEVICE_73E1: return "Unknown device";
+        case PciDevice1002::DEVICE_73E3: return "Unknown device";
         case PciDevice1002::DEVICE_73E4: return "Unknown device";
-        case PciDevice1002::DEVICE_73FF: return "Unknown device";
+        case PciDevice1002::DEVICE_73EF: return "Unknown device";
+        case PciDevice1002::DEVICE_73FF: return enumToHumanString((PciSubDevice100273FF)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1002::DEVICE_7408: return "Unknown device";
         case PciDevice1002::DEVICE_740C: return "Unknown device";
         case PciDevice1002::DEVICE_740F: return "Unknown device";
+        case PciDevice1002::DEVICE_7421: return "Unknown device";
+        case PciDevice1002::DEVICE_7422: return "Unknown device";
+        case PciDevice1002::DEVICE_743F: return enumToHumanString((PciSubDevice1002743F)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1002::DEVICE_7833: return "Unknown device";
         case PciDevice1002::DEVICE_7834: return "Unknown device";
         case PciDevice1002::DEVICE_7835: return "Unknown device";

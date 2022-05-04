@@ -56,7 +56,7 @@ inline const char8* enumToHumanString(PciDevice15CF device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice15CF::DEVICE_0000: return "CIFX 50E-DP(M/S)";
+        case PciDevice15CF::DEVICE_0000: return "CIFX PCI/PCIe";
 
         default: return "Unknown device";
     }

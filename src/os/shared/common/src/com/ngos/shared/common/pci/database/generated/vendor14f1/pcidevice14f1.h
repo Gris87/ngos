@@ -131,6 +131,7 @@ enum class PciDevice14F1: u16 // Ignore CppEnumVerifier
     DEVICE_2F20 = 0x2F20,
     DEVICE_2F30 = 0x2F30,
     DEVICE_2F50 = 0x2F50,
+    DEVICE_510F = 0x510F,
     DEVICE_5B7A = 0x5B7A,
     DEVICE_8200 = 0x8200,
     DEVICE_8234 = 0x8234,
@@ -247,6 +248,7 @@ inline const char8* enumToString(PciDevice14F1 device) // TEST: NO
         case PciDevice14F1::DEVICE_2F20: return "DEVICE_2F20";
         case PciDevice14F1::DEVICE_2F30: return "DEVICE_2F30";
         case PciDevice14F1::DEVICE_2F50: return "DEVICE_2F50";
+        case PciDevice14F1::DEVICE_510F: return "DEVICE_510F";
         case PciDevice14F1::DEVICE_5B7A: return "DEVICE_5B7A";
         case PciDevice14F1::DEVICE_8200: return "DEVICE_8200";
         case PciDevice14F1::DEVICE_8234: return "DEVICE_8234";
@@ -380,6 +382,7 @@ inline const char8* enumToHumanString(PciDevice14F1 device) // TEST: NO
         case PciDevice14F1::DEVICE_2F20: return "HSF 56k Data/Fax Modem";
         case PciDevice14F1::DEVICE_2F30: return "SoftV92 SpeakerPhone SoftRing Modem with SmartSP";
         case PciDevice14F1::DEVICE_2F50: return "Conexant SoftK56 Data/Fax Modem";
+        case PciDevice14F1::DEVICE_510F: return "Conexant CX 20751/20752";
         case PciDevice14F1::DEVICE_5B7A: return "CX23418 Single-Chip MPEG-2 Encoder with Integrated Analog Video/Broadcast Audio Decoder";
         case PciDevice14F1::DEVICE_8200: return "CX25850";
         case PciDevice14F1::DEVICE_8234: return "RS8234 ATM SAR Controller [ServiceSAR Plus]";
@@ -498,6 +501,7 @@ inline const char8* enumToHumanString(PciDevice14F1 device, u16 subsystemVendorI
         case PciDevice14F1::DEVICE_2F20: return enumToHumanString((PciSubDevice14F12F20)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice14F1::DEVICE_2F30: return enumToHumanString((PciSubDevice14F12F30)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice14F1::DEVICE_2F50: return "Unknown device";
+        case PciDevice14F1::DEVICE_510F: return "Unknown device";
         case PciDevice14F1::DEVICE_5B7A: return enumToHumanString((PciSubDevice14F15B7A)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice14F1::DEVICE_8200: return "Unknown device";
         case PciDevice14F1::DEVICE_8234: return "Unknown device";

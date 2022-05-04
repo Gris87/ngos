@@ -7,6 +7,7 @@
 
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor10ee/pcisubdevice10ee7038.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10ee/pcisubdevice10ee8019.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -172,7 +173,7 @@ inline const char8* enumToHumanString(PciDevice10EE device, u16 subsystemVendorI
         case PciDevice10EE::DEVICE_3FC6: return "Unknown device";
         case PciDevice10EE::DEVICE_5005: return "Unknown device";
         case PciDevice10EE::DEVICE_7038: return enumToHumanString((PciSubDevice10EE7038)(subsystemVendorID << 16 | subDeviceId));
-        case PciDevice10EE::DEVICE_8019: return "Unknown device";
+        case PciDevice10EE::DEVICE_8019: return enumToHumanString((PciSubDevice10EE8019)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice10EE::DEVICE_8380: return "Unknown device";
         case PciDevice10EE::DEVICE_8381: return "Unknown device";
         case PciDevice10EE::DEVICE_D154: return "Unknown device";

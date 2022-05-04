@@ -122,7 +122,7 @@ inline const char8* enumToHumanString(PciBaseClass baseClass, u8 subClassId, u8 
         case PciBaseClass::BASE_CLASS_02: return enumToHumanString((PciSubClass02)subClassId);
         case PciBaseClass::BASE_CLASS_03: return enumToHumanString((PciSubClass03)subClassId, interfaceId);
         case PciBaseClass::BASE_CLASS_04: return enumToHumanString((PciSubClass04)subClassId);
-        case PciBaseClass::BASE_CLASS_05: return enumToHumanString((PciSubClass05)subClassId);
+        case PciBaseClass::BASE_CLASS_05: return enumToHumanString((PciSubClass05)subClassId, interfaceId);
         case PciBaseClass::BASE_CLASS_06: return enumToHumanString((PciSubClass06)subClassId, interfaceId);
         case PciBaseClass::BASE_CLASS_07: return enumToHumanString((PciSubClass07)subClassId, interfaceId);
         case PciBaseClass::BASE_CLASS_08: return enumToHumanString((PciSubClass08)subClassId, interfaceId);

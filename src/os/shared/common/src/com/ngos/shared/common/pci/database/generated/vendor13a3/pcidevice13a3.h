@@ -11,6 +11,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor13a3/pcisubdevice13a30034.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor13a3/pcisubdevice13a30035.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor13a3/pcisubdevice13a30037.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13a3/pcisubdevice13a39240.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -35,7 +36,8 @@ enum class PciDevice13A3: u16 // Ignore CppEnumVerifier
     DEVICE_0033 = 0x0033,
     DEVICE_0034 = 0x0034,
     DEVICE_0035 = 0x0035,
-    DEVICE_0037 = 0x0037
+    DEVICE_0037 = 0x0037,
+    DEVICE_9240 = 0x9240
 };
 
 
@@ -67,6 +69,7 @@ inline const char8* enumToString(PciDevice13A3 device) // TEST: NO
         case PciDevice13A3::DEVICE_0034: return "DEVICE_0034";
         case PciDevice13A3::DEVICE_0035: return "DEVICE_0035";
         case PciDevice13A3::DEVICE_0037: return "DEVICE_0037";
+        case PciDevice13A3::DEVICE_9240: return "DEVICE_9240";
 
         default: return "UNKNOWN";
     }
@@ -115,6 +118,7 @@ inline const char8* enumToHumanString(PciDevice13A3 device) // TEST: NO
         case PciDevice13A3::DEVICE_0034: return "8202 Acceleration Processor";
         case PciDevice13A3::DEVICE_0035: return "8203 Acceleration Processor";
         case PciDevice13A3::DEVICE_0037: return "8204 Acceleration Processor";
+        case PciDevice13A3::DEVICE_9240: return "XR9240 Compression and Security Coprocessor [Panther II]";
 
         default: return "Unknown device";
     }
@@ -148,6 +152,7 @@ inline const char8* enumToHumanString(PciDevice13A3 device, u16 subsystemVendorI
         case PciDevice13A3::DEVICE_0034: return enumToHumanString((PciSubDevice13A30034)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice13A3::DEVICE_0035: return enumToHumanString((PciSubDevice13A30035)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice13A3::DEVICE_0037: return enumToHumanString((PciSubDevice13A30037)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice13A3::DEVICE_9240: return enumToHumanString((PciSubDevice13A39240)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

@@ -19,6 +19,7 @@ enum class PciDevice12D8: u16 // Ignore CppEnumVerifier
     DEVICE_0303 = 0x0303,
     DEVICE_0508 = 0x0508,
     DEVICE_2304 = 0x2304,
+    DEVICE_2308 = 0x2308,
     DEVICE_2404 = 0x2404,
     DEVICE_2608 = 0x2608,
     DEVICE_400A = 0x400A,
@@ -52,6 +53,7 @@ inline const char8* enumToString(PciDevice12D8 device) // TEST: NO
         case PciDevice12D8::DEVICE_0303: return "DEVICE_0303";
         case PciDevice12D8::DEVICE_0508: return "DEVICE_0508";
         case PciDevice12D8::DEVICE_2304: return "DEVICE_2304";
+        case PciDevice12D8::DEVICE_2308: return "DEVICE_2308";
         case PciDevice12D8::DEVICE_2404: return "DEVICE_2404";
         case PciDevice12D8::DEVICE_2608: return "DEVICE_2608";
         case PciDevice12D8::DEVICE_400A: return "DEVICE_400A";
@@ -102,6 +104,7 @@ inline const char8* enumToHumanString(PciDevice12D8 device) // TEST: NO
         case PciDevice12D8::DEVICE_0303: return "PCI Express Switch 3-3";
         case PciDevice12D8::DEVICE_0508: return "PI7C9X20508GP PCI Express Switch 5Port-8Lane";
         case PciDevice12D8::DEVICE_2304: return "PI7C9X2G304 EL/SL PCIe2 3-Port/4-Lane Packet Switch";
+        case PciDevice12D8::DEVICE_2308: return "PI7C9X2G308GP 8-lane PCI Express 2.0 Switch with 3 PCI Express ports";
         case PciDevice12D8::DEVICE_2404: return "PI7C9X2G404 EL/SL PCIe2 4-Port/4-Lane Packet Switch";
         case PciDevice12D8::DEVICE_2608: return "PI7C9X2G608GP PCIe2 6-Port/8-Lane Packet Switch";
         case PciDevice12D8::DEVICE_400A: return "PI7C9X442SL PCI Express Bridge Port";
@@ -137,6 +140,7 @@ inline const char8* enumToHumanString(PciDevice12D8 device, u16 subsystemVendorI
         case PciDevice12D8::DEVICE_0303: return "Unknown device";
         case PciDevice12D8::DEVICE_0508: return "Unknown device";
         case PciDevice12D8::DEVICE_2304: return "Unknown device";
+        case PciDevice12D8::DEVICE_2308: return "Unknown device";
         case PciDevice12D8::DEVICE_2404: return "Unknown device";
         case PciDevice12D8::DEVICE_2608: return enumToHumanString((PciSubDevice12D82608)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice12D8::DEVICE_400A: return "Unknown device";

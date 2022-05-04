@@ -98,6 +98,7 @@ enum class PciDevice16D5: u16 // Ignore CppEnumVerifier
     DEVICE_7029 = 0x7029,
     DEVICE_702A = 0x702A,
     DEVICE_702B = 0x702B,
+    DEVICE_702C = 0x702C,
     DEVICE_7031 = 0x7031,
     DEVICE_7032 = 0x7032,
     DEVICE_7033 = 0x7033,
@@ -107,7 +108,8 @@ enum class PciDevice16D5: u16 // Ignore CppEnumVerifier
     DEVICE_7051 = 0x7051,
     DEVICE_7052 = 0x7052,
     DEVICE_7053 = 0x7053,
-    DEVICE_7054 = 0x7054
+    DEVICE_7054 = 0x7054,
+    DEVICE_7073 = 0x7073
 };
 
 
@@ -206,6 +208,7 @@ inline const char8* enumToString(PciDevice16D5 device) // TEST: NO
         case PciDevice16D5::DEVICE_7029: return "DEVICE_7029";
         case PciDevice16D5::DEVICE_702A: return "DEVICE_702A";
         case PciDevice16D5::DEVICE_702B: return "DEVICE_702B";
+        case PciDevice16D5::DEVICE_702C: return "DEVICE_702C";
         case PciDevice16D5::DEVICE_7031: return "DEVICE_7031";
         case PciDevice16D5::DEVICE_7032: return "DEVICE_7032";
         case PciDevice16D5::DEVICE_7033: return "DEVICE_7033";
@@ -216,6 +219,7 @@ inline const char8* enumToString(PciDevice16D5 device) // TEST: NO
         case PciDevice16D5::DEVICE_7052: return "DEVICE_7052";
         case PciDevice16D5::DEVICE_7053: return "DEVICE_7053";
         case PciDevice16D5::DEVICE_7054: return "DEVICE_7054";
+        case PciDevice16D5::DEVICE_7073: return "DEVICE_7073";
 
         default: return "UNKNOWN";
     }
@@ -331,6 +335,7 @@ inline const char8* enumToHumanString(PciDevice16D5 device) // TEST: NO
         case PciDevice16D5::DEVICE_7029: return "AP342 14-bit, 12-Channel Isolated Simultaneous Conversion Analog Input Module";
         case PciDevice16D5::DEVICE_702A: return "AP226 12-Bit, 8-Channel Isolated Analog Output Module";
         case PciDevice16D5::DEVICE_702B: return "AP236 16-Bit, 8-Channel Isolated Analog Output Module";
+        case PciDevice16D5::DEVICE_702C: return "AP560A Module 4 Independent isolated CAN bus channels";
         case PciDevice16D5::DEVICE_7031: return "AP441-1: 32-Channel Isolated Digital Input Module";
         case PciDevice16D5::DEVICE_7032: return "AP441-2: 32-Channel Isolated Digital Input Module";
         case PciDevice16D5::DEVICE_7033: return "AP441-3: 32-Channel Isolated Digital Input Module";
@@ -341,6 +346,7 @@ inline const char8* enumToHumanString(PciDevice16D5 device) // TEST: NO
         case PciDevice16D5::DEVICE_7052: return "APA7-502 Reconfigurable Artix-7 52, 160 Cell FPGA module 24 RS485 channels";
         case PciDevice16D5::DEVICE_7053: return "APA7-503 Reconfigurable Artix-7 52, 160 Cell FPGA module 24 TTL & 12 RS485 channels";
         case PciDevice16D5::DEVICE_7054: return "APA7-504 Reconfigurable Artix-7 52, 160 Cell FPGA module 24 LVDS channels";
+        case PciDevice16D5::DEVICE_7073: return "AP730 Multi-function I/O Module 16 Digital I/O 8 Differential Analog In 4 Analog Out";
 
         default: return "Unknown device";
     }

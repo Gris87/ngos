@@ -115,7 +115,7 @@ inline const char8* enumToHumanString(PciSubDevice1E0F0007 subDevice) // TEST: N
         case PciSubDevice1E0F0007::SUBDEVICE_1028210E: return "Dell Ent NVMe FIPS CM6 MU 1.6TB";
         case PciSubDevice1E0F0007::SUBDEVICE_1028210F: return "Dell Ent NVMe FIPS CM6 MU 3.2TB";
         case PciSubDevice1E0F0007::SUBDEVICE_10282110: return "Dell Ent NVMe FIPS CM6 MU 6.4TB";
-        case PciSubDevice1E0F0007::SUBDEVICE_1E0F0001: return "Generic NVMe CM6 RI 3.84TB";
+        case PciSubDevice1E0F0007::SUBDEVICE_1E0F0001: return "Generic NVMe CM6";
 
         default: return "Unknown device";
     }

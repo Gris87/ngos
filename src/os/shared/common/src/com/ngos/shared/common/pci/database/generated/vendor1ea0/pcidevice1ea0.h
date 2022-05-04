@@ -13,7 +13,8 @@
 enum class PciDevice1EA0: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
-    DEVICE_2A16 = 0x2A16
+    DEVICE_2A16 = 0x2A16,
+    DEVICE_2A18 = 0x2A18
 };
 
 
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciDevice1EA0 device) // TEST: NO
     {
         case PciDevice1EA0::NONE:        return "NONE";
         case PciDevice1EA0::DEVICE_2A16: return "DEVICE_2A16";
+        case PciDevice1EA0::DEVICE_2A18: return "DEVICE_2A18";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +61,7 @@ inline const char8* enumToHumanString(PciDevice1EA0 device) // TEST: NO
     switch (device)
     {
         case PciDevice1EA0::DEVICE_2A16: return "Cloud Intelligent Inference Controller";
+        case PciDevice1EA0::DEVICE_2A18: return "Video Transcode Controller";
 
         default: return "Unknown device";
     }

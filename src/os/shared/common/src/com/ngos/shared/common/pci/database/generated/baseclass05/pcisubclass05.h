@@ -6,6 +6,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass05/pciinterface0502.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -14,6 +15,7 @@ enum class PciSubClass05: u8 // Ignore CppEnumVerifier
 {
     SUB_CLASS_00 = 0x00,
     SUB_CLASS_01 = 0x01,
+    SUB_CLASS_02 = 0x02,
     SUB_CLASS_80 = 0x80
 };
 
@@ -29,6 +31,7 @@ inline const char8* enumToString(PciSubClass05 subClass) // TEST: NO
     {
         case PciSubClass05::SUB_CLASS_00: return "SUB_CLASS_00";
         case PciSubClass05::SUB_CLASS_01: return "SUB_CLASS_01";
+        case PciSubClass05::SUB_CLASS_02: return "SUB_CLASS_02";
         case PciSubClass05::SUB_CLASS_80: return "SUB_CLASS_80";
 
         default: return "UNKNOWN";
@@ -52,9 +55,9 @@ inline const char8* enumToFullString(PciSubClass05 subClass) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciSubClass05 subClass) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass05 subClass, u8 interfaceId) // TEST: NO
 {
-    // COMMON_LT((" | subClass = %u", subClass)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u, interfaceId = %u", subClass, interfaceId)); // Commented to avoid bad looking logs
 
 
 
@@ -62,6 +65,7 @@ inline const char8* enumToHumanString(PciSubClass05 subClass) // TEST: NO
     {
         case PciSubClass05::SUB_CLASS_00: return "Memory controller - RAM memory";
         case PciSubClass05::SUB_CLASS_01: return "Memory controller - FLASH memory";
+        case PciSubClass05::SUB_CLASS_02: return enumToHumanString((PciInterface0502)interfaceId);
         case PciSubClass05::SUB_CLASS_80: return "Memory controller - Memory controller";
 
         default: return "Memory controller";

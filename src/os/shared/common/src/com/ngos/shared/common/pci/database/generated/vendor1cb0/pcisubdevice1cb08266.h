@@ -15,7 +15,8 @@ enum class PciSubDevice1CB08266: u32 // Ignore CppEnumVerifier
     NONE               = 0,
     SUBDEVICE_1CB02021 = 0x1CB02021,
     SUBDEVICE_1CB02121 = 0x1CB02121,
-    SUBDEVICE_1CB02F21 = 0x1CB02F21
+    SUBDEVICE_1CB02F21 = 0x1CB02F21,
+    SUBDEVICE_1CB02F22 = 0x1CB02F22
 };
 
 
@@ -32,6 +33,7 @@ inline const char8* enumToString(PciSubDevice1CB08266 subDevice) // TEST: NO
         case PciSubDevice1CB08266::SUBDEVICE_1CB02021: return "SUBDEVICE_1CB02021";
         case PciSubDevice1CB08266::SUBDEVICE_1CB02121: return "SUBDEVICE_1CB02121";
         case PciSubDevice1CB08266::SUBDEVICE_1CB02F21: return "SUBDEVICE_1CB02F21";
+        case PciSubDevice1CB08266::SUBDEVICE_1CB02F22: return "SUBDEVICE_1CB02F22";
 
         default: return "UNKNOWN";
     }
@@ -62,9 +64,10 @@ inline const char8* enumToHumanString(PciSubDevice1CB08266 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice1CB08266::SUBDEVICE_1CB02021: return "Andalusia Series OCS U.2 SSD";
-        case PciSubDevice1CB08266::SUBDEVICE_1CB02121: return "Andalusia Series ZNS U.2 SSD";
-        case PciSubDevice1CB08266::SUBDEVICE_1CB02F21: return "Andalusia Series NVMe U.2 SSD";
+        case PciSubDevice1CB08266::SUBDEVICE_1CB02021: return "SP4 Series OCS U.2 SSD";
+        case PciSubDevice1CB08266::SUBDEVICE_1CB02121: return "SP4 Series ZNS U.2 SSD";
+        case PciSubDevice1CB08266::SUBDEVICE_1CB02F21: return "SP4E Series NVMe U.2 SSD(1920/3840/7680GB)";
+        case PciSubDevice1CB08266::SUBDEVICE_1CB02F22: return "SP4X Series NVMe U.2 SSD(1600/3200/6400GB)";
 
         default: return "Unknown device";
     }

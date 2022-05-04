@@ -34,6 +34,8 @@ enum class PciSubDevice80861572: u32 // Ignore CppEnumVerifier
     SUBDEVICE_19E5D11C = 0x19E5D11C,
     SUBDEVICE_1BD40042 = 0x1BD40042,
     SUBDEVICE_1BD40056 = 0x1BD40056,
+    SUBDEVICE_1BD40065 = 0x1BD40065,
+    SUBDEVICE_1BD40074 = 0x1BD40074,
     SUBDEVICE_80860000 = 0x80860000,
     SUBDEVICE_80860001 = 0x80860001,
     SUBDEVICE_80860002 = 0x80860002,
@@ -93,6 +95,8 @@ inline const char8* enumToString(PciSubDevice80861572 subDevice) // TEST: NO
         case PciSubDevice80861572::SUBDEVICE_19E5D11C: return "SUBDEVICE_19E5D11C";
         case PciSubDevice80861572::SUBDEVICE_1BD40042: return "SUBDEVICE_1BD40042";
         case PciSubDevice80861572::SUBDEVICE_1BD40056: return "SUBDEVICE_1BD40056";
+        case PciSubDevice80861572::SUBDEVICE_1BD40065: return "SUBDEVICE_1BD40065";
+        case PciSubDevice80861572::SUBDEVICE_1BD40074: return "SUBDEVICE_1BD40074";
         case PciSubDevice80861572::SUBDEVICE_80860000: return "SUBDEVICE_80860000";
         case PciSubDevice80861572::SUBDEVICE_80860001: return "SUBDEVICE_80860001";
         case PciSubDevice80861572::SUBDEVICE_80860002: return "SUBDEVICE_80860002";
@@ -169,6 +173,8 @@ inline const char8* enumToHumanString(PciSubDevice80861572 subDevice) // TEST: N
         case PciSubDevice80861572::SUBDEVICE_19E5D11C: return "Ethernet 2-port X710 10Gb SFP+ Adapter SP330";
         case PciSubDevice80861572::SUBDEVICE_1BD40042: return "10G SFP+ DP EP102Fi4 Adapter";
         case PciSubDevice80861572::SUBDEVICE_1BD40056: return "Ethernet Network Adapter X710-BM2 for OCP NIC 3.0";
+        case PciSubDevice80861572::SUBDEVICE_1BD40065: return "F102IX710";
+        case PciSubDevice80861572::SUBDEVICE_1BD40074: return "Ethernet Network Adapter X710-BM2 for lldp";
         case PciSubDevice80861572::SUBDEVICE_80860000: return "Ethernet Converged Network Adapter X710";
         case PciSubDevice80861572::SUBDEVICE_80860001: return "Ethernet Converged Network Adapter X710-4";
         case PciSubDevice80861572::SUBDEVICE_80860002: return "Ethernet Converged Network Adapter X710-4";

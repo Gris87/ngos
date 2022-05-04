@@ -7,6 +7,7 @@
 
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor11f8/pcisubdevice11f88032.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11f8/pcisubdevice11f88536.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -33,6 +34,11 @@ enum class PciDevice11F8: u16 // Ignore CppEnumVerifier
     DEVICE_8072 = 0x8072,
     DEVICE_8073 = 0x8073,
     DEVICE_8531 = 0x8531,
+    DEVICE_8532 = 0x8532,
+    DEVICE_8533 = 0x8533,
+    DEVICE_8534 = 0x8534,
+    DEVICE_8535 = 0x8535,
+    DEVICE_8536 = 0x8536,
     DEVICE_8546 = 0x8546,
     DEVICE_8562 = 0x8562
 };
@@ -67,6 +73,11 @@ inline const char8* enumToString(PciDevice11F8 device) // TEST: NO
         case PciDevice11F8::DEVICE_8072: return "DEVICE_8072";
         case PciDevice11F8::DEVICE_8073: return "DEVICE_8073";
         case PciDevice11F8::DEVICE_8531: return "DEVICE_8531";
+        case PciDevice11F8::DEVICE_8532: return "DEVICE_8532";
+        case PciDevice11F8::DEVICE_8533: return "DEVICE_8533";
+        case PciDevice11F8::DEVICE_8534: return "DEVICE_8534";
+        case PciDevice11F8::DEVICE_8535: return "DEVICE_8535";
+        case PciDevice11F8::DEVICE_8536: return "DEVICE_8536";
         case PciDevice11F8::DEVICE_8546: return "DEVICE_8546";
         case PciDevice11F8::DEVICE_8562: return "DEVICE_8562";
 
@@ -117,7 +128,12 @@ inline const char8* enumToHumanString(PciDevice11F8 device) // TEST: NO
         case PciDevice11F8::DEVICE_8071: return "PM8071 Tachyon SPCve 12G eight-port SAS/SATA controller";
         case PciDevice11F8::DEVICE_8072: return "PM8072 Tachyon SPCv 12G 16-port SAS/SATA controller";
         case PciDevice11F8::DEVICE_8073: return "PM8073 Tachyon SPCve 12G 16-port SAS/SATA controller";
-        case PciDevice11F8::DEVICE_8531: return "PM8531 PFX 24xG3 Fanout PCIe Switches";
+        case PciDevice11F8::DEVICE_8531: return "PM8531 PFX 24xG3 PCIe Fanout Switch";
+        case PciDevice11F8::DEVICE_8532: return "PM8532 PFX 32xG3 PCIe Fanout Switch";
+        case PciDevice11F8::DEVICE_8533: return "PM8533 PFX 48xG3 PCIe Fanout Switch";
+        case PciDevice11F8::DEVICE_8534: return "PM8534 PFX 64xG3 PCIe Fanout Switch";
+        case PciDevice11F8::DEVICE_8535: return "PM8535 PFX 80xG3 PCIe Fanout Switch";
+        case PciDevice11F8::DEVICE_8536: return "PM8536 PFX 96xG3 PCIe Fanout Switch";
         case PciDevice11F8::DEVICE_8546: return "PM8546 B-FEIP PSX 96xG3 PCIe Storage Switch";
         case PciDevice11F8::DEVICE_8562: return "PM8562 Switchtec PFX-L 32xG3 Fanout-Lite PCIe Gen3 Switch";
 
@@ -154,6 +170,11 @@ inline const char8* enumToHumanString(PciDevice11F8 device, u16 subsystemVendorI
         case PciDevice11F8::DEVICE_8072: return "Unknown device";
         case PciDevice11F8::DEVICE_8073: return "Unknown device";
         case PciDevice11F8::DEVICE_8531: return "Unknown device";
+        case PciDevice11F8::DEVICE_8532: return "Unknown device";
+        case PciDevice11F8::DEVICE_8533: return "Unknown device";
+        case PciDevice11F8::DEVICE_8534: return "Unknown device";
+        case PciDevice11F8::DEVICE_8535: return "Unknown device";
+        case PciDevice11F8::DEVICE_8536: return enumToHumanString((PciSubDevice11F88536)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice11F8::DEVICE_8546: return "Unknown device";
         case PciDevice11F8::DEVICE_8562: return "Unknown device";
 

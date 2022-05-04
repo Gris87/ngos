@@ -1,81 +1,81 @@
-#ifndef COM_NGOS_SHARED_COMMON_CPU_MODEL_AMDCPUMODEL_H
-#define COM_NGOS_SHARED_COMMON_CPU_MODEL_AMDCPUMODEL_H
-
-
-
-#include <com/ngos/shared/common/cpu/cpufamily.h>
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-// Taken from https://en.wikichip.org/wiki/amd/cpuid
-enum class AmdCpuModel: u8 // Ignore CppEnumVerifier
-{
-    NONE                     = 0,
-    FAMILY_23_NAPLES         = 1,
-    FAMILY_23_WHITEHAVEN     = 1,
-    FAMILY_23_SUMMIT_RIDGE   = 1,
-    FAMILY_23_SNOWY_OWL      = 1,
-    FAMILY_23_PINNACLE_RIDGE = 8,
-    FAMILY_23_RAVEN_RIDGE    = 17,
-    FAMILY_23_ROME           = 32,
-    FAMILY_23_MATISSE        = 113
-};
-
-
-
-inline const char8* enumToString(CpuFamily family, AmdCpuModel model) // TEST: NO
-{
-    // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs
-
-
-
-    if (model == AmdCpuModel::NONE)
-    {
-        return "NONE";
-    }
-
-
-
-    switch (family)
-    {
-        case CpuFamily::AMD_FAMILY_23:
-        {
-            switch (model)
-            {
-                case AmdCpuModel::FAMILY_23_NAPLES:         return "FAMILY_23_NAPLES";
-                case AmdCpuModel::FAMILY_23_PINNACLE_RIDGE: return "FAMILY_23_PINNACLE_RIDGE";
-                case AmdCpuModel::FAMILY_23_RAVEN_RIDGE:    return "FAMILY_23_RAVEN_RIDGE";
-                case AmdCpuModel::FAMILY_23_ROME:           return "FAMILY_23_ROME";
-                case AmdCpuModel::FAMILY_23_MATISSE:        return "FAMILY_23_MATISSE";
-
-                default: return "UNKNOWN";
-            }
-        }
-        break;
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(CpuFamily family, AmdCpuModel model) // TEST: NO
-{
-    // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[32];
-
-    sprintf(res, "0x%02X (%s)", (u8)model, enumToString(family, model));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CPU_MODEL_AMDCPUMODEL_H
+#ifndef COM_NGOS_SHARED_COMMON_CPU_MODEL_AMDCPUMODEL_H                                                                                                                                                   // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CPU_MODEL_AMDCPUMODEL_H                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/cpu/cpufamily.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+// Taken from https://en.wikichip.org/wiki/amd/cpuid                                                                                                                                                     // Colorize: green
+enum class AmdCpuModel: good_U8 // Ignore CppEnumVerifier                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE                     = 0,                                                                                                                                                                        // Colorize: green
+    FAMILY_23_NAPLES         = 1,                                                                                                                                                                        // Colorize: green
+    FAMILY_23_WHITEHAVEN     = 1,                                                                                                                                                                        // Colorize: green
+    FAMILY_23_SUMMIT_RIDGE   = 1,                                                                                                                                                                        // Colorize: green
+    FAMILY_23_SNOWY_OWL      = 1,                                                                                                                                                                        // Colorize: green
+    FAMILY_23_PINNACLE_RIDGE = 8,                                                                                                                                                                        // Colorize: green
+    FAMILY_23_RAVEN_RIDGE    = 17,                                                                                                                                                                       // Colorize: green
+    FAMILY_23_ROME           = 32,                                                                                                                                                                       // Colorize: green
+    FAMILY_23_MATISSE        = 113                                                                                                                                                                       // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const good_Char8* enumToString(CpuFamily family, AmdCpuModel model) // TEST: NO                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (model == AmdCpuModel::NONE)                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return "NONE";                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (family)                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case CpuFamily::AMD_FAMILY_23:                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            switch (model)                                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                case AmdCpuModel::FAMILY_23_NAPLES:         return "FAMILY_23_NAPLES";                                                                                                                   // Colorize: green
+                case AmdCpuModel::FAMILY_23_PINNACLE_RIDGE: return "FAMILY_23_PINNACLE_RIDGE";                                                                                                           // Colorize: green
+                case AmdCpuModel::FAMILY_23_RAVEN_RIDGE:    return "FAMILY_23_RAVEN_RIDGE";                                                                                                              // Colorize: green
+                case AmdCpuModel::FAMILY_23_ROME:           return "FAMILY_23_ROME";                                                                                                                     // Colorize: green
+                case AmdCpuModel::FAMILY_23_MATISSE:        return "FAMILY_23_MATISSE";                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                default: return "UNKNOWN";                                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const good_Char8* enumToFullString(CpuFamily family, AmdCpuModel model) // TEST: NO                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | family = %u, model = %u", family, model)); // Commented to avoid bad looking logs                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static good_Char8 res[32];                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", static_cast<good_U8>(model), enumToString(family, model));                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CPU_MODEL_AMDCPUMODEL_H                                                                                                                                                 // Colorize: green

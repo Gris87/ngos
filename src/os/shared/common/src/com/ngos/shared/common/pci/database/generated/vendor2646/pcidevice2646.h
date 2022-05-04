@@ -17,7 +17,8 @@ enum class PciDevice2646: u16 // Ignore CppEnumVerifier
     DEVICE_2262 = 0x2262,
     DEVICE_2263 = 0x2263,
     DEVICE_5008 = 0x5008,
-    DEVICE_500D = 0x500D
+    DEVICE_500D = 0x500D,
+    DEVICE_500E = 0x500E
 };
 
 
@@ -36,6 +37,7 @@ inline const char8* enumToString(PciDevice2646 device) // TEST: NO
         case PciDevice2646::DEVICE_2263: return "DEVICE_2263";
         case PciDevice2646::DEVICE_5008: return "DEVICE_5008";
         case PciDevice2646::DEVICE_500D: return "DEVICE_500D";
+        case PciDevice2646::DEVICE_500E: return "DEVICE_500E";
 
         default: return "UNKNOWN";
     }
@@ -71,6 +73,7 @@ inline const char8* enumToHumanString(PciDevice2646 device) // TEST: NO
         case PciDevice2646::DEVICE_2263: return "A2000 NVMe SSD";
         case PciDevice2646::DEVICE_5008: return "U-SNS8154P3 NVMe SSD";
         case PciDevice2646::DEVICE_500D: return "OM3PDP3 NVMe SSD";
+        case PciDevice2646::DEVICE_500E: return "SNVS2000G [NV1 NVMe PCIe SSD 2TB]";
 
         default: return "Unknown device";
     }

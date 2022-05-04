@@ -16,9 +16,11 @@ enum class PciSubDevice14E416D7: u32 // Ignore CppEnumVerifier
     SUBDEVICE_14E41402 = 0x14E41402,
     SUBDEVICE_14E41404 = 0x14E41404,
     SUBDEVICE_14E44140 = 0x14E44140,
+    SUBDEVICE_14E44143 = 0x14E44143,
     SUBDEVICE_14E44146 = 0x14E44146,
     SUBDEVICE_1590020E = 0x1590020E,
-    SUBDEVICE_15900211 = 0x15900211
+    SUBDEVICE_15900211 = 0x15900211,
+    SUBDEVICE_1EEC0101 = 0x1EEC0101
 };
 
 
@@ -35,9 +37,11 @@ inline const char8* enumToString(PciSubDevice14E416D7 subDevice) // TEST: NO
         case PciSubDevice14E416D7::SUBDEVICE_14E41402: return "SUBDEVICE_14E41402";
         case PciSubDevice14E416D7::SUBDEVICE_14E41404: return "SUBDEVICE_14E41404";
         case PciSubDevice14E416D7::SUBDEVICE_14E44140: return "SUBDEVICE_14E44140";
+        case PciSubDevice14E416D7::SUBDEVICE_14E44143: return "SUBDEVICE_14E44143";
         case PciSubDevice14E416D7::SUBDEVICE_14E44146: return "SUBDEVICE_14E44146";
         case PciSubDevice14E416D7::SUBDEVICE_1590020E: return "SUBDEVICE_1590020E";
         case PciSubDevice14E416D7::SUBDEVICE_15900211: return "SUBDEVICE_15900211";
+        case PciSubDevice14E416D7::SUBDEVICE_1EEC0101: return "SUBDEVICE_1EEC0101";
 
         default: return "UNKNOWN";
     }
@@ -71,9 +75,11 @@ inline const char8* enumToHumanString(PciSubDevice14E416D7 subDevice) // TEST: N
         case PciSubDevice14E416D7::SUBDEVICE_14E41402: return "BCM957414A4142CC 10Gb/25Gb Ethernet PCIe";
         case PciSubDevice14E416D7::SUBDEVICE_14E41404: return "BCM957414M4142C OCP 2x25G Type1 wRoCE";
         case PciSubDevice14E416D7::SUBDEVICE_14E44140: return "NetXtreme E-Series Advanced Dual-port 25Gb SFP28 Network Daughter Card";
+        case PciSubDevice14E416D7::SUBDEVICE_14E44143: return "NetXtreme-E Single-port 40Gb/50Gb Ethernet OCP 2.0 Adapter (BCM957414M4143C)";
         case PciSubDevice14E416D7::SUBDEVICE_14E44146: return "NetXtreme-E Dual-port 25G SFP28 Ethernet OCP 3.0 Adapter (BCM957414N4140C)";
         case PciSubDevice14E416D7::SUBDEVICE_1590020E: return "Ethernet 25Gb 2-port 631SFP28 Adapter";
         case PciSubDevice14E416D7::SUBDEVICE_15900211: return "Ethernet 25Gb 2-port 631FLR-SFP28 Adapter";
+        case PciSubDevice14E416D7::SUBDEVICE_1EEC0101: return "VSE250231S Dual-port 10Gb/25Gb Ethernet PCIe";
 
         default: return "Unknown device";
     }

@@ -13,6 +13,7 @@
 enum class PciDevice1CC1: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
+    DEVICE_5766 = 0x5766,
     DEVICE_8201 = 0x8201
 };
 
@@ -27,6 +28,7 @@ inline const char8* enumToString(PciDevice1CC1 device) // TEST: NO
     switch (device)
     {
         case PciDevice1CC1::NONE:        return "NONE";
+        case PciDevice1CC1::DEVICE_5766: return "DEVICE_5766";
         case PciDevice1CC1::DEVICE_8201: return "DEVICE_8201";
 
         default: return "UNKNOWN";
@@ -58,6 +60,7 @@ inline const char8* enumToHumanString(PciDevice1CC1 device) // TEST: NO
 
     switch (device)
     {
+        case PciDevice1CC1::DEVICE_5766: return "ADATA XPG GAMMIXS1 1L Media";
         case PciDevice1CC1::DEVICE_8201: return "XPG SX8200 Pro PCIe Gen3x4 M.2 2280 Solid State Drive";
 
         default: return "Unknown device";

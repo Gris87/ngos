@@ -75,11 +75,6 @@ NgosStatus CPU::init()
 
 
 
-    COMMON_ASSERT_EXECUTION(initX86FeaturesNames(), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(initX86BugsNames(),     NgosStatus::ASSERTION);
-
-
-
     sNumberOfCores      = 1;
     sNumberOfThreads    = 1;
     sCacheLineFlushSize = 64;
@@ -91,23 +86,23 @@ NgosStatus CPU::init()
 
 
 
-    if (hasEFlag(X86_EFLAGS_ID))
-    {
-        COMMON_LVV(("CPUID detection available"));
-
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::CPUID), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(initCpuFeatures(),          NgosStatus::ASSERTION);
-    }
-    else
-    {
-        COMMON_LF(("CPU didn't support CPUID"));
-
-        return NgosStatus::NOT_SUPPORTED;
-    }
+    // Check that CPUID supported                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!hasEFlag(X86_EFLAGS_ID))                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LF(("CPU didn't support CPUID"));                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return NgosStatus::NOT_SUPPORTED;                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
 
 
 
-    COMMON_ASSERT_EXECUTION(setFlag(X86Feature::ALWAYS),      NgosStatus::ASSERTION);
+    COMMON_LVV(("CPUID detection available"));
+
+    COMMON_ASSERT_EXECUTION(setFlag(X86Feature::CPUID),       NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(initCpuFeatures(),                NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setFlag(X86Feature::ALWAYS),      NgosStatus::ASSERTION); // TODO: Do we really need it?
     COMMON_ASSERT_EXECUTION(initScatteredFeatures(),          NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(initSpeculationControl(),         NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(doPostprocessing(),               NgosStatus::ASSERTION);

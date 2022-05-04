@@ -26,7 +26,8 @@ enum class PciDevice18EC: u16 // Ignore CppEnumVerifier
     DEVICE_C050 = 0xC050,
     DEVICE_C058 = 0xC058,
     DEVICE_C132 = 0xC132,
-    DEVICE_C232 = 0xC232
+    DEVICE_C232 = 0xC232,
+    DEVICE_C400 = 0xC400
 };
 
 
@@ -48,6 +49,7 @@ inline const char8* enumToString(PciDevice18EC device) // TEST: NO
         case PciDevice18EC::DEVICE_C058: return "DEVICE_C058";
         case PciDevice18EC::DEVICE_C132: return "DEVICE_C132";
         case PciDevice18EC::DEVICE_C232: return "DEVICE_C232";
+        case PciDevice18EC::DEVICE_C400: return "DEVICE_C400";
 
         default: return "UNKNOWN";
     }
@@ -86,6 +88,7 @@ inline const char8* enumToHumanString(PciDevice18EC device) // TEST: NO
         case PciDevice18EC::DEVICE_C058: return "COMBO6X";
         case PciDevice18EC::DEVICE_C132: return "COMBO-LXT155";
         case PciDevice18EC::DEVICE_C232: return "COMBO-FXT100";
+        case PciDevice18EC::DEVICE_C400: return "COMBO-400G1";
 
         default: return "Unknown device";
     }
@@ -109,6 +112,7 @@ inline const char8* enumToHumanString(PciDevice18EC device, u16 subsystemVendorI
         case PciDevice18EC::DEVICE_C058: return enumToHumanString((PciSubDevice18ECC058)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice18EC::DEVICE_C132: return enumToHumanString((PciSubDevice18ECC132)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice18EC::DEVICE_C232: return enumToHumanString((PciSubDevice18ECC232)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice18EC::DEVICE_C400: return "Unknown device";
 
         default: return "Unknown device";
     }

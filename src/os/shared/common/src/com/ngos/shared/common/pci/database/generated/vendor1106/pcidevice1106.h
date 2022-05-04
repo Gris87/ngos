@@ -361,6 +361,7 @@ enum class PciDevice1106: u16 // Ignore CppEnumVerifier
     DEVICE_9082 = 0x9082,
     DEVICE_9140 = 0x9140,
     DEVICE_9201 = 0x9201,
+    DEVICE_9380 = 0x9380,
     DEVICE_9530 = 0x9530,
     DEVICE_95D0 = 0x95D0,
     DEVICE_A208 = 0xA208,
@@ -724,6 +725,7 @@ inline const char8* enumToString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_9082: return "DEVICE_9082";
         case PciDevice1106::DEVICE_9140: return "DEVICE_9140";
         case PciDevice1106::DEVICE_9201: return "DEVICE_9201";
+        case PciDevice1106::DEVICE_9380: return "DEVICE_9380";
         case PciDevice1106::DEVICE_9530: return "DEVICE_9530";
         case PciDevice1106::DEVICE_95D0: return "DEVICE_95D0";
         case PciDevice1106::DEVICE_A208: return "DEVICE_A208";
@@ -1104,6 +1106,7 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_9082: return "Standard AHCI 1.0 SATA Controller";
         case PciDevice1106::DEVICE_9140: return "HDMI Audio Device";
         case PciDevice1106::DEVICE_9201: return "USB3.0 Controller";
+        case PciDevice1106::DEVICE_9380: return "Ncore Coprocessor";
         case PciDevice1106::DEVICE_9530: return "VX800/820/900 Series Secure Digital Memory Card Controller";
         case PciDevice1106::DEVICE_95D0: return "VX800/820/900 Series SDIO Host Controller";
         case PciDevice1106::DEVICE_A208: return "PT890 PCI to PCI Bridge Controller";
@@ -1469,6 +1472,7 @@ inline const char8* enumToHumanString(PciDevice1106 device, u16 subsystemVendorI
         case PciDevice1106::DEVICE_9082: return "Unknown device";
         case PciDevice1106::DEVICE_9140: return "Unknown device";
         case PciDevice1106::DEVICE_9201: return "Unknown device";
+        case PciDevice1106::DEVICE_9380: return "Unknown device";
         case PciDevice1106::DEVICE_9530: return "Unknown device";
         case PciDevice1106::DEVICE_95D0: return "Unknown device";
         case PciDevice1106::DEVICE_A208: return "Unknown device";

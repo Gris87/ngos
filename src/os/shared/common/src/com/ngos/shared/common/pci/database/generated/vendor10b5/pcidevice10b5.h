@@ -109,11 +109,17 @@ enum class PciDevice10B5: u16 // Ignore CppEnumVerifier
     DEVICE_8717 = 0x8717,
     DEVICE_8718 = 0x8718,
     DEVICE_8724 = 0x8724,
+    DEVICE_8725 = 0x8725,
     DEVICE_8732 = 0x8732,
     DEVICE_8734 = 0x8734,
     DEVICE_8747 = 0x8747,
     DEVICE_8748 = 0x8748,
+    DEVICE_8749 = 0x8749,
+    DEVICE_87A0 = 0x87A0,
+    DEVICE_87A1 = 0x87A1,
     DEVICE_87B0 = 0x87B0,
+    DEVICE_87B1 = 0x87B1,
+    DEVICE_87D0 = 0x87D0,
     DEVICE_9016 = 0x9016,
     DEVICE_9030 = 0x9030,
     DEVICE_9036 = 0x9036,
@@ -220,11 +226,17 @@ inline const char8* enumToString(PciDevice10B5 device) // TEST: NO
         case PciDevice10B5::DEVICE_8717: return "DEVICE_8717";
         case PciDevice10B5::DEVICE_8718: return "DEVICE_8718";
         case PciDevice10B5::DEVICE_8724: return "DEVICE_8724";
+        case PciDevice10B5::DEVICE_8725: return "DEVICE_8725";
         case PciDevice10B5::DEVICE_8732: return "DEVICE_8732";
         case PciDevice10B5::DEVICE_8734: return "DEVICE_8734";
         case PciDevice10B5::DEVICE_8747: return "DEVICE_8747";
         case PciDevice10B5::DEVICE_8748: return "DEVICE_8748";
+        case PciDevice10B5::DEVICE_8749: return "DEVICE_8749";
+        case PciDevice10B5::DEVICE_87A0: return "DEVICE_87A0";
+        case PciDevice10B5::DEVICE_87A1: return "DEVICE_87A1";
         case PciDevice10B5::DEVICE_87B0: return "DEVICE_87B0";
+        case PciDevice10B5::DEVICE_87B1: return "DEVICE_87B1";
+        case PciDevice10B5::DEVICE_87D0: return "DEVICE_87D0";
         case PciDevice10B5::DEVICE_9016: return "DEVICE_9016";
         case PciDevice10B5::DEVICE_9030: return "DEVICE_9030";
         case PciDevice10B5::DEVICE_9036: return "DEVICE_9036";
@@ -348,11 +360,17 @@ inline const char8* enumToHumanString(PciDevice10B5 device) // TEST: NO
         case PciDevice10B5::DEVICE_8717: return "PEX 8717 16-lane, 8-Port PCI Express Gen 3 (8.0 GT/s) Switch with DMA";
         case PciDevice10B5::DEVICE_8718: return "PEX 8718 16-Lane, 5-Port PCI Express Gen 3 (8.0 GT/s) Switch";
         case PciDevice10B5::DEVICE_8724: return "PEX 8724 24-Lane, 6-Port PCI Express Gen 3 (8 GT/s) Switch, 19 x 19mm FCBGA";
+        case PciDevice10B5::DEVICE_8725: return "PEX 8725 24-Lane, 10-Port PCI Express Gen 3 (8.0 GT/s) Multi-Root Switch with DMA";
         case PciDevice10B5::DEVICE_8732: return "PEX 8732 32-lane, 8-Port PCI Express Gen 3 (8.0 GT/s) Switch";
         case PciDevice10B5::DEVICE_8734: return "PEX 8734 32-lane, 8-Port PCI Express Gen 3 (8.0GT/s) Switch";
         case PciDevice10B5::DEVICE_8747: return "PEX 8747 48-Lane, 5-Port PCI Express Gen 3 (8.0 GT/s) Switch";
         case PciDevice10B5::DEVICE_8748: return "PEX 8748 48-Lane, 12-Port PCI Express Gen 3 (8 GT/s) Switch, 27 x 27mm FCBGA";
-        case PciDevice10B5::DEVICE_87B0: return "PEX 8732 32-lane, 8-Port PCI Express Gen 3 (8.0 GT/s) Switch";
+        case PciDevice10B5::DEVICE_8749: return "PEX 8749 48-Lane, 18-Port PCI Express Gen 3 (8.0 GT/s) Multi-Root Switch with DMA";
+        case PciDevice10B5::DEVICE_87A0: return "PEX PCI Express Switch NT0 Port Link Interface";
+        case PciDevice10B5::DEVICE_87A1: return "PEX PCI Express Switch NT1 Port Link Interface";
+        case PciDevice10B5::DEVICE_87B0: return "PEX PCI Express Switch NT0 Port Virtual Interface";
+        case PciDevice10B5::DEVICE_87B1: return "PEX PCI Express Switch NT1 Port Virtual Interface";
+        case PciDevice10B5::DEVICE_87D0: return "PEX PCI Express Switch DMA interface";
         case PciDevice10B5::DEVICE_9016: return "PLX 9016 8-port serial controller";
         case PciDevice10B5::DEVICE_9030: return "PCI9030 32-bit 33MHz PCI <-> IOBus Bridge";
         case PciDevice10B5::DEVICE_9036: return "9036";
@@ -461,11 +479,17 @@ inline const char8* enumToHumanString(PciDevice10B5 device, u16 subsystemVendorI
         case PciDevice10B5::DEVICE_8717: return "Unknown device";
         case PciDevice10B5::DEVICE_8718: return "Unknown device";
         case PciDevice10B5::DEVICE_8724: return "Unknown device";
+        case PciDevice10B5::DEVICE_8725: return "Unknown device";
         case PciDevice10B5::DEVICE_8732: return "Unknown device";
         case PciDevice10B5::DEVICE_8734: return "Unknown device";
         case PciDevice10B5::DEVICE_8747: return "Unknown device";
         case PciDevice10B5::DEVICE_8748: return "Unknown device";
+        case PciDevice10B5::DEVICE_8749: return "Unknown device";
+        case PciDevice10B5::DEVICE_87A0: return "Unknown device";
+        case PciDevice10B5::DEVICE_87A1: return "Unknown device";
         case PciDevice10B5::DEVICE_87B0: return enumToHumanString((PciSubDevice10B587B0)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice10B5::DEVICE_87B1: return "Unknown device";
+        case PciDevice10B5::DEVICE_87D0: return "Unknown device";
         case PciDevice10B5::DEVICE_9016: return "Unknown device";
         case PciDevice10B5::DEVICE_9030: return enumToHumanString((PciSubDevice10B59030)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice10B5::DEVICE_9036: return "Unknown device";

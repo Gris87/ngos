@@ -14,7 +14,8 @@ enum class PciSubDevice10026613: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_148C7340 = 0x148C7340,
-    SUBDEVICE_16827240 = 0x16827240
+    SUBDEVICE_16827240 = 0x16827240,
+    SUBDEVICE_1DCF3000 = 0x1DCF3000
 };
 
 
@@ -30,6 +31,7 @@ inline const char8* enumToString(PciSubDevice10026613 subDevice) // TEST: NO
         case PciSubDevice10026613::NONE:               return "NONE";
         case PciSubDevice10026613::SUBDEVICE_148C7340: return "SUBDEVICE_148C7340";
         case PciSubDevice10026613::SUBDEVICE_16827240: return "SUBDEVICE_16827240";
+        case PciSubDevice10026613::SUBDEVICE_1DCF3000: return "SUBDEVICE_1DCF3000";
 
         default: return "UNKNOWN";
     }
@@ -62,6 +64,7 @@ inline const char8* enumToHumanString(PciSubDevice10026613 subDevice) // TEST: N
     {
         case PciSubDevice10026613::SUBDEVICE_148C7340: return "Radeon R7 340";
         case PciSubDevice10026613::SUBDEVICE_16827240: return "R7 240 2048 MB";
+        case PciSubDevice10026613::SUBDEVICE_1DCF3000: return "Oland PRO [Radeon R7 240/340 / Radeon 520]";
 
         default: return "Unknown device";
     }

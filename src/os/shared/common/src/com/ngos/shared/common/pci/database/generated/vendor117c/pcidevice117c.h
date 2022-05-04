@@ -12,6 +12,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor117c/pcisubdevice117c0064.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor117c/pcisubdevice117c0094.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor117c/pcisubdevice117c00bb.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor117c/pcisubdevice117c00c5.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor117c/pcisubdevice117c00e6.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor117c/pcisubdevice117c8070.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor117c/pcisubdevice117c8072.h>
@@ -32,6 +33,7 @@ enum class PciDevice117C: u16 // Ignore CppEnumVerifier
     DEVICE_0064 = 0x0064,
     DEVICE_0094 = 0x0094,
     DEVICE_00BB = 0x00BB,
+    DEVICE_00C5 = 0x00C5,
     DEVICE_00E6 = 0x00E6,
     DEVICE_8013 = 0x8013,
     DEVICE_8014 = 0x8014,
@@ -61,6 +63,7 @@ inline const char8* enumToString(PciDevice117C device) // TEST: NO
         case PciDevice117C::DEVICE_0064: return "DEVICE_0064";
         case PciDevice117C::DEVICE_0094: return "DEVICE_0094";
         case PciDevice117C::DEVICE_00BB: return "DEVICE_00BB";
+        case PciDevice117C::DEVICE_00C5: return "DEVICE_00C5";
         case PciDevice117C::DEVICE_00E6: return "DEVICE_00E6";
         case PciDevice117C::DEVICE_8013: return "DEVICE_8013";
         case PciDevice117C::DEVICE_8014: return "DEVICE_8014";
@@ -107,6 +110,7 @@ inline const char8* enumToHumanString(PciDevice117C device) // TEST: NO
         case PciDevice117C::DEVICE_0064: return "Celerity FC 16Gb/s Gen 5 Fibre Channel HBA";
         case PciDevice117C::DEVICE_0094: return "Celerity FC 16/32Gb/s Gen 6 Fibre Channel HBA";
         case PciDevice117C::DEVICE_00BB: return "Celerity FC 32/64Gb/s Gen 7 Fibre Channel HBA";
+        case PciDevice117C::DEVICE_00C5: return "ExpressNVM PCIe Gen4 Switch";
         case PciDevice117C::DEVICE_00E6: return "ExpressSAS GT 12Gb/s SAS/SATA HBA";
         case PciDevice117C::DEVICE_8013: return "ExpressPCI UL4D";
         case PciDevice117C::DEVICE_8014: return "ExpressPCI UL4S";
@@ -138,6 +142,7 @@ inline const char8* enumToHumanString(PciDevice117C device, u16 subsystemVendorI
         case PciDevice117C::DEVICE_0064: return enumToHumanString((PciSubDevice117C0064)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice117C::DEVICE_0094: return enumToHumanString((PciSubDevice117C0094)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice117C::DEVICE_00BB: return enumToHumanString((PciSubDevice117C00BB)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice117C::DEVICE_00C5: return enumToHumanString((PciSubDevice117C00C5)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice117C::DEVICE_00E6: return enumToHumanString((PciSubDevice117C00E6)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice117C::DEVICE_8013: return "Unknown device";
         case PciDevice117C::DEVICE_8014: return "Unknown device";

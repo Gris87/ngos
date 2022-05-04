@@ -24,7 +24,9 @@ enum class PciDevice1344: u16 // Ignore CppEnumVerifier
     DEVICE_5181 = 0x5181,
     DEVICE_5190 = 0x5190,
     DEVICE_5191 = 0x5191,
-    DEVICE_5192 = 0x5192
+    DEVICE_5192 = 0x5192,
+    DEVICE_51A2 = 0x51A2,
+    DEVICE_51A3 = 0x51A3
 };
 
 
@@ -50,6 +52,8 @@ inline const char8* enumToString(PciDevice1344 device) // TEST: NO
         case PciDevice1344::DEVICE_5190: return "DEVICE_5190";
         case PciDevice1344::DEVICE_5191: return "DEVICE_5191";
         case PciDevice1344::DEVICE_5192: return "DEVICE_5192";
+        case PciDevice1344::DEVICE_51A2: return "DEVICE_51A2";
+        case PciDevice1344::DEVICE_51A3: return "DEVICE_51A3";
 
         default: return "UNKNOWN";
     }
@@ -92,6 +96,8 @@ inline const char8* enumToHumanString(PciDevice1344 device) // TEST: NO
         case PciDevice1344::DEVICE_5190: return "9200 ECO NVMe SSD";
         case PciDevice1344::DEVICE_5191: return "9200 PRO NVMe SSD";
         case PciDevice1344::DEVICE_5192: return "9200 MAX NVMe SSD";
+        case PciDevice1344::DEVICE_51A2: return "9300 PRO NVMe SSD";
+        case PciDevice1344::DEVICE_51A3: return "9300 MAX NVMe SSD";
 
         default: return "Unknown device";
     }

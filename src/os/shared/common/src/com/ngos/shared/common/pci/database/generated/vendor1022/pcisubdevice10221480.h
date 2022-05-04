@@ -13,7 +13,8 @@
 enum class PciSubDevice10221480: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
-    SUBDEVICE_14627C37 = 0x14627C37
+    SUBDEVICE_14627C37 = 0x14627C37,
+    SUBDEVICE_15D91B95 = 0x15D91B95
 };
 
 
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciSubDevice10221480 subDevice) // TEST: NO
     {
         case PciSubDevice10221480::NONE:               return "NONE";
         case PciSubDevice10221480::SUBDEVICE_14627C37: return "SUBDEVICE_14627C37";
+        case PciSubDevice10221480::SUBDEVICE_15D91B95: return "SUBDEVICE_15D91B95";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice10221480 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice10221480::SUBDEVICE_14627C37: return "X570-A PRO motherboard";
+        case PciSubDevice10221480::SUBDEVICE_15D91B95: return "H12SSL-i";
 
         default: return "Unknown device";
     }

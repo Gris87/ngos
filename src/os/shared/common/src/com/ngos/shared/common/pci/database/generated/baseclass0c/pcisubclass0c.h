@@ -24,7 +24,8 @@ enum class PciSubClass0C: u8 // Ignore CppEnumVerifier
     SUB_CLASS_06 = 0x06,
     SUB_CLASS_07 = 0x07,
     SUB_CLASS_08 = 0x08,
-    SUB_CLASS_09 = 0x09
+    SUB_CLASS_09 = 0x09,
+    SUB_CLASS_80 = 0x80
 };
 
 
@@ -47,6 +48,7 @@ inline const char8* enumToString(PciSubClass0C subClass) // TEST: NO
         case PciSubClass0C::SUB_CLASS_07: return "SUB_CLASS_07";
         case PciSubClass0C::SUB_CLASS_08: return "SUB_CLASS_08";
         case PciSubClass0C::SUB_CLASS_09: return "SUB_CLASS_09";
+        case PciSubClass0C::SUB_CLASS_80: return "SUB_CLASS_80";
 
         default: return "UNKNOWN";
     }
@@ -87,6 +89,7 @@ inline const char8* enumToHumanString(PciSubClass0C subClass, u8 interfaceId) //
         case PciSubClass0C::SUB_CLASS_07: return enumToHumanString((PciInterface0C07)interfaceId);
         case PciSubClass0C::SUB_CLASS_08: return "Serial bus controller - SERCOS interface";
         case PciSubClass0C::SUB_CLASS_09: return "Serial bus controller - CANBUS";
+        case PciSubClass0C::SUB_CLASS_80: return "Serial bus controller - Serial bus controller";
 
         default: return "Serial bus controller";
     }

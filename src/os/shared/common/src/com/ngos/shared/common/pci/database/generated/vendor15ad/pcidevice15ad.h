@@ -27,6 +27,7 @@ enum class PciDevice15AD: u16 // Ignore CppEnumVerifier
     DEVICE_07B0 = 0x07B0,
     DEVICE_07C0 = 0x07C0,
     DEVICE_07E0 = 0x07E0,
+    DEVICE_07F0 = 0x07F0,
     DEVICE_0801 = 0x0801,
     DEVICE_0820 = 0x0820,
     DEVICE_1977 = 0x1977
@@ -56,6 +57,7 @@ inline const char8* enumToString(PciDevice15AD device) // TEST: NO
         case PciDevice15AD::DEVICE_07B0: return "DEVICE_07B0";
         case PciDevice15AD::DEVICE_07C0: return "DEVICE_07C0";
         case PciDevice15AD::DEVICE_07E0: return "DEVICE_07E0";
+        case PciDevice15AD::DEVICE_07F0: return "DEVICE_07F0";
         case PciDevice15AD::DEVICE_0801: return "DEVICE_0801";
         case PciDevice15AD::DEVICE_0820: return "DEVICE_0820";
         case PciDevice15AD::DEVICE_1977: return "DEVICE_1977";
@@ -102,6 +104,7 @@ inline const char8* enumToHumanString(PciDevice15AD device) // TEST: NO
         case PciDevice15AD::DEVICE_07B0: return "VMXNET3 Ethernet Controller";
         case PciDevice15AD::DEVICE_07C0: return "PVSCSI SCSI Controller";
         case PciDevice15AD::DEVICE_07E0: return "SATA AHCI controller";
+        case PciDevice15AD::DEVICE_07F0: return "NVMe SSD Controller";
         case PciDevice15AD::DEVICE_0801: return "Virtual Machine Interface";
         case PciDevice15AD::DEVICE_0820: return "Paravirtual RDMA controller";
         case PciDevice15AD::DEVICE_1977: return "HD Audio Controller";
@@ -133,6 +136,7 @@ inline const char8* enumToHumanString(PciDevice15AD device, u16 subsystemVendorI
         case PciDevice15AD::DEVICE_07B0: return "Unknown device";
         case PciDevice15AD::DEVICE_07C0: return "Unknown device";
         case PciDevice15AD::DEVICE_07E0: return "Unknown device";
+        case PciDevice15AD::DEVICE_07F0: return "Unknown device";
         case PciDevice15AD::DEVICE_0801: return enumToHumanString((PciSubDevice15AD0801)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice15AD::DEVICE_0820: return "Unknown device";
         case PciDevice15AD::DEVICE_1977: return "Unknown device";

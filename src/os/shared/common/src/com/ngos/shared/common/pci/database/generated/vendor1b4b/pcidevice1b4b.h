@@ -25,6 +25,7 @@ enum class PciDevice1B4B: u16 // Ignore CppEnumVerifier
     DEVICE_9125 = 0x9125,
     DEVICE_9128 = 0x9128,
     DEVICE_9130 = 0x9130,
+    DEVICE_9170 = 0x9170,
     DEVICE_9172 = 0x9172,
     DEVICE_9178 = 0x9178,
     DEVICE_917A = 0x917A,
@@ -61,6 +62,7 @@ inline const char8* enumToString(PciDevice1B4B device) // TEST: NO
         case PciDevice1B4B::DEVICE_9125: return "DEVICE_9125";
         case PciDevice1B4B::DEVICE_9128: return "DEVICE_9128";
         case PciDevice1B4B::DEVICE_9130: return "DEVICE_9130";
+        case PciDevice1B4B::DEVICE_9170: return "DEVICE_9170";
         case PciDevice1B4B::DEVICE_9172: return "DEVICE_9172";
         case PciDevice1B4B::DEVICE_9178: return "DEVICE_9178";
         case PciDevice1B4B::DEVICE_917A: return "DEVICE_917A";
@@ -114,6 +116,7 @@ inline const char8* enumToHumanString(PciDevice1B4B device) // TEST: NO
         case PciDevice1B4B::DEVICE_9125: return "88SE9125 PCIe SATA 6.0 Gb/s controller";
         case PciDevice1B4B::DEVICE_9128: return "88SE9128 PCIe SATA 6 Gb/s RAID controller";
         case PciDevice1B4B::DEVICE_9130: return "88SE9128 PCIe SATA 6 Gb/s RAID controller with HyperDuo";
+        case PciDevice1B4B::DEVICE_9170: return "88SE9170 PCIe 2.0 x1 2-port SATA 6 Gb/s Controller";
         case PciDevice1B4B::DEVICE_9172: return "88SE9172 SATA 6Gb/s Controller";
         case PciDevice1B4B::DEVICE_9178: return "88SE9170 PCIe SATA 6Gb/s Controller";
         case PciDevice1B4B::DEVICE_917A: return "88SE9172 SATA III 6Gb/s RAID Controller";
@@ -152,6 +155,7 @@ inline const char8* enumToHumanString(PciDevice1B4B device, u16 subsystemVendorI
         case PciDevice1B4B::DEVICE_9125: return "Unknown device";
         case PciDevice1B4B::DEVICE_9128: return "Unknown device";
         case PciDevice1B4B::DEVICE_9130: return enumToHumanString((PciSubDevice1B4B9130)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1B4B::DEVICE_9170: return "Unknown device";
         case PciDevice1B4B::DEVICE_9172: return "Unknown device";
         case PciDevice1B4B::DEVICE_9178: return "Unknown device";
         case PciDevice1B4B::DEVICE_917A: return "Unknown device";

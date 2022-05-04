@@ -25,6 +25,9 @@ enum class PciSubDevice1E3B1098: u32 // Ignore CppEnumVerifier
     SUBDEVICE_1E3B0015 = 0x1E3B0015,
     SUBDEVICE_1E3B0021 = 0x1E3B0021,
     SUBDEVICE_1E3B0022 = 0x1E3B0022,
+    SUBDEVICE_1E3B0052 = 0x1E3B0052,
+    SUBDEVICE_1E3B0053 = 0x1E3B0053,
+    SUBDEVICE_1E3B0059 = 0x1E3B0059,
     SUBDEVICE_1E3B0061 = 0x1E3B0061,
     SUBDEVICE_1E3B0062 = 0x1E3B0062,
     SUBDEVICE_1E3B0064 = 0x1E3B0064,
@@ -36,7 +39,10 @@ enum class PciSubDevice1E3B1098: u32 // Ignore CppEnumVerifier
     SUBDEVICE_1E3B007C = 0x1E3B007C,
     SUBDEVICE_1E3B007D = 0x1E3B007D,
     SUBDEVICE_1E3B007F = 0x1E3B007F,
-    SUBDEVICE_1E3B0080 = 0x1E3B0080
+    SUBDEVICE_1E3B0080 = 0x1E3B0080,
+    SUBDEVICE_1E3B008A = 0x1E3B008A,
+    SUBDEVICE_1E3B008B = 0x1E3B008B,
+    SUBDEVICE_1E3B0091 = 0x1E3B0091
 };
 
 
@@ -62,6 +68,9 @@ inline const char8* enumToString(PciSubDevice1E3B1098 subDevice) // TEST: NO
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B0015: return "SUBDEVICE_1E3B0015";
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B0021: return "SUBDEVICE_1E3B0021";
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B0022: return "SUBDEVICE_1E3B0022";
+        case PciSubDevice1E3B1098::SUBDEVICE_1E3B0052: return "SUBDEVICE_1E3B0052";
+        case PciSubDevice1E3B1098::SUBDEVICE_1E3B0053: return "SUBDEVICE_1E3B0053";
+        case PciSubDevice1E3B1098::SUBDEVICE_1E3B0059: return "SUBDEVICE_1E3B0059";
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B0061: return "SUBDEVICE_1E3B0061";
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B0062: return "SUBDEVICE_1E3B0062";
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B0064: return "SUBDEVICE_1E3B0064";
@@ -74,6 +83,9 @@ inline const char8* enumToString(PciSubDevice1E3B1098 subDevice) // TEST: NO
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B007D: return "SUBDEVICE_1E3B007D";
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B007F: return "SUBDEVICE_1E3B007F";
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B0080: return "SUBDEVICE_1E3B0080";
+        case PciSubDevice1E3B1098::SUBDEVICE_1E3B008A: return "SUBDEVICE_1E3B008A";
+        case PciSubDevice1E3B1098::SUBDEVICE_1E3B008B: return "SUBDEVICE_1E3B008B";
+        case PciSubDevice1E3B1098::SUBDEVICE_1E3B0091: return "SUBDEVICE_1E3B0091";
 
         default: return "UNKNOWN";
     }
@@ -116,6 +128,9 @@ inline const char8* enumToHumanString(PciSubDevice1E3B1098 subDevice) // TEST: N
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B0015: return "Enterprise NVMe SSD U.2 3.84TB (H3200)";
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B0021: return "Enterprise NVMe SSD U.2 6.4TB (H3100)";
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B0022: return "Enterprise NVMe SSD U.2 7.68TB (H3200)";
+        case PciSubDevice1E3B1098::SUBDEVICE_1E3B0052: return "Enterprise NVMe SSD U.2 0.8TB (H3900)";
+        case PciSubDevice1E3B1098::SUBDEVICE_1E3B0053: return "Enterprise NVMe SSD U.2 1.6TB (H3900)";
+        case PciSubDevice1E3B1098::SUBDEVICE_1E3B0059: return "Enterprise NVMe SSD U.2 0.75TB (H3900)";
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B0061: return "Enterprise NVMe SSD HHHL 0.8TB (H2100)";
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B0062: return "Enterprise NVMe SSD HHHL 0.96TB (H2200)";
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B0064: return "Enterprise NVMe SSD HHHL 1.6TB (H2100)";
@@ -128,6 +143,9 @@ inline const char8* enumToHumanString(PciSubDevice1E3B1098 subDevice) // TEST: N
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B007D: return "Enterprise NVMe SSD HHHL 3.84TB (H3200)";
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B007F: return "Enterprise NVMe SSD HHHL 6.4TB (H3100)";
         case PciSubDevice1E3B1098::SUBDEVICE_1E3B0080: return "Enterprise NVMe SSD HHHL 7.68TB (H3200)";
+        case PciSubDevice1E3B1098::SUBDEVICE_1E3B008A: return "Enterprise NVMe SSD HHHL 0.8TB (H3900)";
+        case PciSubDevice1E3B1098::SUBDEVICE_1E3B008B: return "Enterprise NVMe SSD HHHL 1.6TB (H3900)";
+        case PciSubDevice1E3B1098::SUBDEVICE_1E3B0091: return "Enterprise NVMe SSD HHHL 0.75TB (H3900)";
 
         default: return "Unknown device";
     }

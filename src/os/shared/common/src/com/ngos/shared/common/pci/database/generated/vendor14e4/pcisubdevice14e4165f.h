@@ -22,7 +22,8 @@ enum class PciSubDevice14E4165F: u32 // Ignore CppEnumVerifier
     SUBDEVICE_103C193D = 0x103C193D,
     SUBDEVICE_103C2133 = 0x103C2133,
     SUBDEVICE_103C22E8 = 0x103C22E8,
-    SUBDEVICE_103C22EB = 0x103C22EB
+    SUBDEVICE_103C22EB = 0x103C22EB,
+    SUBDEVICE_15D9165F = 0x15D9165F
 };
 
 
@@ -46,6 +47,7 @@ inline const char8* enumToString(PciSubDevice14E4165F subDevice) // TEST: NO
         case PciSubDevice14E4165F::SUBDEVICE_103C2133: return "SUBDEVICE_103C2133";
         case PciSubDevice14E4165F::SUBDEVICE_103C22E8: return "SUBDEVICE_103C22E8";
         case PciSubDevice14E4165F::SUBDEVICE_103C22EB: return "SUBDEVICE_103C22EB";
+        case PciSubDevice14E4165F::SUBDEVICE_15D9165F: return "SUBDEVICE_15D9165F";
 
         default: return "UNKNOWN";
     }
@@ -86,6 +88,7 @@ inline const char8* enumToHumanString(PciSubDevice14E4165F subDevice) // TEST: N
         case PciSubDevice14E4165F::SUBDEVICE_103C2133: return "NC332i Adapter";
         case PciSubDevice14E4165F::SUBDEVICE_103C22E8: return "NC332i Adapter";
         case PciSubDevice14E4165F::SUBDEVICE_103C22EB: return "NC332i Adapter";
+        case PciSubDevice14E4165F::SUBDEVICE_15D9165F: return "H12SSL-i";
 
         default: return "Unknown device";
     }

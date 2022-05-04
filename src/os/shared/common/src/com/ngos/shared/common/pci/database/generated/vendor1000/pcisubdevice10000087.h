@@ -19,6 +19,7 @@ enum class PciSubDevice10000087: u32 // Ignore CppEnumVerifier
     SUBDEVICE_10003050 = 0x10003050,
     SUBDEVICE_10003060 = 0x10003060,
     SUBDEVICE_10140472 = 0x10140472,
+    SUBDEVICE_1014047A = 0x1014047A,
     SUBDEVICE_15900041 = 0x15900041,
     SUBDEVICE_15900042 = 0x15900042,
     SUBDEVICE_15900044 = 0x15900044,
@@ -51,6 +52,7 @@ inline const char8* enumToString(PciSubDevice10000087 subDevice) // TEST: NO
         case PciSubDevice10000087::SUBDEVICE_10003050: return "SUBDEVICE_10003050";
         case PciSubDevice10000087::SUBDEVICE_10003060: return "SUBDEVICE_10003060";
         case PciSubDevice10000087::SUBDEVICE_10140472: return "SUBDEVICE_10140472";
+        case PciSubDevice10000087::SUBDEVICE_1014047A: return "SUBDEVICE_1014047A";
         case PciSubDevice10000087::SUBDEVICE_15900041: return "SUBDEVICE_15900041";
         case PciSubDevice10000087::SUBDEVICE_15900042: return "SUBDEVICE_15900042";
         case PciSubDevice10000087::SUBDEVICE_15900044: return "SUBDEVICE_15900044";
@@ -100,6 +102,7 @@ inline const char8* enumToHumanString(PciSubDevice10000087 subDevice) // TEST: N
         case PciSubDevice10000087::SUBDEVICE_10003050: return "SAS9217-8i";
         case PciSubDevice10000087::SUBDEVICE_10003060: return "SAS9217-4i4e";
         case PciSubDevice10000087::SUBDEVICE_10140472: return "N2125 External Host Bus Adapter";
+        case PciSubDevice10000087::SUBDEVICE_1014047A: return "N2115 Internal Host Bus Adapter";
         case PciSubDevice10000087::SUBDEVICE_15900041: return "H220i";
         case PciSubDevice10000087::SUBDEVICE_15900042: return "H221 / 9207-8e";
         case PciSubDevice10000087::SUBDEVICE_15900044: return "H220i";

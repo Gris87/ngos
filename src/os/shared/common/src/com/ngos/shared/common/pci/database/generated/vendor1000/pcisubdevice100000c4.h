@@ -13,6 +13,8 @@
 enum class PciSubDevice100000C4: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_10003190 = 0x10003190,
+    SUBDEVICE_100031A0 = 0x100031A0,
     SUBDEVICE_11700002 = 0x11700002
 };
 
@@ -27,6 +29,8 @@ inline const char8* enumToString(PciSubDevice100000C4 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice100000C4::NONE:               return "NONE";
+        case PciSubDevice100000C4::SUBDEVICE_10003190: return "SUBDEVICE_10003190";
+        case PciSubDevice100000C4::SUBDEVICE_100031A0: return "SUBDEVICE_100031A0";
         case PciSubDevice100000C4::SUBDEVICE_11700002: return "SUBDEVICE_11700002";
 
         default: return "UNKNOWN";
@@ -58,6 +62,8 @@ inline const char8* enumToHumanString(PciSubDevice100000C4 subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice100000C4::SUBDEVICE_10003190: return "SAS9305-16i";
+        case PciSubDevice100000C4::SUBDEVICE_100031A0: return "SAS9305-24i";
         case PciSubDevice100000C4::SUBDEVICE_11700002: return "SAS3224 PCI Express to 12Gb HBA MEZZ CARD";
 
         default: return "Unknown device";

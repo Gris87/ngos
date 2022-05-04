@@ -62,7 +62,7 @@ inline const char8* enumToHumanString(PciDevice1CB0 device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice1CB0::DEVICE_8266: return "Andalusia Series SSD";
+        case PciDevice1CB0::DEVICE_8266: return "SP4 Series SSD";
         case PciDevice1CB0::DEVICE_D000: return "Venice NVMe SSD";
 
         default: return "Unknown device";

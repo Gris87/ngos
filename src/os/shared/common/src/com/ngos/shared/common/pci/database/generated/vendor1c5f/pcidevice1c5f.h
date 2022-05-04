@@ -6,6 +6,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c5f/pcisubdevice1c5f000e.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1c5f/pcisubdevice1c5f003e.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
@@ -15,6 +16,7 @@ enum class PciDevice1C5F: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_000D = 0x000D,
+    DEVICE_000E = 0x000E,
     DEVICE_003D = 0x003D,
     DEVICE_003E = 0x003E,
     DEVICE_0540 = 0x0540,
@@ -35,6 +37,7 @@ inline const char8* enumToString(PciDevice1C5F device) // TEST: NO
     {
         case PciDevice1C5F::NONE:        return "NONE";
         case PciDevice1C5F::DEVICE_000D: return "DEVICE_000D";
+        case PciDevice1C5F::DEVICE_000E: return "DEVICE_000E";
         case PciDevice1C5F::DEVICE_003D: return "DEVICE_003D";
         case PciDevice1C5F::DEVICE_003E: return "DEVICE_003E";
         case PciDevice1C5F::DEVICE_0540: return "DEVICE_0540";
@@ -72,6 +75,7 @@ inline const char8* enumToHumanString(PciDevice1C5F device) // TEST: NO
     switch (device)
     {
         case PciDevice1C5F::DEVICE_000D: return "PBlaze5 520/526";
+        case PciDevice1C5F::DEVICE_000E: return "PBlaze6 6530";
         case PciDevice1C5F::DEVICE_003D: return "PBlaze5 920/926";
         case PciDevice1C5F::DEVICE_003E: return "PBlaze6 6920";
         case PciDevice1C5F::DEVICE_0540: return "PBlaze4 NVMe SSD";
@@ -94,6 +98,7 @@ inline const char8* enumToHumanString(PciDevice1C5F device, u16 subsystemVendorI
     switch (device)
     {
         case PciDevice1C5F::DEVICE_000D: return "Unknown device";
+        case PciDevice1C5F::DEVICE_000E: return enumToHumanString((PciSubDevice1C5F000E)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1C5F::DEVICE_003D: return "Unknown device";
         case PciDevice1C5F::DEVICE_003E: return enumToHumanString((PciSubDevice1C5F003E)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1C5F::DEVICE_0540: return "Unknown device";

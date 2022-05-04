@@ -14,7 +14,8 @@ enum class PciSubDevice168C003E: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_1A56143A = 0x1A56143A,
-    SUBDEVICE_1A561525 = 0x1A561525
+    SUBDEVICE_1A561525 = 0x1A561525,
+    SUBDEVICE_1A561535 = 0x1A561535
 };
 
 
@@ -30,6 +31,7 @@ inline const char8* enumToString(PciSubDevice168C003E subDevice) // TEST: NO
         case PciSubDevice168C003E::NONE:               return "NONE";
         case PciSubDevice168C003E::SUBDEVICE_1A56143A: return "SUBDEVICE_1A56143A";
         case PciSubDevice168C003E::SUBDEVICE_1A561525: return "SUBDEVICE_1A561525";
+        case PciSubDevice168C003E::SUBDEVICE_1A561535: return "SUBDEVICE_1A561535";
 
         default: return "UNKNOWN";
     }
@@ -62,6 +64,7 @@ inline const char8* enumToHumanString(PciSubDevice168C003E subDevice) // TEST: N
     {
         case PciSubDevice168C003E::SUBDEVICE_1A56143A: return "Killer 1435 Wireless-AC";
         case PciSubDevice168C003E::SUBDEVICE_1A561525: return "Killer N1525 Wireless-AC";
+        case PciSubDevice168C003E::SUBDEVICE_1A561535: return "Killer Wireless-n/a/ac 1535 Wireless Network Adapter";
 
         default: return "Unknown device";
     }

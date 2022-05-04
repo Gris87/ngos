@@ -13,7 +13,8 @@
 enum class PciSubDevice1A032000: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
-    SUBDEVICE_15D90832 = 0x15D90832
+    SUBDEVICE_15D90832 = 0x15D90832,
+    SUBDEVICE_15D91B95 = 0x15D91B95
 };
 
 
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciSubDevice1A032000 subDevice) // TEST: NO
     {
         case PciSubDevice1A032000::NONE:               return "NONE";
         case PciSubDevice1A032000::SUBDEVICE_15D90832: return "SUBDEVICE_15D90832";
+        case PciSubDevice1A032000::SUBDEVICE_15D91B95: return "SUBDEVICE_15D91B95";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice1A032000 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice1A032000::SUBDEVICE_15D90832: return "X10SRL-F";
+        case PciSubDevice1A032000::SUBDEVICE_15D91B95: return "H12SSL-i";
 
         default: return "Unknown device";
     }

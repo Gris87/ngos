@@ -12,11 +12,13 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10221452.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10221480.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10221487.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice1022148c.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice1022149c.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10221510.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10221536.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215d0.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215d1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215d3.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215db.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215dc.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215df.h>
@@ -24,6 +26,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215e1.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215e2.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215e3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215e5.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215e6.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10222000.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10222001.h>
@@ -31,6 +34,8 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102243b0.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102243b5.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102243b9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102243eb.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102243ee.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10227440.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10227443.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10227460.h>
@@ -372,12 +377,34 @@ enum class PciDevice1022: u16 // Ignore CppEnumVerifier
     DEVICE_1635 = 0x1635,
     DEVICE_1637 = 0x1637,
     DEVICE_1639 = 0x1639,
+    DEVICE_163A = 0x163A,
+    DEVICE_163B = 0x163B,
+    DEVICE_163C = 0x163C,
+    DEVICE_163D = 0x163D,
+    DEVICE_163E = 0x163E,
     DEVICE_1641 = 0x1641,
     DEVICE_1642 = 0x1642,
     DEVICE_1643 = 0x1643,
     DEVICE_1644 = 0x1644,
     DEVICE_1648 = 0x1648,
     DEVICE_1649 = 0x1649,
+    DEVICE_164F = 0x164F,
+    DEVICE_1650 = 0x1650,
+    DEVICE_1651 = 0x1651,
+    DEVICE_1652 = 0x1652,
+    DEVICE_1653 = 0x1653,
+    DEVICE_1654 = 0x1654,
+    DEVICE_1655 = 0x1655,
+    DEVICE_1656 = 0x1656,
+    DEVICE_1657 = 0x1657,
+    DEVICE_166A = 0x166A,
+    DEVICE_166B = 0x166B,
+    DEVICE_166C = 0x166C,
+    DEVICE_166D = 0x166D,
+    DEVICE_166E = 0x166E,
+    DEVICE_166F = 0x166F,
+    DEVICE_1670 = 0x1670,
+    DEVICE_1671 = 0x1671,
     DEVICE_1700 = 0x1700,
     DEVICE_1701 = 0x1701,
     DEVICE_1702 = 0x1702,
@@ -432,6 +459,9 @@ enum class PciDevice1022: u16 // Ignore CppEnumVerifier
     DEVICE_43C7 = 0x43C7,
     DEVICE_43C8 = 0x43C8,
     DEVICE_43D5 = 0x43D5,
+    DEVICE_43E9 = 0x43E9,
+    DEVICE_43EB = 0x43EB,
+    DEVICE_43EE = 0x43EE,
     DEVICE_57A3 = 0x57A3,
     DEVICE_57A4 = 0x57A4,
     DEVICE_57AD = 0x57AD,
@@ -845,12 +875,34 @@ inline const char8* enumToString(PciDevice1022 device) // TEST: NO
         case PciDevice1022::DEVICE_1635: return "DEVICE_1635";
         case PciDevice1022::DEVICE_1637: return "DEVICE_1637";
         case PciDevice1022::DEVICE_1639: return "DEVICE_1639";
+        case PciDevice1022::DEVICE_163A: return "DEVICE_163A";
+        case PciDevice1022::DEVICE_163B: return "DEVICE_163B";
+        case PciDevice1022::DEVICE_163C: return "DEVICE_163C";
+        case PciDevice1022::DEVICE_163D: return "DEVICE_163D";
+        case PciDevice1022::DEVICE_163E: return "DEVICE_163E";
         case PciDevice1022::DEVICE_1641: return "DEVICE_1641";
         case PciDevice1022::DEVICE_1642: return "DEVICE_1642";
         case PciDevice1022::DEVICE_1643: return "DEVICE_1643";
         case PciDevice1022::DEVICE_1644: return "DEVICE_1644";
         case PciDevice1022::DEVICE_1648: return "DEVICE_1648";
         case PciDevice1022::DEVICE_1649: return "DEVICE_1649";
+        case PciDevice1022::DEVICE_164F: return "DEVICE_164F";
+        case PciDevice1022::DEVICE_1650: return "DEVICE_1650";
+        case PciDevice1022::DEVICE_1651: return "DEVICE_1651";
+        case PciDevice1022::DEVICE_1652: return "DEVICE_1652";
+        case PciDevice1022::DEVICE_1653: return "DEVICE_1653";
+        case PciDevice1022::DEVICE_1654: return "DEVICE_1654";
+        case PciDevice1022::DEVICE_1655: return "DEVICE_1655";
+        case PciDevice1022::DEVICE_1656: return "DEVICE_1656";
+        case PciDevice1022::DEVICE_1657: return "DEVICE_1657";
+        case PciDevice1022::DEVICE_166A: return "DEVICE_166A";
+        case PciDevice1022::DEVICE_166B: return "DEVICE_166B";
+        case PciDevice1022::DEVICE_166C: return "DEVICE_166C";
+        case PciDevice1022::DEVICE_166D: return "DEVICE_166D";
+        case PciDevice1022::DEVICE_166E: return "DEVICE_166E";
+        case PciDevice1022::DEVICE_166F: return "DEVICE_166F";
+        case PciDevice1022::DEVICE_1670: return "DEVICE_1670";
+        case PciDevice1022::DEVICE_1671: return "DEVICE_1671";
         case PciDevice1022::DEVICE_1700: return "DEVICE_1700";
         case PciDevice1022::DEVICE_1701: return "DEVICE_1701";
         case PciDevice1022::DEVICE_1702: return "DEVICE_1702";
@@ -905,6 +957,9 @@ inline const char8* enumToString(PciDevice1022 device) // TEST: NO
         case PciDevice1022::DEVICE_43C7: return "DEVICE_43C7";
         case PciDevice1022::DEVICE_43C8: return "DEVICE_43C8";
         case PciDevice1022::DEVICE_43D5: return "DEVICE_43D5";
+        case PciDevice1022::DEVICE_43E9: return "DEVICE_43E9";
+        case PciDevice1022::DEVICE_43EB: return "DEVICE_43EB";
+        case PciDevice1022::DEVICE_43EE: return "DEVICE_43EE";
         case PciDevice1022::DEVICE_57A3: return "DEVICE_57A3";
         case PciDevice1022::DEVICE_57A4: return "DEVICE_57A4";
         case PciDevice1022::DEVICE_57AD: return "DEVICE_57AD";
@@ -1107,14 +1162,14 @@ inline const char8* enumToHumanString(PciDevice1022 device) // TEST: NO
         case PciDevice1022::DEVICE_1439: return "Family 16h Processor Functions 5: 1";
         case PciDevice1022::DEVICE_143A: return "Kingston/Clayton/Gladius/Montego Root Complex";
         case PciDevice1022::DEVICE_143B: return "Kingston/Clayton/Gladius/Montego P2P Bridge for UMI Link";
-        case PciDevice1022::DEVICE_1440: return "Matisse Device 24: Function 0";
-        case PciDevice1022::DEVICE_1441: return "Matisse Device 24: Function 1";
-        case PciDevice1022::DEVICE_1442: return "Matisse Device 24: Function 2";
-        case PciDevice1022::DEVICE_1443: return "Matisse Device 24: Function 3";
-        case PciDevice1022::DEVICE_1444: return "Matisse Device 24: Function 4";
-        case PciDevice1022::DEVICE_1445: return "Matisse Device 24: Function 5";
-        case PciDevice1022::DEVICE_1446: return "Matisse Device 24: Function 6";
-        case PciDevice1022::DEVICE_1447: return "Matisse Device 24: Function 7";
+        case PciDevice1022::DEVICE_1440: return "Matisse/Vermeer Data Fabric: Device 18h; Function 0";
+        case PciDevice1022::DEVICE_1441: return "Matisse/Vermeer Data Fabric: Device 18h; Function 1";
+        case PciDevice1022::DEVICE_1442: return "Matisse/Vermeer Data Fabric: Device 18h; Function 2";
+        case PciDevice1022::DEVICE_1443: return "Matisse/Vermeer Data Fabric: Device 18h; Function 3";
+        case PciDevice1022::DEVICE_1444: return "Matisse/Vermeer Data Fabric: Device 18h; Function 4";
+        case PciDevice1022::DEVICE_1445: return "Matisse/Vermeer Data Fabric: Device 18h; Function 5";
+        case PciDevice1022::DEVICE_1446: return "Matisse/Vermeer Data Fabric: Device 18h; Function 6";
+        case PciDevice1022::DEVICE_1447: return "Matisse/Vermeer Data Fabric: Device 18h; Function 7";
         case PciDevice1022::DEVICE_1448: return "Renoir Device 24: Function 0";
         case PciDevice1022::DEVICE_1449: return "Renoir Device 24: Function 1";
         case PciDevice1022::DEVICE_144A: return "Renoir Device 24: Function 2";
@@ -1271,9 +1326,9 @@ inline const char8* enumToHumanString(PciDevice1022 device) // TEST: NO
         case PciDevice1022::DEVICE_15DF: return "Family 17h (Models 10h-1fh) Platform Security Processor";
         case PciDevice1022::DEVICE_15E0: return "Raven USB 3.1";
         case PciDevice1022::DEVICE_15E1: return "Raven USB 3.1";
-        case PciDevice1022::DEVICE_15E2: return "Raven/Raven2/FireFlight/Renoir Audio Processor";
-        case PciDevice1022::DEVICE_15E3: return "Family 17h (Models 10h-1fh) HD Audio Controller";
-        case PciDevice1022::DEVICE_15E4: return "Raven/Raven2/Renoir Sensor Fusion Hub";
+        case PciDevice1022::DEVICE_15E2: return "ACP/ACP3X/ACP6x Audio Coprocessor";
+        case PciDevice1022::DEVICE_15E3: return "Family 17h/19h HD Audio Controller";
+        case PciDevice1022::DEVICE_15E4: return "Sensor Fusion Hub";
         case PciDevice1022::DEVICE_15E5: return "Raven2 USB 3.1";
         case PciDevice1022::DEVICE_15E6: return "Raven/Raven2/Renoir Non-Sensor Fusion Hub KMDF driver";
         case PciDevice1022::DEVICE_15E8: return "Raven/Raven2 Device 24: Function 0";
@@ -1327,20 +1382,42 @@ inline const char8* enumToHumanString(PciDevice1022 device) // TEST: NO
         case PciDevice1022::DEVICE_1629: return "Arden PCIe GPP Bridge";
         case PciDevice1022::DEVICE_162A: return "Arden Internal PCIe GPP Bridge 0 to bus X";
         case PciDevice1022::DEVICE_162B: return "Arden PCIe Non-Transparent Bridge";
-        case PciDevice1022::DEVICE_1630: return "Renoir Root Complex";
-        case PciDevice1022::DEVICE_1631: return "Renoir IOMMU";
+        case PciDevice1022::DEVICE_1630: return "Renoir/Cezanne Root Complex";
+        case PciDevice1022::DEVICE_1631: return "Renoir/Cezanne IOMMU";
         case PciDevice1022::DEVICE_1632: return "Renoir PCIe Dummy Host Bridge";
         case PciDevice1022::DEVICE_1633: return "Renoir PCIe GPP Bridge";
-        case PciDevice1022::DEVICE_1634: return "Renoir PCIe GPP Bridge";
+        case PciDevice1022::DEVICE_1634: return "Renoir/Cezanne PCIe GPP Bridge";
         case PciDevice1022::DEVICE_1635: return "Renoir Internal PCIe GPP Bridge to Bus";
         case PciDevice1022::DEVICE_1637: return "Renoir HD Audio Controller";
-        case PciDevice1022::DEVICE_1639: return "Renoir USB 3.1";
+        case PciDevice1022::DEVICE_1639: return "Renoir/Cezanne USB 3.1";
+        case PciDevice1022::DEVICE_163A: return "VanGogh USB0";
+        case PciDevice1022::DEVICE_163B: return "VanGogh USB1";
+        case PciDevice1022::DEVICE_163C: return "VanGogh SecUSB";
+        case PciDevice1022::DEVICE_163D: return "VanGogh SecureFunction";
+        case PciDevice1022::DEVICE_163E: return "VanGogh HSP";
         case PciDevice1022::DEVICE_1641: return "Renoir 10GbE Controller Port 0 (XGBE0/1)";
         case PciDevice1022::DEVICE_1642: return "Renoir WLAN";
         case PciDevice1022::DEVICE_1643: return "Renoir BT";
         case PciDevice1022::DEVICE_1644: return "Renoir I2S";
         case PciDevice1022::DEVICE_1648: return "VanGogh Root Complex";
         case PciDevice1022::DEVICE_1649: return "VanGogh PSP/CCP";
+        case PciDevice1022::DEVICE_164F: return "Milan IOMMU";
+        case PciDevice1022::DEVICE_1650: return "Milan Data Fabric; Function 0";
+        case PciDevice1022::DEVICE_1651: return "Milan Data Fabric; Function 1";
+        case PciDevice1022::DEVICE_1652: return "Milan Data Fabric; Function 2";
+        case PciDevice1022::DEVICE_1653: return "Milan Data Fabric; Function 3";
+        case PciDevice1022::DEVICE_1654: return "Milan Data Fabric; Function 4";
+        case PciDevice1022::DEVICE_1655: return "Milan Data Fabric; Function 5";
+        case PciDevice1022::DEVICE_1656: return "Milan Data Fabric; Function 6";
+        case PciDevice1022::DEVICE_1657: return "Milan Data Fabric; Function 7";
+        case PciDevice1022::DEVICE_166A: return "Cezanne Data Fabric; Function 0";
+        case PciDevice1022::DEVICE_166B: return "Cezanne Data Fabric; Function 1";
+        case PciDevice1022::DEVICE_166C: return "Cezanne Data Fabric; Function 2";
+        case PciDevice1022::DEVICE_166D: return "Cezanne Data Fabric; Function 3";
+        case PciDevice1022::DEVICE_166E: return "Cezanne Data Fabric; Function 4";
+        case PciDevice1022::DEVICE_166F: return "Cezanne Data Fabric; Function 5";
+        case PciDevice1022::DEVICE_1670: return "Cezanne Data Fabric; Function 6";
+        case PciDevice1022::DEVICE_1671: return "Cezanne Data Fabric; Function 7";
         case PciDevice1022::DEVICE_1700: return "Family 12h/14h Processor Function 0";
         case PciDevice1022::DEVICE_1701: return "Family 12h/14h Processor Function 1";
         case PciDevice1022::DEVICE_1702: return "Family 12h/14h Processor Function 2";
@@ -1395,6 +1472,9 @@ inline const char8* enumToHumanString(PciDevice1022 device) // TEST: NO
         case PciDevice1022::DEVICE_43C7: return "400 Series Chipset PCIe Port";
         case PciDevice1022::DEVICE_43C8: return "400 Series Chipset SATA Controller";
         case PciDevice1022::DEVICE_43D5: return "400 Series Chipset USB 3.1 XHCI Controller";
+        case PciDevice1022::DEVICE_43E9: return "500 Series Chipset Switch Upstream Port";
+        case PciDevice1022::DEVICE_43EB: return "500 Series Chipset SATA Controller";
+        case PciDevice1022::DEVICE_43EE: return "500 Series Chipset USB 3.1 XHCI Controller";
         case PciDevice1022::DEVICE_57A3: return "Matisse PCIe GPP Bridge";
         case PciDevice1022::DEVICE_57A4: return "Matisse PCIe GPP Bridge";
         case PciDevice1022::DEVICE_57AD: return "Matisse Switch Upstream";
@@ -1635,7 +1715,7 @@ inline const char8* enumToHumanString(PciDevice1022 device, u16 subsystemVendorI
         case PciDevice1022::DEVICE_1489: return "Unknown device";
         case PciDevice1022::DEVICE_148A: return "Unknown device";
         case PciDevice1022::DEVICE_148B: return "Unknown device";
-        case PciDevice1022::DEVICE_148C: return "Unknown device";
+        case PciDevice1022::DEVICE_148C: return enumToHumanString((PciSubDevice1022148C)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1022::DEVICE_148D: return "Unknown device";
         case PciDevice1022::DEVICE_148E: return "Unknown device";
         case PciDevice1022::DEVICE_148F: return "Unknown device";
@@ -1736,7 +1816,7 @@ inline const char8* enumToHumanString(PciDevice1022 device, u16 subsystemVendorI
         case PciDevice1022::DEVICE_15D0: return enumToHumanString((PciSubDevice102215D0)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1022::DEVICE_15D1: return enumToHumanString((PciSubDevice102215D1)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1022::DEVICE_15D2: return "Unknown device";
-        case PciDevice1022::DEVICE_15D3: return "Unknown device";
+        case PciDevice1022::DEVICE_15D3: return enumToHumanString((PciSubDevice102215D3)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1022::DEVICE_15D4: return "Unknown device";
         case PciDevice1022::DEVICE_15D5: return "Unknown device";
         case PciDevice1022::DEVICE_15DA: return "Unknown device";
@@ -1749,7 +1829,7 @@ inline const char8* enumToHumanString(PciDevice1022 device, u16 subsystemVendorI
         case PciDevice1022::DEVICE_15E2: return enumToHumanString((PciSubDevice102215E2)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1022::DEVICE_15E3: return enumToHumanString((PciSubDevice102215E3)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1022::DEVICE_15E4: return "Unknown device";
-        case PciDevice1022::DEVICE_15E5: return "Unknown device";
+        case PciDevice1022::DEVICE_15E5: return enumToHumanString((PciSubDevice102215E5)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1022::DEVICE_15E6: return enumToHumanString((PciSubDevice102215E6)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1022::DEVICE_15E8: return "Unknown device";
         case PciDevice1022::DEVICE_15E9: return "Unknown device";
@@ -1810,12 +1890,34 @@ inline const char8* enumToHumanString(PciDevice1022 device, u16 subsystemVendorI
         case PciDevice1022::DEVICE_1635: return "Unknown device";
         case PciDevice1022::DEVICE_1637: return "Unknown device";
         case PciDevice1022::DEVICE_1639: return "Unknown device";
+        case PciDevice1022::DEVICE_163A: return "Unknown device";
+        case PciDevice1022::DEVICE_163B: return "Unknown device";
+        case PciDevice1022::DEVICE_163C: return "Unknown device";
+        case PciDevice1022::DEVICE_163D: return "Unknown device";
+        case PciDevice1022::DEVICE_163E: return "Unknown device";
         case PciDevice1022::DEVICE_1641: return "Unknown device";
         case PciDevice1022::DEVICE_1642: return "Unknown device";
         case PciDevice1022::DEVICE_1643: return "Unknown device";
         case PciDevice1022::DEVICE_1644: return "Unknown device";
         case PciDevice1022::DEVICE_1648: return "Unknown device";
         case PciDevice1022::DEVICE_1649: return "Unknown device";
+        case PciDevice1022::DEVICE_164F: return "Unknown device";
+        case PciDevice1022::DEVICE_1650: return "Unknown device";
+        case PciDevice1022::DEVICE_1651: return "Unknown device";
+        case PciDevice1022::DEVICE_1652: return "Unknown device";
+        case PciDevice1022::DEVICE_1653: return "Unknown device";
+        case PciDevice1022::DEVICE_1654: return "Unknown device";
+        case PciDevice1022::DEVICE_1655: return "Unknown device";
+        case PciDevice1022::DEVICE_1656: return "Unknown device";
+        case PciDevice1022::DEVICE_1657: return "Unknown device";
+        case PciDevice1022::DEVICE_166A: return "Unknown device";
+        case PciDevice1022::DEVICE_166B: return "Unknown device";
+        case PciDevice1022::DEVICE_166C: return "Unknown device";
+        case PciDevice1022::DEVICE_166D: return "Unknown device";
+        case PciDevice1022::DEVICE_166E: return "Unknown device";
+        case PciDevice1022::DEVICE_166F: return "Unknown device";
+        case PciDevice1022::DEVICE_1670: return "Unknown device";
+        case PciDevice1022::DEVICE_1671: return "Unknown device";
         case PciDevice1022::DEVICE_1700: return "Unknown device";
         case PciDevice1022::DEVICE_1701: return "Unknown device";
         case PciDevice1022::DEVICE_1702: return "Unknown device";
@@ -1870,6 +1972,9 @@ inline const char8* enumToHumanString(PciDevice1022 device, u16 subsystemVendorI
         case PciDevice1022::DEVICE_43C7: return "Unknown device";
         case PciDevice1022::DEVICE_43C8: return "Unknown device";
         case PciDevice1022::DEVICE_43D5: return "Unknown device";
+        case PciDevice1022::DEVICE_43E9: return "Unknown device";
+        case PciDevice1022::DEVICE_43EB: return enumToHumanString((PciSubDevice102243EB)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1022::DEVICE_43EE: return enumToHumanString((PciSubDevice102243EE)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1022::DEVICE_57A3: return "Unknown device";
         case PciDevice1022::DEVICE_57A4: return "Unknown device";
         case PciDevice1022::DEVICE_57AD: return "Unknown device";

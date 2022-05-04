@@ -81,6 +81,11 @@ NgosStatus earlyInitialization(u64 kernelLocation)
 
 
 
+    UEFI_ASSERT_EXECUTION(setupDynamicRelocation(kernelLocation), NgosStatus::ASSERTION);
+    UEFI_LI(("Setup dynamic relocation completed"));
+
+
+
     UEFI_ASSERT_EXECUTION(CPU::init(), NgosStatus::ASSERTION);
     UEFI_LI(("CPU information initialized"));
 
@@ -130,11 +135,6 @@ NgosStatus earlyInitialization(u64 kernelLocation)
         return NgosStatus::FAILED;
     }
 #endif
-
-
-
-    UEFI_ASSERT_EXECUTION(setupDynamicRelocation(kernelLocation), NgosStatus::ASSERTION);
-    UEFI_LI(("Setup dynamic relocation completed"));
 
 
 

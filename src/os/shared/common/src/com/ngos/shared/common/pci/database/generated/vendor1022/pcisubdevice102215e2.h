@@ -13,7 +13,8 @@
 enum class PciSubDevice102215E2: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
-    SUBDEVICE_17AA5124 = 0x17AA5124
+    SUBDEVICE_17AA5124 = 0x17AA5124,
+    SUBDEVICE_EA50CE19 = 0xEA50CE19
 };
 
 
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciSubDevice102215E2 subDevice) // TEST: NO
     {
         case PciSubDevice102215E2::NONE:               return "NONE";
         case PciSubDevice102215E2::SUBDEVICE_17AA5124: return "SUBDEVICE_17AA5124";
+        case PciSubDevice102215E2::SUBDEVICE_EA50CE19: return "SUBDEVICE_EA50CE19";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice102215E2 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice102215E2::SUBDEVICE_17AA5124: return "ThinkPad E595";
+        case PciSubDevice102215E2::SUBDEVICE_EA50CE19: return "mCOM10-L1900";
 
         default: return "Unknown device";
     }

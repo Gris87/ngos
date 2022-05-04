@@ -18,6 +18,7 @@ enum class PciSubDevice80861C20: u32 // Ignore CppEnumVerifier
     SUBDEVICE_102804AA = 0x102804AA,
     SUBDEVICE_102804B2 = 0x102804B2,
     SUBDEVICE_102804DA = 0x102804DA,
+    SUBDEVICE_103C2ABF = 0x103C2ABF,
     SUBDEVICE_10438418 = 0x10438418,
     SUBDEVICE_1043841B = 0x1043841B,
     SUBDEVICE_17AA21CF = 0x17AA21CF,
@@ -42,6 +43,7 @@ inline const char8* enumToString(PciSubDevice80861C20 subDevice) // TEST: NO
         case PciSubDevice80861C20::SUBDEVICE_102804AA: return "SUBDEVICE_102804AA";
         case PciSubDevice80861C20::SUBDEVICE_102804B2: return "SUBDEVICE_102804B2";
         case PciSubDevice80861C20::SUBDEVICE_102804DA: return "SUBDEVICE_102804DA";
+        case PciSubDevice80861C20::SUBDEVICE_103C2ABF: return "SUBDEVICE_103C2ABF";
         case PciSubDevice80861C20::SUBDEVICE_10438418: return "SUBDEVICE_10438418";
         case PciSubDevice80861C20::SUBDEVICE_1043841B: return "SUBDEVICE_1043841B";
         case PciSubDevice80861C20::SUBDEVICE_17AA21CF: return "SUBDEVICE_17AA21CF";
@@ -83,6 +85,7 @@ inline const char8* enumToHumanString(PciSubDevice80861C20 subDevice) // TEST: N
         case PciSubDevice80861C20::SUBDEVICE_102804AA: return "XPS 8300";
         case PciSubDevice80861C20::SUBDEVICE_102804B2: return "Vostro 3350";
         case PciSubDevice80861C20::SUBDEVICE_102804DA: return "Vostro 3750";
+        case PciSubDevice80861C20::SUBDEVICE_103C2ABF: return "HP Pavilion p6-2100 Desktop PC Series";
         case PciSubDevice80861C20::SUBDEVICE_10438418: return "P8P67 Deluxe Motherboard";
         case PciSubDevice80861C20::SUBDEVICE_1043841B: return "P8H67 Series Motherboard";
         case PciSubDevice80861C20::SUBDEVICE_17AA21CF: return "ThinkPad T520";

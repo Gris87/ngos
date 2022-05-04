@@ -313,7 +313,7 @@ inline const char8* enumToHumanString(PciDevice1039 device) // TEST: NO
         case PciDevice1039::DEVICE_0325: return "315PRO PCI/AGP VGA Display Adapter";
         case PciDevice1039::DEVICE_0330: return "330 [Xabre] PCI/AGP VGA Display Adapter";
         case PciDevice1039::DEVICE_0406: return "85C501/2";
-        case PciDevice1039::DEVICE_0496: return "85C496";
+        case PciDevice1039::DEVICE_0496: return "SiS85C496 PCI & CPU Memory Controller (PCM)";
         case PciDevice1039::DEVICE_0530: return "530 Host";
         case PciDevice1039::DEVICE_0540: return "540 Host";
         case PciDevice1039::DEVICE_0550: return "550 Host";
