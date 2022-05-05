@@ -1,81 +1,81 @@
-#ifndef COM_NGOS_SHARED_COMMON_CPU_CPUFAMILY_H
-#define COM_NGOS_SHARED_COMMON_CPU_CPUFAMILY_H
-
-
-
-#include <com/ngos/shared/common/cpu/lib/cpuvendor.h>
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class CpuFamily: u16 // Ignore CppEnumVerifier
-{
-    NONE           = 0,
-    INTEL_FAMILY_6 = 6,
-    AMD_FAMILY_23  = 23
-};
-
-
-
-inline const char8* enumToString(CpuVendor vendor, CpuFamily family) // TEST: NO
-{
-    // COMMON_LT((" | vendor = %u, family = %u", vendor, family)); // Commented to avoid bad looking logs
-
-
-
-    if (family == CpuFamily::NONE)
-    {
-        return "NONE";
-    }
-
-
-
-    switch (vendor)
-    {
-        case CpuVendor::INTEL:
-        {
-            switch (family)
-            {
-                case CpuFamily::INTEL_FAMILY_6: return "INTEL_FAMILY_6";
-
-                default: return "UNKNOWN";
-            }
-        }
-        break;
-
-        case CpuVendor::AMD:
-        {
-            switch (family)
-            {
-                case CpuFamily::AMD_FAMILY_23: return "AMD_FAMILY_23";
-
-                default: return "UNKNOWN";
-            }
-        }
-        break;
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(CpuVendor vendor, CpuFamily family) // TEST: NO
-{
-    // COMMON_LT((" | vendor = %u, family = %u", vendor, family)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[24];
-
-    sprintf(res, "0x%04X (%s)", (u16)family, enumToString(vendor, family));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CPU_CPUFAMILY_H
+#ifndef COM_NGOS_SHARED_COMMON_CPU_CPUFAMILY_H                                                                                                                                                           // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CPU_CPUFAMILY_H                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/cpuvendor.h>                                                                                                                                                    // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class CpuFamily: good_U16 // Ignore CppEnumVerifier                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE           = 0,                                                                                                                                                                                  // Colorize: green
+    INTEL_FAMILY_6 = 6,                                                                                                                                                                                  // Colorize: green
+    AMD_FAMILY_23  = 23                                                                                                                                                                                  // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(CpuVendor vendor, CpuFamily family) // TEST: NO                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | vendor = %u, family = %u", vendor, family)); // Commented to avoid bad looking logs                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (family == CpuFamily::NONE)                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return "NONE";                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (vendor)                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case CpuVendor::INTEL:                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            switch (family)                                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                case CpuFamily::INTEL_FAMILY_6: return "INTEL_FAMILY_6";                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                default: return "UNKNOWN";                                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        case CpuVendor::AMD:                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            switch (family)                                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                case CpuFamily::AMD_FAMILY_23: return "AMD_FAMILY_23";                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                default: return "UNKNOWN";                                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(CpuVendor vendor, CpuFamily family) // TEST: NO                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | vendor = %u, family = %u", vendor, family)); // Commented to avoid bad looking logs                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[24];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%04X (%s)", static_cast<good_U16>(family), enumToString(vendor, family));                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CPU_CPUFAMILY_H                                                                                                                                                         // Colorize: green
