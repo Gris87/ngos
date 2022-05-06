@@ -2,4 +2,4 @@
 
 
 
-u64 PERCPU::cr4;
+X86Cr4Flags PERCPU::cr4;

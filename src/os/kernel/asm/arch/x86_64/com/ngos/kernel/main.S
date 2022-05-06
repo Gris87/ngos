@@ -1,5 +1,5 @@
 #include <buildconfig.h>
-#include <com/ngos/shared/common/cpu/lib/flags.h>
+#include <com/ngos/shared/common/cpu/lib/generated/x86cr0.h>
 #include <com/ngos/shared/common/msr/msrregisters.h>
 #include <com/ngos/shared/common/gdt/segments.h>
 #include <com/ngos/shared/common/idt/macros.h>
@@ -127,9 +127,10 @@ virtual_address_space:                                                          
 # Setup CR0                                                                     #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
-    movq    $(X86_CR0_PE | X86_CR0_MP | X86_CR0_ET | \
-              X86_CR0_NE | X86_CR0_WP | X86_CR0_AM | \
-              X86_CR0_PG), %rax                                                 # Put flags to RAX
+    movq    $(X86_CR0_PROTECTED_MODE_ENABLE | X86_CR0_MONITOR_CO_PROCESSOR | \
+              X86_CR0_EXTENSION_TYPE | X86_CR0_NUMERIC_ERROR | \
+              X86_CR0_WRITE_PROTECT | X86_CR0_ALIGNMENT_MASK | \
+              X86_CR0_PAGING), %rax                                             # Put flags to RAX
     movq    %rax, %cr0                                                          # Setup CR0 via RAX
                                                                                 #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------

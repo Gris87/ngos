@@ -1,5 +1,6 @@
 #include <buildconfig.h>
-#include <com/ngos/shared/common/cpu/lib/flags.h>
+#include <com/ngos/shared/common/cpu/lib/generated/x86cr0.h>
+#include <com/ngos/shared/common/cpu/lib/generated/x86cr4.h>
 #include <com/ngos/shared/common/gdt/segments.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
                                                                                 #
@@ -18,7 +19,7 @@
                                                                                 #
 GLOBAL_FUNCTION(switchToFiveLevelPaging)                                        # switchToFiveLevelPaging function
     movq    %cr4, %rbx                                                          # Put CR4 to RBX
-    testq   $(X86_CR4_LA57), %rbx                                               # Check for LA57 flag in RBX
+    testq   $(X86_CR4_57_BIT_LINEAR_ADDRESSES), %rbx                            # Check for LA57 flag in RBX
     jnz     paging_level_5_cr3                                                  # Jump to paging_level_5_cr3 label if flag LA57 is set
                                                                                 #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
@@ -46,7 +47,7 @@ compatible_mode:                                                                
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
     movl    %cr0, %ecx                                                          # Put CR0 to ECX
-    andl    $(~X86_CR0_PG), %ecx                                                # Remove paging flag from ECX
+    andl    $(~X86_CR0_PAGING), %ecx                                            # Remove paging flag from ECX
     movl    %ecx, %cr0                                                          # Store ECX to CR0
                                                                                 #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
@@ -59,7 +60,7 @@ compatible_mode:                                                                
 #  Enable PAE and LA57 mode                                                     #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
-    orl     $(X86_CR4_LA57), %ebx                                               # Adding LA57 flag to EBX. RBX was initialized with CR4 before
+    orl     $(X86_CR4_57_BIT_LINEAR_ADDRESSES), %ebx                            # Adding LA57 flag to EBX. RBX was initialized with CR4 before
     movl    %ebx, %cr4                                                          # Store EBX to CR4
                                                                                 #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
@@ -75,7 +76,7 @@ compatible_mode:                                                                
 #  Enable paging                                                                #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
-    orl     $(X86_CR0_PG | X86_CR0_PE), %ecx                                    # Adding paging flag to ECX. ECX was initialized with CR0 before
+    orl     $(X86_CR0_PAGING | X86_CR0_PROTECTED_MODE_ENABLE), %ecx             # Adding paging flag to ECX. ECX was initialized with CR0 before
     movl    %ecx, %cr0                                                          # Store ECX to CR0
                                                                                 #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------

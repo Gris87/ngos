@@ -1,12 +1,12 @@
 #include "cpu.h"
 
 #include <com/ngos/shared/common/asm/bitutils.h>
-#include <com/ngos/shared/common/cpu/lib/flags.h>
+#include <com/ngos/shared/common/cpu/lib/registers/x86flags.h>
 #include <com/ngos/shared/common/cpu/lib/generated/x86bugsnames.h>
 #include <com/ngos/shared/common/cpu/lib/generated/x86featuresnames.h>
-#include <com/ngos/shared/common/cpu/lib/model/amdcpumodel.h>
-#include <com/ngos/shared/common/cpu/lib/model/cpumodel.h>
-#include <com/ngos/shared/common/cpu/lib/model/intelcpumodel.h>
+#include <com/ngos/shared/common/cpu/lib/generated/amdcpumodel.h>
+#include <com/ngos/shared/common/cpu/lib/cpumodel.h>
+#include <com/ngos/shared/common/cpu/lib/generated/intelcpumodel.h>
 #include <com/ngos/shared/common/msr/msr.h>
 #include <com/ngos/shared/common/msr/msrregisters.h>
 #include <com/ngos/shared/common/log/assert.h>
@@ -16,14 +16,6 @@
 #include <com/ngos/shared/common/string/string.h>
 
 
-
-#define VENDOR_INTEL_1 0x756E6547   // Genu
-#define VENDOR_INTEL_2 0x49656E69   // ineI
-#define VENDOR_INTEL_3 0x6C65746E   // ntel
-
-#define VENDOR_AMD_1   0x68747541   // Auth
-#define VENDOR_AMD_2   0x69746E65   // enti
-#define VENDOR_AMD_3   0x444D4163   // cAMD
 
 #define INTEL_MINIMAL_FAMILY (u16)CpuFamily::INTEL_FAMILY_6
 #define INTEL_MINIMAL_MODEL  (u8)IntelCpuModel::FAMILY_6_HASWELL_S
@@ -44,28 +36,28 @@
 
 
 
-u32       CPU::sVendor[3];
-CpuVendor CPU::sCpuVendor;
-u32       CPU::sModelName[12];
-u32       CPU::sCpuidLevel;
-u32       CPU::sExtendedCpuidLevel;
-CpuFamily CPU::sFamily;
-u8        CPU::sModel;
-u8        CPU::sStepping;
-u32       CPU::sMicrocodeRevision;
-u32       CPU::sNumberOfCores;
-u32       CPU::sNumberOfThreads;
-u8        CPU::sNumberOfApicIdsPerPackage;
-i8        CPU::sX86CoreIdBits;
-u16       CPU::sCacheLineFlushSize;
-u16       CPU::sCacheAlignment;
-i32       CPU::sCacheMaxRmid;
-i32       CPU::sCacheOccScale;
-u32       CPU::sPower;
-u8        CPU::sPhysicalBits;
-u8        CPU::sVirtualBits;
-u32       CPU::sFlags[(enum_t)x86FeatureWord::MAXIMUM];
-u32       CPU::sBugs[(enum_t)x86BugWord::MAXIMUM];
+CpuidVendor    CPU::sVendor;
+CpuVendor      CPU::sCpuVendor;
+CpuidModelName CPU::sModelName;
+u32            CPU::sCpuidLevel;
+u32            CPU::sExtendedCpuidLevel;
+CpuFamily      CPU::sFamily;
+u8             CPU::sModel;
+u8             CPU::sStepping;
+u32            CPU::sMicrocodeRevision;
+u32            CPU::sNumberOfCores;
+u32            CPU::sNumberOfThreads;
+u8             CPU::sNumberOfApicIdsPerPackage;
+i8             CPU::sX86CoreIdBits;
+u16            CPU::sCacheLineFlushSize;
+u16            CPU::sCacheAlignment;
+i32            CPU::sCacheMaxRmid;
+i32            CPU::sCacheOccScale;
+u32            CPU::sPower;
+u8             CPU::sPhysicalBits;
+u8             CPU::sVirtualBits;
+u32            CPU::sFlags[(enum_t)x86FeatureWord::MAXIMUM];
+u32            CPU::sBugs[(enum_t)x86BugWord::MAXIMUM];
 
 
 
@@ -88,7 +80,7 @@ NgosStatus CPU::init()
 
     // Check that CPUID supported                                                                                                                                                                        // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
-        if (!hasEFlag(X86_EFLAGS_ID))                                                                                                                                                                    // Colorize: green
+        if (!hasX86Flags(FLAGS(X86Flag::CPUID_SUPPORTED)))                                                                                                                                                        // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
             COMMON_LF(("CPU didn't support CPUID"));                                                                                                                                                     // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -113,24 +105,24 @@ NgosStatus CPU::init()
 
     // Validation
     {
-        COMMON_LVVV(("sVendor[0]                 = 0x%08X", sVendor[0]));
-        COMMON_LVVV(("sVendor[1]                 = 0x%08X", sVendor[1]));
-        COMMON_LVVV(("sVendor[2]                 = 0x%08X", sVendor[2]));
-        COMMON_LVVV(("sVendor                    = %.12s",  sVendor));
+        COMMON_LVVV(("sVendor.uints[0]           = 0x%08X", sVendor.uints[0]));
+        COMMON_LVVV(("sVendor.uints[1]           = 0x%08X", sVendor.uints[1]));
+        COMMON_LVVV(("sVendor.uints[2]           = 0x%08X", sVendor.uints[2]));
+        COMMON_LVVV(("sVendor.chars              = %.12s",  sVendor.chars));
         COMMON_LVVV(("sCpuVendor                 = %s",     enumToFullString(sCpuVendor)));
-        COMMON_LVVV(("sModelName[0]              = 0x%08X", sModelName[0]));
-        COMMON_LVVV(("sModelName[1]              = 0x%08X", sModelName[1]));
-        COMMON_LVVV(("sModelName[2]              = 0x%08X", sModelName[2]));
-        COMMON_LVVV(("sModelName[3]              = 0x%08X", sModelName[3]));
-        COMMON_LVVV(("sModelName[4]              = 0x%08X", sModelName[4]));
-        COMMON_LVVV(("sModelName[5]              = 0x%08X", sModelName[5]));
-        COMMON_LVVV(("sModelName[6]              = 0x%08X", sModelName[6]));
-        COMMON_LVVV(("sModelName[7]              = 0x%08X", sModelName[7]));
-        COMMON_LVVV(("sModelName[8]              = 0x%08X", sModelName[8]));
-        COMMON_LVVV(("sModelName[9]              = 0x%08X", sModelName[9]));
-        COMMON_LVVV(("sModelName[10]             = 0x%08X", sModelName[10]));
-        COMMON_LVVV(("sModelName[11]             = 0x%08X", sModelName[11]));
-        COMMON_LVVV(("sModelName                 = %.48s",  sModelName));
+        COMMON_LVVV(("sModelName.uints[0]        = 0x%08X", sModelName.uints[0]));
+        COMMON_LVVV(("sModelName.uints[1]        = 0x%08X", sModelName.uints[1]));
+        COMMON_LVVV(("sModelName.uints[2]        = 0x%08X", sModelName.uints[2]));
+        COMMON_LVVV(("sModelName.uints[3]        = 0x%08X", sModelName.uints[3]));
+        COMMON_LVVV(("sModelName.uints[4]        = 0x%08X", sModelName.uints[4]));
+        COMMON_LVVV(("sModelName.uints[5]        = 0x%08X", sModelName.uints[5]));
+        COMMON_LVVV(("sModelName.uints[6]        = 0x%08X", sModelName.uints[6]));
+        COMMON_LVVV(("sModelName.uints[7]        = 0x%08X", sModelName.uints[7]));
+        COMMON_LVVV(("sModelName.uints[8]        = 0x%08X", sModelName.uints[8]));
+        COMMON_LVVV(("sModelName.uints[9]        = 0x%08X", sModelName.uints[9]));
+        COMMON_LVVV(("sModelName.uints[10]       = 0x%08X", sModelName.uints[10]));
+        COMMON_LVVV(("sModelName.uints[11]       = 0x%08X", sModelName.uints[11]));
+        COMMON_LVVV(("sModelName.chars           = %.48s",  sModelName.chars));
         COMMON_LVVV(("sCpuidLevel                = 0x%08X", sCpuidLevel));
         COMMON_LVVV(("sExtendedCpuidLevel        = 0x%08X", sExtendedCpuidLevel));
         COMMON_LVVV(("sFamily                    = %s",     enumToFullString(sCpuVendor, sFamily)));
@@ -172,24 +164,24 @@ NgosStatus CPU::init()
 
 
         // Ignore CppAlignmentVerifier [BEGIN]
-        // COMMON_TEST_ASSERT(sVendor[0]                    == 0x756E6547,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sVendor[1]                    == 0x49656E69,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sVendor[2]                    == 0x6C65746E,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(strncmp((const char8 *)sVendor, "GenuineIntel", 12) == 0,                                                           NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sVendor.uints[0]              == 0x756E6547,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sVendor.uints[1]              == 0x49656E69,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sVendor.uints[2]              == 0x6C65746E,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(strncmp(sVendor.chars, "GenuineIntel", 12) == 0,                                                                    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sCpuVendor                    == CpuVendor::INTEL,                                                                  NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sModelName[0]                 == 0x65746E49,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sModelName[1]                 == 0x6F43206C,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sModelName[2]                 == 0x50206572,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sModelName[3]                 == 0x65636F72,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sModelName[4]                 == 0x726F7373,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sModelName[5]                 == 0x6B532820,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sModelName[6]                 == 0x6B616C79,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sModelName[7]                 == 0x00002965,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sModelName[8]                 == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sModelName[9]                 == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sModelName[10]                == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sModelName[11]                == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(strncmp((const char8 *)sModelName, "Intel Core Processor (Skylake)", 48) == 0,                                      NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName.uints[0]           == 0x65746E49,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName.uints[1]           == 0x6F43206C,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName.uints[2]           == 0x50206572,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName.uints[3]           == 0x65636F72,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName.uints[4]           == 0x726F7373,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName.uints[5]           == 0x6B532820,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName.uints[6]           == 0x6B616C79,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName.uints[7]           == 0x00002965,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName.uints[8]           == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName.uints[9]           == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName.uints[10]          == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sModelName.uints[11]          == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(strncmp(sModelName.chars, "Intel Core Processor (Skylake)", 48) == 0,                                      NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sCpuidLevel                   == 0x0000000D,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(sCpuidLevel                      >= CPUID_LEVEL_LOWER_BOUND && sCpuidLevel <= CPUID_LEVEL_UPPER_BOUND,                 NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sExtendedCpuidLevel           == 0x80000008,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
@@ -258,7 +250,17 @@ NgosStatus CPU::toString(char8 *buffer, u16 size)
             "           Cache line flush size: %u\n"
             "           Cache alignment:       %u\n"
             "           Address sizes:         %u bits physical, %u bits virtual"
-            , sVendor, sFamily, sModel, sModelName, sStepping, sMicrocodeRevision, sCpuidLevel, sCacheLineFlushSize, sCacheAlignment, sPhysicalBits, sVirtualBits);
+                , sVendor.chars
+                , sFamily
+                , sModel
+                , sModelName.chars
+                , sStepping
+                , sMicrocodeRevision
+                , sCpuidLevel
+                , sCacheLineFlushSize
+                , sCacheAlignment
+                , sPhysicalBits
+                , sVirtualBits);
     // Ignore CppAlignmentVerifier [END]
 
 
@@ -398,7 +400,7 @@ NgosStatus CPU::check(const char8 **wantedFlag)
 {
     COMMON_LT((" | wantedFlag = 0x%p", wantedFlag));
 
-    COMMON_ASSERT(wantedFlag, "wantedFlag is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(wantedFlag != nullptr, "wantedFlag is null", NgosStatus::ASSERTION);
 
 
 
@@ -569,7 +571,7 @@ char8* CPU::getModelName()
 
 
 
-    return (char8 *)sModelName;
+    return sModelName.chars;
 }
 
 CpuFamily CPU::getFamily()
@@ -719,36 +721,36 @@ bool CPU::isCpuIdLevelSupported(u32 cpuidLevel)
     return sCpuidLevel >= cpuidLevel;
 }
 
-bool CPU::hasEFlag(u64 mask)
+bool CPU::hasX86Flags(X86Flags flags)
 {
-    COMMON_LT((" | mask = 0x%016llX", mask));
+    COMMON_LT((" | flags = %s", flagsToFullString(flags)));
 
-    COMMON_ASSERT(mask > 0, "mask is zero", false);
+    COMMON_ASSERT(flags != FLAGS(X86Flag::NONE), "flags is invalid", false);
 
 
 
-    u64 f0 = 0;
-    u64 f1 = 0;
+    X86Flags f0 = 0;
+    X86Flags f1 = 0;
 
 
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
-        "pushfq"            "\n\t"    // pushfq             # Push EFLAGS to the stack
-        "pushfq"            "\n\t"    // pushfq             # Push EFLAGS to the stack
-        "popq   %0"         "\n\t"    // popq   %rbp        # Get EFLAGS from the stack to f0. %rbp == f0
+        "pushfq"            "\n\t"    // pushfq             # Push RFLAGS to the stack
+        "pushfq"            "\n\t"    // pushfq             # Push RFLAGS to the stack
+        "popq   %0"         "\n\t"    // popq   %rbp        # Get RFLAGS from the stack to f0. %rbp == f0
         "movq   %0, %1"     "\n\t"    // movq   %rbp, %r12  # Store f0 to f1. %rbp == f0. %r12 == f1
-        "xorq   %2, %1"     "\n\t"    // xorq   %rdi, %r12  # Xor f1 with mask. %rdi == mask. %r12 == f1
-        "pushq  %1"         "\n\t"    // pushq  %r12        # Push new value for EFLAGS to stack
-        "popfq"             "\n\t"    // popfq              # Set new value for EFLAGS from the stack. If EFLAGS did't support some flags they stay zero
-        "pushfq"            "\n\t"    // pushfq             # Push EFLAGS to the stack
-        "popq   %1"         "\n\t"    // popq   %r12        # Get EFLAGS from the stack to f1. %r12 == f1
-        "popfq"                       // popfq              # Restore EFLAGS from the stack
+        "xorq   %2, %1"     "\n\t"    // xorq   %rdi, %r12  # Xor f1 with flags. %rdi == flags. %r12 == f1
+        "pushq  %1"         "\n\t"    // pushq  %r12        # Push new value for RFLAGS to stack
+        "popfq"             "\n\t"    // popfq              # Set new value for RFLAGS from the stack. If RFLAGS did't support some flags they stay zero
+        "pushfq"            "\n\t"    // pushfq             # Push RFLAGS to the stack
+        "popq   %1"         "\n\t"    // popq   %r12        # Get RFLAGS from the stack to f1. %r12 == f1
+        "popfq"                       // popfq              # Restore RFLAGS from the stack
             :                         // Output parameters
-                "=&r" (f0),           // 'r' - any general register, '=' - write only, '&' - operand is an earlyclobber operand, which is modified before the instruction is finished using the input operands
-                "=&r" (f1)            // 'r' - any general register, '=' - write only, '&' - operand is an earlyclobber operand, which is modified before the instruction is finished using the input operands
+                "=&r" (f0.flags),     // 'r' - any general register, '=' - write only, '&' - operand is an earlyclobber operand, which is modified before the instruction is finished using the input operands
+                "=&r" (f1.flags)      // 'r' - any general register, '=' - write only, '&' - operand is an earlyclobber operand, which is modified before the instruction is finished using the input operands
             :                         // Input parameters
-                "ri" (mask)           // 'r' - any general register, or 'i' - immediate integer operand is allowed
+                "ri" (flags.flags)    // 'r' - any general register, or 'i' - immediate integer operand is allowed
     );
     // Ignore CppAlignmentVerifier [END]
 
@@ -756,30 +758,28 @@ bool CPU::hasEFlag(u64 mask)
 
     // Validation
     {
-        COMMON_LVVV(("f0   = 0x%016llX", f0));
-        COMMON_LVVV(("f1   = 0x%016llX", f1));
-        COMMON_LVVV(("mask = 0x%016llX", mask));
-
-
+        COMMON_LVVV(("f0    = %s", flagsToFullString(f0)));
+        COMMON_LVVV(("f1    = %s", flagsToFullString(f1)));
+        COMMON_LVVV(("flags = %s", flagsToFullString(flags)));
 
         // COMMON_TEST_ASSERT(f0 == 0x0000000000000202, false); // Commented due to value variation
         // COMMON_TEST_ASSERT(f1 == 0x0000000000200202, false); // Commented due to value variation
-        COMMON_TEST_ASSERT(mask  == 0x0000000000200000, false);
+        COMMON_TEST_ASSERT(flags == 0x0000000000200000, false);
     }
 
 
 
-    return (f0 ^ f1) == mask;
+    return flags == (f0 ^ f1);
 }
 
 NgosStatus CPU::cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d)
 {
     COMMON_LT((" | id = 0x%08X, count = %u, a = 0x%p, b = 0x%p, c = 0x%p, d = 0x%p", id, count, a, b, c, d));
 
-    COMMON_ASSERT(a, "a is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(b, "b is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(c, "c is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(d, "d is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(a != nullptr, "a is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(b != nullptr, "b is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(c != nullptr, "c is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(d != nullptr, "d is null", NgosStatus::ASSERTION);
 
 
 
@@ -812,16 +812,16 @@ NgosStatus CPU::initCpuFeatures()
 
 
 
-    COMMON_ASSERT_EXECUTION(cpuid(0x00000000, 0, &sCpuidLevel, &sVendor[0], &sVendor[2], &sVendor[1]), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(cpuid(0x00000000, 0, &sCpuidLevel, &sVendor.uints[0], &sVendor.uints[2], &sVendor.uints[1]), NgosStatus::ASSERTION);
 
-    if (sVendor[0] == VENDOR_INTEL_1 && sVendor[1] == VENDOR_INTEL_2 && sVendor[2] == VENDOR_INTEL_3)
+    if (sVendor.isIntel())
     {
         COMMON_LVV(("Intel CPU detected"));
 
         sCpuVendor = CpuVendor::INTEL;
     }
     else
-    if (sVendor[0] == VENDOR_AMD_1 && sVendor[1] == VENDOR_AMD_2 && sVendor[2] == VENDOR_AMD_3)
+    if (sVendor.isAMD())
     {
         COMMON_LVV(("AMD CPU detected"));
 
@@ -973,14 +973,14 @@ NgosStatus CPU::initCpuFeatures()
 
         if (sExtendedCpuidLevel >= 0x80000004)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000002, 0, &sModelName[0], &sModelName[1], &sModelName[2],  &sModelName[3]),  NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000003, 0, &sModelName[4], &sModelName[5], &sModelName[6],  &sModelName[7]),  NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000004, 0, &sModelName[8], &sModelName[9], &sModelName[10], &sModelName[11]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x80000002, 0, &sModelName.uints[0], &sModelName.uints[1], &sModelName.uints[2],  &sModelName.uints[3]),  NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x80000003, 0, &sModelName.uints[4], &sModelName.uints[5], &sModelName.uints[6],  &sModelName.uints[7]),  NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x80000004, 0, &sModelName.uints[8], &sModelName.uints[9], &sModelName.uints[10], &sModelName.uints[11]), NgosStatus::ASSERTION);
 
 
 
             // TODO: Need to extract to a function and provide tests to it
-            char8 *modelStr = (char8 *)sModelName;
+            char8 *modelStr = sModelName.chars;
 
 
 
@@ -1901,8 +1901,6 @@ bool CPU::isCpuNoL1TF()
                 sFamily == CpuFamily::INTEL_FAMILY_6
                 &&
                 (
-                    sModel == (u8)IntelCpuModel::FAMILY_6_AIRMONT_MID
-                    ||
                     sModel == (u8)IntelCpuModel::FAMILY_6_APOLLO_LAKE
                     ||
                     sModel == (u8)IntelCpuModel::FAMILY_6_DENVERTON

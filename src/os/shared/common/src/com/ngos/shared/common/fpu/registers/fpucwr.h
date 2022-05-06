@@ -1,5 +1,5 @@
-#ifndef COM_NGOS_SHARED_COMMON_CPU_LIB_REGISTERS_FPUCWR_H                                                                                                                                                // Colorize: green
-#define COM_NGOS_SHARED_COMMON_CPU_LIB_REGISTERS_FPUCWR_H                                                                                                                                                // Colorize: green
+#ifndef COM_NGOS_SHARED_COMMON_FPU_LIB_REGISTERS_FPUCWR_H                                                                                                                                                // Colorize: green
+#define COM_NGOS_SHARED_COMMON_FPU_LIB_REGISTERS_FPUCWR_H                                                                                                                                                // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -32,4 +32,4 @@ struct FpuCwr                                                                   
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#endif // COM_NGOS_SHARED_COMMON_CPU_LIB_REGISTERS_FPUCWR_H                                                                                                                                              // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_FPU_LIB_REGISTERS_FPUCWR_H                                                                                                                                              // Colorize: green

@@ -3,6 +3,7 @@
 
 
 
+#include <com/ngos/shared/common/cpu/lib/registers/x86cr4flags.h>
 #include <com/ngos/shared/common/ngos/types.h>
 
 
@@ -10,7 +11,7 @@
 class PERCPU
 {
 public:
-    static u64 cr4;
+    static X86Cr4Flags cr4;
 };
 
 

@@ -28,8 +28,8 @@
 #include <com/ngos/shared/common/cpu/cpu.h>
 #include <com/ngos/shared/common/cpu/lib/cpufamily.h>
 #include <com/ngos/shared/common/cpu/lib/cpuvendor.h>
-#include <com/ngos/shared/common/cpu/lib/model/amdcpumodel.h>
-#include <com/ngos/shared/common/cpu/lib/model/intelcpumodel.h>
+#include <com/ngos/shared/common/cpu/lib/generated/amdcpumodel.h>
+#include <com/ngos/shared/common/cpu/lib/generated/intelcpumodel.h>
 #include <com/ngos/shared/common/msr/msr.h>
 #include <com/ngos/shared/common/cpu/lib/x86bug.h>
 #include <com/ngos/shared/common/cpu/lib/x86bugword.h>

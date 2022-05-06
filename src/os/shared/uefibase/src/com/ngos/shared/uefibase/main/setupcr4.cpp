@@ -2,7 +2,6 @@
 
 #include <com/ngos/shared/common/asm/asmutils.h>
 #include <com/ngos/shared/common/cpu/cpu.h>
-#include <com/ngos/shared/common/cpu/lib/flags.h>
 #include <com/ngos/shared/uefibase/uefi/uefiassert.h>
 #include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
@@ -14,31 +13,30 @@ NgosStatus setupCr4()
 
 
 
-    u64 cr4 = AsmUtils::readCr4();
+    X86Cr4Flags cr4 = AsmUtils::readCr4();
 
-    // UEFI_LVVV(("cr4 = 0x%016llX", cr4)); // Commented to avoid bad looking logs
+    // UEFI_LVVV(("cr4 = %s", flagsToFullString(cr4))); // Commented to avoid bad looking logs
 
 
 
-    cr4 |= X86_CR4_PAE
-        |  X86_CR4_PGE;
+    cr4 |= FLAGS(X86Cr4Flag::PHYSICAL_ADDRESS_EXTENSION, X86Cr4Flag::PAGE_GLOBAL_ENABLED);
 
     if (CPU::hasFlag(X86Feature::FXSR))
     {
-        cr4 |= X86_CR4_OSFXSR;
+        cr4 |= FLAGS(X86Cr4Flag::SUPPORT_FXSAVE);
     }
 
     if (CPU::hasFlag(X86Feature::XMM))
     {
-        cr4 |= X86_CR4_OSXMMEXCPT;
+        cr4 |= FLAGS(X86Cr4Flag::SUPPORT_UNMASKED_SSE_EXCEPTIONS);
     }
 
     if (CPU::hasFlag(X86Feature::XSAVE))
     {
-        cr4 |= X86_CR4_OSXSAVE;
+        cr4 |= FLAGS(X86Cr4Flag::SUPPORT_XSAVE);
     }
 
-    // UEFI_LVVV(("cr4 = 0x%016llX", cr4)); // Commented to avoid bad looking logs
+    // UEFI_LVVV(("cr4 = %s", flagsToFullString(cr4))); // Commented to avoid bad looking logs
 
 
 

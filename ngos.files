@@ -852,6 +852,8 @@ src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/amdcpumodel.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/intelcpumodel.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86bugsnames.cpp
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86bugsnames.h
+src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86cr0.h
+src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86cr4.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86featuresnames.cpp
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86featuresnames.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/x86cr0flags.h
