@@ -844,6 +844,8 @@ src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid80000008eax.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid80000008ecx.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuidmodelname.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuidvendor.h
+src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/lib/cpuidcachetype.h
+src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/lib/cpuidprocessortype.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpumodel.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuvendor.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/amdcpumodel.h
@@ -852,8 +854,6 @@ src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86bugsnames.c
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86bugsnames.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86featuresnames.cpp
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86featuresnames.h
-src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/fpucwr.h
-src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/fpuswr.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/x86cr0flags.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/x86cr4flags.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/x86cr8.h
@@ -1045,6 +1045,10 @@ src/os/shared/common/src/com/ngos/shared/common/fpu/fpustate.h
 src/os/shared/common/src/com/ngos/shared/common/fpu/fsavestate.h
 src/os/shared/common/src/com/ngos/shared/common/fpu/fxsavestate.h
 src/os/shared/common/src/com/ngos/shared/common/fpu/macros.h
+src/os/shared/common/src/com/ngos/shared/common/fpu/registers/fpucwr.h
+src/os/shared/common/src/com/ngos/shared/common/fpu/registers/fpuswr.h
+src/os/shared/common/src/com/ngos/shared/common/fpu/registers/lib/fpucwrprecisioncontrol.h
+src/os/shared/common/src/com/ngos/shared/common/fpu/registers/lib/fpucwrroundingcontrol.h
 src/os/shared/common/src/com/ngos/shared/common/fpu/xfeature.h
 src/os/shared/common/src/com/ngos/shared/common/fpu/xfeature/extendedregisters.h
 src/os/shared/common/src/com/ngos/shared/common/fpu/xfeature/xfeatureavx512opmaskstate.h
