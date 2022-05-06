@@ -979,6 +979,7 @@ NgosStatus CPU::initCpuFeatures()
 
 
 
+            // TODO: Need to extract to a function and provide tests to it
             char8 *modelStr = (char8 *)sModelName;
 
 
@@ -1011,6 +1012,7 @@ NgosStatus CPU::initCpuFeatures()
                     modelStr[i - offset] = modelStr[i];
                 }
 
+                // TODO: Should be done once
                 for (good_I64 i = length - offset; i < length; ++i)
                 {
                     modelStr[i] = 0;

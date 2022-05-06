@@ -852,12 +852,12 @@ src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86bugsnames.c
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86bugsnames.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86featuresnames.cpp
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86featuresnames.h
-src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/fpucwrflags.h
-src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/fpuswrflags.h
+src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/fpucwr.h
+src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/fpuswr.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/x86cr0flags.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/x86cr4flags.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/x86cr8.h
-src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/x86eflags.h
+src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/x86flags.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/x86bug.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/x86bugword.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/x86feature.h
