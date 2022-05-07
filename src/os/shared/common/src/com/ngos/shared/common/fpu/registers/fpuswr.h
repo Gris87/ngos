@@ -7,7 +7,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-struct FpuCwr                                                                                                                                                                                            // Colorize: green
+struct FpuSwr                                                                                                                                                                                            // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
     union                                                                                                                                                                                                // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
