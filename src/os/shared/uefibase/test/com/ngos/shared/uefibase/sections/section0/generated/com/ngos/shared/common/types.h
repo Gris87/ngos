@@ -6,6 +6,12 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/shared/common/cpu/lib/cpuid/cpuid00000001eax.h>
+#include <com/ngos/shared/common/cpu/lib/cpuid/cpuid00000001ebx.h>
+#include <com/ngos/shared/common/cpu/lib/cpuid/cpuid00000004eax.h>
+#include <com/ngos/shared/common/cpu/lib/cpuid/cpuid80000008eax.h>
+#include <com/ngos/shared/common/cpu/lib/cpuid/cpuid80000008ecx.h>
+#include <com/ngos/shared/common/cpu/lib/registers/x86cr8.h>
 #include <com/ngos/shared/common/dmi/entry/lib/dmibiosextendedromsize.h>
 #include <com/ngos/shared/common/dmi/entry/lib/dmicacheconfiguration.h>
 #include <com/ngos/shared/common/dmi/entry/lib/dmicachesize.h>
@@ -29,6 +35,8 @@
 #include <com/ngos/shared/common/dmi/entry/lib/dmivoltageprobelocationandstatus.h>
 #include <com/ngos/shared/common/elf/symbolinfo.h>
 #include <com/ngos/shared/common/elf/symbolother.h>
+#include <com/ngos/shared/common/fpu/registers/fpucwr.h>
+#include <com/ngos/shared/common/fpu/registers/fpuswr.h>
 #include <com/ngos/shared/common/gdt/gdtdescriptor.h>
 #include <com/ngos/shared/common/graphics/jpeg/lib/jpeghuffmantableidandtype.h>
 #include <com/ngos/shared/common/graphics/jpeg/lib/jpegquantizationtableidandprecision.h>
@@ -115,6 +123,532 @@
 
 TEST_CASES(section0, generated_com_ngos_shared_common_types);
 {
+    TEST_CASE("Cpuid00000001Eax");
+    {
+        Cpuid00000001Eax temp;
+
+
+
+        // Cpuid00000001Eax:
+        //
+        // |     HHHH      |     GGGG      |
+        // |     GGGG      |     FFFF      |
+        // |  EE   |  DD   |     CCCC      |
+        // |     BBBB      |     AAAA      |
+        //
+        // stepping       : 4  'A'
+        // model          : 4  'B'
+        // family         : 4  'C'
+        // processorType  : 2  'D'
+        // _reserved      : 2  'E'
+        // extendedModel  : 4  'F'
+        // extendedFamily : 8  'G'
+        // _reserved2     : 4  'H'
+
+
+
+        // |     0100      |     1100      |
+        // |     0101      |     0110      |
+        // |  01   |  00   |     0010      |
+        // |     0000      |     1000      |
+        temp.value32 = 0x4C564208;
+
+        TEST_ASSERT_EQUALS(temp.stepping,       8);
+        TEST_ASSERT_EQUALS(temp.model,          0);
+        TEST_ASSERT_EQUALS(temp.family,         2);
+        TEST_ASSERT_EQUALS(temp.processorType,  0);
+        TEST_ASSERT_EQUALS(temp._reserved,      1);
+        TEST_ASSERT_EQUALS(temp.extendedModel,  6);
+        TEST_ASSERT_EQUALS(temp.extendedFamily, 197);
+        TEST_ASSERT_EQUALS(temp._reserved2,     4);
+
+
+
+        // |     0100      |     1100      |
+        // |     0101      |     0110      |
+        // |  01   |  00   |     0010      |
+        // |     0000      |     0111      |
+        temp.stepping = 7;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4C564207);
+
+
+
+        // |     0100      |     1100      |
+        // |     0101      |     0110      |
+        // |  01   |  00   |     0010      |
+        // |     1111      |     0111      |
+        temp.model = 15;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4C5642F7);
+
+
+
+        // |     0100      |     1100      |
+        // |     0101      |     0110      |
+        // |  01   |  00   |     1101      |
+        // |     1111      |     0111      |
+        temp.family = 13;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4C564DF7);
+
+
+
+        // |     0100      |     1100      |
+        // |     0101      |     0110      |
+        // |  01   |  11   |     1101      |
+        // |     1111      |     0111      |
+        temp.processorType = 3;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4C567DF7);
+
+
+
+        // |     0100      |     1100      |
+        // |     0101      |     0110      |
+        // |  10   |  11   |     1101      |
+        // |     1111      |     0111      |
+        temp._reserved = 2;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4C56BDF7);
+
+
+
+        // |     0100      |     1100      |
+        // |     0101      |     1001      |
+        // |  10   |  11   |     1101      |
+        // |     1111      |     0111      |
+        temp.extendedModel = 9;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4C59BDF7);
+
+
+
+        // |     0100      |     0011      |
+        // |     1010      |     1001      |
+        // |  10   |  11   |     1101      |
+        // |     1111      |     0111      |
+        temp.extendedFamily = 58;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x43A9BDF7);
+
+
+
+        // |     1011      |     0011      |
+        // |     1010      |     1001      |
+        // |  10   |  11   |     1101      |
+        // |     1111      |     0111      |
+        temp._reserved2 = 11;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xB3A9BDF7);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("Cpuid00000001Ebx");
+    {
+        Cpuid00000001Ebx temp;
+
+
+
+        // Cpuid00000001Ebx:
+        //
+        // |           DDDDDDDD            |
+        // |           CCCCCCCC            |
+        // |           BBBBBBBB            |
+        // |           AAAAAAAA            |
+        //
+        // brandIndex                : 8  'A'
+        // cacheLineFlushSize        : 8  'B'
+        // numberOfApicIdsPerPackage : 8  'C'
+        // localApicId               : 8  'D'
+
+
+
+        // |           00111110            |
+        // |           00000011            |
+        // |           00111100            |
+        // |           11100101            |
+        temp.value32 = 0x3E033CE5;
+
+        TEST_ASSERT_EQUALS(temp.brandIndex,                229);
+        TEST_ASSERT_EQUALS(temp.cacheLineFlushSize,        60);
+        TEST_ASSERT_EQUALS(temp.numberOfApicIdsPerPackage, 3);
+        TEST_ASSERT_EQUALS(temp.localApicId,               62);
+
+
+
+        // |           00111110            |
+        // |           00000011            |
+        // |           00111100            |
+        // |           00011010            |
+        temp.brandIndex = 26;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x3E033C1A);
+
+
+
+        // |           00111110            |
+        // |           00000011            |
+        // |           11000011            |
+        // |           00011010            |
+        temp.cacheLineFlushSize = 195;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x3E03C31A);
+
+
+
+        // |           00111110            |
+        // |           11111100            |
+        // |           11000011            |
+        // |           00011010            |
+        temp.numberOfApicIdsPerPackage = 252;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x3EFCC31A);
+
+
+
+        // |           11000001            |
+        // |           11111100            |
+        // |           11000011            |
+        // |           00011010            |
+        temp.localApicId = 193;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xC1FCC31A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("Cpuid00000004Eax");
+    {
+        Cpuid00000004Eax temp;
+
+
+
+        // Cpuid00000004Eax:
+        //
+        // |        GGGGGG         |  FF   |
+        // |           FFFFFFFF            |
+        // |  FF   |     EEEE      | D | C |
+        // |    BBB    |       AAAAA       |
+        //
+        // cacheType                  : 5  'A'
+        // cacheLevel                 : 3  'B'
+        // selfInitializingCacheLevel : 1  'C'
+        // fullyAssociativeCache      : 1  'D'
+        // _reserved                  : 4  'E'
+        // maximumNumberOfThreads     : 12 'F'
+        // maximumNumberOfCores       : 6  'G'
+
+
+
+        // |        010000         |  01   |
+        // |           00010010            |
+        // |  00   |     0111      | 1 | 0 |
+        // |    101    |       01101       |
+        temp.value32 = 0x41121EAD;
+
+        TEST_ASSERT_EQUALS(temp.cacheType,                  13);
+        TEST_ASSERT_EQUALS(temp.cacheLevel,                 5);
+        TEST_ASSERT_EQUALS(temp.selfInitializingCacheLevel, 0);
+        TEST_ASSERT_EQUALS(temp.fullyAssociativeCache,      1);
+        TEST_ASSERT_EQUALS(temp._reserved,                  7);
+        TEST_ASSERT_EQUALS(temp.maximumNumberOfThreads,     1096);
+        TEST_ASSERT_EQUALS(temp.maximumNumberOfCores,       16);
+
+
+
+        // |        010000         |  01   |
+        // |           00010010            |
+        // |  00   |     0111      | 1 | 0 |
+        // |    101    |       10010       |
+        temp.cacheType = 18;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x41121EB2);
+
+
+
+        // |        010000         |  01   |
+        // |           00010010            |
+        // |  00   |     0111      | 1 | 0 |
+        // |    010    |       10010       |
+        temp.cacheLevel = 2;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x41121E52);
+
+
+
+        // |        010000         |  01   |
+        // |           00010010            |
+        // |  00   |     0111      | 1 | 1 |
+        // |    010    |       10010       |
+        temp.selfInitializingCacheLevel = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x41121F52);
+
+
+
+        // |        010000         |  01   |
+        // |           00010010            |
+        // |  00   |     0111      | 0 | 1 |
+        // |    010    |       10010       |
+        temp.fullyAssociativeCache = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x41121D52);
+
+
+
+        // |        010000         |  01   |
+        // |           00010010            |
+        // |  00   |     1000      | 0 | 1 |
+        // |    010    |       10010       |
+        temp._reserved = 8;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x41122152);
+
+
+
+        // |        010000         |  10   |
+        // |           11101101            |
+        // |  11   |     1000      | 0 | 1 |
+        // |    010    |       10010       |
+        temp.maximumNumberOfThreads = 2999;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x42EDE152);
+
+
+
+        // |        101111         |  10   |
+        // |           11101101            |
+        // |  11   |     1000      | 0 | 1 |
+        // |    010    |       10010       |
+        temp.maximumNumberOfCores = 47;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xBEEDE152);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("Cpuid80000008Eax");
+    {
+        Cpuid80000008Eax temp;
+
+
+
+        // Cpuid80000008Eax:
+        //
+        // |           CCCCCCCC            |
+        // |           CCCCCCCC            |
+        // |           BBBBBBBB            |
+        // |           AAAAAAAA            |
+        //
+        // physicalAddressBits : 8  'A'
+        // virtualAddressBits  : 8  'B'
+        // _reserved           : 16 'C'
+
+
+
+        // |           01101110            |
+        // |           00000111            |
+        // |           01110110            |
+        // |           01111001            |
+        temp.value32 = 0x6E077679;
+
+        TEST_ASSERT_EQUALS(temp.physicalAddressBits, 121);
+        TEST_ASSERT_EQUALS(temp.virtualAddressBits,  118);
+        TEST_ASSERT_EQUALS(temp._reserved,           28167);
+
+
+
+        // |           01101110            |
+        // |           00000111            |
+        // |           01110110            |
+        // |           10000110            |
+        temp.physicalAddressBits = 134;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x6E077686);
+
+
+
+        // |           01101110            |
+        // |           00000111            |
+        // |           10001001            |
+        // |           10000110            |
+        temp.virtualAddressBits = 137;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x6E078986);
+
+
+
+        // |           10010001            |
+        // |           11111000            |
+        // |           10001001            |
+        // |           10000110            |
+        temp._reserved = 37368;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x91F88986);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("Cpuid80000008Ecx");
+    {
+        Cpuid80000008Ecx temp;
+
+
+
+        // Cpuid80000008Ecx:
+        //
+        // |           EEEEEEEE            |
+        // |        EEEEEE         |  DD   |
+        // |     CCCC      |     BBBB      |
+        // |           AAAAAAAA            |
+        //
+        // physicalCores                   : 8  'A'
+        // _reserved                       : 4  'B'
+        // apicIdBits                      : 4  'C'
+        // performanceTimestampCounterSize : 2  'D'
+        // _reserved2                      : 14 'E'
+
+
+
+        // |           10011111            |
+        // |        011110         |  10   |
+        // |     1011      |     0000      |
+        // |           10000101            |
+        temp.value32 = 0x9F7AB085;
+
+        TEST_ASSERT_EQUALS(temp.physicalCores,                   133);
+        TEST_ASSERT_EQUALS(temp._reserved,                       0);
+        TEST_ASSERT_EQUALS(temp.apicIdBits,                      11);
+        TEST_ASSERT_EQUALS(temp.performanceTimestampCounterSize, 2);
+        TEST_ASSERT_EQUALS(temp._reserved2,                      10206);
+
+
+
+        // |           10011111            |
+        // |        011110         |  10   |
+        // |     1011      |     0000      |
+        // |           01111010            |
+        temp.physicalCores = 122;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x9F7AB07A);
+
+
+
+        // |           10011111            |
+        // |        011110         |  10   |
+        // |     1011      |     1111      |
+        // |           01111010            |
+        temp._reserved = 15;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x9F7ABF7A);
+
+
+
+        // |           10011111            |
+        // |        011110         |  10   |
+        // |     0100      |     1111      |
+        // |           01111010            |
+        temp.apicIdBits = 4;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x9F7A4F7A);
+
+
+
+        // |           10011111            |
+        // |        011110         |  01   |
+        // |     0100      |     1111      |
+        // |           01111010            |
+        temp.performanceTimestampCounterSize = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x9F794F7A);
+
+
+
+        // |           01100000            |
+        // |        100001         |  01   |
+        // |     0100      |     1111      |
+        // |           01111010            |
+        temp._reserved2 = 6177;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x60854F7A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("X86Cr8");
+    {
+        X86Cr8 temp;
+
+
+
+        // X86Cr8:
+        //
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |     BBBB      |     AAAA      |
+        //
+        // taskPriority : 4  'A'
+        // _reserved    : 60 'B'
+
+
+
+        // |           00010001            |
+        // |           11110110            |
+        // |           11110000            |
+        // |           11011010            |
+        // |           00111111            |
+        // |           01000011            |
+        // |           10110000            |
+        // |     1000      |     0001      |
+        temp.value64 = 0x11F6F0DA3F43B081;
+
+        TEST_ASSERT_EQUALS(temp.taskPriority, 1);
+        TEST_ASSERT_EQUALS(temp._reserved,    80905422691908360);
+
+
+
+        // |           00010001            |
+        // |           11110110            |
+        // |           11110000            |
+        // |           11011010            |
+        // |           00111111            |
+        // |           01000011            |
+        // |           10110000            |
+        // |     1000      |     1110      |
+        temp.taskPriority = 14;
+
+        TEST_ASSERT_EQUALS(temp.value64, 0x11F6F0DA3F43B08E);
+
+
+
+        // |           11101110            |
+        // |           00001001            |
+        // |           00001111            |
+        // |           00100101            |
+        // |           11000000            |
+        // |           10111100            |
+        // |           01001111            |
+        // |     0111      |     1110      |
+        temp._reserved = 1072016081914938615;
+
+        TEST_ASSERT_EQUALS(temp.value64, 0xEE090F25C0BC4F7E);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("DmiBiosExtendedRomSize");
     {
         DmiBiosExtendedRomSize temp;
@@ -1312,6 +1846,302 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.visibility = 0;
 
         TEST_ASSERT_EQUALS(temp.value8, 0x1B);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("FpuCwr");
+    {
+        FpuCwr temp;
+
+
+
+        // FpuCwr:
+        //
+        // |    KKK    | J |  II   |  HH   |
+        // |  GG   | F | E | D | C | B | A |
+        //
+        // invalidOperationErrorMask    : 1  'A'
+        // denormalizedOperandErrorMask : 1  'B'
+        // divideByZeroErrorMask        : 1  'C'
+        // overflowErrorMask            : 1  'D'
+        // underflowErrorMask           : 1  'E'
+        // precisionErrorMask           : 1  'F'
+        // _reserved                    : 2  'G'
+        // precisionControl             : 2  'H'
+        // roundingControl              : 2  'I'
+        // infinityControl              : 1  'J'
+        // _reserved2                   : 3  'K'
+
+
+
+        // |    001    | 0 |  11   |  11   |
+        // |  10   | 1 | 1 | 1 | 0 | 0 | 0 |
+        temp.value16 = 0x2FB8;
+
+        TEST_ASSERT_EQUALS(temp.invalidOperationErrorMask,    0);
+        TEST_ASSERT_EQUALS(temp.denormalizedOperandErrorMask, 0);
+        TEST_ASSERT_EQUALS(temp.divideByZeroErrorMask,        0);
+        TEST_ASSERT_EQUALS(temp.overflowErrorMask,            1);
+        TEST_ASSERT_EQUALS(temp.underflowErrorMask,           1);
+        TEST_ASSERT_EQUALS(temp.precisionErrorMask,           1);
+        TEST_ASSERT_EQUALS(temp._reserved,                    2);
+        TEST_ASSERT_EQUALS(temp.precisionControl,             3);
+        TEST_ASSERT_EQUALS(temp.roundingControl,              3);
+        TEST_ASSERT_EQUALS(temp.infinityControl,              0);
+        TEST_ASSERT_EQUALS(temp._reserved2,                   1);
+
+
+
+        // |    001    | 0 |  11   |  11   |
+        // |  10   | 1 | 1 | 1 | 0 | 0 | 1 |
+        temp.invalidOperationErrorMask = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2FB9);
+
+
+
+        // |    001    | 0 |  11   |  11   |
+        // |  10   | 1 | 1 | 1 | 0 | 1 | 1 |
+        temp.denormalizedOperandErrorMask = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2FBB);
+
+
+
+        // |    001    | 0 |  11   |  11   |
+        // |  10   | 1 | 1 | 1 | 1 | 1 | 1 |
+        temp.divideByZeroErrorMask = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2FBF);
+
+
+
+        // |    001    | 0 |  11   |  11   |
+        // |  10   | 1 | 1 | 0 | 1 | 1 | 1 |
+        temp.overflowErrorMask = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2FB7);
+
+
+
+        // |    001    | 0 |  11   |  11   |
+        // |  10   | 1 | 0 | 0 | 1 | 1 | 1 |
+        temp.underflowErrorMask = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2FA7);
+
+
+
+        // |    001    | 0 |  11   |  11   |
+        // |  10   | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp.precisionErrorMask = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2F87);
+
+
+
+        // |    001    | 0 |  11   |  11   |
+        // |  01   | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp._reserved = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2F47);
+
+
+
+        // |    001    | 0 |  11   |  00   |
+        // |  01   | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp.precisionControl = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2C47);
+
+
+
+        // |    001    | 0 |  00   |  00   |
+        // |  01   | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp.roundingControl = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2047);
+
+
+
+        // |    001    | 1 |  00   |  00   |
+        // |  01   | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp.infinityControl = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3047);
+
+
+
+        // |    110    | 1 |  00   |  00   |
+        // |  01   | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp._reserved2 = 6;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xD047);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("FpuCwr");
+    {
+        FpuCwr temp;
+
+
+
+        // FpuCwr:
+        //
+        // | N | M |    LLL    | K | J | I |
+        // | H | G | F | E | D | C | B | A |
+        //
+        // invalidOperationError    : 1  'A'
+        // denormalizedOperandError : 1  'B'
+        // divideByZeroError        : 1  'C'
+        // overflowError            : 1  'D'
+        // underflowError           : 1  'E'
+        // precisionError           : 1  'F'
+        // stackFault               : 1  'G'
+        // errorSummaryStatus       : 1  'H'
+        // c0                       : 1  'I'
+        // c1                       : 1  'J'
+        // c2                       : 1  'K'
+        // top                      : 3  'L'
+        // c3                       : 1  'M'
+        // busy                     : 1  'N'
+
+
+
+        // | 0 | 0 |    101    | 1 | 1 | 1 |
+        // | 1 | 0 | 1 | 1 | 1 | 0 | 0 | 0 |
+        temp.value16 = 0x2FB8;
+
+        TEST_ASSERT_EQUALS(temp.invalidOperationError,    0);
+        TEST_ASSERT_EQUALS(temp.denormalizedOperandError, 0);
+        TEST_ASSERT_EQUALS(temp.divideByZeroError,        0);
+        TEST_ASSERT_EQUALS(temp.overflowError,            1);
+        TEST_ASSERT_EQUALS(temp.underflowError,           1);
+        TEST_ASSERT_EQUALS(temp.precisionError,           1);
+        TEST_ASSERT_EQUALS(temp.stackFault,               0);
+        TEST_ASSERT_EQUALS(temp.errorSummaryStatus,       1);
+        TEST_ASSERT_EQUALS(temp.c0,                       1);
+        TEST_ASSERT_EQUALS(temp.c1,                       1);
+        TEST_ASSERT_EQUALS(temp.c2,                       1);
+        TEST_ASSERT_EQUALS(temp.top,                      5);
+        TEST_ASSERT_EQUALS(temp.c3,                       0);
+        TEST_ASSERT_EQUALS(temp.busy,                     0);
+
+
+
+        // | 0 | 0 |    101    | 1 | 1 | 1 |
+        // | 1 | 0 | 1 | 1 | 1 | 0 | 0 | 1 |
+        temp.invalidOperationError = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2FB9);
+
+
+
+        // | 0 | 0 |    101    | 1 | 1 | 1 |
+        // | 1 | 0 | 1 | 1 | 1 | 0 | 1 | 1 |
+        temp.denormalizedOperandError = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2FBB);
+
+
+
+        // | 0 | 0 |    101    | 1 | 1 | 1 |
+        // | 1 | 0 | 1 | 1 | 1 | 1 | 1 | 1 |
+        temp.divideByZeroError = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2FBF);
+
+
+
+        // | 0 | 0 |    101    | 1 | 1 | 1 |
+        // | 1 | 0 | 1 | 1 | 0 | 1 | 1 | 1 |
+        temp.overflowError = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2FB7);
+
+
+
+        // | 0 | 0 |    101    | 1 | 1 | 1 |
+        // | 1 | 0 | 1 | 0 | 0 | 1 | 1 | 1 |
+        temp.underflowError = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2FA7);
+
+
+
+        // | 0 | 0 |    101    | 1 | 1 | 1 |
+        // | 1 | 0 | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp.precisionError = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2F87);
+
+
+
+        // | 0 | 0 |    101    | 1 | 1 | 1 |
+        // | 1 | 1 | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp.stackFault = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2FC7);
+
+
+
+        // | 0 | 0 |    101    | 1 | 1 | 1 |
+        // | 0 | 1 | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp.errorSummaryStatus = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2F47);
+
+
+
+        // | 0 | 0 |    101    | 1 | 1 | 0 |
+        // | 0 | 1 | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp.c0 = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2E47);
+
+
+
+        // | 0 | 0 |    101    | 1 | 0 | 0 |
+        // | 0 | 1 | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp.c1 = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2C47);
+
+
+
+        // | 0 | 0 |    101    | 0 | 0 | 0 |
+        // | 0 | 1 | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp.c2 = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2847);
+
+
+
+        // | 0 | 0 |    010    | 0 | 0 | 0 |
+        // | 0 | 1 | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp.top = 2;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x1047);
+
+
+
+        // | 0 | 1 |    010    | 0 | 0 | 0 |
+        // | 0 | 1 | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp.c3 = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x5047);
+
+
+
+        // | 1 | 1 |    010    | 0 | 0 | 0 |
+        // | 0 | 1 | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp.busy = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xD047);
     }
     TEST_CASE_END();
 
