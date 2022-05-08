@@ -5794,6 +5794,8 @@ tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/z
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/bitstestgenerator.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/bytesdecimalsgenerator.cpp
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/bytesdecimalsgenerator.h
+tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/cpumodelgenerator.cpp
+tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/cpumodelgenerator.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/hexcharsgenerator.cpp
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/hexcharsgenerator.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/numberdecimalsgenerator.cpp
@@ -5802,6 +5804,10 @@ tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/z
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/pcidatabasegenerator.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86bugsnamesgenerator.cpp
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86bugsnamesgenerator.h
+tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86cr0generator.cpp
+tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86cr0generator.h
+tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86cr4generator.cpp
+tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86cr4generator.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86featuresnamesgenerator.cpp
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/x86featuresnamesgenerator.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/configure/configuregenerator.cpp
@@ -5817,6 +5823,7 @@ tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/usb_boot
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/main.cpp
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/bitsfield.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/bitsstructure.h
+tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/cpumodel.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pcibaseclass.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pcidevice.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pciinterface.h

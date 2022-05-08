@@ -1,9 +1,10 @@
-~/Qt/6.2.4/gcc_64/include/
-~/Qt/6.2.4/gcc_64/include/QtCore/
-~/Qt/6.2.4/gcc_64/include/QtGui/
-~/Qt/6.2.4/gcc_64/include/QtNetwork/
-~/Qt/6.2.4/gcc_64/include/QtWidgets/
-~/Qt/6.2.4/gcc_64/mkspecs/linux-g++/
+/home/gris/Qt/6.2.4/gcc_64/include/
+/home/gris/Qt/6.2.4/gcc_64/include/QtCore/
+/home/gris/Qt/6.2.4/gcc_64/include/QtGui/
+/home/gris/Qt/6.2.4/gcc_64/include/QtNetwork/
+/home/gris/Qt/6.2.4/gcc_64/include/QtWidgets/
+/home/gris/Qt/6.2.4/gcc_64/include/QtXml/
+/home/gris/Qt/6.2.4/gcc_64/mkspecs/linux-g++/
 
 3rd_party/libs/freetype/include/
 include/
