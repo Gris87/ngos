@@ -1,89 +1,89 @@
-#include "x86cr4generator.h"
-
-#include <QFile>
-#include <QRegularExpression>
-
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-#define ORIGINAL_FILE_PATH "/src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/x86cr4flags.h"
-#define FILE_PATH          "/src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86cr4.h"
-
-
-
-
-X86Cr4Generator::X86Cr4Generator()
-    : CommonGenerator()
-{
-    // Nothing
-}
-
-bool X86Cr4Generator::generate(const QString &path)
-{
-    QStringList originalLines;
-
-    // Read lines from original file
-    {
-        QFile file(path + ORIGINAL_FILE_PATH);
-
-        if (!file.open(QIODevice::ReadOnly))
-        {
-            Console::err(QString("Failed to open file: %1")
-                                    .arg(path + ORIGINAL_FILE_PATH)
-            );
-
-            return false;
-        }
-
-        originalLines = QString::fromUtf8(file.readAll()).split('\n');
-        file.close();
-    }
-
-
-
-    QStringList lines;
-
-    // Iterate over original file lines and parse them
-    {
-        QRegularExpression regexp("^ *(\\w+)( *)= *(\\(1ULL *<< *\\d+\\)),? *(//.*)$"); // PROTECTED_MODE_ENABLE = (1ULL << 0),  // If 1, system is in protected mode, else system is in real mode
-
-        for (qint64 i = 0; i < originalLines.size(); ++i)
-        {
-            QString originalLine = originalLines.at(i).trimmed();
-
-            QRegularExpressionMatch match = regexp.match(originalLine);
-
-            if (match.hasMatch())
-            {
-                QString name    = match.captured(1);
-                QString spaces  = match.captured(2);
-                QString value   = match.captured(3);
-                QString comment = match.captured(4);
-
-                if (name.startsWith('_'))
-                {
-                    name.remove(0, 1);
-                    spaces.append(' ');
-                }
-
-                comment = comment.left(comment.indexOf("//", 2)).trimmed();
-
-                lines.append(QString("#define X86_CR4_%1%2%3%4")
-                                        .arg(name)
-                                        .arg(spaces)
-                                        .arg(value, -13, QChar(' '))
-                                        .arg(comment)
-                );
-            }
-        }
-    }
-
-
-
-    return save(path + FILE_PATH, lines);
-}
-
-
-
-X86Cr4Generator x86Cr4GeneratorInstance;
+#include "x86cr4generator.h"                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+#include <QRegularExpression>                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define ORIGINAL_FILE_PATH "/src/os/shared/common/src/com/ngos/shared/common/cpu/lib/registers/x86cr4flags.h"                                                                                            // Colorize: green
+#define FILE_PATH          "/src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/x86cr4.h"                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+X86Cr4Generator::X86Cr4Generator()                                                                                                                                                                       // Colorize: green
+    : CommonGenerator()                                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool X86Cr4Generator::generate(const QString &path)                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QStringList originalLines;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read lines from original file                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFile file(path + ORIGINAL_FILE_PATH);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!file.open(QIODevice::ReadOnly))                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Failed to open file: %1")                                                                                                                                              // Colorize: green
+                                    .arg(path + ORIGINAL_FILE_PATH)                                                                                                                                      // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        originalLines = QString::fromUtf8(file.readAll()).split('\n');                                                                                                                                   // Colorize: green
+        file.close();                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate over original file lines and parse them                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QRegularExpression regexp("^ *(\\w+)( *)= *(\\(1ULL *<< *\\d+\\)),? *(//.*)$"); // VIRTUAL_8086_MODE_EXTENSIONS = (1ULL << 0),  // If set, enables support for the virtual interrupt flag (VIF) in virtual-8086 mode. // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < originalLines.size(); ++i)                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString originalLine = originalLines.at(i).trimmed();                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QRegularExpressionMatch match = regexp.match(originalLine);                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (match.hasMatch())                                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString name    = match.captured(1);                                                                                                                                                     // Colorize: green
+                QString spaces  = match.captured(2);                                                                                                                                                     // Colorize: green
+                QString value   = match.captured(3);                                                                                                                                                     // Colorize: green
+                QString comment = match.captured(4);                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (name.startsWith('_'))                                                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    name.remove(0, 1);                                                                                                                                                                   // Colorize: green
+                    spaces.append(' ');                                                                                                                                                                  // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                comment = comment.left(comment.indexOf("//", 2)).trimmed();                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append(QString("#define X86_CR4_%1%2%3%4")                                                                                                                                         // Colorize: green
+                                        .arg(name)                                                                                                                                                       // Colorize: green
+                                        .arg(spaces)                                                                                                                                                     // Colorize: green
+                                        .arg(value, -13, QChar(' '))                                                                                                                                     // Colorize: green
+                                        .arg(comment)                                                                                                                                                    // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return save(path + FILE_PATH, lines);                                                                                                                                                                // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+X86Cr4Generator x86Cr4GeneratorInstance;                                                                                                                                                                 // Colorize: green

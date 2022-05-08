@@ -1,20 +1,20 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_X86CR0GENERATOR_H
-#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_X86CR0GENERATOR_H
-
-
-
-#include <com/ngos/devtools/code_generator/generators/common/commongenerator.h>
-
-
-
-class X86Cr0Generator: public CommonGenerator
-{
-public:
-    X86Cr0Generator(); // TEST: NO
-
-    bool generate(const QString &path) override; // TEST: NO
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_X86CR0GENERATOR_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_X86CR0GENERATOR_H                                                                                                              // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_X86CR0GENERATOR_H                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_generator/generators/common/commongenerator.h>                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class X86Cr0Generator: public CommonGenerator                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    X86Cr0Generator(); // TEST: NO                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool generate(const QString &path) override; // TEST: NO                                                                                                                                             // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_X86CR0GENERATOR_H                                                                                                            // Colorize: green
