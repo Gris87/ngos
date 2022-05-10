@@ -31,7 +31,7 @@ void UEFI_API testAvx512FProcedure(void *buffer)
 
     TestAvx512F *test = (TestAvx512F *)buffer;
 
-    if (CPU::hasFlag(X86Feature::AVX512F))
+    if (CPU::hasFeature(X86Feature::AVX512F))
     {
         float a[16] __attribute__((aligned(64))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1, 0.9, 0.4, 0.5, 0.7, 0.1, 0.3, 0.9, 0.3 };
         float b[16] __attribute__((aligned(64))) = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1, 0.6, 0.9, 0.4, 0.3, 0.7, 0.2, 0.8, 0.7 };

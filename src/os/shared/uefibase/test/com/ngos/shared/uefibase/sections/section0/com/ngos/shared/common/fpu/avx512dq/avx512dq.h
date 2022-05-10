@@ -22,7 +22,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx512dq_avx512dq);
 {
     TEST_CASE("vcvtpd2qq");
     {
-        if (CPU::hasFlag(X86Feature::AVX512DQ))
+        if (CPU::hasFeature(X86Feature::AVX512DQ))
         {
             double a[8] __attribute__((aligned(64))) = { 0.1, 0.9, 12378.4, 12389.6, 1234879.15, 1232134513216.9, 832198789.0, 321983217.98 };
             u64    b[8] __attribute__((aligned(64)));
@@ -58,7 +58,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx512dq_avx512dq);
 
     TEST_CASE("vcvtps2qq");
     {
-        if (CPU::hasFlag(X86Feature::AVX512DQ))
+        if (CPU::hasFeature(X86Feature::AVX512DQ))
         {
             float a[16] __attribute__((aligned(64))) = { 0.1, 0.9, 12378.4, 12389.6, 24879.15, 21216.9, 18789.0, 23217.98, 0, 0, 0, 0, 0, 0, 0, 0 };
             u64   b[8]  __attribute__((aligned(64)));
@@ -94,7 +94,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx512dq_avx512dq);
 
     TEST_CASE("vcvtqq2pd");
     {
-        if (CPU::hasFlag(X86Feature::AVX512DQ))
+        if (CPU::hasFeature(X86Feature::AVX512DQ))
         {
             u64    a[8] __attribute__((aligned(64))) = { 298321398, 798321398, 199873167, 632197312, 598798321, 413246489, 832198789, 321983217 };
             double b[8] __attribute__((aligned(64)));
@@ -130,7 +130,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx512dq_avx512dq);
 
     TEST_CASE("vcvtqq2ps");
     {
-        if (CPU::hasFlag(X86Feature::AVX512DQ))
+        if (CPU::hasFeature(X86Feature::AVX512DQ))
         {
             u64   a[8]  __attribute__((aligned(64))) = { 298321398, 798321398, 199873167, 632197312, 598798321, 413246489, 832198789, 321983217 };
             float b[16] __attribute__((aligned(64)));
@@ -166,7 +166,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx512dq_avx512dq);
 
     TEST_CASE("vpmullq");
     {
-        if (CPU::hasFlag(X86Feature::AVX512DQ))
+        if (CPU::hasFeature(X86Feature::AVX512DQ))
         {
             u64 a[8] __attribute__((aligned(64))) = { 298321398, 798321398, 199873167, 632197312, 598798321, 413246489, 832198789, 321983217 };
             u64 b[8] __attribute__((aligned(64))) = { 598798321, 413246489, 832198789, 321983217, 632197312, 199873167, 798321398, 298321398 };

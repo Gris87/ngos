@@ -31,7 +31,7 @@ void UEFI_API testFma3Procedure(void *buffer)
 
     TestFma3 *test = (TestFma3 *)buffer;
 
-    if (CPU::hasFlag(X86Feature::FMA))
+    if (CPU::hasFeature(X86Feature::FMA))
     {
         double a[4] __attribute__((aligned(32))) = { 0.1, 0.9, 0.7, 0.5 };
         double b[4] __attribute__((aligned(32))) = { 0.8, 0.5, 0.3, 0.9 };

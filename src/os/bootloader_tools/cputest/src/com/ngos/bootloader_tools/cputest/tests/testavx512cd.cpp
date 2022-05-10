@@ -31,7 +31,7 @@ void UEFI_API testAvx512CdProcedure(void *buffer)
 
     TestAvx512Cd *test = (TestAvx512Cd *)buffer;
 
-    if (CPU::hasFlag(X86Feature::AVX512CD))
+    if (CPU::hasFeature(X86Feature::AVX512CD))
     {
         u32 a[16] __attribute__((aligned(64))) = { 910, 154, 434, 397, 231, 151, 533, 697, 1109, 3234, 1227, 138, 704, 8485, 13636, 312019 };
         u64 b[8]  __attribute__((aligned(64))) = { 910, 154, 434, 397, 231, 151, 533, 697 };

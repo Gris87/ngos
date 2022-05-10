@@ -31,7 +31,7 @@ void UEFI_API testAesProcedure(void *buffer)
 
     TestAes *test = (TestAes *)buffer;
 
-    if (CPU::hasFlag(X86Feature::AES))
+    if (CPU::hasFeature(X86Feature::AES))
     {
         u8 in[1024]  __attribute__((aligned(16)));
         u8 out[1024] __attribute__((aligned(16)));

@@ -28,7 +28,7 @@ NgosStatus KVM::init()
 
 
 
-    if (CPU::hasFlag(X86Feature::HYPERVISOR))
+    if (CPU::hasFeature(X86Feature::HYPERVISOR))
     {
         u32 id = HYPERVISORS_REGION_BEGIN;
 

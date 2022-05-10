@@ -21,7 +21,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_fma3_fma3);
 {
     TEST_CASE("vfmadd213ps");
     {
-        if (CPU::hasFlag(X86Feature::FMA))
+        if (CPU::hasFeature(X86Feature::FMA))
         {
             float a[8] __attribute__((aligned(32))) = { 0.1, 0.9, 0.7, 0.5, 0.7, 0.3, 0.4, 0.9 };
             float b[8] __attribute__((aligned(32))) = { 0.8, 0.5, 0.3, 0.9, 0.9, 0.7, 0.5, 0.7 };
@@ -77,7 +77,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_fma3_fma3);
 
     TEST_CASE("vfmadd213pd");
     {
-        if (CPU::hasFlag(X86Feature::FMA))
+        if (CPU::hasFeature(X86Feature::FMA))
         {
             double a[4] __attribute__((aligned(32))) = { 0.1, 0.9, 0.7, 0.5 };
             double b[4] __attribute__((aligned(32))) = { 0.8, 0.5, 0.3, 0.9 };
@@ -117,7 +117,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_fma3_fma3);
 
     TEST_CASE("vfmsub213ps");
     {
-        if (CPU::hasFlag(X86Feature::FMA))
+        if (CPU::hasFeature(X86Feature::FMA))
         {
             float a[8] __attribute__((aligned(32))) = { 0.1, 0.9, 0.7, 0.5, 0.7, 0.3, 0.4, 0.9 };
             float b[8] __attribute__((aligned(32))) = { 0.8, 0.5, 0.3, 0.9, 0.9, 0.7, 0.5, 0.7 };
@@ -173,7 +173,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_fma3_fma3);
 
     TEST_CASE("vfmsub213pd");
     {
-        if (CPU::hasFlag(X86Feature::FMA))
+        if (CPU::hasFeature(X86Feature::FMA))
         {
             double a[4] __attribute__((aligned(32))) = { 0.1, 0.9, 0.7, 0.5 };
             double b[4] __attribute__((aligned(32))) = { 0.8, 0.5, 0.3, 0.9 };

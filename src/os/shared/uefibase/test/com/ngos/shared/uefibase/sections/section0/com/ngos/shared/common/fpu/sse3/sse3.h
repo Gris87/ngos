@@ -27,7 +27,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 {
     TEST_CASE("addsubps");
     {
-        if (CPU::hasFlag(X86Feature::XMM3))
+        if (CPU::hasFeature(X86Feature::XMM3))
         {
             float a[4] = { 0.5, 0.4, 0.2, 0.1 };
             float b[4] = { 0.8, 0.3, 0.8, 0.6 };
@@ -61,7 +61,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 
     TEST_CASE("addsubpd");
     {
-        if (CPU::hasFlag(X86Feature::XMM3))
+        if (CPU::hasFeature(X86Feature::XMM3))
         {
             double a[2] = { 0.5, 0.4 };
             double b[2] = { 0.8, 0.3 };
@@ -89,7 +89,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 
     TEST_CASE("haddps");
     {
-        if (CPU::hasFlag(X86Feature::XMM3))
+        if (CPU::hasFeature(X86Feature::XMM3))
         {
             float a[4] = { 0.8, 0.5, 0.7, 0.4 };
             float b[4] = { 0.3, 0.2, 0.4, 0.6 };
@@ -123,7 +123,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 
     TEST_CASE("haddpd");
     {
-        if (CPU::hasFlag(X86Feature::XMM3))
+        if (CPU::hasFeature(X86Feature::XMM3))
         {
             double a[2] = { 0.1, 0.6 };
             double b[2] = { 0.7, 0.8 };
@@ -151,7 +151,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 
     TEST_CASE("hsubps");
     {
-        if (CPU::hasFlag(X86Feature::XMM3))
+        if (CPU::hasFeature(X86Feature::XMM3))
         {
             float a[4] = { 0.1, 0.7, 0.5, 0.9 };
             float b[4] = { 0.2, 0.8, 0.3, 0.7 };
@@ -185,7 +185,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 
     TEST_CASE("hsubpd");
     {
-        if (CPU::hasFlag(X86Feature::XMM3))
+        if (CPU::hasFeature(X86Feature::XMM3))
         {
             double a[2] = { 0.5, 0.3 };
             double b[2] = { 0.9, 0.2 };
@@ -213,7 +213,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 
     TEST_CASE("phaddw");
     {
-        if (CPU::hasFlag(X86Feature::SSSE3))
+        if (CPU::hasFeature(X86Feature::SSSE3))
         {
             u16 a[8] = { 6, 3, 12, 90, 37, 25, 19, 34 };
             u16 b[8] = { 9, 7, 67, 34, 24, 79, 20, 74 };
@@ -259,7 +259,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 
     TEST_CASE("phaddd");
     {
-        if (CPU::hasFlag(X86Feature::SSSE3))
+        if (CPU::hasFeature(X86Feature::SSSE3))
         {
             u32 a[4] = { 6, 3, 12, 90 };
             u32 b[4] = { 9, 7, 67, 34 };
@@ -293,7 +293,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 
     TEST_CASE("phsubw");
     {
-        if (CPU::hasFlag(X86Feature::SSSE3))
+        if (CPU::hasFeature(X86Feature::SSSE3))
         {
             u16 a[8] = { 6, 3, 12, 90, 37, 25, 19, 34 };
             u16 b[8] = { 9, 7, 67, 34, 24, 79, 20, 74 };
@@ -339,7 +339,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 
     TEST_CASE("phsubd");
     {
-        if (CPU::hasFlag(X86Feature::SSSE3))
+        if (CPU::hasFeature(X86Feature::SSSE3))
         {
             u32 a[4] = { 6, 3, 12, 90 };
             u32 b[4] = { 9, 7, 67, 34 };

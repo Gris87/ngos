@@ -26,7 +26,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx512f_avx512f);
 {
     TEST_CASE("vaddps");
     {
-        if (CPU::hasFlag(X86Feature::AVX512F))
+        if (CPU::hasFeature(X86Feature::AVX512F))
         {
             float a[16] __attribute__((aligned(64))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1, 0.9, 0.4, 0.5, 0.7, 0.1, 0.3, 0.9, 0.3 };
             float b[16] __attribute__((aligned(64))) = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1, 0.6, 0.9, 0.4, 0.3, 0.7, 0.2, 0.8, 0.7 };
@@ -96,7 +96,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx512f_avx512f);
 
     TEST_CASE("vsubps");
     {
-        if (CPU::hasFlag(X86Feature::AVX512F))
+        if (CPU::hasFeature(X86Feature::AVX512F))
         {
             float a[16] __attribute__((aligned(64))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1, 0.9, 0.4, 0.5, 0.7, 0.1, 0.3, 0.9, 0.3 };
             float b[16] __attribute__((aligned(64))) = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1, 0.6, 0.9, 0.4, 0.3, 0.7, 0.2, 0.8, 0.7 };
@@ -166,7 +166,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx512f_avx512f);
 
     TEST_CASE("vmulps");
     {
-        if (CPU::hasFlag(X86Feature::AVX512F))
+        if (CPU::hasFeature(X86Feature::AVX512F))
         {
             float a[16] __attribute__((aligned(64))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1, 0.9, 0.4, 0.5, 0.7, 0.1, 0.3, 0.9, 0.3 };
             float b[16] __attribute__((aligned(64))) = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1, 0.6, 0.9, 0.4, 0.3, 0.7, 0.2, 0.8, 0.7 };
@@ -236,7 +236,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx512f_avx512f);
 
     TEST_CASE("vdivps");
     {
-        if (CPU::hasFlag(X86Feature::AVX512F))
+        if (CPU::hasFeature(X86Feature::AVX512F))
         {
             float a[16] __attribute__((aligned(64))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1, 0.9, 0.4, 0.5, 0.7, 0.1, 0.3, 0.9, 0.3 };
             float b[16] __attribute__((aligned(64))) = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1, 0.6, 0.9, 0.4, 0.3, 0.7, 0.2, 0.8, 0.7 };
@@ -306,7 +306,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx512f_avx512f);
 
     TEST_CASE("vsqrtps");
     {
-        if (CPU::hasFlag(X86Feature::AVX512F))
+        if (CPU::hasFeature(X86Feature::AVX512F))
         {
             float a[16] __attribute__((aligned(64))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1, 0.9, 0.4, 0.5, 0.7, 0.1, 0.3, 0.9, 0.3 };
             float b[16] __attribute__((aligned(64)));
@@ -358,7 +358,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx512f_avx512f);
 
     TEST_CASE("vrcp14ps");
     {
-        if (CPU::hasFlag(X86Feature::AVX512F))
+        if (CPU::hasFeature(X86Feature::AVX512F))
         {
             float a[16] __attribute__((aligned(64))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1, 0.9, 0.4, 0.5, 0.7, 0.1, 0.3, 0.9, 0.3 };
             float b[16] __attribute__((aligned(64)));
@@ -410,7 +410,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx512f_avx512f);
 
     TEST_CASE("vrsqrt14ps");
     {
-        if (CPU::hasFlag(X86Feature::AVX512F))
+        if (CPU::hasFeature(X86Feature::AVX512F))
         {
             float a[16] __attribute__((aligned(64))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1, 0.9, 0.4, 0.5, 0.7, 0.1, 0.3, 0.9, 0.3 };
             float b[16] __attribute__((aligned(64)));
@@ -462,7 +462,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx512f_avx512f);
 
     TEST_CASE("vmaxps");
     {
-        if (CPU::hasFlag(X86Feature::AVX512F))
+        if (CPU::hasFeature(X86Feature::AVX512F))
         {
             float a[16] __attribute__((aligned(64))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1, 0.9, 0.4, 0.5, 0.7, 0.1, 0.3, 0.9, 0.3 };
             float b[16] __attribute__((aligned(64))) = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1, 0.6, 0.9, 0.4, 0.3, 0.7, 0.2, 0.8, 0.7 };
@@ -532,7 +532,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx512f_avx512f);
 
     TEST_CASE("vminps");
     {
-        if (CPU::hasFlag(X86Feature::AVX512F))
+        if (CPU::hasFeature(X86Feature::AVX512F))
         {
             float a[16] __attribute__((aligned(64))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1, 0.9, 0.4, 0.5, 0.7, 0.1, 0.3, 0.9, 0.3 };
             float b[16] __attribute__((aligned(64))) = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1, 0.6, 0.9, 0.4, 0.3, 0.7, 0.2, 0.8, 0.7 };

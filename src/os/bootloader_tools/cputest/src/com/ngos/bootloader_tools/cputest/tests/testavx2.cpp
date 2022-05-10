@@ -31,7 +31,7 @@ void UEFI_API testAvx2Procedure(void *buffer)
 
     TestAvx2 *test = (TestAvx2 *)buffer;
 
-    if (CPU::hasFlag(X86Feature::AVX2))
+    if (CPU::hasFeature(X86Feature::AVX2))
     {
         u16 a[16] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97, 19, 34, 27, 18, 74, 85, 36, 39 };
         u16 b[16] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44, 67, 39, 26, 17, 34, 24, 86, 26 };

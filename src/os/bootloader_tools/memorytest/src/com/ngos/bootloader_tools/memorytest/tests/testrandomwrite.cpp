@@ -43,7 +43,7 @@ void UEFI_API testRandomWriteProcedure(void *buffer)
 
     u64 startTime = AsmUtils::rdtsc();
 
-    if (CPU::hasFlag(X86Feature::RDRAND))
+    if (CPU::hasFeature(X86Feature::RDRAND))
     {
         for (good_I64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
         {

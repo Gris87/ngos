@@ -31,7 +31,7 @@ void UEFI_API testAvx512DqProcedure(void *buffer)
 
     TestAvx512Dq *test = (TestAvx512Dq *)buffer;
 
-    if (CPU::hasFlag(X86Feature::AVX512DQ))
+    if (CPU::hasFeature(X86Feature::AVX512DQ))
     {
         double a[8]  __attribute__((aligned(64))) = { 0.1, 0.9, 12378.4, 12389.6, 1234879.15, 1232134513216.9, 832198789.0, 321983217.98 };
         float  b[16] __attribute__((aligned(64))) = { 0.1, 0.9, 12378.4, 12389.6, 24879.15, 21216.9, 18789.0, 23217.98, 0, 0, 0, 0, 0, 0, 0, 0 };

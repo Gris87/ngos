@@ -170,7 +170,7 @@ AES::AES()
 {
     // COMMON_LT(("")); // Commented to avoid bad looking logs
 
-    COMMON_TEST_ASSERT(CPU::hasFlag(X86Feature::AES));
+    COMMON_TEST_ASSERT(CPU::hasFeature(X86Feature::AES));
 }
 
 AES::~AES()

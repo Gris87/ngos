@@ -31,7 +31,7 @@ void UEFI_API testAvxProcedure(void *buffer)
 
     TestAvx *test = (TestAvx *)buffer;
 
-    if (CPU::hasFlag(X86Feature::AVX))
+    if (CPU::hasFeature(X86Feature::AVX))
     {
         float a[8] __attribute__((aligned(32))) = { 0.5, 0.4, 0.2, 0.1, 0.3, 0.7, 0.2, 0.1 };
         float b[8] __attribute__((aligned(32))) = { 0.8, 0.3, 0.8, 0.6, 0.9, 0.8, 0.7, 0.1 };

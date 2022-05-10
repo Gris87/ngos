@@ -21,7 +21,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx2_avx2);
 {
     TEST_CASE("vphaddw");
     {
-        if (CPU::hasFlag(X86Feature::AVX2))
+        if (CPU::hasFeature(X86Feature::AVX2))
         {
             u16 a[16] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97, 19, 34, 27, 18, 74, 85, 36, 39 };
             u16 b[16] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44, 67, 39, 26, 17, 34, 24, 86, 26 };
@@ -91,7 +91,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx2_avx2);
 
     TEST_CASE("vphaddd");
     {
-        if (CPU::hasFlag(X86Feature::AVX2))
+        if (CPU::hasFeature(X86Feature::AVX2))
         {
             u32 a[8] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97 };
             u32 b[8] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44 };
@@ -137,7 +137,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx2_avx2);
 
     TEST_CASE("vphsubw");
     {
-        if (CPU::hasFlag(X86Feature::AVX2))
+        if (CPU::hasFeature(X86Feature::AVX2))
         {
             u16 a[16] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97, 19, 34, 27, 18, 74, 85, 36, 39 };
             u16 b[16] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44, 67, 39, 26, 17, 34, 24, 86, 26 };
@@ -207,7 +207,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx2_avx2);
 
     TEST_CASE("vphsubd");
     {
-        if (CPU::hasFlag(X86Feature::AVX2))
+        if (CPU::hasFeature(X86Feature::AVX2))
         {
             u32 a[8] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97 };
             u32 b[8] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44 };

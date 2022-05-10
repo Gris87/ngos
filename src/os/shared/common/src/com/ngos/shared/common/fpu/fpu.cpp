@@ -265,7 +265,7 @@ NgosStatus FPU::initXState()
         // Disabling X features if CPU doesn't support necessary flags
         {
             if (
-                !CPU::hasFlag(X86Feature::AVX)
+                !CPU::hasFeature(X86Feature::AVX)
                 &&
                 hasFlag(XFeatureTypeFlag::AVX)
                )
@@ -278,7 +278,7 @@ NgosStatus FPU::initXState()
 
 
             if (
-                !CPU::hasFlag(X86Feature::MPX)
+                !CPU::hasFeature(X86Feature::MPX)
                 &&
                 (
                  hasFlag(XFeatureTypeFlag::MPX_BOUND_REGISTERS)
@@ -296,7 +296,7 @@ NgosStatus FPU::initXState()
 
 
             if (
-                !CPU::hasFlag(X86Feature::AVX512F)
+                !CPU::hasFeature(X86Feature::AVX512F)
                 &&
                 (
                  hasFlag(XFeatureTypeFlag::AVX512_OPMASK)
@@ -317,7 +317,7 @@ NgosStatus FPU::initXState()
 
 
             if (
-                !CPU::hasFlag(X86Feature::INTEL_PT)
+                !CPU::hasFeature(X86Feature::INTEL_PT)
                 &&
                 hasFlag(XFeatureTypeFlag::PT)
                )
@@ -330,7 +330,7 @@ NgosStatus FPU::initXState()
 
 
             if (
-                !CPU::hasFlag(X86Feature::PKU)
+                !CPU::hasFeature(X86Feature::PKU)
                 &&
                 hasFlag(XFeatureTypeFlag::PKRU)
                )
@@ -418,7 +418,7 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
 
 
 
-    if (CPU::hasFlag(X86Feature::XSAVES))
+    if (CPU::hasFeature(X86Feature::XSAVES))
     {
         COMMON_LVV(("X86Feature::XSAVES supported"));
 
@@ -465,7 +465,7 @@ NgosStatus FPU::initStateSizes()
     // containing all the *user* state components corresponding to bits currently set in XCR0
     COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, 0, &ignored, &sStateUserSize, &ignored, &ignored), NgosStatus::ASSERTION);
 
-    if (CPU::hasFlag(X86Feature::XSAVES))
+    if (CPU::hasFeature(X86Feature::XSAVES))
     {
         COMMON_LVV(("X86Feature::XSAVES supported"));
 
@@ -500,7 +500,7 @@ NgosStatus FPU::copyStateFromFPU() // TODO: check is it from FPU?
 
 
 
-    if (CPU::hasFlag(X86Feature::XSAVES))
+    if (CPU::hasFeature(X86Feature::XSAVES))
     {
         COMMON_LVV(("X86Feature::XSAVES supported"));
 
@@ -527,7 +527,7 @@ NgosStatus FPU::copyStateToFPU()
 
 
 
-    if (CPU::hasFlag(X86Feature::XSAVES))
+    if (CPU::hasFeature(X86Feature::XSAVES))
     {
         COMMON_LVV(("X86Feature::XSAVES supported"));
 
@@ -734,7 +734,7 @@ u32 FPU::expectedStateSize()
 
 
             if (
-                !CPU::hasFlag(X86Feature::XSAVES)
+                !CPU::hasFeature(X86Feature::XSAVES)
                 &&
                 isXFeatureSupervisor(feature)
                )
@@ -753,7 +753,7 @@ u32 FPU::expectedStateSize()
 
 
 
-            if (!CPU::hasFlag(X86Feature::XSAVES))
+            if (!CPU::hasFeature(X86Feature::XSAVES))
             {
                 COMMON_TEST_ASSERT(sXFeaturesOffsets[i] != 0, 0);
 

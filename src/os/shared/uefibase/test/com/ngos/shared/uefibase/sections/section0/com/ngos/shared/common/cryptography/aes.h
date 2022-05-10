@@ -24,7 +24,7 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 {
     TEST_CASE("AES()");
     {
-        if (CPU::hasFlag(X86Feature::AES))
+        if (CPU::hasFeature(X86Feature::AES))
         {
             AES aes;
 
@@ -46,7 +46,7 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
     TEST_CASE("setKey()/releaseKey()");
     {
-        if (CPU::hasFlag(X86Feature::AES))
+        if (CPU::hasFeature(X86Feature::AES))
         {
             AES aes;
 
@@ -169,7 +169,7 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
     TEST_CASE("encode()");
     {
-        if (CPU::hasFlag(X86Feature::AES))
+        if (CPU::hasFeature(X86Feature::AES))
         {
             AES aes;
 
@@ -317,7 +317,7 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
     TEST_CASE("decode()");
     {
-        if (CPU::hasFlag(X86Feature::AES))
+        if (CPU::hasFeature(X86Feature::AES))
         {
             AES aes;
 
@@ -457,7 +457,7 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
     TEST_CASE("encode()/decode(). Huge data");
     {
-        if (CPU::hasFlag(X86Feature::AES))
+        if (CPU::hasFeature(X86Feature::AES))
         {
             AES aes;
 

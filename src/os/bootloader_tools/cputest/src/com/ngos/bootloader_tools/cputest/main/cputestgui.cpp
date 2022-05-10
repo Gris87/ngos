@@ -973,7 +973,7 @@ NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 posX, u64 posY, u64 
     RgbaPixel shadowColor;
     RgbaPixel textColor;
 
-    if (CPU::hasFlag(flag))
+    if (CPU::hasFeature(flag))
     {
         shadowColor.value32 = FEATURE_ENABLED_SHADOW_COLOR;
         textColor.value32   = FEATURE_ENABLED_TEXT_COLOR;
@@ -1029,119 +1029,119 @@ NgosStatus CpuTestGUI::fillIssuesTable()
 
 
 
-    if (!CPU::hasFlag(X86Feature::CPUID))
+    if (!CPU::hasFeature(X86Feature::CPUID))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support CPUID that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::FPU))
+    if (!CPU::hasFeature(X86Feature::FPU))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FPU that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::LM))
+    if (!CPU::hasFeature(X86Feature::LM))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support LM that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::MSR))
+    if (!CPU::hasFeature(X86Feature::MSR))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support MSR that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::PAE))
+    if (!CPU::hasFeature(X86Feature::PAE))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support PAE that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::NX))
+    if (!CPU::hasFeature(X86Feature::NX))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support NX that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::TSC))
+    if (!CPU::hasFeature(X86Feature::TSC))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support TSC that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::FXSR))
+    if (!CPU::hasFeature(X86Feature::FXSR))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FXSR that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::XSAVE))
+    if (!CPU::hasFeature(X86Feature::XSAVE))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support XSAVE that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::AES))
+    if (!CPU::hasFeature(X86Feature::AES))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support AES that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::CX8))
+    if (!CPU::hasFeature(X86Feature::CX8))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support CX8 that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::CMOV))
+    if (!CPU::hasFeature(X86Feature::CMOV))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support CMOV that highly required"), NgosStatus::ASSERTION);
     }
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-    if (!CPU::hasFlag(X86Feature::LA57))
+    if (!CPU::hasFeature(X86Feature::LA57))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support LA57 that highly required"), NgosStatus::ASSERTION);
     }
 #endif
 
-    if (!CPU::hasFlag(X86Feature::FMA))
+    if (!CPU::hasFeature(X86Feature::FMA))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FMA3 that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::XMM))
+    if (!CPU::hasFeature(X86Feature::XMM))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::XMM2))
+    if (!CPU::hasFeature(X86Feature::XMM2))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE2 that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::XMM3))
+    if (!CPU::hasFeature(X86Feature::XMM3))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE3 that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::SSSE3))
+    if (!CPU::hasFeature(X86Feature::SSSE3))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSSE3 that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::XMM4_1))
+    if (!CPU::hasFeature(X86Feature::XMM4_1))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE4.1 that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::XMM4_2))
+    if (!CPU::hasFeature(X86Feature::XMM4_2))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE4.2 that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::AVX))
+    if (!CPU::hasFeature(X86Feature::AVX))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support AVX that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::AVX2))
+    if (!CPU::hasFeature(X86Feature::AVX2))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support AVX2 that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFlag(X86Feature::AVX512F))
+    if (!CPU::hasFeature(X86Feature::AVX512F))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sWarningImage, "CPU doesn't support AVX512F for best performance"), NgosStatus::ASSERTION);
     }
@@ -1316,7 +1316,7 @@ NgosStatus CpuTestGUI::addSummaryFeature(X86Feature flag, u64 score)
 
 
 
-    if (CPU::hasFlag(flag))
+    if (CPU::hasFeature(flag))
     {
         const char8 *flagText = x86FeaturesNames[(u64)flag];
         UEFI_TEST_ASSERT(flagText != nullptr && flagText[0] != 0, NgosStatus::ASSERTION);

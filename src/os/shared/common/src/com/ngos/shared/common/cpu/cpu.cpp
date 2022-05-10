@@ -1,47 +1,47 @@
-#include "cpu.h"
-
-#include <com/ngos/shared/common/asm/bitutils.h>
-#include <com/ngos/shared/common/cpu/lib/registers/x86flags.h>
-#include <com/ngos/shared/common/cpu/lib/generated/x86bugsnames.h>
-#include <com/ngos/shared/common/cpu/lib/generated/x86featuresnames.h>
-#include <com/ngos/shared/common/cpu/lib/generated/amdcpumodel.h>
-#include <com/ngos/shared/common/cpu/lib/cpumodel.h>
-#include <com/ngos/shared/common/cpu/lib/generated/intelcpumodel.h>
-#include <com/ngos/shared/common/msr/msr.h>
-#include <com/ngos/shared/common/msr/msrregisters.h>
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/linkage.h>
-#include <com/ngos/shared/common/printf/printf.h>
-#include <com/ngos/shared/common/string/string.h>
-
-
-
-#define INTEL_MINIMAL_FAMILY static_cast<good_U16>(CpuFamily::INTEL_FAMILY_6)
-#define INTEL_MINIMAL_MODEL  static_cast<good_U8>(IntelCpuModel::FAMILY_6_HASWELL_CLIENT_S)
-
-#define AMD_MINIMAL_FAMILY static_cast<good_U16>(CpuFamily::AMD_FAMILY_23)
-#define AMD_MINIMAL_MODEL  static_cast<good_U8>(AmdCpuModel::FAMILY_23_NAPLES)
-
-#define CPUID_LEVEL_LOWER_BOUND     0x00000001
-#define CPUID_LEVEL_UPPER_BOUND     0x0000FFFF
-
-#define EXT_CPUID_LEVEL_LOWER_BOUND 0x80000001
-#define EXT_CPUID_LEVEL_UPPER_BOUND 0x8000FFFF
-
-#define CPUID_EAX 0
-#define CPUID_EBX 1
-#define CPUID_ECX 2
-#define CPUID_EDX 3
-
-
-
-CpuidVendor    CPU::sVendor;
-CpuVendor      CPU::sCpuVendor;
-CpuidModelName CPU::sModelName;
+#include "cpu.h"                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/asm/bitutils.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/registers/x86flags.h>                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/generated/x86bugsnames.h>                                                                                                                                       // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/generated/x86featuresnames.h>                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/generated/amdcpumodel.h>                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/cpumodel.h>                                                                                                                                                     // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/generated/intelcpumodel.h>                                                                                                                                      // Colorize: green
+#include <com/ngos/shared/common/msr/msr.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/msr/msrregisters.h>                                                                                                                                                     // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/linkage.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/string/string.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define INTEL_MINIMAL_FAMILY static_cast<good_U16>(CpuFamily::INTEL_FAMILY_6)                                                                                                                            // Colorize: green
+#define INTEL_MINIMAL_MODEL  static_cast<good_U8>(IntelCpuModel::FAMILY_6_HASWELL_CLIENT_S)                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define AMD_MINIMAL_FAMILY static_cast<good_U16>(CpuFamily::AMD_FAMILY_23)                                                                                                                               // Colorize: green
+#define AMD_MINIMAL_MODEL  static_cast<good_U8>(AmdCpuModel::FAMILY_23_NAPLES)                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define CPUID_LEVEL_LOWER_BOUND     0x00000001                                                                                                                                                           // Colorize: green
+#define CPUID_LEVEL_UPPER_BOUND     0x0000FFFF                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define EXT_CPUID_LEVEL_LOWER_BOUND 0x80000001                                                                                                                                                           // Colorize: green
+#define EXT_CPUID_LEVEL_UPPER_BOUND 0x8000FFFF                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define CPUID_EAX 0                                                                                                                                                                                      // Colorize: green
+#define CPUID_EBX 1                                                                                                                                                                                      // Colorize: green
+#define CPUID_ECX 2                                                                                                                                                                                      // Colorize: green
+#define CPUID_EDX 3                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CpuidVendor    CPU::sVendor;                                                                                                                                                                             // Colorize: green
+CpuVendor      CPU::sCpuVendor;                                                                                                                                                                          // Colorize: green
+CpuidModelName CPU::sModelName;                                                                                                                                                                          // Colorize: green
 u32            CPU::sCpuidLevel;
 u32            CPU::sExtendedCpuidLevel;
-CpuFamily      CPU::sFamily;
+CpuFamily      CPU::sFamily;                                                                                                                                                                             // Colorize: green
 u8             CPU::sModel;
 u8             CPU::sStepping;
 u32            CPU::sMicrocodeRevision;
@@ -56,28 +56,31 @@ i32            CPU::sCacheOccScale;
 u32            CPU::sPower;
 u8             CPU::sPhysicalBits;
 u8             CPU::sVirtualBits;
-u32            CPU::sFlags[(enum_t)x86FeatureWord::MAXIMUM];
-u32            CPU::sBugs[(enum_t)x86BugWord::MAXIMUM];
-
-
-
-NgosStatus CPU::init()
-{
-    COMMON_LT((""));
-
-
-
-    sNumberOfCores      = 1;
-    sNumberOfThreads    = 1;
-    sCacheLineFlushSize = 64;
-    sCacheAlignment     = 64;
-    sCacheMaxRmid       = -1;
-    sCacheOccScale      = -1;
-    sPhysicalBits       = 36;
-    sVirtualBits        = 48;
-
-
-
+good_U32       CPU::sFeatures[(enum_t)x86FeatureWord::MAXIMUM];                                                                                                                                          // Colorize: green
+good_U32       CPU::sBugs[(enum_t)x86BugWord::MAXIMUM];                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus CPU::init()                                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Set default values                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        sNumberOfCores      = 1;                                                                                                                                                                         // Colorize: green
+        sNumberOfThreads    = 1;                                                                                                                                                                         // Colorize: green
+        sCacheLineFlushSize = 64;                                                                                                                                                                        // Colorize: green
+        sCacheAlignment     = 64;                                                                                                                                                                        // Colorize: green
+        sCacheMaxRmid       = -1;                                                                                                                                                                        // Colorize: green
+        sCacheOccScale      = -1;                                                                                                                                                                        // Colorize: green
+        sPhysicalBits       = 36;                                                                                                                                                                        // Colorize: green
+        sVirtualBits        = 48;                                                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
     // Check that CPUID supported                                                                                                                                                                        // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
         if (!hasX86Flags(FLAGS(X86Flag::CPUID_SUPPORTED)))                                                                                                                                                        // Colorize: green
@@ -92,9 +95,8 @@ NgosStatus CPU::init()
 
     COMMON_LVV(("CPUID detection available"));
 
-    COMMON_ASSERT_EXECUTION(setFlag(X86Feature::CPUID),       NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setFeature(X86Feature::CPUID),       NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(initCpuFeatures(),                NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setFlag(X86Feature::ALWAYS),      NgosStatus::ASSERTION); // TODO: Do we really need it?
     COMMON_ASSERT_EXECUTION(initScatteredFeatures(),          NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(initSpeculationControl(),         NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(doPostprocessing(),               NgosStatus::ASSERTION);
@@ -145,11 +147,11 @@ NgosStatus CPU::init()
 
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
         {
-            COMMON_LVVV(("CPU flags:"));
+            COMMON_LVVV(("CPU features:"));
 
             for (good_I64 i = 0; i < (i64)x86FeatureWord::MAXIMUM; ++i)
             {
-                COMMON_LVVV(("sFlags[%-27s] = 0x%08X", enumToFullString((x86FeatureWord)i), sFlags[i]));
+                COMMON_LVVV(("sFeatures[%-27s] = 0x%08X", enumToFullString((x86FeatureWord)i), sFeatures[i]));
             }
 
             COMMON_LVVV(("CPU bugs:"));
@@ -202,22 +204,22 @@ NgosStatus CPU::init()
         // COMMON_TEST_ASSERT(sPhysicalBits                 == 40,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sVirtualBits                  == 57,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT((enum_t)x86FeatureWord::MAXIMUM  == 16,                                                                                NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sFlags[0]                     == 0x82D82203,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[1]                     == 0x178BFBFD,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[2]                     == 0x00000004,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[3]                     == 0x00184389,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[4]                     == 0x00010000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[5]                     == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[6]                     == 0x00000005,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[7]                     == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[8]                     == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[9]                     == 0x00000021,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[10]                    == 0x28100800,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[11]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[12]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[13]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[14]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sFlags[15]                    == 0x0000000D,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[0]                  == 0x82D82203,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[1]                  == 0x178BFBFD,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[2]                  == 0x00000004,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[3]                  == 0x00184389,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[4]                  == 0x00010000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[5]                  == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[6]                  == 0x00000005,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[7]                  == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[8]                  == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[9]                  == 0x00000021,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[10]                 == 0x28100800,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[11]                 == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[12]                 == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[13]                 == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[14]                 == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
+        // COMMON_TEST_ASSERT(sFeatures[15]                 == 0x0000000D,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT((u64)x86BugWord::MAXIMUM         == 1,                                                                                 NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sBugs[0]                      == 0x0000003E,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         // Ignore CppAlignmentVerifier [END]
@@ -228,7 +230,7 @@ NgosStatus CPU::init()
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::toString(char8 *buffer, u16 size)
+NgosStatus CPU::toString(good_Char8 *buffer, u16 size)
 {
     COMMON_LT((" | buffer = 0x%p, size = %u", buffer, size));
 
@@ -274,7 +276,7 @@ NgosStatus CPU::toString(char8 *buffer, u16 size)
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::flagsToString(char8 *buffer, u16 size)
+NgosStatus CPU::featuresToString(good_Char8 *buffer, u16 size)
 {
     COMMON_LT((" | buffer = 0x%p, size = %u", buffer, size));
 
@@ -291,13 +293,13 @@ NgosStatus CPU::flagsToString(char8 *buffer, u16 size)
 
     for (good_I64 i = 0; i < (i64)x86FeatureWord::MAXIMUM; ++i)
     {
-        u32 flag = sFlags[i];
+        u32 feature = sFeatures[i];
 
         for (good_I64 j = 0; j < 32; ++j)
         {
-            if (flag & (1ULL << j))
+            if ((feature & (1ULL << j)) != 0)
             {
-                const char8 *featureName = x86FeaturesNames[WORD_BIT(i, j)];
+                const good_Char8 *featureName = x86FeaturesNames[WORD_BIT(i, j)];
 
                 if (*featureName)
                 {
@@ -335,7 +337,7 @@ NgosStatus CPU::flagsToString(char8 *buffer, u16 size)
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::bugsToString(char8 *buffer, u16 size)
+NgosStatus CPU::bugsToString(good_Char8 *buffer, u16 size)
 {
     COMMON_LT((" | buffer = 0x%p, size = %u", buffer, size));
 
@@ -358,7 +360,7 @@ NgosStatus CPU::bugsToString(char8 *buffer, u16 size)
         {
             if (bug & (1ULL << j))
             {
-                const char8 *bugName = x86BugsNames[WORD_BIT(i, j)];
+                const good_Char8 *bugName = x86BugsNames[WORD_BIT(i, j)];
 
                 if (*bugName)
                 {
@@ -396,18 +398,17 @@ NgosStatus CPU::bugsToString(char8 *buffer, u16 size)
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::check(const char8 **wantedFlag)
+NgosStatus CPU::check(const good_Char8 **wantedFeature)
 {
-    COMMON_LT((" | wantedFlag = 0x%p", wantedFlag));
+    COMMON_LT((" | wantedFeature = 0x%p", wantedFeature));
 
-    COMMON_ASSERT(wantedFlag != nullptr, "wantedFlag is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(wantedFeature != nullptr, "wantedFeature is null", NgosStatus::ASSERTION);
 
 
 
-    X86Feature flags[] =
+    X86Feature features[] =
     {
-        X86Feature::ALWAYS
-        , X86Feature::CPUID
+        X86Feature::CPUID
         , X86Feature::FPU
         , X86Feature::LM
         , X86Feature::MSR
@@ -468,16 +469,16 @@ NgosStatus CPU::check(const char8 **wantedFlag)
 
 
 
-    i64 flagsCount = ARRAY_COUNT(flags);
-    COMMON_LVVV(("flagsCount = %d", flagsCount));
+    i64 featuresCount = ARRAY_COUNT(features);
+    COMMON_LVVV(("featuresCount = %d", featuresCount));
 
-    for (good_I64 i = 0; i < flagsCount; ++i)
+    for (good_I64 i = 0; i < featuresCount; ++i)
     {
-        X86Feature flag = flags[i];
+        X86Feature feature = features[i];
 
-        if (!hasFlag(flag))
+        if (!hasFeature(feature))
         {
-            *wantedFlag = x86FeaturesNames[(u64)flag];
+            *wantedFeature = x86FeaturesNames[(u64)feature];
 
             return NgosStatus::NOT_SUPPORTED;
         }
@@ -565,7 +566,7 @@ CpuVendor CPU::getVendor()
     return sCpuVendor;
 }
 
-char8* CPU::getModelName()
+good_Char8* CPU::getModelName()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -628,45 +629,45 @@ u32 CPU::getNumberOfThreads()
     return sNumberOfThreads;
 }
 
-NgosStatus CPU::setFlag(X86Feature flag)
+NgosStatus CPU::setFeature(X86Feature feature)
 {
-    COMMON_LT((" | flag = 0x%04X", flag));
+    COMMON_LT((" | feature = 0x%04X", feature));
 
-    COMMON_ASSERT(((u64)flag / 32) < (u64)x86FeatureWord::MAXIMUM, "flag is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(((u64)feature / 32) < (u64)x86FeatureWord::MAXIMUM, "feature is invalid", NgosStatus::ASSERTION);
 
 
 
-    COMMON_ASSERT_EXECUTION(BitUtils::set((u8 *)sFlags, (u64)flag), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(BitUtils::set((u8 *)sFeatures, (u64)feature), NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::clearFlag(X86Feature flag)
+NgosStatus CPU::clearFeature(X86Feature feature)
 {
-    COMMON_LT((" | flag = 0x%04X", flag));
+    COMMON_LT((" | feature = 0x%04X", feature));
 
-    COMMON_ASSERT(((u64)flag / 32) < (u64)x86FeatureWord::MAXIMUM, "flag is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(((u64)feature / 32) < (u64)x86FeatureWord::MAXIMUM, "feature is invalid", NgosStatus::ASSERTION);
 
 
 
-    COMMON_ASSERT_EXECUTION(BitUtils::clear((u8 *)sFlags, (u64)flag), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(BitUtils::clear((u8 *)sFeatures, (u64)feature), NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-bool CPU::hasFlag(X86Feature flag)
+bool CPU::hasFeature(X86Feature feature)
 {
-    // COMMON_LT((" | flag = 0x%04X", flag)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | feature = 0x%04X", feature)); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(((u64)flag / 32) < (u64)x86FeatureWord::MAXIMUM, "flag is invalid", false);
+    COMMON_ASSERT(((u64)feature / 32) < (u64)x86FeatureWord::MAXIMUM, "feature is invalid", false);
 
 
 
-    return BitUtils::test((u8 *)sFlags, (u64)flag);
+    return BitUtils::test((u8 *)sFeatures, (u64)feature);
 }
 
 NgosStatus CPU::setBug(X86Bug bug)
@@ -844,7 +845,7 @@ NgosStatus CPU::initCpuFeatures()
             u32 tfms;
             u32 misc;
 
-            COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &tfms, &misc, &sFlags[(u64)x86FeatureWord::CPUID_00000001_ECX], &sFlags[(u64)x86FeatureWord::CPUID_00000001_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &tfms, &misc, &sFeatures[(u64)x86FeatureWord::CPUID_00000001_ECX], &sFeatures[(u64)x86FeatureWord::CPUID_00000001_EDX]), NgosStatus::ASSERTION);
 
 
 
@@ -869,7 +870,7 @@ NgosStatus CPU::initCpuFeatures()
 
 
 
-            if (hasFlag(X86Feature::CLFLUSH))
+            if (hasFeature(X86Feature::CLFLUSH))
             {
                 COMMON_LVV(("X86Feature::CLFLUSH supported"));
 
@@ -888,7 +889,7 @@ NgosStatus CPU::initCpuFeatures()
 
         if (sCpuidLevel >= 0x00000006)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x00000006, 0, &sFlags[(u64)x86FeatureWord::CPUID_00000006_EAX], &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x00000006, 0, &sFeatures[(u64)x86FeatureWord::CPUID_00000006_EAX], &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
         }
         else
         {
@@ -897,7 +898,7 @@ NgosStatus CPU::initCpuFeatures()
 
         if (sCpuidLevel >= 0x00000007)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x00000007, 0, &ignored, &sFlags[(u64)x86FeatureWord::CPUID_00000007_EBX], &sFlags[(u64)x86FeatureWord::CPUID_00000007_ECX], &sFlags[(u64)x86FeatureWord::CPUID_00000007_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x00000007, 0, &ignored, &sFeatures[(u64)x86FeatureWord::CPUID_00000007_EBX], &sFeatures[(u64)x86FeatureWord::CPUID_00000007_ECX], &sFeatures[(u64)x86FeatureWord::CPUID_00000007_EDX]), NgosStatus::ASSERTION);
         }
         else
         {
@@ -906,7 +907,7 @@ NgosStatus CPU::initCpuFeatures()
 
         if (sCpuidLevel >= 0x0000000D)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x0000000D, 1, &sFlags[(u64)x86FeatureWord::CPUID_0000000D_1_EAX], &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x0000000D, 1, &sFeatures[(u64)x86FeatureWord::CPUID_0000000D_1_EAX], &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
         }
         else
         {
@@ -918,9 +919,9 @@ NgosStatus CPU::initCpuFeatures()
             i32 ebx;
             i32 ecx;
 
-            COMMON_ASSERT_EXECUTION(cpuid(0x0000000F, 0, &ignored, (u32 *)&ebx, &ignored, &sFlags[(u64)x86FeatureWord::CPUID_0000000F_0_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x0000000F, 0, &ignored, (u32 *)&ebx, &ignored, &sFeatures[(u64)x86FeatureWord::CPUID_0000000F_0_EDX]), NgosStatus::ASSERTION);
 
-            if (hasFlag(X86Feature::CQM_LLC))
+            if (hasFeature(X86Feature::CQM_LLC))
             {
                 COMMON_LVV(("X86Feature::CQM_LLC supported"));
 
@@ -928,14 +929,14 @@ NgosStatus CPU::initCpuFeatures()
 
                 sCacheMaxRmid = ebx;
 
-                COMMON_ASSERT_EXECUTION(cpuid(0x0000000F, 1, &ignored, (u32 *)&ebx, (u32 *)&ecx, &sFlags[(u64)x86FeatureWord::CPUID_0000000F_1_EDX]), NgosStatus::ASSERTION);
+                COMMON_ASSERT_EXECUTION(cpuid(0x0000000F, 1, &ignored, (u32 *)&ebx, (u32 *)&ecx, &sFeatures[(u64)x86FeatureWord::CPUID_0000000F_1_EDX]), NgosStatus::ASSERTION);
 
                 if (
-                    hasFlag(X86Feature::CQM_OCCUP_LLC)
+                    hasFeature(X86Feature::CQM_OCCUP_LLC)
                     ||
-                    hasFlag(X86Feature::CQM_MBM_TOTAL)
+                    hasFeature(X86Feature::CQM_MBM_TOTAL)
                     ||
-                    hasFlag(X86Feature::CQM_MBM_LOCAL)
+                    hasFeature(X86Feature::CQM_MBM_LOCAL)
                    )
                 {
                     COMMON_LVV(("X86Feature::CQM_OCCUP_LLC, X86Feature::CQM_MBM_TOTAL or X86Feature::CQM_MBM_LOCAL supported"));
@@ -964,7 +965,7 @@ NgosStatus CPU::initCpuFeatures()
     {
         if (sExtendedCpuidLevel >= 0x80000001)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000001, 0, &ignored, &ignored, &sFlags[(u64)x86FeatureWord::CPUID_80000001_ECX], &sFlags[(u64)x86FeatureWord::CPUID_80000001_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x80000001, 0, &ignored, &ignored, &sFeatures[(u64)x86FeatureWord::CPUID_80000001_ECX], &sFeatures[(u64)x86FeatureWord::CPUID_80000001_EDX]), NgosStatus::ASSERTION);
         }
         else
         {
@@ -980,7 +981,7 @@ NgosStatus CPU::initCpuFeatures()
 
 
             // TODO: Need to extract to a function and provide tests to it
-            char8 *modelStr = sModelName.chars;
+            good_Char8 *modelStr = sModelName.chars;
 
 
 
@@ -1026,7 +1027,7 @@ NgosStatus CPU::initCpuFeatures()
 
         if (sExtendedCpuidLevel >= 0x80000007)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000007, 0, &ignored, &sFlags[(u64)x86FeatureWord::CPUID_80000007_EBX], &ignored, &sPower), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x80000007, 0, &ignored, &sFeatures[(u64)x86FeatureWord::CPUID_80000007_EBX], &ignored, &sPower), NgosStatus::ASSERTION);
         }
         else
         {
@@ -1037,7 +1038,7 @@ NgosStatus CPU::initCpuFeatures()
         {
             u32 misc;
 
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000008, 0, &misc, &sFlags[(u64)x86FeatureWord::CPUID_80000008_EBX], &ignored, &ignored), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x80000008, 0, &misc, &sFeatures[(u64)x86FeatureWord::CPUID_80000008_EBX], &ignored, &ignored), NgosStatus::ASSERTION);
 
             sVirtualBits  = (misc >> 8) & 0xFF;
             sPhysicalBits = misc & 0xFF;
@@ -1049,7 +1050,7 @@ NgosStatus CPU::initCpuFeatures()
 
         if (sExtendedCpuidLevel >= 0x8000000A)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x8000000A, 0, &ignored, &ignored, &ignored, &sFlags[(u64)x86FeatureWord::CPUID_8000000A_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x8000000A, 0, &ignored, &ignored, &ignored, &sFeatures[(u64)x86FeatureWord::CPUID_8000000A_EDX]), NgosStatus::ASSERTION);
         }
         else
         {
@@ -1176,7 +1177,7 @@ NgosStatus CPU::doCommonPreprocessing()
 
 
 
-    if (hasFlag(X86Feature::HT))
+    if (hasFeature(X86Feature::HT))
     {
         COMMON_LVV(("X86Feature::HT supported"));
 
@@ -1255,7 +1256,7 @@ NgosStatus CPU::setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u
 
         if (registers[registerId] & (1ULL << bit))
         {
-            COMMON_ASSERT_EXECUTION(setFlag(feature), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(setFeature(feature), NgosStatus::ASSERTION);
         }
     }
 
@@ -1270,84 +1271,84 @@ NgosStatus CPU::initSpeculationControl()
 
 
 
-    if (hasFlag(X86Feature::SPEC_CTRL))
+    if (hasFeature(X86Feature::SPEC_CTRL))
     {
         COMMON_LVV(("X86Feature::SPEC_CTRL supported"));
         COMMON_LVV(("X86Feature::IBRS set because X86Feature::SPEC_CTRL supported"));
         COMMON_LVV(("X86Feature::IBPB set because X86Feature::SPEC_CTRL supported"));
         COMMON_LVV(("X86Feature::MSR_SPEC_CTRL set because X86Feature::SPEC_CTRL supported"));
 
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::IBRS),          NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::IBPB),          NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::MSR_SPEC_CTRL), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::IBRS),          NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::IBPB),          NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::MSR_SPEC_CTRL), NgosStatus::ASSERTION);
     }
 
 
 
-    if (hasFlag(X86Feature::INTEL_STIBP))
+    if (hasFeature(X86Feature::INTEL_STIBP))
     {
         COMMON_LVV(("X86Feature::INTEL_STIBP supported"));
         COMMON_LVV(("X86Feature::STIBP set because X86Feature::INTEL_STIBP supported"));
 
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::STIBP), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::STIBP), NgosStatus::ASSERTION);
     }
 
 
 
-    if (hasFlag(X86Feature::SPEC_CTRL_SSBD) || hasFlag(X86Feature::VIRT_SSBD))
+    if (hasFeature(X86Feature::SPEC_CTRL_SSBD) || hasFeature(X86Feature::VIRT_SSBD))
     {
         COMMON_LVV(("X86Feature::SPEC_CTRL_SSBD or X86Feature::VIRT_SSBD supported"));
         COMMON_LVV(("X86Feature::SSBD set because X86Feature::SPEC_CTRL_SSBD supported"));
 
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::SSBD), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::SSBD), NgosStatus::ASSERTION);
     }
 
 
 
-    if (hasFlag(X86Feature::AMD_IBRS))
+    if (hasFeature(X86Feature::AMD_IBRS))
     {
         COMMON_LVV(("X86Feature::AMD_IBRS supported"));
         COMMON_LVV(("X86Feature::IBRS set because X86Feature::AMD_IBRS supported"));
         COMMON_LVV(("X86Feature::MSR_SPEC_CTRL set because X86Feature::AMD_IBRS supported"));
 
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::IBRS),          NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::MSR_SPEC_CTRL), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::IBRS),          NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::MSR_SPEC_CTRL), NgosStatus::ASSERTION);
     }
 
 
 
-    if (hasFlag(X86Feature::AMD_IBPB))
+    if (hasFeature(X86Feature::AMD_IBPB))
     {
         COMMON_LVV(("X86Feature::AMD_IBPB supported"));
         COMMON_LVV(("X86Feature::IBPB set because X86Feature::AMD_IBPB supported"));
 
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::IBPB), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::IBPB), NgosStatus::ASSERTION);
     }
 
 
 
-    if (hasFlag(X86Feature::AMD_STIBP))
+    if (hasFeature(X86Feature::AMD_STIBP))
     {
         COMMON_LVV(("X86Feature::AMD_STIBP supported"));
         COMMON_LVV(("X86Feature::STIBP set because X86Feature::AMD_STIBP supported"));
         COMMON_LVV(("X86Feature::MSR_SPEC_CTRL set because X86Feature::AMD_STIBP supported"));
 
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::STIBP),         NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::MSR_SPEC_CTRL), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::STIBP),         NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::MSR_SPEC_CTRL), NgosStatus::ASSERTION);
     }
 
 
 
-    if (hasFlag(X86Feature::AMD_SSBD))
+    if (hasFeature(X86Feature::AMD_SSBD))
     {
         COMMON_LVV(("X86Feature::AMD_SSBD supported"));
         COMMON_LVV(("X86Feature::SSBD set because X86Feature::AMD_SSBD supported"));
         COMMON_LVV(("X86Feature::MSR_SPEC_CTRL set because X86Feature::AMD_SSBD supported"));
         COMMON_LVV(("X86Feature::VIRT_SSBD resetted because X86Feature::AMD_SSBD supported"));
 
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::SSBD),          NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::MSR_SPEC_CTRL), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::VIRT_SSBD),   NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::SSBD),          NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::MSR_SPEC_CTRL), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::VIRT_SSBD),   NgosStatus::ASSERTION);
     }
 
 
@@ -1406,11 +1407,11 @@ NgosStatus CPU::doIntelPostprocessing()
 
     COMMON_LVV(("X86Feature::CONSTANT_TSC supported"));
 
-    COMMON_ASSERT_EXECUTION(setFlag(X86Feature::CONSTANT_TSC), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setFeature(X86Feature::CONSTANT_TSC), NgosStatus::ASSERTION);
 
 
 
-    if (!hasFlag(X86Feature::IA64))
+    if (!hasFeature(X86Feature::IA64))
     {
         COMMON_LVV(("Getting microcode revision since X86Feature::IA64 not supported"));
 
@@ -1422,15 +1423,15 @@ NgosStatus CPU::doIntelPostprocessing()
     // Early microcode releases for the Spectre v2 mitigation were broken. Therefore we are disabling Speculation Control in the case
     if (
         (
-         hasFlag(X86Feature::IBRS)
+         hasFeature(X86Feature::IBRS)
          ||
-         hasFlag(X86Feature::IBPB)
+         hasFeature(X86Feature::IBPB)
          ||
-         hasFlag(X86Feature::STIBP)
+         hasFeature(X86Feature::STIBP)
          ||
-         hasFlag(X86Feature::INTEL_STIBP)
+         hasFeature(X86Feature::INTEL_STIBP)
          ||
-         hasFlag(X86Feature::SPEC_CTRL)
+         hasFeature(X86Feature::SPEC_CTRL)
         )
         &&
         isIntelBadSpectreMicrocode()
@@ -1439,14 +1440,14 @@ NgosStatus CPU::doIntelPostprocessing()
         COMMON_LVV(("X86Feature::IBRS, X86Feature::IBPB, X86Feature::STIBP, X86Feature::INTEL_STIBP or X86Feature::SPEC_CTRL supported"));
         COMMON_LW(("Intel Spectre v2 broken microcode detected; disabling Speculation Control"));
 
-        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::IBRS),           NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::IBPB),           NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::STIBP),          NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::INTEL_STIBP),    NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::SPEC_CTRL),      NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::MSR_SPEC_CTRL),  NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::SSBD),           NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::SPEC_CTRL_SSBD), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::IBRS),           NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::IBPB),           NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::STIBP),          NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::INTEL_STIBP),    NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::SPEC_CTRL),      NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::MSR_SPEC_CTRL),  NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::SSBD),           NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::SPEC_CTRL_SSBD), NgosStatus::ASSERTION);
     }
 
 
@@ -1456,8 +1457,8 @@ NgosStatus CPU::doIntelPostprocessing()
     {
         COMMON_LVV(("X86Feature::CONSTANT_TSC and X86Feature::NONSTOP_TSC supported due to bit 8 in cpuid 0x80000007 EDX"));
 
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::CONSTANT_TSC), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::NONSTOP_TSC),  NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::CONSTANT_TSC), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::NONSTOP_TSC),  NgosStatus::ASSERTION);
     }
 
 
@@ -1467,16 +1468,16 @@ NgosStatus CPU::doIntelPostprocessing()
         COMMON_LW(("Fast string operations disabled in MSR"));
         COMMON_LVV(("X86Feature::ERMS resetted because fast string operations disabled in MSR"));
 
-        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::ERMS), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::ERMS), NgosStatus::ASSERTION);
     }
 
 
 
-    if (hasFlag(X86Feature::MPX) && !hasFlag(X86Feature::SMEP))
+    if (hasFeature(X86Feature::MPX) && !hasFeature(X86Feature::SMEP))
     {
         COMMON_LW(("X86Feature::MPX resetted because X86Feature::SMEP not supported"));
 
-        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::MPX), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::MPX), NgosStatus::ASSERTION);
     }
 
 
@@ -1573,7 +1574,7 @@ NgosStatus CPU::doCommonPostprocessing()
 
 
 
-    if (hasFlag(X86Feature::NX))
+    if (hasFeature(X86Feature::NX))
     {
         COMMON_LVV(("X86Feature::NX supported"));
 
@@ -1609,25 +1610,25 @@ NgosStatus CPU::filterFeaturesDependentOnCpuid()
 
 
 
-    if (hasFlag(X86Feature::MWAIT) && sCpuidLevel < 0x00000005)
+    if (hasFeature(X86Feature::MWAIT) && sCpuidLevel < 0x00000005)
     {
         COMMON_LW(("X86Feature::MWAIT resetted because sCpuidLevel < 0x00000005"));
 
-        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::MWAIT), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::MWAIT), NgosStatus::ASSERTION);
     }
 
-    if (hasFlag(X86Feature::DCA) && sCpuidLevel < 0x00000009)
+    if (hasFeature(X86Feature::DCA) && sCpuidLevel < 0x00000009)
     {
         COMMON_LW(("X86Feature::DCA resetted because sCpuidLevel < 0x00000009"));
 
-        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::DCA), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::DCA), NgosStatus::ASSERTION);
     }
 
-    if (hasFlag(X86Feature::XSAVE) && sCpuidLevel < 0x0000000D)
+    if (hasFeature(X86Feature::XSAVE) && sCpuidLevel < 0x0000000D)
     {
         COMMON_LW(("X86Feature::XSAVE resetted because sCpuidLevel < 0x0000000D"));
 
-        COMMON_ASSERT_EXECUTION(clearFlag(X86Feature::XSAVE), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::XSAVE), NgosStatus::ASSERTION);
     }
 
 
@@ -1659,7 +1660,7 @@ NgosStatus CPU::initCpuBugs()
 
     u64 ia32Capabilities = 0;
 
-    if (hasFlag(X86Feature::ARCH_CAPABILITIES))
+    if (hasFeature(X86Feature::ARCH_CAPABILITIES))
     {
         COMMON_LVV(("X86Feature::ARCH_CAPABILITIES supported"));
 
@@ -1675,7 +1676,7 @@ NgosStatus CPU::initCpuBugs()
         &&
         !(ia32Capabilities & MSR_IA32_ARCH_CAPABILITIES_SSB_NO)
         &&
-        !hasFlag(X86Feature::AMD_SSB_NO)
+        !hasFeature(X86Feature::AMD_SSB_NO)
        )
     {
         COMMON_LVV(("X86Bug::SPEC_STORE_BYPASS set because CPU is affected by speculative store bypass attack"));
@@ -1693,7 +1694,7 @@ NgosStatus CPU::initCpuBugs()
     {
         COMMON_LVV(("X86Feature::IBRS_ENHANCED set because MSR_IA32_ARCH_CAPABILITIES_IBRS_ALL found"));
 
-        COMMON_ASSERT_EXECUTION(setFlag(X86Feature::IBRS_ENHANCED), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::IBRS_ENHANCED), NgosStatus::ASSERTION);
     }
 
 
@@ -1765,7 +1766,7 @@ bool CPU::isIntelBadSpectreMicrocode()
 
     // hypervisor lie to us on the microcode version so
     // we may as well hope that it is running the correct version.
-    if (hasFlag(X86Feature::HYPERVISOR))
+    if (hasFeature(X86Feature::HYPERVISOR))
     {
         COMMON_LVV(("X86Feature::HYPERVISOR supported"));
 

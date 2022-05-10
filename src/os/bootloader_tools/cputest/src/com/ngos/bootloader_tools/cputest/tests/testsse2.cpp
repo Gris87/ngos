@@ -31,7 +31,7 @@ void UEFI_API testSse2Procedure(void *buffer)
 
     TestSse2 *test = (TestSse2 *)buffer;
 
-    if (CPU::hasFlag(X86Feature::XMM2))
+    if (CPU::hasFeature(X86Feature::XMM2))
     {
         double a[2] = { 0.5, 0.4 };
         double b[2] = { 0.8, 0.3 };

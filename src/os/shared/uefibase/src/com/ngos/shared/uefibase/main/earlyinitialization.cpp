@@ -39,7 +39,7 @@ NgosStatus waitForGdbDebug()
 #endif
 
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE
-NgosStatus printCpuFlags()
+NgosStatus printCpuFeatures()
 { // Ignore CppNgosTraceVerifier
     UEFI_LT((""));
 
@@ -47,9 +47,9 @@ NgosStatus printCpuFlags()
 
     char8 buffer[1024];
 
-    UEFI_ASSERT_EXECUTION(CPU::flagsToString(buffer, sizeof(buffer)), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(CPU::featuresToString(buffer, sizeof(buffer)), NgosStatus::ASSERTION);
 
-    UEFI_LV(("CPU flags:"));
+    UEFI_LV(("CPU features:"));
     UEFI_LV(("%s", buffer));
 
 
@@ -90,15 +90,15 @@ NgosStatus earlyInitialization(u64 kernelLocation)
     UEFI_LI(("CPU information initialized"));
 
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERBOSE
-    UEFI_ASSERT_EXECUTION(printCpuFlags(), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(printCpuFeatures(), NgosStatus::ASSERTION);
 #endif
 
 
 
 #ifdef BUILD_TARGET_CONFIGURE // Defined in pro file
-    const char8 *wantedCpuFlag = nullptr;
+    const char8 *wantedCpuFeature = nullptr;
 
-    if (CPU::check(&wantedCpuFlag) != NgosStatus::OK)
+    if (CPU::check(&wantedCpuFeature) != NgosStatus::OK)
     {
         char8 buffer[1024];
 
@@ -106,23 +106,23 @@ NgosStatus earlyInitialization(u64 kernelLocation)
 
 
 
-        UEFI_ASSERT_EXECUTION(CPU::toString(buffer, 1024), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(CPU::toString(buffer, sizeof(buffer)), NgosStatus::ASSERTION);
 
         UEFI_LF(("%s\n", buffer));
 
-        UEFI_ASSERT_EXECUTION(CPU::flagsToString(buffer, 1024), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(CPU::featuresToString(buffer, sizeof(buffer)), NgosStatus::ASSERTION);
 
-        UEFI_LF(("CPU flags:             %s\n", buffer));
+        UEFI_LF(("CPU features:          %s\n", buffer));
 
-        UEFI_ASSERT_EXECUTION(CPU::bugsToString(buffer, 1024), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(CPU::bugsToString(buffer, sizeof(buffer)), NgosStatus::ASSERTION);
 
         UEFI_LF(("CPU bugs:              %s\n", buffer));
 
 
 
-        if (wantedCpuFlag != nullptr && wantedCpuFlag[0] != 0)
+        if (wantedCpuFeature != nullptr && wantedCpuFeature[0] != 0)
         {
-            UEFI_LF(("CPU flag \"%s\" is not supported\n", wantedCpuFlag));
+            UEFI_LF(("CPU feature \"%s\" is not supported\n", wantedCpuFeature));
         }
 
 

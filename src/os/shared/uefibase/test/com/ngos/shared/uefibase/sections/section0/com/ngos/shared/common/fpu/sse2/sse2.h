@@ -32,7 +32,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 {
     TEST_CASE("addpd");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             double a[2] = { 0.5, 0.4 };
             double b[2] = { 0.8, 0.3 };
@@ -60,7 +60,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 
     TEST_CASE("subpd");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             double a[2] = { 0.1, 0.5 };
             double b[2] = { 0.7, 0.3 };
@@ -88,7 +88,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 
     TEST_CASE("mulpd");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             double a[2] = { 0.3, 0.5 };
             double b[2] = { 0.4, 0.6 };
@@ -116,7 +116,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 
     TEST_CASE("divpd");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             double a[2] = { 0.8, 0.2 };
             double b[2] = { 0.3, 0.1 };
@@ -144,7 +144,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 
     TEST_CASE("sqrtpd");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             double a[2] = { 1.0, 4.0 };
             double b[2];
@@ -168,7 +168,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 
     TEST_CASE("maxpd");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             double a[2] = { 0.9, 0.3 };
             double b[2] = { 0.1, 0.5 };
@@ -196,7 +196,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 
     TEST_CASE("minpd");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             double a[2] = { 0.9, 0.3 };
             double b[2] = { 0.1, 0.5 };
@@ -224,7 +224,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 
     TEST_CASE("paddb");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             u8 a[16] = { 100, 30, 64, 13, 32, 97, 24, 68, 21, 64, 20, 74, 23, 19, 3, 7 };
             u8 b[16] = { 200, 98, 97, 32, 14, 95, 13, 47, 13, 10, 47, 64, 12, 74, 1, 8 };
@@ -294,7 +294,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 
     TEST_CASE("paddw");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             u16 a[8] = { 100, 30, 64, 13, 32, 97, 24, 68 };
             u16 b[8] = { 200, 98, 97, 32, 14, 95, 13, 47 };
@@ -340,7 +340,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 
     TEST_CASE("paddd");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             u32 a[4] = { 100, 30, 64, 13 };
             u32 b[4] = { 200, 98, 97, 32 };
@@ -374,7 +374,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 
     TEST_CASE("paddq");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             u64 a[2] = { 100, 30 };
             u64 b[2] = { 200, 98 };
@@ -402,7 +402,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 
     TEST_CASE("psubb");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             u8 a[16] = { 100, 30, 64, 13, 32, 97, 24, 68, 21, 64, 20, 74, 23, 19, 3, 7 };
             u8 b[16] = { 200, 98, 97, 32, 14, 95, 13, 47, 13, 10, 47, 64, 12, 74, 1, 8 };
@@ -472,7 +472,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 
     TEST_CASE("psubw");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             u16 a[8] = { 100, 30, 64, 13, 32, 97, 24, 68 };
             u16 b[8] = { 200, 98, 97, 32, 14, 95, 13, 47 };
@@ -518,7 +518,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 
     TEST_CASE("psubd");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             u32 a[4] = { 100, 30, 64, 13 };
             u32 b[4] = { 200, 98, 97, 32 };
@@ -552,7 +552,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
 
     TEST_CASE("psubq");
     {
-        if (CPU::hasFlag(X86Feature::XMM2))
+        if (CPU::hasFeature(X86Feature::XMM2))
         {
             u64 a[2] = { 100, 30 };
             u64 b[2] = { 200, 98 };

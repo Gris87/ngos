@@ -20,15 +20,15 @@ class CPU
 public:
     static NgosStatus init(); // TEST: NO
 
-    static NgosStatus toString(char8 *buffer, u16 size); // TEST: NO
-    static NgosStatus flagsToString(char8 *buffer, u16 size); // TEST: NO
-    static NgosStatus bugsToString(char8 *buffer, u16 size); // TEST: NO
-    static NgosStatus check(const char8 **wantedFlag); // TEST: NO
+    static NgosStatus toString(good_Char8 *buffer, u16 size); // TEST: NO
+    static NgosStatus featuresToString(good_Char8 *buffer, u16 size); // TEST: NO
+    static NgosStatus bugsToString(good_Char8 *buffer, u16 size); // TEST: NO
+    static NgosStatus check(const good_Char8 **wantedFeature); // TEST: NO
 
     static bool isOutdated(); // TEST: NO
 
     static CpuVendor getVendor(); // TEST: NO
-    static char8* getModelName(); // TEST: NO
+    static good_Char8* getModelName(); // TEST: NO
     static CpuFamily getFamily(); // TEST: NO
     static u8 getModel(); // TEST: NO
     static u8 getStepping(); // TEST: NO
@@ -36,9 +36,9 @@ public:
     static u32 getNumberOfCores(); // TEST: NO
     static u32 getNumberOfThreads(); // TEST: NO
 
-    static NgosStatus setFlag(X86Feature flag);
-    static NgosStatus clearFlag(X86Feature flag);
-    static bool hasFlag(X86Feature flag);
+    static NgosStatus setFeature(X86Feature feature);
+    static NgosStatus clearFeature(X86Feature feature);
+    static bool hasFeature(X86Feature feature);
 
     static NgosStatus setBug(X86Bug bug);
     static NgosStatus clearBug(X86Bug bug);
@@ -95,8 +95,8 @@ private:
     static u32            sPower;
     static u8             sPhysicalBits;
     static u8             sVirtualBits;
-    static u32            sFlags[(enum_t)x86FeatureWord::MAXIMUM];
-    static u32            sBugs[(enum_t)x86BugWord::MAXIMUM];
+    static good_U32       sFeatures[(enum_t)x86FeatureWord::MAXIMUM];
+    static good_U32       sBugs[(enum_t)x86BugWord::MAXIMUM];
 };
 
 

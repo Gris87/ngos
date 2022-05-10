@@ -21,17 +21,17 @@ NgosStatus setupCr4()
 
     cr4 |= FLAGS(X86Cr4Flag::PHYSICAL_ADDRESS_EXTENSION, X86Cr4Flag::PAGE_GLOBAL_ENABLED);
 
-    if (CPU::hasFlag(X86Feature::FXSR))
+    if (CPU::hasFeature(X86Feature::FXSR))
     {
         cr4 |= FLAGS(X86Cr4Flag::SUPPORT_FXSAVE);
     }
 
-    if (CPU::hasFlag(X86Feature::XMM))
+    if (CPU::hasFeature(X86Feature::XMM))
     {
         cr4 |= FLAGS(X86Cr4Flag::SUPPORT_UNMASKED_SSE_EXCEPTIONS);
     }
 
-    if (CPU::hasFlag(X86Feature::XSAVE))
+    if (CPU::hasFeature(X86Feature::XSAVE))
     {
         cr4 |= FLAGS(X86Cr4Flag::SUPPORT_XSAVE);
     }
