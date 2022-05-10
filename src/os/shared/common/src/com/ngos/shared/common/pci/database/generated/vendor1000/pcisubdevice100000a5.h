@@ -133,7 +133,7 @@ inline const char8* enumToHumanString(PciSubDevice100000A5 subDevice) // TEST: N
         case PciSubDevice100000A5::SUBDEVICE_1028213E: return "PERC H765i MX";
         case PciSubDevice100000A5::SUBDEVICE_1028213F: return "PERC H365i Adapter";
         case PciSubDevice100000A5::SUBDEVICE_10282140: return "PERC H365i Front";
-        case PciSubDevice100000A5::SUBDEVICE_10282141: return "PERC H360 MX";
+        case PciSubDevice100000A5::SUBDEVICE_10282141: return "PERC H365i MX";
         case PciSubDevice100000A5::SUBDEVICE_10282142: return "HBA465e Adapter";
         case PciSubDevice100000A5::SUBDEVICE_10282209: return "HBA465i Adapter";
         case PciSubDevice100000A5::SUBDEVICE_1028220A: return "HBA465i Front";

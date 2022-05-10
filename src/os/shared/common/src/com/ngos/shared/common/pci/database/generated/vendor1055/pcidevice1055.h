@@ -13,6 +13,8 @@
 enum class PciDevice1055: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
+    DEVICE_7430 = 0x7430,
+    DEVICE_7431 = 0x7431,
     DEVICE_9130 = 0x9130,
     DEVICE_9460 = 0x9460,
     DEVICE_9462 = 0x9462,
@@ -31,6 +33,8 @@ inline const char8* enumToString(PciDevice1055 device) // TEST: NO
     switch (device)
     {
         case PciDevice1055::NONE:        return "NONE";
+        case PciDevice1055::DEVICE_7430: return "DEVICE_7430";
+        case PciDevice1055::DEVICE_7431: return "DEVICE_7431";
         case PciDevice1055::DEVICE_9130: return "DEVICE_9130";
         case PciDevice1055::DEVICE_9460: return "DEVICE_9460";
         case PciDevice1055::DEVICE_9462: return "DEVICE_9462";
@@ -66,6 +70,8 @@ inline const char8* enumToHumanString(PciDevice1055 device) // TEST: NO
 
     switch (device)
     {
+        case PciDevice1055::DEVICE_7430: return "LAN7430";
+        case PciDevice1055::DEVICE_7431: return "LAN7431";
         case PciDevice1055::DEVICE_9130: return "SLC90E66 [Victory66] IDE";
         case PciDevice1055::DEVICE_9460: return "SLC90E66 [Victory66] ISA";
         case PciDevice1055::DEVICE_9462: return "SLC90E66 [Victory66] USB";

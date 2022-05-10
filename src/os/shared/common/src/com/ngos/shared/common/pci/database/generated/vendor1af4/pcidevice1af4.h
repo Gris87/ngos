@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1af4/pcisubdevice1af41000.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1af4/pcisubdevice1af41001.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1af4/pcisubdevice1af41110.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
@@ -129,8 +131,8 @@ inline const char8* enumToHumanString(PciDevice1AF4 device, u16 subsystemVendorI
 
     switch (device)
     {
-        case PciDevice1AF4::DEVICE_1000: return "Unknown device";
-        case PciDevice1AF4::DEVICE_1001: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1000: return enumToHumanString((PciSubDevice1AF41000)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1AF4::DEVICE_1001: return enumToHumanString((PciSubDevice1AF41001)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1AF4::DEVICE_1002: return "Unknown device";
         case PciDevice1AF4::DEVICE_1003: return "Unknown device";
         case PciDevice1AF4::DEVICE_1004: return "Unknown device";

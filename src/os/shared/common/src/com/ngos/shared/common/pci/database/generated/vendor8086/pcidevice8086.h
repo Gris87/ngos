@@ -4129,6 +4129,9 @@ enum class PciDevice8086: u16 // Ignore CppEnumVerifier
     DEVICE_7AA4 = 0x7AA4,
     DEVICE_7AA7 = 0x7AA7,
     DEVICE_7AB4 = 0x7AB4,
+    DEVICE_7AB8 = 0x7AB8,
+    DEVICE_7AB9 = 0x7AB9,
+    DEVICE_7ABC = 0x7ABC,
     DEVICE_7ABD = 0x7ABD,
     DEVICE_7ACC = 0x7ACC,
     DEVICE_7AD0 = 0x7AD0,
@@ -8184,6 +8187,9 @@ inline const char8* enumToString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_7AA4: return "DEVICE_7AA4";
         case PciDevice8086::DEVICE_7AA7: return "DEVICE_7AA7";
         case PciDevice8086::DEVICE_7AB4: return "DEVICE_7AB4";
+        case PciDevice8086::DEVICE_7AB8: return "DEVICE_7AB8";
+        case PciDevice8086::DEVICE_7AB9: return "DEVICE_7AB9";
+        case PciDevice8086::DEVICE_7ABC: return "DEVICE_7ABC";
         case PciDevice8086::DEVICE_7ABD: return "DEVICE_7ABD";
         case PciDevice8086::DEVICE_7ACC: return "DEVICE_7ACC";
         case PciDevice8086::DEVICE_7AD0: return "DEVICE_7AD0";
@@ -12256,6 +12262,9 @@ inline const char8* enumToHumanString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_7AA4: return "Alder Lake-S PCH SPI Controller";
         case PciDevice8086::DEVICE_7AA7: return "Alder Lake-S PCH Shared SRAM";
         case PciDevice8086::DEVICE_7AB4: return "Alder Lake-S PCH PCI Express Root Port #13";
+        case PciDevice8086::DEVICE_7AB8: return "Alder Lake-S PCH PCI Express Root Port #1";
+        case PciDevice8086::DEVICE_7AB9: return "Alder Lake-S PCH PCI Express Root Port #2";
+        case PciDevice8086::DEVICE_7ABC: return "Alder Lake-S PCH PCI Express Root Port #5";
         case PciDevice8086::DEVICE_7ABD: return "Alder Lake-S PCH PCI Express Root Port #6";
         case PciDevice8086::DEVICE_7ACC: return "Alder Lake-S PCH I2C Controller #0";
         case PciDevice8086::DEVICE_7AD0: return "Alder Lake-S HD Audio Controller";
@@ -16313,6 +16322,9 @@ inline const char8* enumToHumanString(PciDevice8086 device, u16 subsystemVendorI
         case PciDevice8086::DEVICE_7AA4: return "Unknown device";
         case PciDevice8086::DEVICE_7AA7: return "Unknown device";
         case PciDevice8086::DEVICE_7AB4: return "Unknown device";
+        case PciDevice8086::DEVICE_7AB8: return "Unknown device";
+        case PciDevice8086::DEVICE_7AB9: return "Unknown device";
+        case PciDevice8086::DEVICE_7ABC: return "Unknown device";
         case PciDevice8086::DEVICE_7ABD: return "Unknown device";
         case PciDevice8086::DEVICE_7ACC: return "Unknown device";
         case PciDevice8086::DEVICE_7AD0: return "Unknown device";

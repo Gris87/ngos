@@ -13,6 +13,7 @@
 enum class PciSubDevice80861237: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_01DEFFFE = 0x01DEFFFE,
     SUBDEVICE_1AF41100 = 0x1AF41100
 };
 
@@ -27,6 +28,7 @@ inline const char8* enumToString(PciSubDevice80861237 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice80861237::NONE:               return "NONE";
+        case PciSubDevice80861237::SUBDEVICE_01DEFFFE: return "SUBDEVICE_01DEFFFE";
         case PciSubDevice80861237::SUBDEVICE_1AF41100: return "SUBDEVICE_1AF41100";
 
         default: return "UNKNOWN";
@@ -58,6 +60,7 @@ inline const char8* enumToHumanString(PciSubDevice80861237 subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice80861237::SUBDEVICE_01DEFFFE: return "Propolis Virtual 440FX";
         case PciSubDevice80861237::SUBDEVICE_1AF41100: return "Qemu virtual machine";
 
         default: return "Unknown device";

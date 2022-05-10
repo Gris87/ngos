@@ -9,7 +9,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-extern const char8* x86BugsNames[static_cast<good_Enum_t>(x86BugWord::MAXIMUM) * 32]; // x86BugsNames declared in x86bugsnames.cpp file                                                                  // Colorize: green
+extern const good_Char8* x86BugsNames[static_cast<good_Enum_t>(x86BugWord::MAXIMUM) * 32]; // x86BugsNames declared in x86bugsnames.cpp file                                                             // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green

@@ -9,7 +9,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-extern const char8* x86FeaturesNames[static_cast<good_Enum_t>(x86FeatureWord::MAXIMUM) * 32]; // x86FeaturesNames declared in x86featuresnames.cpp file                                                  // Colorize: green
+extern const good_Char8* x86FeaturesNames[static_cast<good_Enum_t>(x86FeatureWord::MAXIMUM) * 32]; // x86FeaturesNames declared in x86featuresnames.cpp file                                             // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green

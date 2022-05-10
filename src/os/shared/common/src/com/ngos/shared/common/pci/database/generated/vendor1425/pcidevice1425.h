@@ -8,6 +8,8 @@
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1425/pcisubdevice14250030.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1425/pcisubdevice14255001.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1425/pcisubdevice14256092.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1425/pcisubdevice14256492.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -583,6 +585,7 @@ enum class PciDevice1425: u16 // Ignore CppEnumVerifier
     DEVICE_6088 = 0x6088,
     DEVICE_6089 = 0x6089,
     DEVICE_608A = 0x608A,
+    DEVICE_6092 = 0x6092,
     DEVICE_6401 = 0x6401,
     DEVICE_6402 = 0x6402,
     DEVICE_6403 = 0x6403,
@@ -607,6 +610,7 @@ enum class PciDevice1425: u16 // Ignore CppEnumVerifier
     DEVICE_6488 = 0x6488,
     DEVICE_6489 = 0x6489,
     DEVICE_648A = 0x648A,
+    DEVICE_6492 = 0x6492,
     DEVICE_6501 = 0x6501,
     DEVICE_6502 = 0x6502,
     DEVICE_6503 = 0x6503,
@@ -631,6 +635,7 @@ enum class PciDevice1425: u16 // Ignore CppEnumVerifier
     DEVICE_6588 = 0x6588,
     DEVICE_6589 = 0x6589,
     DEVICE_658A = 0x658A,
+    DEVICE_6592 = 0x6592,
     DEVICE_6601 = 0x6601,
     DEVICE_6602 = 0x6602,
     DEVICE_6603 = 0x6603,
@@ -655,6 +660,7 @@ enum class PciDevice1425: u16 // Ignore CppEnumVerifier
     DEVICE_6688 = 0x6688,
     DEVICE_6689 = 0x6689,
     DEVICE_668A = 0x668A,
+    DEVICE_6692 = 0x6692,
     DEVICE_6801 = 0x6801,
     DEVICE_6802 = 0x6802,
     DEVICE_6803 = 0x6803,
@@ -1261,6 +1267,7 @@ inline const char8* enumToString(PciDevice1425 device) // TEST: NO
         case PciDevice1425::DEVICE_6088: return "DEVICE_6088";
         case PciDevice1425::DEVICE_6089: return "DEVICE_6089";
         case PciDevice1425::DEVICE_608A: return "DEVICE_608A";
+        case PciDevice1425::DEVICE_6092: return "DEVICE_6092";
         case PciDevice1425::DEVICE_6401: return "DEVICE_6401";
         case PciDevice1425::DEVICE_6402: return "DEVICE_6402";
         case PciDevice1425::DEVICE_6403: return "DEVICE_6403";
@@ -1285,6 +1292,7 @@ inline const char8* enumToString(PciDevice1425 device) // TEST: NO
         case PciDevice1425::DEVICE_6488: return "DEVICE_6488";
         case PciDevice1425::DEVICE_6489: return "DEVICE_6489";
         case PciDevice1425::DEVICE_648A: return "DEVICE_648A";
+        case PciDevice1425::DEVICE_6492: return "DEVICE_6492";
         case PciDevice1425::DEVICE_6501: return "DEVICE_6501";
         case PciDevice1425::DEVICE_6502: return "DEVICE_6502";
         case PciDevice1425::DEVICE_6503: return "DEVICE_6503";
@@ -1309,6 +1317,7 @@ inline const char8* enumToString(PciDevice1425 device) // TEST: NO
         case PciDevice1425::DEVICE_6588: return "DEVICE_6588";
         case PciDevice1425::DEVICE_6589: return "DEVICE_6589";
         case PciDevice1425::DEVICE_658A: return "DEVICE_658A";
+        case PciDevice1425::DEVICE_6592: return "DEVICE_6592";
         case PciDevice1425::DEVICE_6601: return "DEVICE_6601";
         case PciDevice1425::DEVICE_6602: return "DEVICE_6602";
         case PciDevice1425::DEVICE_6603: return "DEVICE_6603";
@@ -1333,6 +1342,7 @@ inline const char8* enumToString(PciDevice1425 device) // TEST: NO
         case PciDevice1425::DEVICE_6688: return "DEVICE_6688";
         case PciDevice1425::DEVICE_6689: return "DEVICE_6689";
         case PciDevice1425::DEVICE_668A: return "DEVICE_668A";
+        case PciDevice1425::DEVICE_6692: return "DEVICE_6692";
         case PciDevice1425::DEVICE_6801: return "DEVICE_6801";
         case PciDevice1425::DEVICE_6802: return "DEVICE_6802";
         case PciDevice1425::DEVICE_6803: return "DEVICE_6803";
@@ -1956,6 +1966,7 @@ inline const char8* enumToHumanString(PciDevice1425 device) // TEST: NO
         case PciDevice1425::DEVICE_6088: return "T62100-6088 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_6089: return "T62100-6089 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_608A: return "T62100-608a Unified Wire Ethernet Controller";
+        case PciDevice1425::DEVICE_6092: return "T62100-KR Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_6401: return "T6225-CR Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_6402: return "T6225-SO-CR Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_6403: return "T6425-CR Unified Wire Ethernet Controller";
@@ -1980,6 +1991,7 @@ inline const char8* enumToHumanString(PciDevice1425 device) // TEST: NO
         case PciDevice1425::DEVICE_6488: return "T62100-6088 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_6489: return "T62100-6089 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_648A: return "T62100-608a Unified Wire Ethernet Controller";
+        case PciDevice1425::DEVICE_6492: return "T62100-KR Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_6501: return "T6225-CR Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_6502: return "T6225-SO-CR Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_6503: return "T6425-CR Unified Wire Storage Controller";
@@ -2004,6 +2016,7 @@ inline const char8* enumToHumanString(PciDevice1425 device) // TEST: NO
         case PciDevice1425::DEVICE_6588: return "T62100-6088 Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_6589: return "T62100-6089 Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_658A: return "T62100-608a Unified Wire Storage Controller";
+        case PciDevice1425::DEVICE_6592: return "T62100-KR Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_6601: return "T6225-CR Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_6602: return "T6225-SO-CR Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_6603: return "T6425-CR Unified Wire Storage Controller";
@@ -2028,6 +2041,7 @@ inline const char8* enumToHumanString(PciDevice1425 device) // TEST: NO
         case PciDevice1425::DEVICE_6688: return "T62100-6088 Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_6689: return "T62100-6089 Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_668A: return "T62100-608a Unified Wire Storage Controller";
+        case PciDevice1425::DEVICE_6692: return "T62100-KR Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_6801: return "T6225-CR Unified Wire Ethernet Controller [VF]";
         case PciDevice1425::DEVICE_6802: return "T6225-SO-CR Unified Wire Ethernet Controller [VF]";
         case PciDevice1425::DEVICE_6803: return "T6425-CR Unified Wire Ethernet Controller [VF]";
@@ -2636,6 +2650,7 @@ inline const char8* enumToHumanString(PciDevice1425 device, u16 subsystemVendorI
         case PciDevice1425::DEVICE_6088: return "Unknown device";
         case PciDevice1425::DEVICE_6089: return "Unknown device";
         case PciDevice1425::DEVICE_608A: return "Unknown device";
+        case PciDevice1425::DEVICE_6092: return enumToHumanString((PciSubDevice14256092)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1425::DEVICE_6401: return "Unknown device";
         case PciDevice1425::DEVICE_6402: return "Unknown device";
         case PciDevice1425::DEVICE_6403: return "Unknown device";
@@ -2660,6 +2675,7 @@ inline const char8* enumToHumanString(PciDevice1425 device, u16 subsystemVendorI
         case PciDevice1425::DEVICE_6488: return "Unknown device";
         case PciDevice1425::DEVICE_6489: return "Unknown device";
         case PciDevice1425::DEVICE_648A: return "Unknown device";
+        case PciDevice1425::DEVICE_6492: return enumToHumanString((PciSubDevice14256492)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1425::DEVICE_6501: return "Unknown device";
         case PciDevice1425::DEVICE_6502: return "Unknown device";
         case PciDevice1425::DEVICE_6503: return "Unknown device";
@@ -2684,6 +2700,7 @@ inline const char8* enumToHumanString(PciDevice1425 device, u16 subsystemVendorI
         case PciDevice1425::DEVICE_6588: return "Unknown device";
         case PciDevice1425::DEVICE_6589: return "Unknown device";
         case PciDevice1425::DEVICE_658A: return "Unknown device";
+        case PciDevice1425::DEVICE_6592: return "Unknown device";
         case PciDevice1425::DEVICE_6601: return "Unknown device";
         case PciDevice1425::DEVICE_6602: return "Unknown device";
         case PciDevice1425::DEVICE_6603: return "Unknown device";
@@ -2708,6 +2725,7 @@ inline const char8* enumToHumanString(PciDevice1425 device, u16 subsystemVendorI
         case PciDevice1425::DEVICE_6688: return "Unknown device";
         case PciDevice1425::DEVICE_6689: return "Unknown device";
         case PciDevice1425::DEVICE_668A: return "Unknown device";
+        case PciDevice1425::DEVICE_6692: return "Unknown device";
         case PciDevice1425::DEVICE_6801: return "Unknown device";
         case PciDevice1425::DEVICE_6802: return "Unknown device";
         case PciDevice1425::DEVICE_6803: return "Unknown device";

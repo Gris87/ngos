@@ -69,11 +69,11 @@ inline const char8* enumToHumanString(PciDevice6766 device) // TEST: NO
     switch (device)
     {
         case PciDevice6766::DEVICE_3D00: return "Arise-GT-10C0";
-        case PciDevice6766::DEVICE_3D02: return "Arise 1020";
+        case PciDevice6766::DEVICE_3D02: return "Arise1020";
         case PciDevice6766::DEVICE_3D03: return "Arise-GT-1040";
         case PciDevice6766::DEVICE_3D04: return "Arise1010";
         case PciDevice6766::DEVICE_3D40: return "Arise-GT-10C0 High Definition Audio Controller";
-        case PciDevice6766::DEVICE_3D41: return "Arise 1020 High Definition Audio Controller";
+        case PciDevice6766::DEVICE_3D41: return "Arise1020 High Definition Audio Controller";
 
         default: return "Unknown device";
     }
