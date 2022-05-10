@@ -1,59 +1,61 @@
-#ifndef COM_NGOS_SHARED_COMMON_CPU_CPU_H
-#define COM_NGOS_SHARED_COMMON_CPU_CPU_H
-
-
-
-#include <com/ngos/shared/common/cpu/lib/cpufamily.h>
-#include <com/ngos/shared/common/cpu/lib/cpuvendor.h>
-#include <com/ngos/shared/common/cpu/lib/x86bug.h>
-#include <com/ngos/shared/common/cpu/lib/x86feature.h>
-#include <com/ngos/shared/common/cpu/lib/cpuid/cpuidmodelname.h>
-#include <com/ngos/shared/common/cpu/lib/cpuid/cpuidvendor.h>
-#include <com/ngos/shared/common/cpu/lib/registers/x86flags.h>
-#include <com/ngos/shared/common/ngos/status.h>
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-class CPU
-{
-public:
-    static NgosStatus init(); // TEST: NO
-
-    static NgosStatus toString(good_Char8 *buffer, u16 size); // TEST: NO
-    static NgosStatus featuresToString(good_Char8 *buffer, u16 size); // TEST: NO
-    static NgosStatus bugsToString(good_Char8 *buffer, u16 size); // TEST: NO
-    static NgosStatus check(const good_Char8 **wantedFeature); // TEST: NO
-
-    static bool isOutdated(); // TEST: NO
-
-    static CpuVendor getVendor(); // TEST: NO
-    static good_Char8* getModelName(); // TEST: NO
-    static CpuFamily getFamily(); // TEST: NO
-    static u8 getModel(); // TEST: NO
-    static u8 getStepping(); // TEST: NO
-    static u32 getMicrocodeRevision(); // TEST: NO
-    static u32 getNumberOfCores(); // TEST: NO
-    static u32 getNumberOfThreads(); // TEST: NO
-
-    static NgosStatus setFeature(X86Feature feature);
-    static NgosStatus clearFeature(X86Feature feature);
-    static bool hasFeature(X86Feature feature);
-
-    static NgosStatus setBug(X86Bug bug);
-    static NgosStatus clearBug(X86Bug bug);
-    static bool hasBug(X86Bug bug);
-
-    static bool isCpuIdLevelSupported(u32 cpuidLevel);
-
-    static bool hasX86Flags(X86Flags flags); // TEST: NO
-    static NgosStatus cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d); // TEST: NO
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-public:
-#else
-private:
-#endif
+#ifndef COM_NGOS_SHARED_COMMON_CPU_CPU_H                                                                                                                                                                 // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CPU_CPU_H                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/cpufamily.h>                                                                                                                                                    // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/cpuidleaf.h>                                                                                                                                                    // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/cpuidsubleaf.h>                                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/cpuvendor.h>                                                                                                                                                    // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/x86bug.h>                                                                                                                                                       // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/x86feature.h>                                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/cpuid/cpuidmodelname.h>                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/cpuid/cpuidvendor.h>                                                                                                                                            // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/registers/x86flags.h>                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/ngos/status.h>                                                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class CPU                                                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    static NgosStatus init(); // TEST: NO                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static NgosStatus toString(good_Char8 *buffer, good_I64 size); // TEST: NO                                                                                                                           // Colorize: green
+    static NgosStatus featuresToString(good_Char8 *buffer, good_I64 size); // TEST: NO                                                                                                                   // Colorize: green
+    static NgosStatus bugsToString(good_Char8 *buffer, good_I64 size); // TEST: NO                                                                                                                       // Colorize: green
+    static NgosStatus check(const good_Char8 **wantedFeature); // TEST: NO                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static bool isOutdated(); // TEST: NO                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static CpuVendor getCpuVendor(); // TEST: NO                                                                                                                                                         // Colorize: green
+    static good_Char8* getModelName(); // TEST: NO                                                                                                                                                       // Colorize: green
+    static CpuFamily getFamily(); // TEST: NO                                                                                                                                                            // Colorize: green
+    static good_U8 getModel(); // TEST: NO                                                                                                                                                               // Colorize: green
+    static good_U8 getStepping(); // TEST: NO                                                                                                                                                            // Colorize: green
+    static good_U32 getMicrocodeRevision(); // TEST: NO                                                                                                                                                  // Colorize: green
+    static good_U32 getNumberOfCores(); // TEST: NO                                                                                                                                                      // Colorize: green
+    static good_U32 getNumberOfThreads(); // TEST: NO                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static NgosStatus setFeature(X86Feature feature);                                                                                                                                                    // Colorize: green
+    static NgosStatus clearFeature(X86Feature feature);                                                                                                                                                  // Colorize: green
+    static bool hasFeature(X86Feature feature);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static NgosStatus setBug(X86Bug bug);                                                                                                                                                                // Colorize: green
+    static NgosStatus clearBug(X86Bug bug);                                                                                                                                                              // Colorize: green
+    static bool hasBug(X86Bug bug);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static bool isCpuIdLevelSupported(CpuidLeaf cpuidLevel);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static bool hasX86Flags(X86Flags flags); // TEST: NO                                                                                                                                                 // Colorize: green
+    static NgosStatus cpuid(CpuidLeaf leaf, CpuidSubLeaf subLeaf, good_U32 *a, good_U32 *b, good_U32 *c, good_U32 *d); // TEST: NO                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
     static NgosStatus initCpuFeatures(); // TEST: NO
     static NgosStatus doPreprocessing(); // TEST: NO
     static NgosStatus doIntelPreprocessing(); // TEST: NO
@@ -75,17 +77,17 @@ private:
     static bool isCpuNoSpecStoreBypass(); // TEST: NO
     static bool isCpuNoL1TF(); // TEST: NO
 
-    static CpuidVendor    sVendor;
-    static CpuVendor      sCpuVendor;
-    static CpuidModelName sModelName;
-    static u32            sCpuidLevel;
-    static u32            sExtendedCpuidLevel;
-    static CpuFamily      sFamily;
-    static u8             sModel;
-    static u8             sStepping;
-    static u32            sMicrocodeRevision;
-    static u32            sNumberOfCores;
-    static u32            sNumberOfThreads;
+    static CpuidVendor    sVendor;                                                                                                                                                                       // Colorize: green
+    static CpuidModelName sModelName;                                                                                                                                                                    // Colorize: green
+    static CpuidLeaf      sCpuidLevel;                                                                                                                                                                   // Colorize: green
+    static CpuidLeaf      sExtendedCpuidLevel;                                                                                                                                                           // Colorize: green
+    static CpuVendor      sCpuVendor;                                                                                                                                                                    // Colorize: green
+    static CpuFamily      sFamily;                                                                                                                                                                       // Colorize: green
+    static good_U8        sModel;                                                                                                                                                                        // Colorize: green
+    static good_U8        sStepping;                                                                                                                                                                     // Colorize: green
+    static good_U32       sMicrocodeRevision;                                                                                                                                                            // Colorize: green
+    static good_U32       sNumberOfCores;                                                                                                                                                                // Colorize: green
+    static good_U32       sNumberOfThreads;                                                                                                                                                              // Colorize: green
     static u8             sNumberOfApicIdsPerPackage;
     static i8             sX86CoreIdBits;
     static u16            sCacheLineFlushSize;
@@ -95,10 +97,10 @@ private:
     static u32            sPower;
     static u8             sPhysicalBits;
     static u8             sVirtualBits;
-    static good_U32       sFeatures[(enum_t)x86FeatureWord::MAXIMUM];
-    static good_U32       sBugs[(enum_t)x86BugWord::MAXIMUM];
-};
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CPU_CPU_H
+    static good_U32       sFeatures[(enum_t)x86FeatureWord::MAXIMUM];                                                                                                                                    // Colorize: green
+    static good_U32       sBugs[(enum_t)x86BugWord::MAXIMUM];                                                                                                                                            // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CPU_CPU_H                                                                                                                                                               // Colorize: green

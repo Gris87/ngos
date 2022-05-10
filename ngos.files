@@ -846,6 +846,8 @@ src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuidmodelname.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuidvendor.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/lib/cpuidcachetype.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/lib/cpuidprocessortype.h
+src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuidleaf.h
+src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuidsubleaf.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpumodel.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuvendor.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/generated/amdcpumodel.h
