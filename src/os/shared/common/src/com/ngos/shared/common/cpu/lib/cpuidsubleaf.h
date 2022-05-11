@@ -13,22 +13,54 @@
                                                                                                                                                                                                          // Colorize: green
 enum class CpuidSubLeaf: good_U32 // Ignore CppEnumVerifier                                                                                                                                                 // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
-    NO_SUBLEAF = 0,
-
-    //
-    // CpuidLeaf::XSAVE_FEATURES
-    //
-
-    XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_0 = 0,
-    XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_1 = 1,
-    XSAVE_FEATURES_AVX                                    = 2,
-    XSAVE_FEATURES_MPX_BOUND_REGISTERS                    = 3,
-    XSAVE_FEATURES_MPX_BOUND_CONFIG_AND_STATUS_REGISTERS  = 4,
-    XSAVE_FEATURES_AVX512_OPMASK                          = 5,
-    XSAVE_FEATURES_AVX512_ZMM_FROM_0_TO_15                = 6,
-    XSAVE_FEATURES_AVX512_ZMM_FROM_16_TO_31               = 7,
-    XSAVE_FEATURES_PT                                     = 8,
-    XSAVE_FEATURES_PKRU                                   = 9
+    NONE = 0,                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    //                                                                                                                                                                                                   // Colorize: green
+    // CpuidLeaf::DETERMINISTIC_CACHE_PARAMETERS                                                                                                                                                         // Colorize: green
+    //                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DETERMINISTIC_CACHE_PARAMETERS_LEVEL_0 = 0,                                                                                                                                                          // Colorize: green
+    DETERMINISTIC_CACHE_PARAMETERS_LEVEL_1 = 1,                                                                                                                                                          // Colorize: green
+    DETERMINISTIC_CACHE_PARAMETERS_LEVEL_2 = 2,                                                                                                                                                          // Colorize: green
+    DETERMINISTIC_CACHE_PARAMETERS_LEVEL_3 = 3,                                                                                                                                                          // Colorize: green
+    DETERMINISTIC_CACHE_PARAMETERS_LEVEL_4 = 4,                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    //                                                                                                                                                                                                   // Colorize: green
+    // CpuidLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY                                                                                                                                                 // Colorize: green
+    //                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY_THREAD = 0,                                                                                                                                                   // Colorize: green
+    X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY_CORE   = 1,                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    //                                                                                                                                                                                                   // Colorize: green
+    // CpuidLeaf::XSAVE_FEATURES                                                                                                                                                                         // Colorize: green
+    //                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_0 = 0,                                                                                                                                           // Colorize: green
+    XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_1 = 1, // TODO: Need to check the name                                                                                                                                          // Colorize: green
+    XSAVE_FEATURES_AVX                                    = 2,                                                                                                                                           // Colorize: green
+    XSAVE_FEATURES_MPX_BOUND_REGISTERS                    = 3,                                                                                                                                           // Colorize: green
+    XSAVE_FEATURES_MPX_BOUND_CONFIG_AND_STATUS_REGISTERS  = 4,                                                                                                                                           // Colorize: green
+    XSAVE_FEATURES_AVX512_OPMASK                          = 5,                                                                                                                                           // Colorize: green
+    XSAVE_FEATURES_AVX512_ZMM_FROM_0_TO_15                = 6,                                                                                                                                           // Colorize: green
+    XSAVE_FEATURES_AVX512_ZMM_FROM_16_TO_31               = 7,                                                                                                                                           // Colorize: green
+    XSAVE_FEATURES_PT                                     = 8,                                                                                                                                           // Colorize: green
+    XSAVE_FEATURES_PKRU                                   = 9,                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    //                                                                                                                                                                                                   // Colorize: green
+    // CpuidLeaf::UNKNOWN_F // TODO: Need to check the name                                                                                                                                              // Colorize: green
+    //                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    UNKNOWN_F_0 = 0, // TODO: Need to check the name                                                                                                                                                     // Colorize: green
+    UNKNOWN_F_1 = 1, // TODO: Need to check the name                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    //                                                                                                                                                                                                   // Colorize: green
+    // CpuidLeaf::UNKNOWN_10 // TODO: Need to check the name                                                                                                                                             // Colorize: green
+    //                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    UNKNOWN_10_0 = 0, // TODO: Need to check the name                                                                                                                                                    // Colorize: green
+    UNKNOWN_10_1 = 1, // TODO: Need to check the name                                                                                                                                                    // Colorize: green
+    UNKNOWN_10_2 = 2  // TODO: Need to check the name                                                                                                                                                    // Colorize: green
 };                                                                                                                                                                                                       // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -41,9 +73,36 @@ inline const char8* enumToString(CpuidLeaf leaf, CpuidSubLeaf subLeaf) // TEST: 
                                                                                                                                                                                                          // Colorize: green
     switch (leaf)                                                                                                                                                                                      // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
-        case CpuidLeaf::XSAVE_FEATURES:                                                                                                                                                                           // Colorize: green
+        case CpuidLeaf::DETERMINISTIC_CACHE_PARAMETERS:                                                                                                                                                  // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
-            switch (subLeaf)                                                                                                                                                                              // Colorize: green
+            switch (subLeaf)                                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                case CpuidSubLeaf::DETERMINISTIC_CACHE_PARAMETERS_LEVEL_0: return "DETERMINISTIC_CACHE_PARAMETERS_LEVEL_0";                                                                              // Colorize: green
+                case CpuidSubLeaf::DETERMINISTIC_CACHE_PARAMETERS_LEVEL_1: return "DETERMINISTIC_CACHE_PARAMETERS_LEVEL_1";                                                                              // Colorize: green
+                case CpuidSubLeaf::DETERMINISTIC_CACHE_PARAMETERS_LEVEL_2: return "DETERMINISTIC_CACHE_PARAMETERS_LEVEL_2";                                                                              // Colorize: green
+                case CpuidSubLeaf::DETERMINISTIC_CACHE_PARAMETERS_LEVEL_3: return "DETERMINISTIC_CACHE_PARAMETERS_LEVEL_3";                                                                              // Colorize: green
+                case CpuidSubLeaf::DETERMINISTIC_CACHE_PARAMETERS_LEVEL_4: return "DETERMINISTIC_CACHE_PARAMETERS_LEVEL_4";                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                default: return "UNKNOWN";                                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        case CpuidLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY:                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            switch (subLeaf)                                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                case CpuidSubLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY_THREAD: return "X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY_THREAD";                                                                // Colorize: green
+                case CpuidSubLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY_CORE:   return "X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY_CORE";                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                default: return "UNKNOWN";                                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        case CpuidLeaf::XSAVE_FEATURES:                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            switch (subLeaf)                                                                                                                                                                             // Colorize: green
             {                                                                                                                                                                                            // Colorize: green
                 case CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_0: return "XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_0";                                                // Colorize: green
                 case CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_1: return "XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_1";                                                // Colorize: green
@@ -61,11 +120,36 @@ inline const char8* enumToString(CpuidLeaf leaf, CpuidSubLeaf subLeaf) // TEST: 
         }                                                                                                                                                                                                // Colorize: green
         break;                                                                                                                                                                                           // Colorize: green
                                                                                                                                                                                                          // Colorize: green
+        case CpuidLeaf::UNKNOWN_F:                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            switch (subLeaf)                                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                case CpuidSubLeaf::UNKNOWN_F_0: return "UNKNOWN_F_0";                                                                                                                                    // Colorize: green
+                case CpuidSubLeaf::UNKNOWN_F_1: return "UNKNOWN_F_1";                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                default: return "UNKNOWN";                                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        case CpuidLeaf::UNKNOWN_10:                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            switch (subLeaf)                                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                case CpuidSubLeaf::UNKNOWN_10_0: return "UNKNOWN_10_0";                                                                                                                                  // Colorize: green
+                case CpuidSubLeaf::UNKNOWN_10_1: return "UNKNOWN_10_1";                                                                                                                                  // Colorize: green
+                case CpuidSubLeaf::UNKNOWN_10_2: return "UNKNOWN_10_2";                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                default: return "UNKNOWN";                                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
         default:                                                                                                                                                                             // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
             switch (subLeaf)                                                                                                                                                                              // Colorize: green
             {                                                                                                                                                                                            // Colorize: green
-                case CpuidSubLeaf::NO_SUBLEAF: return "NO_SUBLEAF";                                                                                                                                   // Colorize: green
+                case CpuidSubLeaf::NONE: return "NONE";                                                                                                                                   // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                 default: return "UNKNOWN";                                                                                                                                                               // Colorize: green
             }                                                                                                                                                                                            // Colorize: green

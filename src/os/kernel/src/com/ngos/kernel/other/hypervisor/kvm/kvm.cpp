@@ -41,7 +41,14 @@ NgosStatus KVM::init()
 
 
 
-            COMMON_ASSERT_EXECUTION(CPU::cpuid(id, 0, &ignored, &ebx, &ecx, &edx), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(CPU::cpuid(
+                                            static_cast<CpuidLeaf>(id),
+                                            CpuidSubLeaf::NONE,
+                                            &ignored,
+                                            &ebx,
+                                            &ecx,
+                                            &edx
+                                        ), NgosStatus::ASSERTION);
 
             COMMON_LVVV(("ebx = 0x%08X", ebx));
             COMMON_LVVV(("ecx = 0x%08X", ecx));
@@ -154,7 +161,15 @@ NgosStatus KVM::initPlatform(u32 id)
     u32 ignored;
     u32 eax;
 
-    COMMON_ASSERT_EXECUTION(CPU::cpuid(id | 0x01, 0, &eax, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(CPU::cpuid(
+                                    static_cast<CpuidLeaf>(id | 0x01),
+                                    CpuidSubLeaf::NONE,
+                                    &eax,
+                                    &ignored,
+                                    &ignored,
+                                    &ignored
+                                ), NgosStatus::ASSERTION);
+
     sFeatures = eax;
 
     COMMON_ASSERT_EXECUTION(KvmClock::init(), NgosStatus::ASSERTION);

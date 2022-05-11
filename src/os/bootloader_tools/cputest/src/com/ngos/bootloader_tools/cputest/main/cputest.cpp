@@ -8,12 +8,7 @@
 
 
 
-#define CACHE_INFO_CPUID              0x00000002 // TODO: Make more centralized
-#define CACHE_TOPOLOGY_CPUID          0x00000004 // TODO: Make more centralized
-#define L1_CACHE_IDENTIFIERS_CPUID    0x80000005 // TODO: Make more centralized
-#define EXTENDED_CACHE_FEATURES_CPUID 0x80000006 // TODO: Make more centralized
-
-#define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_NULL        0x00
+#define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_NULL        0x00 // TODO: Make more centralized
 #define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_DATA        0x01
 #define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_INSTRUCTION 0x02
 #define CACHE_TOPOLOGY_CPUID_CACHE_TYPE_UNIFIED     0x03
@@ -152,7 +147,7 @@ NgosStatus CpuTest::initCpuCachesIntel()
 
 
 
-    if (CPU::isCpuIdLevelSupported(CACHE_TOPOLOGY_CPUID))
+    if (CPU::isCpuIdLevelSupported(CpuidLeaf::DETERMINISTIC_CACHE_PARAMETERS))
     {
         u32 level = 0;
 
@@ -167,7 +162,14 @@ NgosStatus CpuTest::initCpuCachesIntel()
             u32 ebx;
             u32 numberOfSets;
 
-            UEFI_ASSERT_EXECUTION(CPU::cpuid(CACHE_TOPOLOGY_CPUID, level, &eax, &ebx, &numberOfSets, &ignored), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(CPU::cpuid(
+                                            CpuidLeaf::DETERMINISTIC_CACHE_PARAMETERS,
+                                            static_cast<CpuidSubLeaf>(level),
+                                            &eax,
+                                            &ebx,
+                                            &numberOfSets,
+                                            &ignored
+                                        ), NgosStatus::ASSERTION);
 
             UEFI_LVVV(("eax          = 0x%08X", eax));
             UEFI_LVVV(("ebx          = 0x%08X", ebx));
@@ -251,15 +253,22 @@ NgosStatus CpuTest::initCpuCachesIntel()
         } while(true);
     }
     else
-    if (CPU::isCpuIdLevelSupported(CACHE_INFO_CPUID))
+    if (CPU::isCpuIdLevelSupported(CpuidLeaf::CACHE_DESCRIPTORS))
     {
-        UEFI_LW(("CACHE_TOPOLOGY_CPUID not supported"));
+        UEFI_LW(("CACHE_DESCRIPTORS not supported"));
 
 
 
         u32 registers[4];
 
-        UEFI_ASSERT_EXECUTION(CPU::cpuid(CACHE_INFO_CPUID, 0, &registers[0], &registers[1], &registers[2], &registers[3]), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(CPU::cpuid(
+                                        CpuidLeaf::CACHE_DESCRIPTORS,
+                                        CpuidSubLeaf::NONE,
+                                        &registers[0],
+                                        &registers[1],
+                                        &registers[2],
+                                        &registers[3]
+                                    ), NgosStatus::ASSERTION);
 
 
 
@@ -384,7 +393,7 @@ NgosStatus CpuTest::initCpuCachesIntel()
 
                 default:
                 {
-                    UEFI_LF(("Unknown register byte for CACHE_INFO_CPUID: 0x%02X, %s:%u", registerByte[i], __FILE__, __LINE__));
+                    UEFI_LF(("Unknown register byte for CACHE_DESCRIPTORS: 0x%02X, %s:%u", registerByte[i], __FILE__, __LINE__));
 
                     return NgosStatus::UNEXPECTED_BEHAVIOUR;
                 }
@@ -394,8 +403,8 @@ NgosStatus CpuTest::initCpuCachesIntel()
     }
     else
     {
-        UEFI_LW(("CACHE_TOPOLOGY_CPUID not supported"));
-        UEFI_LW(("CACHE_INFO_CPUID not supported"));
+        UEFI_LW(("DETERMINISTIC_CACHE_PARAMETERS not supported"));
+        UEFI_LW(("CACHE_DESCRIPTORS not supported"));
     }
 
 
@@ -409,13 +418,20 @@ NgosStatus CpuTest::initCpuCachesAmd()
 
 
 
-    if (CPU::isCpuIdLevelSupported(L1_CACHE_IDENTIFIERS_CPUID)) // TODO: Unify with CPUID structures
+    if (CPU::isCpuIdLevelSupported(CpuidLeaf::L1_CACHE_IDENTIFIERS)) // TODO: Unify with CPUID structures
     {
         u32 ignored;
         u32 ecx;
         u32 edx;
 
-        UEFI_ASSERT_EXECUTION(CPU::cpuid(L1_CACHE_IDENTIFIERS_CPUID, 0, &ignored, &ignored, &ecx, &edx), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(CPU::cpuid(
+                                        CpuidLeaf::L1_CACHE_IDENTIFIERS,
+                                        CpuidSubLeaf::NONE,
+                                        &ignored,
+                                        &ignored,
+                                        &ecx,
+                                        &edx
+                                    ), NgosStatus::ASSERTION);
 
         UEFI_LVVV(("ecx = 0x%08X", ecx));
         UEFI_LVVV(("edx = 0x%08X", edx));
@@ -442,12 +458,12 @@ NgosStatus CpuTest::initCpuCachesAmd()
     }
     else
     {
-        UEFI_LW(("L1_CACHE_IDENTIFIERS_CPUID not supported"));
+        UEFI_LW(("L1_CACHE_IDENTIFIERS not supported"));
     }
 
 
 
-    if (CPU::isCpuIdLevelSupported(EXTENDED_CACHE_FEATURES_CPUID))
+    if (CPU::isCpuIdLevelSupported(CpuidLeaf::EXTENDED_L2_CACHE_FEATURES))
     {
         const u8 numberOfWaysTable[16] =
         {
@@ -460,7 +476,14 @@ NgosStatus CpuTest::initCpuCachesAmd()
         u32 ecx;
         u32 edx;
 
-        UEFI_ASSERT_EXECUTION(CPU::cpuid(EXTENDED_CACHE_FEATURES_CPUID, 0, &ignored, &ignored, &ecx, &edx), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(CPU::cpuid(
+                                        CpuidLeaf::EXTENDED_L2_CACHE_FEATURES,
+                                        CpuidSubLeaf::NONE,
+                                        &ignored,
+                                        &ignored,
+                                        &ecx,
+                                        &edx
+                                    ), NgosStatus::ASSERTION);
 
         UEFI_LVVV(("ecx = 0x%08X", ecx));
         UEFI_LVVV(("edx = 0x%08X", edx));
@@ -487,7 +510,7 @@ NgosStatus CpuTest::initCpuCachesAmd()
     }
     else
     {
-        UEFI_LW(("EXTENDED_CACHE_FEATURES_CPUID not supported"));
+        UEFI_LW(("EXTENDED_L2_CACHE_FEATURES not supported"));
     }
 
 

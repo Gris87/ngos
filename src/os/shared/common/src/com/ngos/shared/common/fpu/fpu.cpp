@@ -251,7 +251,15 @@ NgosStatus FPU::initXState()
         u32 edx;
         u32 ignored;
 
-        COMMON_ASSERT_EXECUTION(CPU::cpuid(CpuidLeaf::XSAVE_FEATURES, CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_0, &eax, &ignored, &ignored, &edx), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(CPU::cpuid(
+                                    CpuidLeaf::XSAVE_FEATURES,
+                                    CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_0,
+                                    &eax,
+                                    &ignored,
+                                    &ignored,
+                                    &edx
+                                ), NgosStatus::ASSERTION);
+
         sXFeatures = eax | ((u64)edx << 32);
 
         COMMON_TEST_ASSERT((sXFeatures & XFEATURE_MASK_FPU_SSE) == XFEATURE_MASK_FPU_SSE, NgosStatus::ASSERTION);
@@ -391,7 +399,14 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
         {
             u32 ignored;
 
-            COMMON_ASSERT_EXECUTION(CPU::cpuid(CpuidLeaf::XSAVE_FEATURES, static_cast<CpuidSubLeaf>(i), &sXFeaturesSizes[i], &sXFeaturesOffsets[i], &ignored, &ignored), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(CPU::cpuid(
+                                        CpuidLeaf::XSAVE_FEATURES,
+                                        static_cast<CpuidSubLeaf>(i),
+                                        &sXFeaturesSizes[i],
+                                        &sXFeaturesOffsets[i],
+                                        &ignored,
+                                        &ignored
+                                    ), NgosStatus::ASSERTION);
 
 
 
@@ -459,7 +474,14 @@ NgosStatus FPU::initStateSizes()
     // CPUID 0x0000000D, sub-function 0:
     // EBX enumerates the size (in bytes) required by he XSAVE instruction for an XSAVE area
     // containing all the *user* state components corresponding to bits currently set in XCR0
-    COMMON_ASSERT_EXECUTION(CPU::cpuid(CpuidLeaf::XSAVE_FEATURES, CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_0, &ignored, &sStateUserSize, &ignored, &ignored), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(CPU::cpuid(
+                                CpuidLeaf::XSAVE_FEATURES,
+                                CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_0,
+                                &ignored,
+                                &sStateUserSize,
+                                &ignored,
+                                &ignored
+                            ), NgosStatus::ASSERTION);
 
     if (CPU::hasFeature(X86Feature::XSAVES))
     {
@@ -468,7 +490,14 @@ NgosStatus FPU::initStateSizes()
         // CPUID 0x0000000D, sub-function 1:
         // EBX enumerates the size (in bytes) required by the XSAVES instruction for an XSAVE area
         // containing all the state components corresponding to bits currently set in XCR0 | IA32_XSS
-        COMMON_ASSERT_EXECUTION(CPU::cpuid(CpuidLeaf::XSAVE_FEATURES, CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_1, &ignored, &sStateKernelSize, &ignored, &ignored), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(CPU::cpuid(
+                                    CpuidLeaf::XSAVE_FEATURES,
+                                    CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_1,
+                                    &ignored,
+                                    &sStateKernelSize,
+                                    &ignored,
+                                    &ignored
+                                ), NgosStatus::ASSERTION);
     }
     else
     {
@@ -551,7 +580,14 @@ bool FPU::isXFeatureSupervisor(XFeature xFeature)
     u32 ignored;
 
     // if xFeature is supervisor state then ECX[0] = 1, otherwise ECX[0] = 0
-    COMMON_ASSERT_EXECUTION(CPU::cpuid(CpuidLeaf::XSAVE_FEATURES, static_cast<CpuidSubLeaf>(xFeature), &ignored, &ignored, &ecx, &ignored), 0);
+    COMMON_ASSERT_EXECUTION(CPU::cpuid(
+                                CpuidLeaf::XSAVE_FEATURES,
+                                static_cast<CpuidSubLeaf>(xFeature),
+                                &ignored,
+                                &ignored,
+                                &ecx,
+                                &ignored
+                            ), 0);
 
 
 
@@ -572,7 +608,14 @@ bool FPU::isXFeatureUser(XFeature xFeature)
     u32 ignored;
 
     // if xFeature is supervisor state then ECX[0] = 1, otherwise ECX[0] = 0
-    COMMON_ASSERT_EXECUTION(CPU::cpuid(CpuidLeaf::XSAVE_FEATURES, static_cast<CpuidSubLeaf>(xFeature), &ignored, &ignored, &ecx, &ignored), 0);
+    COMMON_ASSERT_EXECUTION(CPU::cpuid(
+                                CpuidLeaf::XSAVE_FEATURES,
+                                static_cast<CpuidSubLeaf>(xFeature),
+                                &ignored,
+                                &ignored,
+                                &ecx,
+                                &ignored
+                            ), 0);
 
 
 
@@ -594,7 +637,14 @@ bool FPU::isXFeatureAligned(XFeature xFeature)
 
     // The value returned by ECX[1] indicates the alignment of xFeature
     // when the compacted format of the extended region of an XSAVE area is used
-    COMMON_ASSERT_EXECUTION(CPU::cpuid(CpuidLeaf::XSAVE_FEATURES, static_cast<CpuidSubLeaf>(xFeature), &ignored, &ignored, &ecx, &ignored), 0);
+    COMMON_ASSERT_EXECUTION(CPU::cpuid(
+                                CpuidLeaf::XSAVE_FEATURES,
+                                static_cast<CpuidSubLeaf>(xFeature),
+                                &ignored,
+                                &ignored,
+                                &ecx,
+                                &ignored
+                            ), 0);
 
 
 

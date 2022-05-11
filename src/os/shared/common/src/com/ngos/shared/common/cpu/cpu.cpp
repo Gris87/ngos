@@ -1,6 +1,10 @@
 #include "cpu.h"                                                                                                                                                                                         // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 #include <com/ngos/shared/common/asm/bitutils.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/cpuid/cpuid00000000eax.h>                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/cpuid/cpuid00000001eax.h>                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/cpuid/cpuid00000001ebx.h>                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/cpuid/cpuid80000000eax.h>                                                                                                                                           // Colorize: green
 #include <com/ngos/shared/common/cpu/lib/registers/x86flags.h>                                                                                                                                           // Colorize: green
 #include <com/ngos/shared/common/cpu/lib/generated/x86bugsnames.h>                                                                                                                                       // Colorize: green
 #include <com/ngos/shared/common/cpu/lib/generated/x86featuresnames.h>                                                                                                                                   // Colorize: green
@@ -174,9 +178,9 @@ NgosStatus CPU::init()                                                          
         // COMMON_TEST_ASSERT(sModelName.uints[11]                           == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
         // COMMON_TEST_ASSERT(strncmp(sModelName.chars, "Intel Core Processor (Skylake)", 48) == 0,                                                                NgosStatus::ASSERTION); // Commented due to value variation     // Colorize: green
         // COMMON_TEST_ASSERT(sCpuidLevel                                    == CpuidLeaf::XSAVE_FEATURES,                                                         NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
-        COMMON_TEST_ASSERT(sCpuidLevel                                       >= CPUID_LEVEL_LOWER_BOUND && sCpuidLevel <= CPUID_LEVEL_UPPER_BOUND,                 NgosStatus::ASSERTION);                                // Colorize: green
+        COMMON_TEST_ASSERT(static_cast<good_Enum_t>(sCpuidLevel)             >= CPUID_LEVEL_LOWER_BOUND && static_cast<good_Enum_t>(sCpuidLevel) <= CPUID_LEVEL_UPPER_BOUND,                 NgosStatus::ASSERTION);                                // Colorize: green
         // COMMON_TEST_ASSERT(sExtendedCpuidLevel                            == CpuidLeaf::VIRTUAL_AND_PHYSICAL_ADDRESS_SIZES,                                     NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
-        COMMON_TEST_ASSERT(sExtendedCpuidLevel                               >= EXT_CPUID_LEVEL_LOWER_BOUND && sExtendedCpuidLevel <= EXT_CPUID_LEVEL_UPPER_BOUND, NgosStatus::ASSERTION);                                // Colorize: green
+        COMMON_TEST_ASSERT(static_cast<good_Enum_t>(sExtendedCpuidLevel)     >= EXT_CPUID_LEVEL_LOWER_BOUND && static_cast<good_Enum_t>(sExtendedCpuidLevel) <= EXT_CPUID_LEVEL_UPPER_BOUND, NgosStatus::ASSERTION);                                // Colorize: green
         // COMMON_TEST_ASSERT(sCpuVendor                                     == CpuVendor::INTEL,                                                                  NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
         // COMMON_TEST_ASSERT(sFamily                                        == CpuFamily::INTEL_FAMILY_6,                                                         NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
         // COMMON_TEST_ASSERT(sModel                                         == 94,                                                                                NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
@@ -769,19 +773,19 @@ bool CPU::isCpuIdLevelSupported(CpuidLeaf cpuidLevel)                           
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-    if (cpuidLevel >= CPUID_LEVEL_LOWER_BOUND && cpuidLevel <= CPUID_LEVEL_UPPER_BOUND)                                                                                                                  // Colorize: green
+    if (static_cast<good_Enum_t>(cpuidLevel) >= CPUID_LEVEL_LOWER_BOUND && static_cast<good_Enum_t>(cpuidLevel) <= CPUID_LEVEL_UPPER_BOUND)                                                                                                                  // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
         return sCpuidLevel >= cpuidLevel;                                                                                                                                                                // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-    if (cpuidLevel >= EXT_CPUID_LEVEL_LOWER_BOUND && cpuidLevel <= EXT_CPUID_LEVEL_UPPER_BOUND)                                                                                                          // Colorize: green
+    if (static_cast<good_Enum_t>(cpuidLevel) >= EXT_CPUID_LEVEL_LOWER_BOUND && static_cast<good_Enum_t>(cpuidLevel) <= EXT_CPUID_LEVEL_UPPER_BOUND)                                                                                                          // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
         return sExtendedCpuidLevel >= cpuidLevel;                                                                                                                                                        // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-    COMMON_LE(("Unexpected CPUID level provided: %u", cpuidLevel));                                                                                                                                      // Colorize: green
+    COMMON_LE(("Unexpected CPUID level provided: %s", enumToFullString(cpuidLevel)));                                                                                                                                      // Colorize: green
                                                                                                                                                                                                          // Colorize: green
     return false;                                                                                                                                                                                        // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
@@ -881,7 +885,23 @@ NgosStatus CPU::initCpuFeatures()
 
 
 
-    COMMON_ASSERT_EXECUTION(cpuid(0x00000000, 0, &sCpuidLevel, &sVendor.uints[0], &sVendor.uints[2], &sVendor.uints[1]), NgosStatus::ASSERTION);
+    // Get largest standard function and vendor ID
+    {
+        Cpuid00000000Eax cpuid00000000Eax;
+
+        COMMON_ASSERT_EXECUTION(cpuid(
+                                    CpuidLeaf::VENDOR_ID_AND_LARGEST_STANDARD_FUNCTION,
+                                    CpuidSubLeaf::NONE,
+                                    &cpuid00000000Eax.value32,
+                                    &sVendor.uints[0],
+                                    &sVendor.uints[2],
+                                    &sVendor.uints[1]
+                                ), NgosStatus::ASSERTION);
+
+        sCpuidLevel = static_cast<CpuidLeaf>(cpuid00000000Eax.largestFunction);
+    }
+
+
 
     if (sVendor.isIntel())
     {
@@ -908,33 +928,25 @@ NgosStatus CPU::initCpuFeatures()
     // Handle general CPUID levels
     do
     {
-        if (sCpuidLevel >= 0x00000001)
+        if (sCpuidLevel >= CpuidLeaf::FEATURE_INFORMATION)
         {
-            u32 tfms;
-            u32 misc;
+            Cpuid00000001Eax cpuid00000001Eax;
+            Cpuid00000001Ebx cpuid00000001Ebx;
 
-            COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &tfms, &misc, &sFeatures[(u64)x86FeatureWord::CPUID_00000001_ECX], &sFeatures[(u64)x86FeatureWord::CPUID_00000001_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(
+                                        CpuidLeaf::FEATURE_INFORMATION,
+                                        CpuidSubLeaf::NONE,
+                                        &cpuid00000001Eax.value32,
+                                        &cpuid00000001Ebx.value32,
+                                        &sFeatures[(u64)x86FeatureWord::CPUID_00000001_ECX],
+                                        &sFeatures[(u64)x86FeatureWord::CPUID_00000001_EDX]
+                                    ), NgosStatus::ASSERTION);
 
 
 
-            //
-            // https://en.wikipedia.org/wiki/CPUID#EAX=1:_Processor_Info_and_Feature_Bits
-            //
-            u16 family = (tfms >> 8) & 0x0F;   // 11:8 - Family
-            sModel     = (tfms >> 4) & 0x0F;   // 7:4 - Model
-            sStepping  = tfms & 0x0F;          // 3:0 - Stepping
-
-            if (family == 15)
-            {
-                family += (tfms >> 20) & 0xFF; // 27:20 - Extended Family
-            }
-
-            if (family >= 6)
-            {
-                sModel += ((tfms >> 16) & 0x0F) << 4; // 19:16 - Extended Model
-            }
-
-            sFamily = (CpuFamily)family;
+            sFamily   = static_cast<CpuFamily>(cpuid00000001Eax.familyReal());
+            sModel    = cpuid00000001Eax.modelReal();
+            sStepping = cpuid00000001Eax.stepping;
 
 
 
@@ -942,7 +954,7 @@ NgosStatus CPU::initCpuFeatures()
             {
                 COMMON_LVV(("X86Feature::CLFLUSH supported"));
 
-                sCacheLineFlushSize = ((misc >> 8) & 0xFF) * 8;
+                sCacheLineFlushSize = cpuid00000001Ebx.cacheLineFlushSizeReal();
                 sCacheAlignment     = sCacheLineFlushSize;
             }
 
@@ -955,39 +967,67 @@ NgosStatus CPU::initCpuFeatures()
             break;
         }
 
-        if (sCpuidLevel >= 0x00000006)
+        if (sCpuidLevel >= CpuidLeaf::DIGITAL_THERMAL_SENSOR_AND_POWER_MANAGEMENT_PARAMETERS)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x00000006, 0, &sFeatures[(u64)x86FeatureWord::CPUID_00000006_EAX], &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(
+                                        CpuidLeaf::DIGITAL_THERMAL_SENSOR_AND_POWER_MANAGEMENT_PARAMETERS,
+                                        CpuidSubLeaf::NONE,
+                                        &sFeatures[(u64)x86FeatureWord::CPUID_00000006_EAX],
+                                        &ignored,
+                                        &ignored,
+                                        &ignored
+                                    ), NgosStatus::ASSERTION);
         }
         else
         {
             break;
         }
 
-        if (sCpuidLevel >= 0x00000007)
+        if (sCpuidLevel >= CpuidLeaf::STRUCTURED_EXTENDED_FEATURE_FLAGS_ENUMERATION)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x00000007, 0, &ignored, &sFeatures[(u64)x86FeatureWord::CPUID_00000007_EBX], &sFeatures[(u64)x86FeatureWord::CPUID_00000007_ECX], &sFeatures[(u64)x86FeatureWord::CPUID_00000007_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(
+                                        CpuidLeaf::STRUCTURED_EXTENDED_FEATURE_FLAGS_ENUMERATION,
+                                        CpuidSubLeaf::NONE,
+                                        &ignored,
+                                        &sFeatures[(u64)x86FeatureWord::CPUID_00000007_EBX],
+                                        &sFeatures[(u64)x86FeatureWord::CPUID_00000007_ECX],
+                                        &sFeatures[(u64)x86FeatureWord::CPUID_00000007_EDX]
+                                    ), NgosStatus::ASSERTION);
         }
         else
         {
             break;
         }
 
-        if (sCpuidLevel >= 0x0000000D)
+        if (sCpuidLevel >= CpuidLeaf::XSAVE_FEATURES)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x0000000D, 1, &sFeatures[(u64)x86FeatureWord::CPUID_0000000D_1_EAX], &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(
+                                        CpuidLeaf::XSAVE_FEATURES,
+                                        CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_1,
+                                        &sFeatures[(u64)x86FeatureWord::CPUID_0000000D_1_EAX],
+                                        &ignored,
+                                        &ignored,
+                                        &ignored
+                                    ), NgosStatus::ASSERTION);
         }
         else
         {
             break;
         }
 
-        if (sCpuidLevel >= 0x0000000F)
+        if (sCpuidLevel >= CpuidLeaf::UNKNOWN_F)
         {
             i32 ebx;
             i32 ecx;
 
-            COMMON_ASSERT_EXECUTION(cpuid(0x0000000F, 0, &ignored, (u32 *)&ebx, &ignored, &sFeatures[(u64)x86FeatureWord::CPUID_0000000F_0_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(
+                                        CpuidLeaf::UNKNOWN_F,
+                                        CpuidSubLeaf::UNKNOWN_F_0,
+                                        &ignored,
+                                        (u32 *)&ebx,
+                                        &ignored,
+                                        &sFeatures[(u64)x86FeatureWord::CPUID_0000000F_0_EDX]
+                                    ), NgosStatus::ASSERTION);
 
             if (hasFeature(X86Feature::CQM_LLC))
             {
@@ -997,7 +1037,14 @@ NgosStatus CPU::initCpuFeatures()
 
                 sCacheMaxRmid = ebx;
 
-                COMMON_ASSERT_EXECUTION(cpuid(0x0000000F, 1, &ignored, (u32 *)&ebx, (u32 *)&ecx, &sFeatures[(u64)x86FeatureWord::CPUID_0000000F_1_EDX]), NgosStatus::ASSERTION);
+                COMMON_ASSERT_EXECUTION(cpuid(
+                                            CpuidLeaf::UNKNOWN_F,
+                                            CpuidSubLeaf::UNKNOWN_F_1,
+                                            &ignored,
+                                            (u32 *)&ebx,
+                                            (u32 *)&ecx,
+                                            &sFeatures[(u64)x86FeatureWord::CPUID_0000000F_1_EDX]
+                                        ), NgosStatus::ASSERTION);
 
                 if (
                     hasFeature(X86Feature::CQM_OCCUP_LLC)
@@ -1024,27 +1071,45 @@ NgosStatus CPU::initCpuFeatures()
 
 
 
-    COMMON_ASSERT_EXECUTION(cpuid(0x80000000, 0, &sExtendedCpuidLevel, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+    Cpuid80000000Eax cpuid80000000Eax;
+
+    COMMON_ASSERT_EXECUTION(cpuid(
+                                CpuidLeaf::LARGEST_EXTENDED_FUNCTION,
+                                CpuidSubLeaf::NONE,
+                                &cpuid80000000Eax.value32,
+                                &ignored,
+                                &ignored,
+                                &ignored
+                            ), NgosStatus::ASSERTION);
+
+    sExtendedCpuidLevel = static_cast<CpuidLeaf>(cpuid80000000Eax.largestFunction);
 
 
 
     // Handle extended CPUID levels
     do
     {
-        if (sExtendedCpuidLevel >= 0x80000001)
+        if (sExtendedCpuidLevel >= CpuidLeaf::EXTENDED_FEATURE_BITS)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000001, 0, &ignored, &ignored, &sFeatures[(u64)x86FeatureWord::CPUID_80000001_ECX], &sFeatures[(u64)x86FeatureWord::CPUID_80000001_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(
+                                        CpuidLeaf::EXTENDED_FEATURE_BITS,
+                                        CpuidSubLeaf::NONE,
+                                        &ignored,
+                                        &ignored,
+                                        &sFeatures[(u64)x86FeatureWord::CPUID_80000001_ECX],
+                                        &sFeatures[(u64)x86FeatureWord::CPUID_80000001_EDX]
+                                    ), NgosStatus::ASSERTION);
         }
         else
         {
             break;
         }
 
-        if (sExtendedCpuidLevel >= 0x80000004)
+        if (sExtendedCpuidLevel >= CpuidLeaf::PROCESSOR_BRAND_STRING_3)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000002, 0, &sModelName.uints[0], &sModelName.uints[1], &sModelName.uints[2],  &sModelName.uints[3]),  NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000003, 0, &sModelName.uints[4], &sModelName.uints[5], &sModelName.uints[6],  &sModelName.uints[7]),  NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000004, 0, &sModelName.uints[8], &sModelName.uints[9], &sModelName.uints[10], &sModelName.uints[11]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(CpuidLeaf::PROCESSOR_BRAND_STRING_1, CpuidSubLeaf::NONE, &sModelName.uints[0], &sModelName.uints[1], &sModelName.uints[2],  &sModelName.uints[3]),  NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(CpuidLeaf::PROCESSOR_BRAND_STRING_2, CpuidSubLeaf::NONE, &sModelName.uints[4], &sModelName.uints[5], &sModelName.uints[6],  &sModelName.uints[7]),  NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(CpuidLeaf::PROCESSOR_BRAND_STRING_3, CpuidSubLeaf::NONE, &sModelName.uints[8], &sModelName.uints[9], &sModelName.uints[10], &sModelName.uints[11]), NgosStatus::ASSERTION);
 
 
 
@@ -1093,20 +1158,34 @@ NgosStatus CPU::initCpuFeatures()
             break;
         }
 
-        if (sExtendedCpuidLevel >= 0x80000007)
+        if (sExtendedCpuidLevel >= CpuidLeaf::ADVANCED_POWER_MANAGEMENT)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000007, 0, &ignored, &sFeatures[(u64)x86FeatureWord::CPUID_80000007_EBX], &ignored, &sPower), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(
+                                        CpuidLeaf::ADVANCED_POWER_MANAGEMENT,
+                                        CpuidSubLeaf::NONE,
+                                        &ignored,
+                                        &sFeatures[(u64)x86FeatureWord::CPUID_80000007_EBX],
+                                        &ignored,
+                                        &sPower
+                                    ), NgosStatus::ASSERTION);
         }
         else
         {
             break;
         }
 
-        if (sExtendedCpuidLevel >= 0x80000008)
+        if (sExtendedCpuidLevel >= CpuidLeaf::VIRTUAL_AND_PHYSICAL_ADDRESS_SIZES)
         {
             u32 misc;
 
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000008, 0, &misc, &sFeatures[(u64)x86FeatureWord::CPUID_80000008_EBX], &ignored, &ignored), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(
+                                        CpuidLeaf::VIRTUAL_AND_PHYSICAL_ADDRESS_SIZES,
+                                        CpuidSubLeaf::NONE,
+                                        &misc,
+                                        &sFeatures[(u64)x86FeatureWord::CPUID_80000008_EBX],
+                                        &ignored,
+                                        &ignored
+                                    ), NgosStatus::ASSERTION);
 
             sVirtualBits  = (misc >> 8) & 0xFF;
             sPhysicalBits = misc & 0xFF;
@@ -1116,9 +1195,16 @@ NgosStatus CPU::initCpuFeatures()
             break;
         }
 
-        if (sExtendedCpuidLevel >= 0x8000000A)
+        if (sExtendedCpuidLevel >= CpuidLeaf::UNKNOWN_8000000A)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x8000000A, 0, &ignored, &ignored, &ignored, &sFeatures[(u64)x86FeatureWord::CPUID_8000000A_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(
+                                        CpuidLeaf::UNKNOWN_8000000A,
+                                        CpuidSubLeaf::NONE,
+                                        &ignored,
+                                        &ignored,
+                                        &ignored,
+                                        &sFeatures[(u64)x86FeatureWord::CPUID_8000000A_EDX]
+                                    ), NgosStatus::ASSERTION);
         }
         else
         {
@@ -1209,9 +1295,22 @@ NgosStatus CPU::doIntelPreprocessing()
         COMMON_LVV(("MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT successfully cleared"));
         COMMON_LVV(("Updating CPUID level"));
 
-        u32 ignored;
+        // Get largest standard function
+        {
+            Cpuid00000000Eax cpuid00000000Eax;
+            u32              ignored;
 
-        COMMON_ASSERT_EXECUTION(cpuid(0x00000000, 0, &sCpuidLevel, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(
+                                        CpuidLeaf::VENDOR_ID_AND_LARGEST_STANDARD_FUNCTION,
+                                        CpuidSubLeaf::NONE,
+                                        &cpuid00000000Eax.value32,
+                                        &ignored,
+                                        &ignored,
+                                        &ignored
+                                    ), NgosStatus::ASSERTION);
+
+            sCpuidLevel = static_cast<CpuidLeaf>(cpuid00000000Eax.largestFunction);
+        }
     }
     else
     if (status == NgosStatus::NO_EFFECT)
@@ -1254,7 +1353,14 @@ NgosStatus CPU::doCommonPreprocessing()
         u32 ignored;
         u32 ebx;
 
-        COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &ignored, &ebx, &ignored, &ignored), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(cpuid(
+                                    CpuidLeaf::FEATURE_INFORMATION,
+                                    CpuidSubLeaf::NONE,
+                                    &ignored,
+                                    &ebx,
+                                    &ignored,
+                                    &ignored
+                                ), NgosStatus::ASSERTION);
 
         // If Hyper-Threading is set EBX[16:23] in cpuid 0x00000001 contain the number of
         // apicids which are reserved per package. Store the resulting
@@ -1277,52 +1383,70 @@ NgosStatus CPU::initScatteredFeatures()
 
 
 
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::APERFMPERF,    CPUID_ECX, 0,  0x00000006, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::EPB,           CPUID_ECX, 3,  0x00000006, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CAT_L3,        CPUID_EBX, 1,  0x00000010, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CAT_L2,        CPUID_EBX, 2,  0x00000010, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CDP_L3,        CPUID_ECX, 2,  0x00000010, 1), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CDP_L2,        CPUID_ECX, 2,  0x00000010, 2), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::MBA,           CPUID_EBX, 3,  0x00000010, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::HW_PSTATE,     CPUID_EDX, 7,  0x80000007, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CPB,           CPUID_EDX, 9,  0x80000007, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::PROC_FEEDBACK, CPUID_EDX, 11, 0x80000007, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::SME,           CPUID_EAX, 0,  0x8000001F, 0), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::SEV,           CPUID_EAX, 1,  0x8000001F, 0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::APERFMPERF,    CPUID_ECX, 0,  CpuidLeaf::DIGITAL_THERMAL_SENSOR_AND_POWER_MANAGEMENT_PARAMETERS, CpuidSubLeaf::NONE),         NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::EPB,           CPUID_ECX, 3,  CpuidLeaf::DIGITAL_THERMAL_SENSOR_AND_POWER_MANAGEMENT_PARAMETERS, CpuidSubLeaf::NONE),         NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CAT_L3,        CPUID_EBX, 1,  CpuidLeaf::UNKNOWN_10,                                             CpuidSubLeaf::UNKNOWN_10_0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CAT_L2,        CPUID_EBX, 2,  CpuidLeaf::UNKNOWN_10,                                             CpuidSubLeaf::UNKNOWN_10_0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::MBA,           CPUID_EBX, 3,  CpuidLeaf::UNKNOWN_10,                                             CpuidSubLeaf::UNKNOWN_10_0), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CDP_L3,        CPUID_ECX, 2,  CpuidLeaf::UNKNOWN_10,                                             CpuidSubLeaf::UNKNOWN_10_1), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CDP_L2,        CPUID_ECX, 2,  CpuidLeaf::UNKNOWN_10,                                             CpuidSubLeaf::UNKNOWN_10_2), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::HW_PSTATE,     CPUID_EDX, 7,  CpuidLeaf::ADVANCED_POWER_MANAGEMENT,                              CpuidSubLeaf::NONE),         NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::CPB,           CPUID_EDX, 9,  CpuidLeaf::ADVANCED_POWER_MANAGEMENT,                              CpuidSubLeaf::NONE),         NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::PROC_FEEDBACK, CPUID_EDX, 11, CpuidLeaf::ADVANCED_POWER_MANAGEMENT,                              CpuidSubLeaf::NONE),         NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::SME,           CPUID_EAX, 0,  CpuidLeaf::UNKNOWN_8000001F,                                       CpuidSubLeaf::NONE),         NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(setScatteredFeature(X86Feature::SEV,           CPUID_EAX, 1,  CpuidLeaf::UNKNOWN_8000001F,                                       CpuidSubLeaf::NONE),         NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u32 level, u32 count)
+NgosStatus CPU::setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, CpuidLeaf leaf, CpuidSubLeaf subLeaf)
 {
-    COMMON_LT((" | feature = 0x%04X, registerId = %u, bit = %u, level = %u, count = %u", feature, registerId, bit, level, count));
+    COMMON_LT((" | feature = 0x%04X, registerId = %u, bit = %u, leaf = %s, subLeaf = %s", feature, registerId, bit, enumToFullString(leaf), enumToFullString(leaf, subLeaf)));
 
     COMMON_ASSERT(registerId < 4, "registerId is invalid", NgosStatus::ASSERTION);
     COMMON_ASSERT(bit < 32,       "bit is invalid",        NgosStatus::ASSERTION);
-    COMMON_ASSERT(level > 0,      "level is zero",         NgosStatus::ASSERTION);
-    COMMON_ASSERT(count <= 2,     "count is invalid",      NgosStatus::ASSERTION);
 
 
 
-    u32 ignored;
-    u32 maximumLevel;
-    u32 registers[4];
+    CpuidLeaf maximumLevel;
 
-    COMMON_ASSERT_EXECUTION(cpuid(level & 0xFFFF0000, 0, &maximumLevel, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
-
-
-
-    if (maximumLevel >= level)
+    // Get maximum level
     {
-        COMMON_TEST_ASSERT(maximumLevel >= (level & 0xFFFF0000) && maximumLevel <= (level | 0xFFFF), NgosStatus::ASSERTION)
+        if (static_cast<good_Enum_t>(leaf) >= CPUID_LEVEL_LOWER_BOUND && static_cast<good_Enum_t>(leaf) <= CPUID_LEVEL_UPPER_BOUND)
+        {
+            maximumLevel = sCpuidLevel;
+        }
+        else
+        if (static_cast<good_Enum_t>(leaf) >= EXT_CPUID_LEVEL_LOWER_BOUND && static_cast<good_Enum_t>(leaf) <= EXT_CPUID_LEVEL_UPPER_BOUND)
+        {
+            maximumLevel = sExtendedCpuidLevel;
+        }
+        else
+        {
+            COMMON_LE(("Unexpected leaf = %s", enumToString(leaf)));
 
-        COMMON_ASSERT_EXECUTION(cpuid(level, count, &registers[0], &registers[1], &registers[2], &registers[3]), NgosStatus::ASSERTION);
+            return NgosStatus::INVALID_DATA;
+        }
+    }
 
 
 
-        if (registers[registerId] & (1ULL << bit))
+    if (maximumLevel >= leaf)
+    {
+        u32 registers[4];
+
+        COMMON_ASSERT_EXECUTION(cpuid(
+                                    leaf,
+                                    subLeaf,
+                                    &registers[0],
+                                    &registers[1],
+                                    &registers[2],
+                                    &registers[3]
+                                ), NgosStatus::ASSERTION);
+
+        if ((registers[registerId] & (1ULL << bit)) != 0)
         {
             COMMON_ASSERT_EXECUTION(setFeature(feature), NgosStatus::ASSERTION);
         }
@@ -1550,23 +1674,45 @@ NgosStatus CPU::doIntelPostprocessing()
 
 
 
-    if (sCpuidLevel >= 0x0000000B)
+    if (sCpuidLevel >= CpuidLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY)
     {
         u32 ignored;
 
-        COMMON_ASSERT_EXECUTION(cpuid(0x0000000B, 0, &ignored, &sNumberOfCores,   &ignored, &ignored), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(cpuid(0x0000000B, 1, &ignored, &sNumberOfThreads, &ignored, &ignored), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(cpuid(
+                                    CpuidLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY,
+                                    CpuidSubLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY_THREAD,
+                                    &ignored,
+                                    &sNumberOfCores,
+                                    &ignored,
+                                    &ignored),
+                                    NgosStatus::ASSERTION);
+
+        COMMON_ASSERT_EXECUTION(cpuid(
+                                    CpuidLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY,
+                                    CpuidSubLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY_CORE,
+                                    &ignored,
+                                    &sNumberOfThreads,
+                                    &ignored,
+                                    &ignored),
+                                    NgosStatus::ASSERTION);
 
         COMMON_TEST_ASSERT(sNumberOfThreads % sNumberOfCores == 0, NgosStatus::ASSERTION);
 
         sNumberOfCores = sNumberOfThreads / sNumberOfCores;
     }
     else
-    if (sCpuidLevel >= 0x00000004)
+    if (sCpuidLevel >= CpuidLeaf::DETERMINISTIC_CACHE_PARAMETERS)
     {
         u32 ignored;
 
-        COMMON_ASSERT_EXECUTION(cpuid(0x00000004, 0, &sNumberOfCores, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(cpuid(
+                                    CpuidLeaf::DETERMINISTIC_CACHE_PARAMETERS,
+                                    CpuidSubLeaf::NONE,
+                                    &sNumberOfCores,
+                                    &ignored,
+                                    &ignored,
+                                    &ignored
+                                ), NgosStatus::ASSERTION);
 
         sNumberOfCores   = (sNumberOfCores >> 26) + 1;
         sNumberOfThreads = sNumberOfApicIdsPerPackage;
@@ -1589,12 +1735,19 @@ NgosStatus CPU::doAmdPostprocessing()
 
 
 
-    if (sExtendedCpuidLevel >= 0x80000008)
+    if (sExtendedCpuidLevel >= CpuidLeaf::VIRTUAL_AND_PHYSICAL_ADDRESS_SIZES)
     {
         u32 ignored;
         u32 ecx;
 
-        COMMON_ASSERT_EXECUTION(cpuid(0x80000008, 0, &ignored, &ignored, &ecx, &ignored), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(cpuid(
+                                    CpuidLeaf::VIRTUAL_AND_PHYSICAL_ADDRESS_SIZES,
+                                    CpuidSubLeaf::NONE,
+                                    &ignored,
+                                    &ignored,
+                                    &ecx,
+                                    &ignored
+                                ), NgosStatus::ASSERTION);
 
 
 
@@ -1680,21 +1833,21 @@ NgosStatus CPU::filterFeaturesDependentOnCpuid()
 
 
 
-    if (hasFeature(X86Feature::MWAIT) && sCpuidLevel < 0x00000005)
+    if (hasFeature(X86Feature::MWAIT) && sCpuidLevel < CpuidLeaf::MONITOR_AND_MWAIT_PARAMETERS)
     {
         COMMON_LW(("X86Feature::MWAIT resetted because sCpuidLevel < 0x00000005"));
 
         COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::MWAIT), NgosStatus::ASSERTION);
     }
 
-    if (hasFeature(X86Feature::DCA) && sCpuidLevel < 0x00000009)
+    if (hasFeature(X86Feature::DCA) && sCpuidLevel < CpuidLeaf::DIRECT_CACHE_ACCESS_PARAMETERS)
     {
         COMMON_LW(("X86Feature::DCA resetted because sCpuidLevel < 0x00000009"));
 
         COMMON_ASSERT_EXECUTION(clearFeature(X86Feature::DCA), NgosStatus::ASSERTION);
     }
 
-    if (hasFeature(X86Feature::XSAVE) && sCpuidLevel < 0x0000000D)
+    if (hasFeature(X86Feature::XSAVE) && sCpuidLevel < CpuidLeaf::XSAVE_FEATURES)
     {
         COMMON_LW(("X86Feature::XSAVE resetted because sCpuidLevel < 0x0000000D"));
 
@@ -1812,14 +1965,25 @@ NgosStatus CPU::initIntelMicrocodeRevision()
 
 
 
-    u32 ignored;
-
-
-
     COMMON_ASSERT_EXECUTION(MSR::write(MSR_IA32_MICROCODE_REV, 0), NgosStatus::ASSERTION);
 
+
+
     // Call cpuid with 0x00000001 to trigger microcode revision refresh
-    COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &ignored, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+    {
+        u32 ignored;
+
+        COMMON_ASSERT_EXECUTION(cpuid(
+                                    CpuidLeaf::FEATURE_INFORMATION,
+                                    CpuidSubLeaf::NONE,
+                                    &ignored,
+                                    &ignored,
+                                    &ignored,
+                                    &ignored
+                                ), NgosStatus::ASSERTION);
+    }
+
+
 
     sMicrocodeRevision = (u32)(MSR::read(MSR_IA32_MICROCODE_REV) >> 32);
 

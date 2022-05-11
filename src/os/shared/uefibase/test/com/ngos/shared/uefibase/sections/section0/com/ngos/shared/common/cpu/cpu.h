@@ -58,14 +58,22 @@ TEST_CASES(section0, com_ngos_shared_common_cpu_cpu);
 
     TEST_CASE("isCpuIdLevelSupported()");
     {
-        u32 temp         = CPU::sCpuidLevel;
-        CPU::sCpuidLevel = 5;
+        CpuidLeaf temp  = CPU::sCpuidLevel;
+        CpuidLeaf temp2 = CPU::sExtendedCpuidLevel;
 
-        TEST_ASSERT_EQUALS(CPU::isCpuIdLevelSupported(1), true);
-        TEST_ASSERT_EQUALS(CPU::isCpuIdLevelSupported(5), true);
-        TEST_ASSERT_EQUALS(CPU::isCpuIdLevelSupported(6), false);
+        CPU::sCpuidLevel         = CpuidLeaf::MONITOR_AND_MWAIT_PARAMETERS;
+        CPU::sExtendedCpuidLevel = CpuidLeaf::EXTENDED_L2_CACHE_FEATURES;
 
-        CPU::sCpuidLevel = temp;
+        TEST_ASSERT_EQUALS(CPU::isCpuIdLevelSupported(CpuidLeaf::MONITOR_AND_MWAIT_PARAMETERS),                           true);
+        TEST_ASSERT_EQUALS(CPU::isCpuIdLevelSupported(CpuidLeaf::DETERMINISTIC_CACHE_PARAMETERS),                         true);
+        TEST_ASSERT_EQUALS(CPU::isCpuIdLevelSupported(CpuidLeaf::DIGITAL_THERMAL_SENSOR_AND_POWER_MANAGEMENT_PARAMETERS), false);
+
+        TEST_ASSERT_EQUALS(CPU::isCpuIdLevelSupported(CpuidLeaf::EXTENDED_L2_CACHE_FEATURES), true);
+        TEST_ASSERT_EQUALS(CPU::isCpuIdLevelSupported(CpuidLeaf::L1_CACHE_IDENTIFIERS),       true);
+        TEST_ASSERT_EQUALS(CPU::isCpuIdLevelSupported(CpuidLeaf::ADVANCED_POWER_MANAGEMENT),  false);
+
+        CPU::sCpuidLevel         = temp;
+        CPU::sExtendedCpuidLevel = temp2;
     }
     TEST_CASE_END();
 }

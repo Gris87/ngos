@@ -62,7 +62,7 @@ private:                                                                        
     static NgosStatus doAmdPreprocessing(); // TEST: NO
     static NgosStatus doCommonPreprocessing(); // TEST: NO
     static NgosStatus initScatteredFeatures(); // TEST: NO
-    static NgosStatus setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u32 level, u32 count); // TEST: NO
+    static NgosStatus setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, CpuidLeaf leaf, CpuidSubLeaf subLeaf); // TEST: NO
     static NgosStatus initSpeculationControl(); // TEST: NO
     static NgosStatus doPostprocessing(); // TEST: NO
     static NgosStatus doIntelPostprocessing(); // TEST: NO

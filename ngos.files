@@ -837,9 +837,11 @@ src/os/shared/common/src/com/ngos/shared/common/containers/map.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/cpu.cpp
 src/os/shared/common/src/com/ngos/shared/common/cpu/cpu.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpufamily.h
+src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid00000000eax.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid00000001eax.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid00000001ebx.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid00000004eax.h
+src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid80000000eax.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid80000008eax.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid80000008ecx.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuidmodelname.h
