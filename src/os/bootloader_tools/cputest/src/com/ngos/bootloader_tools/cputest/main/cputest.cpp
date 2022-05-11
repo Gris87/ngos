@@ -255,7 +255,7 @@ NgosStatus CpuTest::initCpuCachesIntel()
     else
     if (CPU::isCpuIdLevelSupported(CpuidLeaf::CACHE_DESCRIPTORS))
     {
-        UEFI_LW(("CACHE_DESCRIPTORS not supported"));
+        UEFI_LW(("DETERMINISTIC_CACHE_PARAMETERS not supported"));
 
 
 
