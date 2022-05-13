@@ -49,12 +49,12 @@ CpuFamily      CPU::sFamily                    = CpuFamily::NONE;               
 good_U8        CPU::sModel                     = 0;                                                                                                                                                      // Colorize: green
 good_U8        CPU::sStepping                  = 0;                                                                                                                                                      // Colorize: green
 good_U32       CPU::sMicrocodeRevision         = 0;                                                                                                                                                      // Colorize: green
-good_U32       CPU::sNumberOfCores             = 1;                                                                                                                                                      // Colorize: green
-good_U32       CPU::sNumberOfThreads           = 1;                                                                                                                                                      // Colorize: green
-u8             CPU::sNumberOfApicIdsPerPackage = 1;
-i8             CPU::sX86CoreIdBits             = 0;
-u16            CPU::sCacheLineFlushSize        = 64;
-u16            CPU::sCacheAlignment            = 64;
+good_U8        CPU::sNumberOfApicIdsPerPackage = 1;                                                                                                                                                      // Colorize: green
+good_I8        CPU::sX86CoreIdBits             = 0;                                                                                                                                                      // Colorize: green
+good_U16       CPU::sCacheLineFlushSize        = 64;                                                                                                                                                     // Colorize: green
+good_U16       CPU::sCacheAlignment            = 64;                                                                                                                                                     // Colorize: green
+good_U32       CPU::sNumberOfCores             = 1;
+good_U32       CPU::sNumberOfThreads           = 1;
 i32            CPU::sCacheMaxRmid              = -1;
 i32            CPU::sCacheOccScale             = -1;
 u32            CPU::sPower                     = 0;
@@ -79,9 +79,9 @@ NgosStatus CPU::init()                                                          
                                                                                                                                                                                                          // Colorize: green
             return NgosStatus::NOT_SUPPORTED;                                                                                                                                                            // Colorize: green
         }                                                                                                                                                                                                // Colorize: green
-    }                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-    COMMON_LVV(("CPUID detection available"));                                                                                                                                                           // Colorize: green
+        COMMON_LVV(("CPUID detection available"));                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -124,12 +124,12 @@ NgosStatus CPU::init()                                                          
         COMMON_LVVV(("sModel                     = %s",     enumToFullString(sCpuVendor, sFamily, sModel)));                                                                                             // Colorize: green
         COMMON_LVVV(("sStepping                  = %u",     sStepping));                                                                                                                                 // Colorize: green
         COMMON_LVVV(("sMicrocodeRevision         = 0x%08X", sMicrocodeRevision));                                                                                                                        // Colorize: green
-        COMMON_LVVV(("sNumberOfCores             = %u",     sNumberOfCores));                                                                                                                            // Colorize: green
-        COMMON_LVVV(("sNumberOfThreads           = %u",     sNumberOfThreads));                                                                                                                          // Colorize: green
         COMMON_LVVV(("sNumberOfApicIdsPerPackage = %u",     sNumberOfApicIdsPerPackage));                                                                                                                // Colorize: green
         COMMON_LVVV(("sX86CoreIdBits             = %d",     sX86CoreIdBits));                                                                                                                            // Colorize: green
         COMMON_LVVV(("sCacheLineFlushSize        = %u",     sCacheLineFlushSize));                                                                                                                       // Colorize: green
         COMMON_LVVV(("sCacheAlignment            = %u",     sCacheAlignment));                                                                                                                           // Colorize: green
+        COMMON_LVVV(("sNumberOfCores             = %u",     sNumberOfCores));                                                                                                                            // Colorize: green
+        COMMON_LVVV(("sNumberOfThreads           = %u",     sNumberOfThreads));                                                                                                                          // Colorize: green
         COMMON_LVVV(("sCacheMaxRmid              = %d",     sCacheMaxRmid));                                                                                                                             // Colorize: green
         COMMON_LVVV(("sCacheOccScale             = %d",     sCacheOccScale));                                                                                                                            // Colorize: green
         COMMON_LVVV(("sPower                     = %u",     sPower));                                                                                                                                    // Colorize: green
@@ -186,12 +186,12 @@ NgosStatus CPU::init()                                                          
         // COMMON_TEST_ASSERT(sModel                                         == 94,                                                                                NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
         // COMMON_TEST_ASSERT(sStepping                                      == 3,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
         // COMMON_TEST_ASSERT(sMicrocodeRevision                             == 0,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
-        // COMMON_TEST_ASSERT(sNumberOfCores                                 == 2,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
-        // COMMON_TEST_ASSERT(sNumberOfThreads                               == 4,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
         // COMMON_TEST_ASSERT(sNumberOfApicIdsPerPackage                     == 4,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
         // COMMON_TEST_ASSERT(sX86CoreIdBits                                 == 1,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
         COMMON_TEST_ASSERT(sCacheLineFlushSize                               == 64,                                                                                NgosStatus::ASSERTION);                                // Colorize: green
         COMMON_TEST_ASSERT(sCacheAlignment                                   == 64,                                                                                NgosStatus::ASSERTION);                                // Colorize: green
+        // COMMON_TEST_ASSERT(sNumberOfCores                                 == 2,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
+        // COMMON_TEST_ASSERT(sNumberOfThreads                               == 4,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
         COMMON_TEST_ASSERT(sCacheMaxRmid                                     == -1,                                                                                NgosStatus::ASSERTION);                                // Colorize: green
         COMMON_TEST_ASSERT(sCacheOccScale                                    == -1,                                                                                NgosStatus::ASSERTION);                                // Colorize: green
         // COMMON_TEST_ASSERT(sPower                                         == 0,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation // Colorize: green
@@ -1096,7 +1096,6 @@ NgosStatus CPU::initCpuFeatures()                                               
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
                     // Get number of APIC IDs per package                                                                                                                                                // Colorize: green
                     {                                                                                                                                                                                    // Colorize: green
                         if (hasFeature(X86Feature::HT))                                                                                                                                                  // Colorize: green
@@ -1112,7 +1111,7 @@ NgosStatus CPU::initCpuFeatures()                                               
                         // Validation                                                                                                                                                                    // Colorize: green
                         {                                                                                                                                                                                // Colorize: green
                             COMMON_LVVV(("sNumberOfApicIdsPerPackage = %u", sNumberOfApicIdsPerPackage));                                                                                                // Colorize: green
-                            COMMON_LVVV(("sX86CoreIdBits             = %u", sX86CoreIdBits));                                                                                                            // Colorize: green
+                            COMMON_LVVV(("sX86CoreIdBits             = %d", sX86CoreIdBits));                                                                                                            // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                             COMMON_TEST_ASSERT(sNumberOfApicIdsPerPackage == 4, NgosStatus::ASSERTION);                                                                                                  // Colorize: green
                             COMMON_TEST_ASSERT(sX86CoreIdBits             == 2, NgosStatus::ASSERTION);                                                                                                  // Colorize: green
@@ -1157,118 +1156,189 @@ NgosStatus CPU::initCpuFeatures()                                               
                     break;                                                                                                                                                                               // Colorize: green
                 }                                                                                                                                                                                        // Colorize: green
             }                                                                                                                                                                                            // Colorize: green
-
-
-
-            if (sCpuidLevel >= CpuidLeaf::STRUCTURED_EXTENDED_FEATURE_FLAGS_ENUMERATION)
-            {
-                COMMON_ASSERT_EXECUTION(cpuid(
-                                            CpuidLeaf::STRUCTURED_EXTENDED_FEATURE_FLAGS_ENUMERATION,
-                                            CpuidSubLeaf::NONE,
-                                            &ignored,
-                                            &sFeatures[(u64)x86FeatureWord::CPUID_00000007_EBX],
-                                            &sFeatures[(u64)x86FeatureWord::CPUID_00000007_ECX],
-                                            &sFeatures[(u64)x86FeatureWord::CPUID_00000007_EDX]
-                                        ), NgosStatus::ASSERTION);
-            }
-            else
-            {
-                break;
-            }
-
-            if (sCpuidLevel >= CpuidLeaf::XSAVE_FEATURES)
-            {
-                COMMON_ASSERT_EXECUTION(cpuid(
-                                            CpuidLeaf::XSAVE_FEATURES,
-                                            CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_1,
-                                            &sFeatures[(u64)x86FeatureWord::CPUID_0000000D_1_EAX],
-                                            &ignored,
-                                            &ignored,
-                                            &ignored
-                                        ), NgosStatus::ASSERTION);
-            }
-            else
-            {
-                break;
-            }
-
-            if (sCpuidLevel >= CpuidLeaf::UNKNOWN_F)
-            {
-                i32 ebx;
-                i32 ecx;
-
-                COMMON_ASSERT_EXECUTION(cpuid(
-                                            CpuidLeaf::UNKNOWN_F,
-                                            CpuidSubLeaf::UNKNOWN_F_0,
-                                            &ignored,
-                                            (u32 *)&ebx,
-                                            &ignored,
-                                            &sFeatures[(u64)x86FeatureWord::CPUID_0000000F_0_EDX]
-                                        ), NgosStatus::ASSERTION);
-
-                if (hasFeature(X86Feature::CQM_LLC))
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Handle CPUID 0x00000007 == CpuidLeaf::STRUCTURED_EXTENDED_FEATURE_FLAGS_ENUMERATION                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (sCpuidLevel >= CpuidLeaf::STRUCTURED_EXTENDED_FEATURE_FLAGS_ENUMERATION)                                                                                                             // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    // Call cpuid                                                                                                                                                                        // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_ASSERT_EXECUTION(cpuid(                                                                                                                                                   // Colorize: green
+                                                    CpuidLeaf::STRUCTURED_EXTENDED_FEATURE_FLAGS_ENUMERATION,                                                                                            // Colorize: green
+                                                    CpuidSubLeaf::NONE,                                                                                                                                  // Colorize: green
+                                                    &ignored,                                                                                                                                            // Colorize: green
+                                                    &sFeatures[(u64)x86FeatureWord::CPUID_00000007_EBX],                                                                                                 // Colorize: green
+                                                    &sFeatures[(u64)x86FeatureWord::CPUID_00000007_ECX],                                                                                                 // Colorize: green
+                                                    &sFeatures[(u64)x86FeatureWord::CPUID_00000007_EDX]                                                                                                  // Colorize: green
+                                                ), NgosStatus::ASSERTION);                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        // Validation                                                                                                                                                                        // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            COMMON_LVVV(("sFeatures[x86FeatureWord::CPUID_00000007_EBX] = 0x%08X", sFeatures[static_cast<good_Enum_t>(x86FeatureWord::CPUID_00000007_EBX)]));                            // Colorize: green
+                            COMMON_LVVV(("sFeatures[x86FeatureWord::CPUID_00000007_ECX] = 0x%08X", sFeatures[static_cast<good_Enum_t>(x86FeatureWord::CPUID_00000007_ECX)]));                            // Colorize: green
+                            COMMON_LVVV(("sFeatures[x86FeatureWord::CPUID_00000007_EDX] = 0x%08X", sFeatures[static_cast<good_Enum_t>(x86FeatureWord::CPUID_00000007_EDX)]));                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            COMMON_TEST_ASSERT(sFeatures[static_cast<good_Enum_t>(x86FeatureWord::CPUID_00000007_EBX)] == 0x00840423, NgosStatus::ASSERTION);                                            // Colorize: green
+                            COMMON_TEST_ASSERT(sFeatures[static_cast<good_Enum_t>(x86FeatureWord::CPUID_00000007_ECX)] == 0x00000004, NgosStatus::ASSERTION);                                            // Colorize: green
+                            COMMON_TEST_ASSERT(sFeatures[static_cast<good_Enum_t>(x86FeatureWord::CPUID_00000007_EDX)] == 0x20000400, NgosStatus::ASSERTION);                                            // Colorize: green
+                        }                                                                                                                                                                                    // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    break;                                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Handle CPUID 0x0000000D == CpuidLeaf::XSAVE_FEATURES                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (sCpuidLevel >= CpuidLeaf::XSAVE_FEATURES)                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    // Call cpuid                                                                                                                                                                        // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_ASSERT_EXECUTION(cpuid(                                                                                                                                                   // Colorize: green
+                                                    CpuidLeaf::XSAVE_FEATURES,                                                                                                                           // Colorize: green
+                                                    CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_1,                                                                                 // Colorize: green
+                                                    &sFeatures[(u64)x86FeatureWord::CPUID_0000000D_1_EAX],                                                                                               // Colorize: green
+                                                    &ignored,                                                                                                                                            // Colorize: green
+                                                    &ignored,                                                                                                                                            // Colorize: green
+                                                    &ignored                                                                                                                                             // Colorize: green
+                                                ), NgosStatus::ASSERTION);                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        // Validation                                                                                                                                                                        // Colorize: green
+                        {                                                                                                                                                                                    // Colorize: green
+                            COMMON_LVVV(("sFeatures[x86FeatureWord::CPUID_0000000D_1_EAX] = 0x%08X", sFeatures[static_cast<good_Enum_t>(x86FeatureWord::CPUID_0000000D_1_EAX)]));                            // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                            COMMON_TEST_ASSERT(sFeatures[static_cast<good_Enum_t>(x86FeatureWord::CPUID_0000000D_1_EAX)] == 0x00000000, NgosStatus::ASSERTION);                                              // Colorize: green
+                        }                                                                                                                                                                                    // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    break;                                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Handle CPUID 0x0000000F == CpuidLeaf::UNKNOWN_F                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (sCpuidLevel >= CpuidLeaf::UNKNOWN_F)
                 {
-                    COMMON_LVV(("X86Feature::CQM_LLC supported"));
-
-
-
-                    sCacheMaxRmid = ebx;
+                    i32 ebx;
+                    i32 ecx;
 
                     COMMON_ASSERT_EXECUTION(cpuid(
                                                 CpuidLeaf::UNKNOWN_F,
-                                                CpuidSubLeaf::UNKNOWN_F_1,
+                                                CpuidSubLeaf::UNKNOWN_F_0,
                                                 &ignored,
                                                 (u32 *)&ebx,
-                                                (u32 *)&ecx,
-                                                &sFeatures[(u64)x86FeatureWord::CPUID_0000000F_1_EDX]
+                                                &ignored,
+                                                &sFeatures[(u64)x86FeatureWord::CPUID_0000000F_0_EDX]
                                             ), NgosStatus::ASSERTION);
 
-                    if (
-                        hasFeature(X86Feature::CQM_OCCUP_LLC)
-                        ||
-                        hasFeature(X86Feature::CQM_MBM_TOTAL)
-                        ||
-                        hasFeature(X86Feature::CQM_MBM_LOCAL)
-                       )
+                    if (hasFeature(X86Feature::CQM_LLC))
                     {
-                        COMMON_LVV(("X86Feature::CQM_OCCUP_LLC, X86Feature::CQM_MBM_TOTAL or X86Feature::CQM_MBM_LOCAL supported"));
+                        COMMON_LVV(("X86Feature::CQM_LLC supported"));
 
-                        sCacheMaxRmid  = ecx;
-                        sCacheOccScale = ebx;
+
+
+                        sCacheMaxRmid = ebx;
+
+                        COMMON_ASSERT_EXECUTION(cpuid(
+                                                    CpuidLeaf::UNKNOWN_F,
+                                                    CpuidSubLeaf::UNKNOWN_F_1,
+                                                    &ignored,
+                                                    (u32 *)&ebx,
+                                                    (u32 *)&ecx,
+                                                    &sFeatures[(u64)x86FeatureWord::CPUID_0000000F_1_EDX]
+                                                ), NgosStatus::ASSERTION);
+
+                        if (
+                            hasFeature(X86Feature::CQM_OCCUP_LLC)
+                            ||
+                            hasFeature(X86Feature::CQM_MBM_TOTAL)
+                            ||
+                            hasFeature(X86Feature::CQM_MBM_LOCAL)
+                           )
+                        {
+                            COMMON_LVV(("X86Feature::CQM_OCCUP_LLC, X86Feature::CQM_MBM_TOTAL or X86Feature::CQM_MBM_LOCAL supported"));
+
+                            sCacheMaxRmid  = ecx;
+                            sCacheOccScale = ebx;
+                        }
                     }
                 }
-            }
-            else
-            {
-                break;
-            }
-
-            break;
-        } while(true);
-    }
-
-
-
-    // Get largest extended function
-    {
-        Cpuid80000000Eax cpuid80000000Eax;
-
-        COMMON_ASSERT_EXECUTION(cpuid(
-                                    CpuidLeaf::LARGEST_EXTENDED_FUNCTION,
-                                    CpuidSubLeaf::NONE,
-                                    &cpuid80000000Eax.value32,
-                                    &ignored,
-                                    &ignored,
-                                    &ignored
-                                ), NgosStatus::ASSERTION);
-
-        sExtendedCpuidLevel = static_cast<CpuidLeaf>(cpuid80000000Eax.largestFunction);
-    }
-
-
-
-    // Handle extended CPUID levels
-    {
+                else
+                {
+                    break;
+                }
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+        } while(true);                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get largest extended function                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Cpuid80000000Eax cpuid80000000Eax;                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Call cpuid                                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_ASSERT_EXECUTION(cpuid(                                                                                                                                                               // Colorize: green
+                                        CpuidLeaf::LARGEST_EXTENDED_FUNCTION,                                                                                                                            // Colorize: green
+                                        CpuidSubLeaf::NONE,                                                                                                                                              // Colorize: green
+                                        &cpuid80000000Eax.value32,                                                                                                                                       // Colorize: green
+                                        &ignored,                                                                                                                                                        // Colorize: green
+                                        &ignored,                                                                                                                                                        // Colorize: green
+                                        &ignored                                                                                                                                                         // Colorize: green
+                                    ), NgosStatus::ASSERTION);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Validation                                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_LVVV(("cpuid80000000Eax.largestFunction = 0x%08X", cpuid80000000Eax.largestFunction));                                                                                            // Colorize: green
+                COMMON_LVVV(("cpuid80000000Eax.value32         = 0x%08X", cpuid80000000Eax.value32));                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                COMMON_TEST_ASSERT(cpuid80000000Eax.largestFunction == 0x80000008, NgosStatus::ASSERTION);                                                                      // Colorize: green
+                COMMON_TEST_ASSERT(cpuid80000000Eax.value32         == 0x80000008, NgosStatus::ASSERTION);                                                                      // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Get sExtendedCpuidLevel                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            sExtendedCpuidLevel = static_cast<CpuidLeaf>(cpuid80000000Eax.largestFunction);                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Validation                                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_LVVV(("sExtendedCpuidLevel = %s", enumToFullString(sExtendedCpuidLevel)));                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                COMMON_TEST_ASSERT(sExtendedCpuidLevel == CpuidLeaf::VIRTUAL_AND_PHYSICAL_ADDRESS_SIZES, NgosStatus::ASSERTION);                                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Handle extended CPUID levels                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
         do
         {
             if (sExtendedCpuidLevel >= CpuidLeaf::EXTENDED_FEATURE_BITS)
@@ -1491,28 +1561,43 @@ NgosStatus CPU::doIntelPreprocessing()                                          
                 Cpuid00000000Eax cpuid00000000Eax;                                                                                                                                                       // Colorize: green
                 u32              ignored;                                                                                                                                                                // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-                COMMON_ASSERT_EXECUTION(cpuid(                                                                                                                                                           // Colorize: green
-                                            CpuidLeaf::VENDOR_ID_AND_LARGEST_STANDARD_FUNCTION,                                                                                                          // Colorize: green
-                                            CpuidSubLeaf::NONE,                                                                                                                                          // Colorize: green
-                                            &cpuid00000000Eax.value32,                                                                                                                                   // Colorize: green
-                                            &ignored,                                                                                                                                                    // Colorize: green
-                                            &ignored,                                                                                                                                                    // Colorize: green
-                                            &ignored                                                                                                                                                     // Colorize: green
-                                        ), NgosStatus::ASSERTION);                                                                                                                                       // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-                sCpuidLevel = static_cast<CpuidLeaf>(cpuid00000000Eax.largestFunction);                                                                                                                  // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-                // Validation                                                                                                                                                                            // Colorize: green
+                // Call cpuid                                                                                                                                                                            // Colorize: green
                 {                                                                                                                                                                                        // Colorize: green
-                    COMMON_LVVV(("cpuid00000000Eax.largestFunction = 0x%08X", cpuid00000000Eax.largestFunction));                                                                                        // Colorize: green
-                    COMMON_LVVV(("cpuid00000000Eax.value32         = 0x%08X", cpuid00000000Eax.value32));                                                                                                // Colorize: green
-                    COMMON_LVVV(("sCpuidLevel                      = %s",     enumToFullString(sCpuidLevel)));                                                                                           // Colorize: green
+                    COMMON_ASSERT_EXECUTION(cpuid(                                                                                                                                                       // Colorize: green
+                                                CpuidLeaf::VENDOR_ID_AND_LARGEST_STANDARD_FUNCTION,                                                                                                      // Colorize: green
+                                                CpuidSubLeaf::NONE,                                                                                                                                      // Colorize: green
+                                                &cpuid00000000Eax.value32,                                                                                                                               // Colorize: green
+                                                &ignored,                                                                                                                                                // Colorize: green
+                                                &ignored,                                                                                                                                                // Colorize: green
+                                                &ignored                                                                                                                                                 // Colorize: green
+                                            ), NgosStatus::ASSERTION);                                                                                                                                   // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-                    COMMON_TEST_ASSERT(cpuid00000000Eax.largestFunction == 0x0000000D,                NgosStatus::ASSERTION);                                                                            // Colorize: green
-                    COMMON_TEST_ASSERT(cpuid00000000Eax.value32         == 0x0000000D,                NgosStatus::ASSERTION);                                                                            // Colorize: green
-                    COMMON_TEST_ASSERT(sCpuidLevel                      == CpuidLeaf::XSAVE_FEATURES, NgosStatus::ASSERTION);                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    // Validation                                                                                                                                                                        // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("cpuid00000000Eax.largestFunction = 0x%08X", cpuid00000000Eax.largestFunction));                                                                                    // Colorize: green
+                        COMMON_LVVV(("cpuid00000000Eax.value32         = 0x%08X", cpuid00000000Eax.value32));                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        COMMON_TEST_ASSERT(cpuid00000000Eax.largestFunction == 0x0000000D, NgosStatus::ASSERTION);                                                                        // Colorize: green
+                        COMMON_TEST_ASSERT(cpuid00000000Eax.value32         == 0x0000000D, NgosStatus::ASSERTION);                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Get sCpuidLevel                                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    sCpuidLevel = static_cast<CpuidLeaf>(cpuid00000000Eax.largestFunction);                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    // Validation                                                                                                                                                                        // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("sCpuidLevel = %s", enumToFullString(sCpuidLevel)));                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        COMMON_TEST_ASSERT(sCpuidLevel == CpuidLeaf::XSAVE_FEATURES, NgosStatus::ASSERTION);                                                                                             // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
                 }                                                                                                                                                                                        // Colorize: green
             }                                                                                                                                                                                            // Colorize: green
         }                                                                                                                                                                                                // Colorize: green

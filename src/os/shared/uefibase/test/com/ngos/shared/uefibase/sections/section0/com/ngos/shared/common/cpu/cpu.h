@@ -41,15 +41,15 @@ TEST_CASES(section0, com_ngos_shared_common_cpu_cpu);
     {
         u32 temp = CPU::sBugs[(u64)x86BugWord::NGOS_COMMON_BUGS];
 
-        TEST_ASSERT_EQUALS(CPU::hasBug(X86Bug::TEST),                     false);
+        TEST_ASSERT_EQUALS(CPU::hasBug(X86Bug::ALWAYS_ZERO),              false);
         TEST_ASSERT_EQUALS(CPU::sBugs[(u64)x86BugWord::NGOS_COMMON_BUGS], temp);
 
-        TEST_ASSERT_EQUALS(CPU::setBug(X86Bug::TEST),                     NgosStatus::OK);
-        TEST_ASSERT_EQUALS(CPU::hasBug(X86Bug::TEST),                     true);
+        TEST_ASSERT_EQUALS(CPU::setBug(X86Bug::ALWAYS_ZERO),              NgosStatus::OK);
+        TEST_ASSERT_EQUALS(CPU::hasBug(X86Bug::ALWAYS_ZERO),              true);
         TEST_ASSERT_EQUALS(CPU::sBugs[(u64)x86BugWord::NGOS_COMMON_BUGS], temp | 0x01);
 
-        TEST_ASSERT_EQUALS(CPU::clearBug(X86Bug::TEST),                   NgosStatus::OK);
-        TEST_ASSERT_EQUALS(CPU::hasBug(X86Bug::TEST),                     false);
+        TEST_ASSERT_EQUALS(CPU::clearBug(X86Bug::ALWAYS_ZERO),            NgosStatus::OK);
+        TEST_ASSERT_EQUALS(CPU::hasBug(X86Bug::ALWAYS_ZERO),              false);
         TEST_ASSERT_EQUALS(CPU::sBugs[(u64)x86BugWord::NGOS_COMMON_BUGS], temp);
     }
     TEST_CASE_END();

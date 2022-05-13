@@ -86,12 +86,12 @@ private:                                                                        
     static good_U8        sModel;                                                                                                                                                                        // Colorize: green
     static good_U8        sStepping;                                                                                                                                                                     // Colorize: green
     static good_U32       sMicrocodeRevision;                                                                                                                                                            // Colorize: green
-    static good_U32       sNumberOfCores;                                                                                                                                                                // Colorize: green
-    static good_U32       sNumberOfThreads;                                                                                                                                                              // Colorize: green
-    static u8             sNumberOfApicIdsPerPackage;
-    static i8             sX86CoreIdBits;
-    static u16            sCacheLineFlushSize;
-    static u16            sCacheAlignment;
+    static good_U8        sNumberOfApicIdsPerPackage;                                                                                                                                                    // Colorize: green
+    static good_I8        sX86CoreIdBits;                                                                                                                                                                // Colorize: green
+    static good_U16       sCacheLineFlushSize;                                                                                                                                                           // Colorize: green
+    static good_U16       sCacheAlignment;                                                                                                                                                               // Colorize: green
+    static good_U32       sNumberOfCores;
+    static good_U32       sNumberOfThreads;
     static i32            sCacheMaxRmid;
     static i32            sCacheOccScale;
     static u32            sPower;
