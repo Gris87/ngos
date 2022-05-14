@@ -9,6 +9,7 @@
 #include <com/ngos/shared/common/cpu/lib/cpuvendor.h>                                                                                                                                                    // Colorize: green
 #include <com/ngos/shared/common/cpu/lib/x86bug.h>                                                                                                                                                       // Colorize: green
 #include <com/ngos/shared/common/cpu/lib/x86feature.h>                                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/cpu/lib/cpuid/lib/cpuidpowerflags.h>                                                                                                                                         // Colorize: green
 #include <com/ngos/shared/common/cpu/lib/cpuid/cpuidmodelname.h>                                                                                                                                         // Colorize: green
 #include <com/ngos/shared/common/cpu/lib/cpuid/cpuidvendor.h>                                                                                                                                            // Colorize: green
 #include <com/ngos/shared/common/cpu/lib/registers/x86flags.h>                                                                                                                                           // Colorize: green
@@ -56,49 +57,50 @@ public:                                                                         
 #else                                                                                                                                                                                                    // Colorize: green
 private:                                                                                                                                                                                                 // Colorize: green
 #endif                                                                                                                                                                                                   // Colorize: green
-    static NgosStatus initCpuFeatures(); // TEST: NO
-    static NgosStatus doPreprocessing(); // TEST: NO
-    static NgosStatus doIntelPreprocessing(); // TEST: NO
-    static NgosStatus doAmdPreprocessing(); // TEST: NO
-    static NgosStatus doCommonPreprocessing(); // TEST: NO
-    static NgosStatus initScatteredFeatures(); // TEST: NO
-    static NgosStatus setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, CpuidLeaf leaf, CpuidSubLeaf subLeaf); // TEST: NO
-    static NgosStatus initSpeculationControl(); // TEST: NO
-    static NgosStatus doPostprocessing(); // TEST: NO
-    static NgosStatus doIntelPostprocessing(); // TEST: NO
-    static NgosStatus doAmdPostprocessing(); // TEST: NO
-    static NgosStatus doCommonPostprocessing(); // TEST: NO
+    static NgosStatus initCpuFeatures(); // TEST: NO                                                                                                                                                     // Colorize: green
+    static NgosStatus doPreprocessing(); // TEST: NO                                                                                                                                                     // Colorize: green
+    static NgosStatus doIntelPreprocessing(); // TEST: NO                                                                                                                                                // Colorize: green
+    static NgosStatus doAmdPreprocessing(); // TEST: NO                                                                                                                                                  // Colorize: green
+    static NgosStatus doCommonPreprocessing(); // TEST: NO                                                                                                                                               // Colorize: green
+    static NgosStatus initScatteredFeatures(); // TEST: NO                                                                                                                                               // Colorize: green
+    static NgosStatus setScatteredFeature(X86Feature feature, CpuidLeaf leaf, CpuidSubLeaf subLeaf, good_U8 registerId, good_U8 bit); // TEST: NO                                                        // Colorize: green
+    static NgosStatus initSpeculationControl(); // TEST: NO                                                                                                                                              // Colorize: green
+    static NgosStatus doPostprocessing(); // TEST: NO                                                                                                                                                    // Colorize: green
+    static NgosStatus doIntelPostprocessing(); // TEST: NO                                                                                                                                               // Colorize: green
+    static NgosStatus doAmdPostprocessing(); // TEST: NO                                                                                                                                                 // Colorize: green
+    static NgosStatus doCommonPostprocessing(); // TEST: NO                                                                                                                                              // Colorize: green
     static NgosStatus filterFeaturesDependentOnCpuid(); // TEST: NO
     static NgosStatus initCpuBugs(); // TEST: NO
     static NgosStatus initIntelMicrocodeRevision(); // TEST: NO
+    static NgosStatus simplifyModelName(good_Char8 modelName[48]);                                                                                                                                       // Colorize: green
     static bool isIntelBadSpectreMicrocode(); // TEST: NO
     static bool isCpuNoSpeculation(); // TEST: NO
     static bool isCpuNoMeltdown(); // TEST: NO
     static bool isCpuNoSpecStoreBypass(); // TEST: NO
     static bool isCpuNoL1TF(); // TEST: NO
-
-    static CpuidVendor    sVendor;                                                                                                                                                                       // Colorize: green
-    static CpuidModelName sModelName;                                                                                                                                                                    // Colorize: green
-    static CpuidLeaf      sCpuidLevel;                                                                                                                                                                   // Colorize: green
-    static CpuidLeaf      sExtendedCpuidLevel;                                                                                                                                                           // Colorize: green
-    static CpuVendor      sCpuVendor;                                                                                                                                                                    // Colorize: green
-    static CpuFamily      sFamily;                                                                                                                                                                       // Colorize: green
-    static good_U8        sModel;                                                                                                                                                                        // Colorize: green
-    static good_U8        sStepping;                                                                                                                                                                     // Colorize: green
-    static good_U32       sMicrocodeRevision;                                                                                                                                                            // Colorize: green
-    static good_U8        sNumberOfApicIdsPerPackage;                                                                                                                                                    // Colorize: green
-    static good_I8        sX86CoreIdBits;                                                                                                                                                                // Colorize: green
-    static good_U16       sCacheLineFlushSize;                                                                                                                                                           // Colorize: green
-    static good_U16       sCacheAlignment;                                                                                                                                                               // Colorize: green
-    static good_U32       sNumberOfCores;
-    static good_U32       sNumberOfThreads;
-    static i32            sCacheMaxRmid;
-    static i32            sCacheOccScale;
-    static u32            sPower;
-    static u8             sPhysicalBits;
-    static u8             sVirtualBits;
-    static good_U32       sFeatures[(enum_t)x86FeatureWord::MAXIMUM];                                                                                                                                    // Colorize: green
-    static good_U32       sBugs[(enum_t)x86BugWord::MAXIMUM];                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static CpuidVendor     sVendor;                                                                                                                                                                       // Colorize: green
+    static CpuidModelName  sModelName;                                                                                                                                                                    // Colorize: green
+    static CpuidLeaf       sCpuidLevel;                                                                                                                                                                   // Colorize: green
+    static CpuidLeaf       sExtendedCpuidLevel;                                                                                                                                                           // Colorize: green
+    static CpuVendor       sCpuVendor;                                                                                                                                                                    // Colorize: green
+    static CpuFamily       sFamily;                                                                                                                                                                       // Colorize: green
+    static good_U8         sModel;                                                                                                                                                                        // Colorize: green
+    static good_U8         sStepping;                                                                                                                                                                     // Colorize: green
+    static good_U32        sMicrocodeRevision;                                                                                                                                                            // Colorize: green
+    static good_U8         sNumberOfApicIdsPerPackage;                                                                                                                                                    // Colorize: green
+    static good_I8         sX86CoreIdBits;                                                                                                                                                                // Colorize: green
+    static good_U16        sCacheLineFlushSize;                                                                                                                                                           // Colorize: green
+    static good_U16        sCacheAlignment;                                                                                                                                                               // Colorize: green
+    static good_I32        sCacheMaxRmid;                                                                                                                                                                 // Colorize: green
+    static good_I32        sCacheOccScale;                                                                                                                                                                // Colorize: green
+    static CpuidPowerFlags sPower;                                                                                                                                                                       // Colorize: green
+    static good_U8         sPhysicalBits;                                                                                                                                                                // Colorize: green
+    static good_U8         sVirtualBits;                                                                                                                                                                 // Colorize: green
+    static good_U32        sNumberOfCores;                                                                                                                                                               // Colorize: green
+    static good_U32        sNumberOfThreads;                                                                                                                                                             // Colorize: green
+    static good_U32        sFeatures[(enum_t)x86FeatureWord::MAXIMUM];                                                                                                                                   // Colorize: green
+    static good_U32        sBugs[(enum_t)x86BugWord::MAXIMUM];                                                                                                                                            // Colorize: green
 };                                                                                                                                                                                                       // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
