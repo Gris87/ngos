@@ -69,15 +69,15 @@ private:                                                                        
     static NgosStatus doIntelPostprocessing(); // TEST: NO                                                                                                                                               // Colorize: green
     static NgosStatus doAmdPostprocessing(); // TEST: NO                                                                                                                                                 // Colorize: green
     static NgosStatus doCommonPostprocessing(); // TEST: NO                                                                                                                                              // Colorize: green
-    static NgosStatus filterFeaturesDependentOnCpuid(); // TEST: NO
-    static NgosStatus initCpuBugs(); // TEST: NO
-    static NgosStatus initIntelMicrocodeRevision(); // TEST: NO
+    static NgosStatus filterFeaturesDependentOnCpuid(); // TEST: NO                                                                                                                                      // Colorize: green
+    static NgosStatus initCpuBugs(); // TEST: NO                                                                                                                                                         // Colorize: green
+    static NgosStatus initIntelMicrocodeRevision(); // TEST: NO                                                                                                                                          // Colorize: green
     static NgosStatus simplifyModelName(good_Char8 modelName[48]);                                                                                                                                       // Colorize: green
-    static bool isIntelBadSpectreMicrocode(); // TEST: NO
-    static bool isCpuNoSpeculation(); // TEST: NO
-    static bool isCpuNoMeltdown(); // TEST: NO
-    static bool isCpuNoSpecStoreBypass(); // TEST: NO
-    static bool isCpuNoL1TF(); // TEST: NO
+    static bool isIntelBadSpectreMicrocode(); // TEST: NO                                                                                                                                                // Colorize: green
+    static bool isCpuNoSpeculation(); // TEST: NO                                                                                                                                                        // Colorize: green
+    static bool isCpuNoMeltdown(); // TEST: NO                                                                                                                                                           // Colorize: green
+    static bool isCpuNoSpecStoreBypass(); // TEST: NO                                                                                                                                                    // Colorize: green
+    static bool isCpuNoL1TF(); // TEST: NO                                                                                                                                                               // Colorize: green
                                                                                                                                                                                                          // Colorize: green
     static CpuidVendor     sVendor;                                                                                                                                                                       // Colorize: green
     static CpuidModelName  sModelName;                                                                                                                                                                    // Colorize: green

@@ -432,69 +432,6 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
 
 
-    TEST_CASE("Cpuid80000008Eax");
-    {
-        Cpuid80000008Eax temp;
-
-
-
-        // Cpuid80000008Eax:
-        //
-        // |           CCCCCCCC            |
-        // |           CCCCCCCC            |
-        // |           BBBBBBBB            |
-        // |           AAAAAAAA            |
-        //
-        // physicalAddressBits : 8  'A'
-        // virtualAddressBits  : 8  'B'
-        // _reserved           : 16 'C'
-
-
-
-        // |           01101110            |
-        // |           00000111            |
-        // |           01110110            |
-        // |           01111001            |
-        temp.value32 = 0x6E077679;
-
-        TEST_ASSERT_EQUALS(temp.physicalAddressBits, 121);
-        TEST_ASSERT_EQUALS(temp.virtualAddressBits,  118);
-        TEST_ASSERT_EQUALS(temp._reserved,           28167);
-
-
-
-        // |           01101110            |
-        // |           00000111            |
-        // |           01110110            |
-        // |           10000110            |
-        temp.physicalAddressBits = 134;
-
-        TEST_ASSERT_EQUALS(temp.value32, 0x6E077686);
-
-
-
-        // |           01101110            |
-        // |           00000111            |
-        // |           10001001            |
-        // |           10000110            |
-        temp.virtualAddressBits = 137;
-
-        TEST_ASSERT_EQUALS(temp.value32, 0x6E078986);
-
-
-
-        // |           10010001            |
-        // |           11111000            |
-        // |           10001001            |
-        // |           10000110            |
-        temp._reserved = 37368;
-
-        TEST_ASSERT_EQUALS(temp.value32, 0x91F88986);
-    }
-    TEST_CASE_END();
-
-
-
     TEST_CASE("Cpuid80000008Ecx");
     {
         Cpuid80000008Ecx temp;
