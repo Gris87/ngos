@@ -2,14 +2,13 @@
 
 #include <com/ngos/kernel/other/cpu/hotplug/cpuhotplug.h>
 #include <com/ngos/kernel/other/hypervisor/kvm/kvm.h>
-#include <com/ngos/shared/common/msr/msrregisters.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 
 
 
-u32 KvmClock::sWallClockMsr;
-u32 KvmClock::sSystemTimeMsr;
+MsrRegister KvmClock::sWallClockMsr;
+MsrRegister KvmClock::sSystemTimeMsr;
 
 
 
@@ -21,14 +20,14 @@ NgosStatus KvmClock::init()
 
     if (KVM::hasFeature(KvmFeature::CLOCKSOURCE2))
     {
-        sWallClockMsr  = MSR_KVM_CLOCKSOURCE2_WALL_CLOCK;
-        sSystemTimeMsr = MSR_KVM_CLOCKSOURCE2_SYSTEM_TIME;
+        sWallClockMsr  = MsrRegister::KVM_CLOCKSOURCE2_WALL_CLOCK;
+        sSystemTimeMsr = MsrRegister::KVM_CLOCKSOURCE2_SYSTEM_TIME;
     }
     else
     if (KVM::hasFeature(KvmFeature::CLOCKSOURCE))
     {
-        sWallClockMsr  = MSR_KVM_CLOCKSOURCE_WALL_CLOCK;
-        sSystemTimeMsr = MSR_KVM_CLOCKSOURCE_SYSTEM_TIME;
+        sWallClockMsr  = MsrRegister::KVM_CLOCKSOURCE_WALL_CLOCK;
+        sSystemTimeMsr = MsrRegister::KVM_CLOCKSOURCE_SYSTEM_TIME;
     }
     else
     {
@@ -77,19 +76,14 @@ NgosStatus KvmClock::init()
 
 
 
-        // -----------------------------------------------------------------------------------------------
-        // Check KvmClock
-        // -----------------------------------------------------------------------------------------------
+        // Validation
+        {
+            COMMON_LVVV(("sWallClockMsr  = %s", enumToFullString(sWallClockMsr)));
+            COMMON_LVVV(("sSystemTimeMsr = %s", enumToFullString(sSystemTimeMsr)));
 
-
-
-        COMMON_LVVV(("sWallClockMsr  = 0x%08X", sWallClockMsr));
-        COMMON_LVVV(("sSystemTimeMsr = 0x%08X", sSystemTimeMsr));
-
-
-
-        COMMON_TEST_ASSERT(sWallClockMsr  == 0x4B564D00, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sSystemTimeMsr == 0x4B564D01, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(sWallClockMsr  == MsrRegister::KVM_CLOCKSOURCE2_WALL_CLOCK,  NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(sSystemTimeMsr == MsrRegister::KVM_CLOCKSOURCE2_SYSTEM_TIME, NgosStatus::ASSERTION);
+        }
     }
 
 

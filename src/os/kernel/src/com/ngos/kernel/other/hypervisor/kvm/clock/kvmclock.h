@@ -3,6 +3,7 @@
 
 
 
+#include <com/ngos/shared/common/msr/lib/msrregister.h>
 #include <com/ngos/shared/common/ngos/status.h>
 
 
@@ -17,8 +18,8 @@ public:
 #else
 private:
 #endif
-    static u32 sWallClockMsr;
-    static u32 sSystemTimeMsr;
+    static MsrRegister sWallClockMsr;
+    static MsrRegister sSystemTimeMsr;
 };
 
 

@@ -4,7 +4,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-const good_Char8* x86FeaturesNames[static_cast<good_Enum_t>(x86FeatureWord::MAXIMUM) * 32] =                                                                                                                  // Colorize: green
+const good_Char8* x86FeaturesNames[static_cast<good_Enum_t>(x86FeatureWord::MAXIMUM) * 32] =                                                                                                             // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
     // word 0                                                                                                                                                                                            // Colorize: green
                                                                                                                                                                                                          // Colorize: green

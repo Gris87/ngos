@@ -43,6 +43,7 @@
 #include <com/ngos/shared/common/graphics/jpeg/lib/jpegstartofframecomponentsamplingfactor.h>
 #include <com/ngos/shared/common/graphics/jpeg/lib/jpegstartofscancomponenthuffmantableids.h>
 #include <com/ngos/shared/common/idt/idtdescriptortype.h>
+#include <com/ngos/shared/common/msr/lib/registers/msria32biossignid.h>
 #include <com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportcommand.h>
 #include <com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportstatus.h>
 #include <com/ngos/shared/common/pci/lib/pcibuiltinselftest.h>
@@ -427,6 +428,81 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.maximumNumberOfCores = 47;
 
         TEST_ASSERT_EQUALS(temp.value32, 0xBEEDE152);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("Cpuid80000008Eax");
+    {
+        Cpuid80000008Eax temp;
+
+
+
+        // Cpuid80000008Eax:
+        //
+        // |           DDDDDDDD            |
+        // |           CCCCCCCC            |
+        // |           BBBBBBBB            |
+        // |           AAAAAAAA            |
+        //
+        // physicalAddressBits      : 8  'A'
+        // virtualAddressBits       : 8  'B'
+        // guestPhysicalAddressBits : 8  'C'
+        // _reserved                : 8  'D'
+
+
+
+        // |           01101110            |
+        // |           00000111            |
+        // |           01110110            |
+        // |           01111001            |
+        temp.value32 = 0x6E077679;
+
+        TEST_ASSERT_EQUALS(temp.physicalAddressBits,      121);
+        TEST_ASSERT_EQUALS(temp.virtualAddressBits,       118);
+        TEST_ASSERT_EQUALS(temp.guestPhysicalAddressBits, 7);
+        TEST_ASSERT_EQUALS(temp._reserved,                110);
+
+
+
+        // |           01101110            |
+        // |           00000111            |
+        // |           01110110            |
+        // |           10000110            |
+        temp.physicalAddressBits = 134;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x6E077686);
+
+
+
+        // |           01101110            |
+        // |           00000111            |
+        // |           10001001            |
+        // |           10000110            |
+        temp.virtualAddressBits = 137;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x6E078986);
+
+
+
+        // |           01101110            |
+        // |           11111000            |
+        // |           10001001            |
+        // |           10000110            |
+        temp.guestPhysicalAddressBits = 248;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x6EF88986);
+
+
+
+        // |           10010001            |
+        // |           11111000            |
+        // |           10001001            |
+        // |           10000110            |
+        temp._reserved = 145;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x91F88986);
     }
     TEST_CASE_END();
 
@@ -2544,6 +2620,73 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.p = 0;
 
         TEST_ASSERT_EQUALS(temp.value8, 0x72);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("MsrIa32BiosSignId");
+    {
+        MsrIa32BiosSignId temp;
+
+
+
+        // MsrIa32BiosSignId:
+        //
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           AAAAAAAA            |
+        // |           AAAAAAAA            |
+        // |           AAAAAAAA            |
+        // |           AAAAAAAA            |
+        //
+        // _reserved         : 32 'A'
+        // microcodeRevision : 32 'B'
+
+
+
+        // |           00001011            |
+        // |           00000101            |
+        // |           11000101            |
+        // |           00010101            |
+        // |           00011100            |
+        // |           11000111            |
+        // |           00111010            |
+        // |           00001111            |
+        temp.value64 = 0x0B05C5151CC73A0F;
+
+        TEST_ASSERT_EQUALS(temp._reserved,         482818575);
+        TEST_ASSERT_EQUALS(temp.microcodeRevision, 184927509);
+
+
+
+        // |           00001011            |
+        // |           00000101            |
+        // |           11000101            |
+        // |           00010101            |
+        // |           11100011            |
+        // |           00111000            |
+        // |           11000101            |
+        // |           11110000            |
+        temp._reserved = 3812148720;
+
+        TEST_ASSERT_EQUALS(temp.value64, 0x0B05C515E338C5F0);
+
+
+
+        // |           11110100            |
+        // |           11111010            |
+        // |           00111010            |
+        // |           11101010            |
+        // |           11100011            |
+        // |           00111000            |
+        // |           11000101            |
+        // |           11110000            |
+        temp.microcodeRevision = 4110039786;
+
+        TEST_ASSERT_EQUALS(temp.value64, 0xF4FA3AEAE338C5F0);
     }
     TEST_CASE_END();
 

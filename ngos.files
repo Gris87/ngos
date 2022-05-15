@@ -1228,6 +1228,7 @@ src/os/shared/common/src/com/ngos/shared/common/memory/malloc.cpp
 src/os/shared/common/src/com/ngos/shared/common/memory/malloc.h
 src/os/shared/common/src/com/ngos/shared/common/memory/memory.cpp
 src/os/shared/common/src/com/ngos/shared/common/memory/memory.h
+src/os/shared/common/src/com/ngos/shared/common/msr/lib/generated/msrregisters.h
 src/os/shared/common/src/com/ngos/shared/common/msr/lib/msrregister.h
 src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32archcapabilitiesflags.h
 src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32biossignid.h
@@ -5836,6 +5837,8 @@ tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/z
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/cpumodelgenerator.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/hexcharsgenerator.cpp
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/hexcharsgenerator.h
+tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/msrregistersgenerator.cpp
+tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/msrregistersgenerator.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/numberdecimalsgenerator.cpp
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/numberdecimalsgenerator.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/common/zzz_generators/pcidatabasegenerator.cpp

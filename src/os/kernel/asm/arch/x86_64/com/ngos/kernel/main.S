@@ -1,6 +1,6 @@
 #include <buildconfig.h>
 #include <com/ngos/shared/common/cpu/lib/generated/x86cr0.h>
-#include <com/ngos/shared/common/msr/msrregisters.h>
+#include <com/ngos/shared/common/msr/lib/generated/msrregisters.h>
 #include <com/ngos/shared/common/gdt/segments.h>
 #include <com/ngos/shared/common/idt/macros.h>
 #include <com/ngos/kernel/other/kerneldefines.h>
@@ -154,11 +154,11 @@ virtual_address_space:                                                          
 # Setup GS segment                                                              #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
-    movl    $(MSR_GS_BASE), %ecx                                                # Set ECX to MSR_GS_BASE
+    movl    $(MSR_IA32_GS_BASE), %ecx                                           # Set ECX to MSR_IA32_GS_BASE
     leaq    irqStack(%rip), %rax                                                # Put address of irqStack variable to RAX
     movq    %rax, %rdx                                                          # Also put address of irqStack variable to RDX
     shrq    $32, %rdx                                                           # Keep only highest 32 bits in EDX, EAX will have lowest 32 bits
-    wrmsr                                                                       # Write new value EDX:EAX to MSR_GS_BASE register
+    wrmsr                                                                       # Write new value EDX:EAX to MSR_IA32_GS_BASE register
                                                                                 #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
 # Go to C++ code                                                                #
