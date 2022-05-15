@@ -1229,9 +1229,10 @@ src/os/shared/common/src/com/ngos/shared/common/memory/malloc.h
 src/os/shared/common/src/com/ngos/shared/common/memory/memory.cpp
 src/os/shared/common/src/com/ngos/shared/common/memory/memory.h
 src/os/shared/common/src/com/ngos/shared/common/msr/lib/msrregister.h
-src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msrefer.h
-src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32archcapabilities.h
-src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32miscenable.h
+src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32archcapabilitiesflags.h
+src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32biossignid.h
+src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32eferflags.h
+src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32miscenableflags.h
 src/os/shared/common/src/com/ngos/shared/common/msr/msr.cpp
 src/os/shared/common/src/com/ngos/shared/common/msr/msr.h
 src/os/shared/common/src/com/ngos/shared/common/ngos/flags.h

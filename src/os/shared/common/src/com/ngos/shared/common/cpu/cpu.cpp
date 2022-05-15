@@ -22,7 +22,11 @@
 #include <com/ngos/shared/common/cpu/lib/generated/intelcpumodel.h>                                                                                                                                      // Colorize: green
 #include <com/ngos/shared/common/memory/memory.h>                                                                                                                                                        // Colorize: green
 #include <com/ngos/shared/common/msr/msr.h>                                                                                                                                                              // Colorize: green
-#include <com/ngos/shared/common/msr/msrregisters.h>                                                                                                                                                     // Colorize: green
+#include <com/ngos/shared/common/msr/lib/registers/msria32eferflags.h>                                                                                                                                       // Colorize: green
+#include <com/ngos/shared/common/msr/lib/registers/msria32archcapabilitiesflags.h>                                                                                                                       // Colorize: green
+#include <com/ngos/shared/common/msr/lib/registers/msria32biossignid.h>                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/msr/lib/registers/msria32miscenableflags.h>                                                                                                                       // Colorize: green
+#include <com/ngos/shared/common/msr/lib/msrregister.h>                                                                                                                                                     // Colorize: green
 #include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
 #include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
 #include <com/ngos/shared/common/ngos/linkage.h>                                                                                                                                                         // Colorize: green
@@ -983,7 +987,7 @@ NgosStatus CPU::initCpuFeatures()                                               
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-    // Do preprocessing here in order to remove MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT and get non-limited sCpuidLevel                                                                                     // Colorize: green
+    // Do preprocessing here in order to remove MsrIa32MiscEnableFlag::LIMIT_CPUID and get non-limited sCpuidLevel                                                                                     // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
         COMMON_ASSERT_EXECUTION(doPreprocessing(), NgosStatus::ASSERTION);                                                                                                                               // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
@@ -1745,22 +1749,22 @@ NgosStatus CPU::doIntelPreprocessing()                                          
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-    // Clear MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT                                                                                                                                                         // Colorize: green
+    // Clear MsrIa32MiscEnableFlag::XD_DISABLE                                                                                                                                                         // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
-        NgosStatus status = MSR::clearBit(MSR_IA32_MISC_ENABLE, MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT);                                                                                                    // Colorize: green
+        NgosStatus status = MSR::clearFlag(MsrRegister::IA32_MISC_ENABLE, FLAGS(MsrIa32MiscEnableFlag::XD_DISABLE));                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
         if (status == NgosStatus::OK)                                                                                                                                                                    // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
-            COMMON_LVV(("MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT successfully cleared"));                                                                                                                    // Colorize: green
+            COMMON_LVV(("MsrIa32MiscEnableFlag::XD_DISABLE successfully cleared"));                                                                                                                    // Colorize: green
         }                                                                                                                                                                                                // Colorize: green
         else                                                                                                                                                                                             // Colorize: green
         if (status == NgosStatus::NO_EFFECT)                                                                                                                                                             // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
-            COMMON_LVV(("MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT already cleared"));                                                                                                                         // Colorize: green
+            COMMON_LVV(("MsrIa32MiscEnableFlag::XD_DISABLE already cleared"));                                                                                                                         // Colorize: green
         }                                                                                                                                                                                                // Colorize: green
         else                                                                                                                                                                                             // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
-            COMMON_LF(("Failed to reset MSR_IA32_MISC_ENABLE_XD_DISABLE_BIT"));                                                                                                                          // Colorize: green
+            COMMON_LF(("Failed to reset MsrIa32MiscEnableFlag::XD_DISABLE"));                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
             return NgosStatus::FAILED;                                                                                                                                                                   // Colorize: green
         }                                                                                                                                                                                                // Colorize: green
@@ -1768,13 +1772,13 @@ NgosStatus CPU::doIntelPreprocessing()                                          
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-    // Clear MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT                                                                                                                                                        // Colorize: green
+    // Clear MsrIa32MiscEnableFlag::LIMIT_CPUID                                                                                                                                                        // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
-        NgosStatus status = MSR::clearBit(MSR_IA32_MISC_ENABLE, MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT);                                                                                                   // Colorize: green
+        NgosStatus status = MSR::clearFlag(MsrRegister::IA32_MISC_ENABLE, FLAGS(MsrIa32MiscEnableFlag::LIMIT_CPUID));                                                                                                   // Colorize: green
                                                                                                                                                                                                          // Colorize: green
         if (status == NgosStatus::OK)                                                                                                                                                                    // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
-            COMMON_LVV(("MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT successfully cleared"));                                                                                                                   // Colorize: green
+            COMMON_LVV(("MsrIa32MiscEnableFlag::LIMIT_CPUID successfully cleared"));                                                                                                                   // Colorize: green
             COMMON_LVV(("Updating CPUID level"));                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
             // Get largest standard function                                                                                                                                                             // Colorize: green
@@ -1825,11 +1829,11 @@ NgosStatus CPU::doIntelPreprocessing()                                          
         else                                                                                                                                                                                             // Colorize: green
         if (status == NgosStatus::NO_EFFECT)                                                                                                                                                             // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
-            COMMON_LVV(("MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT already cleared"));                                                                                                                        // Colorize: green
+            COMMON_LVV(("MsrIa32MiscEnableFlag::LIMIT_CPUID already cleared"));                                                                                                                        // Colorize: green
         }                                                                                                                                                                                                // Colorize: green
         else                                                                                                                                                                                             // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
-            COMMON_LF(("Failed to reset MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT"));                                                                                                                         // Colorize: green
+            COMMON_LF(("Failed to reset MsrIa32MiscEnableFlag::LIMIT_CPUID"));                                                                                                                         // Colorize: green
                                                                                                                                                                                                          // Colorize: green
             return NgosStatus::FAILED;                                                                                                                                                                   // Colorize: green
         }                                                                                                                                                                                                // Colorize: green
@@ -2152,9 +2156,9 @@ NgosStatus CPU::doIntelPostprocessing()                                         
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-    // Clear X86Feature::ERMS if MSR_IA32_MISC_ENABLE_FAST_STRING_BIT disabled                                                                                                                           // Colorize: green
+    // Clear X86Feature::ERMS if MsrIa32MiscEnableFlag::FAST_STRINGS disabled                                                                                                                           // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
-        if (!MSR::testBit(MSR_IA32_MISC_ENABLE, MSR_IA32_MISC_ENABLE_FAST_STRING_BIT))                                                                                                                   // Colorize: green
+        if (!MSR::testFlag(MsrRegister::IA32_MISC_ENABLE, FLAGS(MsrIa32MiscEnableFlag::FAST_STRINGS)))                                                                                                                   // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
             COMMON_LW(("Fast string operations disabled in MSR"));                                                                                                                                       // Colorize: green
             COMMON_LVV(("X86Feature::ERMS resetted because fast string operations disabled in MSR"));                                                                                                    // Colorize: green
@@ -2189,7 +2193,7 @@ NgosStatus CPU::doIntelPostprocessing()                                         
             {                                                                                                                                                                                            // Colorize: green
                 COMMON_ASSERT_EXECUTION(cpuid(                                                                                                                                                           // Colorize: green
                                             CpuidLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY,                                                                                                           // Colorize: green
-                                            CpuidSubLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY_THREAD,                                                                                                 // Colorize: green
+                                            CpuidSubLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY_THREADS_PER_CORE,                                                                                                 // Colorize: green
                                             &ignored,                                                                                                                                                    // Colorize: green
                                             &cpuid0000000BEbx0.value32,                                                                                                                                  // Colorize: green
                                             &ignored,                                                                                                                                                    // Colorize: green
@@ -2198,7 +2202,7 @@ NgosStatus CPU::doIntelPostprocessing()                                         
                                                                                                                                                                                                          // Colorize: green
                 COMMON_ASSERT_EXECUTION(cpuid(                                                                                                                                                           // Colorize: green
                                             CpuidLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY,                                                                                                           // Colorize: green
-                                            CpuidSubLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY_CORE,                                                                                                   // Colorize: green
+                                            CpuidSubLeaf::X2APIC_FEATURES_AND_PROCESSOR_TOPOLOGY_THREADS,                                                                                                   // Colorize: green
                                             &ignored,                                                                                                                                                    // Colorize: green
                                             &cpuid0000000BEbx1.value32,                                                                                                                                  // Colorize: green
                                             &ignored,                                                                                                                                                    // Colorize: green
@@ -2209,21 +2213,23 @@ NgosStatus CPU::doIntelPostprocessing()                                         
                                                                                                                                                                                                          // Colorize: green
                 // Validation                                                                                                                                                                            // Colorize: green
                 {                                                                                                                                                                                        // Colorize: green
-                    COMMON_LVVV(("cpuid0000000BEbx0.numberOfCores   = %u",     cpuid0000000BEbx0.numberOfCores));                                                                                        // Colorize: green
-                    COMMON_LVVV(("cpuid0000000BEbx0.value32         = 0x%08X", cpuid0000000BEbx0.value32));                                                                                              // Colorize: green
-                    COMMON_LVVV(("cpuid0000000BEbx1.numberOfThreads = %u",     cpuid0000000BEbx1.numberOfThreads));                                                                                      // Colorize: green
-                    COMMON_LVVV(("cpuid0000000BEbx1.value32         = 0x%08X", cpuid0000000BEbx1.value32));                                                                                              // Colorize: green
+                    COMMON_LVVV(("cpuid0000000BEbx0.numberOfThreadsPerCore = %u",     cpuid0000000BEbx0.numberOfThreadsPerCore));                                                                                        // Colorize: green
+                    COMMON_LVVV(("cpuid0000000BEbx0.value32                = 0x%08X", cpuid0000000BEbx0.value32));                                                                                              // Colorize: green
+                    COMMON_LVVV(("cpuid0000000BEbx1.numberOfThreads        = %u",     cpuid0000000BEbx1.numberOfThreads));                                                                                      // Colorize: green
+                    COMMON_LVVV(("cpuid0000000BEbx1.value32                = 0x%08X", cpuid0000000BEbx1.value32));                                                                                              // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-                    COMMON_TEST_ASSERT(cpuid0000000BEbx0.numberOfCores   == 0,          NgosStatus::ASSERTION);                                                                                          // Colorize: green
-                    COMMON_TEST_ASSERT(cpuid0000000BEbx0.value32         == 0x00040800, NgosStatus::ASSERTION);                                                                                          // Colorize: green
-                    COMMON_TEST_ASSERT(cpuid0000000BEbx1.numberOfThreads == 0,          NgosStatus::ASSERTION);                                                                                          // Colorize: green
-                    COMMON_TEST_ASSERT(cpuid0000000BEbx1.value32         == 0x00040800, NgosStatus::ASSERTION);                                                                                          // Colorize: green
+                    COMMON_TEST_ASSERT(cpuid0000000BEbx0.numberOfThreadsPerCore == 2,          NgosStatus::ASSERTION);                                                                                          // Colorize: green
+                    COMMON_TEST_ASSERT(cpuid0000000BEbx0.value32                == 0x00000002, NgosStatus::ASSERTION);                                                                                          // Colorize: green
+                    COMMON_TEST_ASSERT(cpuid0000000BEbx1.numberOfThreads        == 4,          NgosStatus::ASSERTION);                                                                                          // Colorize: green
+                    COMMON_TEST_ASSERT(cpuid0000000BEbx1.value32                == 0x00000004, NgosStatus::ASSERTION);                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    COMMON_TEST_ASSERT(cpuid0000000BEbx1.numberOfThreads % cpuid0000000BEbx0.numberOfThreadsPerCore == 0, NgosStatus::ASSERTION);                                                                 // Colorize: green
                 }                                                                                                                                                                                        // Colorize: green
             }                                                                                                                                                                                            // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-            sNumberOfCores   = cpuid0000000BEbx1.numberOfThreads / cpuid0000000BEbx0.numberOfCores;                                                                                                      // Colorize: green
+            sNumberOfCores   = cpuid0000000BEbx1.numberOfThreads / cpuid0000000BEbx0.numberOfThreadsPerCore;                                                                                                      // Colorize: green
             sNumberOfThreads = cpuid0000000BEbx1.numberOfThreads;                                                                                                                                        // Colorize: green
         }                                                                                                                                                                                                // Colorize: green
         else                                                                                                                                                                                             // Colorize: green
@@ -2256,14 +2262,14 @@ NgosStatus CPU::doIntelPostprocessing()                                         
                     COMMON_LVVV(("cpuid00000004Eax.maximumNumberOfCores       = %u",     cpuid00000004Eax.maximumNumberOfCores));                                                                        // Colorize: green
                     COMMON_LVVV(("cpuid00000004Eax.value32                    = 0x%08X", cpuid00000004Eax.value32));                                                                                     // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-                    COMMON_TEST_ASSERT(cpuid00000004Eax.cacheType                  == 0,          NgosStatus::ASSERTION);                                                                                // Colorize: green
-                    COMMON_TEST_ASSERT(cpuid00000004Eax.cacheLevel                 == 0,          NgosStatus::ASSERTION);                                                                                // Colorize: green
-                    COMMON_TEST_ASSERT(cpuid00000004Eax.selfInitializingCacheLevel == 0,          NgosStatus::ASSERTION);                                                                                // Colorize: green
-                    COMMON_TEST_ASSERT(cpuid00000004Eax.fullyAssociativeCache      == 0,          NgosStatus::ASSERTION);                                                                                // Colorize: green
-                    COMMON_TEST_ASSERT(cpuid00000004Eax._reserved                  == 0,          NgosStatus::ASSERTION);                                                                                // Colorize: green
-                    COMMON_TEST_ASSERT(cpuid00000004Eax.maximumNumberOfThreads     == 0,          NgosStatus::ASSERTION);                                                                                // Colorize: green
-                    COMMON_TEST_ASSERT(cpuid00000004Eax.maximumNumberOfCores       == 0,          NgosStatus::ASSERTION);                                                                                // Colorize: green
-                    COMMON_TEST_ASSERT(cpuid00000004Eax.value32                    == 0x00040800, NgosStatus::ASSERTION);                                                                                // Colorize: green
+                    COMMON_TEST_ASSERT(static_cast<CpuidCacheType>(cpuid00000004Eax.cacheType) == CpuidCacheType::DATA_CACHE,          NgosStatus::ASSERTION);                                                                                // Colorize: green
+                    COMMON_TEST_ASSERT(cpuid00000004Eax.cacheLevel                             == 1,          NgosStatus::ASSERTION);                                                                                // Colorize: green
+                    COMMON_TEST_ASSERT(cpuid00000004Eax.selfInitializingCacheLevel             == 1,          NgosStatus::ASSERTION);                                                                                // Colorize: green
+                    COMMON_TEST_ASSERT(cpuid00000004Eax.fullyAssociativeCache                  == 0,          NgosStatus::ASSERTION);                                                                                // Colorize: green
+                    COMMON_TEST_ASSERT(cpuid00000004Eax._reserved                              == 0,          NgosStatus::ASSERTION);                                                                                // Colorize: green
+                    COMMON_TEST_ASSERT(cpuid00000004Eax.maximumNumberOfThreads                 == 0,          NgosStatus::ASSERTION);                                                                                // Colorize: green
+                    COMMON_TEST_ASSERT(cpuid00000004Eax.maximumNumberOfCores                   == 1,          NgosStatus::ASSERTION);                                                                                // Colorize: green
+                    COMMON_TEST_ASSERT(cpuid00000004Eax.value32                                == 0x04000121, NgosStatus::ASSERTION);                                                                                // Colorize: green
                 }                                                                                                                                                                                        // Colorize: green
             }                                                                                                                                                                                            // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -2357,7 +2363,7 @@ NgosStatus CPU::doAmdPostprocessing()                                           
                                                                                                                                                                                                          // Colorize: green
         // Validation                                                                                                                                                                                    // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
-            COMMON_LVVV(("sNumberOfCores   = %u", sNumberOfCores));                                                                                                                                      // Colorize: green
+            COMMON_LVVV(("sNumberOfCores   = %u", sNumberOfCores));   // TODO: Need to check                                                                                                                                    // Colorize: green
             COMMON_LVVV(("sNumberOfThreads = %u", sNumberOfThreads));                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
             COMMON_TEST_ASSERT(sNumberOfCores                    == 2, NgosStatus::ASSERTION);                                                                                                           // Colorize: green
@@ -2377,22 +2383,22 @@ NgosStatus CPU::doCommonPostprocessing()                                        
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-    // Set MSR_EFER_SCE_BIT                                                                                                                                                                              // Colorize: green
+    // Set MsrIa32EferFlag::SYSCALL_ENABLE                                                                                                                                                                              // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
-        NgosStatus status = MSR::setBit(MSR_EFER, MSR_EFER_SCE_BIT);                                                                                                                                     // Colorize: green
+        NgosStatus status = MSR::setFlag(MsrRegister::IA32_EFER, FLAGS(MsrIa32EferFlag::SYSCALL_ENABLE));                                                                                                                                     // Colorize: green
                                                                                                                                                                                                          // Colorize: green
         if (status == NgosStatus::OK)                                                                                                                                                                    // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
-            COMMON_LVV(("MSR_EFER_SCE_BIT successfully set"));                                                                                                                                           // Colorize: green
+            COMMON_LVV(("MsrIa32EferFlag::SYSCALL_ENABLE successfully set"));                                                                                                                                           // Colorize: green
         }                                                                                                                                                                                                // Colorize: green
         else                                                                                                                                                                                             // Colorize: green
         if (status == NgosStatus::NO_EFFECT)                                                                                                                                                             // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
-            COMMON_LVV(("MSR_EFER_SCE_BIT already set"));                                                                                                                                                // Colorize: green
+            COMMON_LVV(("MsrIa32EferFlag::SYSCALL_ENABLE already set"));                                                                                                                                                // Colorize: green
         }                                                                                                                                                                                                // Colorize: green
         else                                                                                                                                                                                             // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
-            COMMON_LF(("Failed to set MSR_EFER_SCE_BIT"));                                                                                                                                               // Colorize: green
+            COMMON_LF(("Failed to set MsrIa32EferFlag::SYSCALL_ENABLE"));                                                                                                                                               // Colorize: green
                                                                                                                                                                                                          // Colorize: green
             return NgosStatus::FAILED;                                                                                                                                                                   // Colorize: green
         }                                                                                                                                                                                                // Colorize: green
@@ -2400,7 +2406,7 @@ NgosStatus CPU::doCommonPostprocessing()                                        
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-    // Set MSR_EFER_NX_BIT                                                                                                                                                                               // Colorize: green
+    // Set MsrIa32EferFlag::NO_EXECUTE_ENABLE                                                                                                                                                                               // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
         if (hasFeature(X86Feature::NX))                                                                                                                                                                  // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
@@ -2408,20 +2414,20 @@ NgosStatus CPU::doCommonPostprocessing()                                        
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-            NgosStatus status = MSR::setBit(MSR_EFER, MSR_EFER_NX_BIT);                                                                                                                                  // Colorize: green
+            NgosStatus status = MSR::setFlag(MsrRegister::IA32_EFER, FLAGS(MsrIa32EferFlag::NO_EXECUTE_ENABLE));                                                                                                                                  // Colorize: green
                                                                                                                                                                                                          // Colorize: green
             if (status == NgosStatus::OK)                                                                                                                                                                // Colorize: green
             {                                                                                                                                                                                            // Colorize: green
-                COMMON_LVV(("MSR_EFER_NX_BIT successfully set"));                                                                                                                                        // Colorize: green
+                COMMON_LVV(("MsrIa32EferFlag::NO_EXECUTE_ENABLE successfully set"));                                                                                                                                        // Colorize: green
             }                                                                                                                                                                                            // Colorize: green
             else                                                                                                                                                                                         // Colorize: green
             if (status == NgosStatus::NO_EFFECT)                                                                                                                                                         // Colorize: green
             {                                                                                                                                                                                            // Colorize: green
-                COMMON_LVV(("MSR_EFER_NX_BIT already set"));                                                                                                                                             // Colorize: green
+                COMMON_LVV(("MsrIa32EferFlag::NO_EXECUTE_ENABLE already set"));                                                                                                                                             // Colorize: green
             }                                                                                                                                                                                            // Colorize: green
             else                                                                                                                                                                                         // Colorize: green
             {                                                                                                                                                                                            // Colorize: green
-                COMMON_LF(("Failed to set MSR_EFER_NX_BIT"));                                                                                                                                            // Colorize: green
+                COMMON_LF(("Failed to set MsrIa32EferFlag::NO_EXECUTE_ENABLE"));                                                                                                                                            // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                 return NgosStatus::FAILED;                                                                                                                                                               // Colorize: green
             }                                                                                                                                                                                            // Colorize: green
@@ -2503,86 +2509,117 @@ NgosStatus CPU::initCpuBugs()                                                   
         COMMON_ASSERT_EXECUTION(setBug(X86Bug::SPECTRE_V1), NgosStatus::ASSERTION);                                                                                                                      // Colorize: green
         COMMON_ASSERT_EXECUTION(setBug(X86Bug::SPECTRE_V2), NgosStatus::ASSERTION);                                                                                                                      // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
-
-
-
-    u64 ia32Capabilities = 0;
-
-    if (hasFeature(X86Feature::ARCH_CAPABILITIES))
-    {
-        COMMON_LVV(("X86Feature::ARCH_CAPABILITIES supported"));
-
-        ia32Capabilities = MSR::read(MSR_IA32_ARCH_CAPABILITIES);
-
-        COMMON_LVVV(("ia32Capabilities = 0x%016llX", ia32Capabilities));
-    }
-
-
-
-    if (
-        !isCpuNoSpecStoreBypass()
-        &&
-        !(ia32Capabilities & MSR_IA32_ARCH_CAPABILITIES_SSB_NO)
-        &&
-        !hasFeature(X86Feature::AMD_SSB_NO)
-       )
-    {
-        COMMON_LVV(("X86Bug::SPEC_STORE_BYPASS set because CPU is affected by speculative store bypass attack"));
-
-        COMMON_ASSERT_EXECUTION(setBug(X86Bug::SPEC_STORE_BYPASS), NgosStatus::ASSERTION);
-    }
-    else
-    {
-        COMMON_LVV(("CPU is not affected by speculative store bypass attack"));
-    }
-
-
-
-    if (ia32Capabilities & MSR_IA32_ARCH_CAPABILITIES_IBRS_ALL)
-    {
-        COMMON_LVV(("X86Feature::IBRS_ENHANCED set because MSR_IA32_ARCH_CAPABILITIES_IBRS_ALL found"));
-
-        COMMON_ASSERT_EXECUTION(setFeature(X86Feature::IBRS_ENHANCED), NgosStatus::ASSERTION);
-    }
-
-
-
-    if (
-        isCpuNoMeltdown()
-        ||
-        ia32Capabilities & MSR_IA32_ARCH_CAPABILITIES_RDCL_NO
-       )
-    {
-        COMMON_LVV(("CPU is not affected by meltdown attack"));
-
-        return NgosStatus::OK;
-    }
-
-
-
-    COMMON_LVV(("X86Bug::CPU_MELTDOWN set because CPU is affected by meltdown attack"));
-
-    COMMON_ASSERT_EXECUTION(setBug(X86Bug::CPU_MELTDOWN), NgosStatus::ASSERTION);
-
-
-
-    if (isCpuNoL1TF())
-    {
-        COMMON_LVV(("CPU is not affected by L1 Terminal Fault"));
-
-        return NgosStatus::OK;
-    }
-
-
-
-    COMMON_LVV(("X86Bug::L1TF set because CPU is affected by L1 Terminal Fault"));
-
-    COMMON_ASSERT_EXECUTION(setBug(X86Bug::L1TF), NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    MsrIa32ArchCapabilitiesFlags ia32Capabilities = FLAGS(MsrIa32ArchCapabilitiesFlag::NONE);                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get IA32 Arch Capabilities                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (hasFeature(X86Feature::ARCH_CAPABILITIES))                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVV(("X86Feature::ARCH_CAPABILITIES supported"));                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ia32Capabilities = MSR::read(MsrRegister::IA32_ARCH_CAPABILITIES);                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Validation                                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("ia32Capabilities = %s", flagsToFullString(ia32Capabilities)));                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(ia32Capabilities == FLAGS(                                                                                                                                                // Colorize: green
+                                                        MsrIa32ArchCapabilitiesFlag::SKIP_L1DFL_VMENTRY,                                                                                                 // Colorize: green
+                                                        MsrIa32ArchCapabilitiesFlag::IF_PSCHANGE_MC_NO                                                                                                   // Colorize: green
+                                                    ), NgosStatus::ASSERTION);                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check if CPU is affected by speculative store bypass attack                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            !isCpuNoSpecStoreBypass()                                                                                                                                                                    // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            (ia32Capabilities & FLAGS(MsrIa32ArchCapabilitiesFlag::SSB_NO)) == 0                                                                                                                         // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            !hasFeature(X86Feature::AMD_SSB_NO)                                                                                                                                                          // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVV(("X86Bug::SPEC_STORE_BYPASS set because CPU is affected by speculative store bypass attack"));                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_ASSERT_EXECUTION(setBug(X86Bug::SPEC_STORE_BYPASS), NgosStatus::ASSERTION);                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVV(("CPU is not affected by speculative store bypass attack"));                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Set X86Feature::IBRS_ENHANCED if MsrIa32ArchCapabilitiesFlag::IBRS_ALL set                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if ((ia32Capabilities & FLAGS(MsrIa32ArchCapabilitiesFlag::IBRS_ALL)) != 0)                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVV(("X86Feature::IBRS_ENHANCED set because MsrIa32ArchCapabilitiesFlag::IBRS_ALL found"));                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_ASSERT_EXECUTION(setFeature(X86Feature::IBRS_ENHANCED), NgosStatus::ASSERTION);                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that CPU is not affected by meltdown attack                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            isCpuNoMeltdown()                                                                                                                                                                            // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            (ia32Capabilities & FLAGS(MsrIa32ArchCapabilitiesFlag::RDCL_NO)) != 0                                                                                                                        // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVV(("CPU is not affected by meltdown attack"));                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return NgosStatus::OK;                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // CPU is affected by meltdown attack                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LVV(("X86Bug::CPU_MELTDOWN set because CPU is affected by meltdown attack"));                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT_EXECUTION(setBug(X86Bug::CPU_MELTDOWN), NgosStatus::ASSERTION);                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that CPU is not affected by L1 Terminal Fault                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (isCpuNoL1TF())                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVV(("CPU is not affected by L1 Terminal Fault"));                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return NgosStatus::OK;                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // CPU is affected by L1 Terminal Fault                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LVV(("X86Bug::L1TF set because CPU is affected by L1 Terminal Fault"));                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT_EXECUTION(setBug(X86Bug::L1TF), NgosStatus::ASSERTION);                                                                                                                            // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 NgosStatus CPU::initIntelMicrocodeRevision()                                                                                                                                                             // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
@@ -2590,7 +2627,7 @@ NgosStatus CPU::initIntelMicrocodeRevision()                                    
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-    COMMON_ASSERT_EXECUTION(MSR::write(MSR_IA32_MICROCODE_REV, 0), NgosStatus::ASSERTION); // TODO: Need to check                                                                                        // Colorize: green
+    COMMON_ASSERT_EXECUTION(MSR::write(MsrRegister::IA32_BIOS_SIGN_ID, 0), NgosStatus::ASSERTION); // TODO: Need to check                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -2610,9 +2647,31 @@ NgosStatus CPU::initIntelMicrocodeRevision()                                    
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
+    MsrIa32BiosSignId msrIa32BiosSignId;                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get MsrRegister::IA32_BIOS_SIGN_ID value                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        msrIa32BiosSignId.value64 = MSR::read(MsrRegister::IA32_BIOS_SIGN_ID);                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Validation                                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("msrIa32BiosSignId._reserved         = 0x%08X",    msrIa32BiosSignId._reserved));                                                                                               // Colorize: green
+            COMMON_LVVV(("msrIa32BiosSignId.microcodeRevision = 0x%08X",    msrIa32BiosSignId.microcodeRevision));                                                                                       // Colorize: green
+            COMMON_LVVV(("msrIa32BiosSignId.value64           = 0x%016llX", msrIa32BiosSignId.value64));                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(msrIa32BiosSignId._reserved         == 0x00000000,         NgosStatus::ASSERTION);                                                                                        // Colorize: green
+            COMMON_TEST_ASSERT(msrIa32BiosSignId.microcodeRevision == 0x00000001,         NgosStatus::ASSERTION);                                                                                        // Colorize: green
+            COMMON_TEST_ASSERT(msrIa32BiosSignId.value64           == 0x0000000100000000, NgosStatus::ASSERTION);                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
     // Get sMicrocodeRevision                                                                                                                                                                            // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
-        sMicrocodeRevision = MSR::read(MSR_IA32_MICROCODE_REV) >> 32;                                                                                                                                    // Colorize: green
+        sMicrocodeRevision = msrIa32BiosSignId.microcodeRevision;                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -2620,7 +2679,7 @@ NgosStatus CPU::initIntelMicrocodeRevision()                                    
         {                                                                                                                                                                                                // Colorize: green
             COMMON_LVVV(("sMicrocodeRevision = 0x%08X", sMicrocodeRevision));                                                                                                                            // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-            COMMON_TEST_ASSERT(sMicrocodeRevision == 0x00000000, NgosStatus::ASSERTION);                                                                                                                 // Colorize: green
+            COMMON_TEST_ASSERT(sMicrocodeRevision == 0x00000001, NgosStatus::ASSERTION);                                                                                                                 // Colorize: green
         }                                                                                                                                                                                                // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green

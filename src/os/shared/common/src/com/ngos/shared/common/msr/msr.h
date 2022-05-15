@@ -1,64 +1,65 @@
-#ifndef COM_NGOS_SHARED_COMMON_CPU_MSR_MSR_H
-#define COM_NGOS_SHARED_COMMON_CPU_MSR_MSR_H
-
-
-
-#include <com/ngos/shared/common/asm/asmutils.h>
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/status.h>
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-class MSR
-{
-public:
-    static NgosStatus setBit(u32 msr, u8 bit); // TEST: NO
-    static NgosStatus clearBit(u32 msr, u8 bit); // TEST: NO
-
-    static inline bool testBit(u32 msr, u8 bit) // TEST: NO
-    {
-        COMMON_LT((" | msr = %u, bit = %u", msr, bit));
-
-        COMMON_ASSERT(msr > 0,  "msr is invalid", false);
-        COMMON_ASSERT(bit < 64, "bit is invalid", false);
-
-
-
-        return read(msr) & (1ULL << bit);
-    }
-
-    static inline u64 read(u32 msr) // TEST: NO
-    {
-        COMMON_LT((" | msr = %u", msr));
-
-        COMMON_ASSERT(msr > 0, "msr is invalid", 0);
-
-
-
-        return AsmUtils::rdmsr(msr);
-    }
-
-    static inline NgosStatus write(u32 msr, u64 value) // TEST: NO
-    {
-        COMMON_LT((" | msr = %u, value = %u", msr, value));
-
-        COMMON_ASSERT(msr > 0, "msr is invalid", NgosStatus::ASSERTION);
-
-
-
-        return AsmUtils::wrmsr(msr, value);
-    }
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-public:
-#else
-private:
-#endif
-    static NgosStatus setMsrBit(u32 msr, u8 bit, bool enabled); // TEST: NO
-};
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_CPU_MSR_MSR_H
+#ifndef COM_NGOS_SHARED_COMMON_CPU_MSR_MSR_H                                                                                                                                                             // Colorize: green
+#define COM_NGOS_SHARED_COMMON_CPU_MSR_MSR_H                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/asm/asmutils.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/msr/lib/msrregister.h>                                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/ngos/status.h>                                                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class MSR                                                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    static NgosStatus setFlag(MsrRegister msr, good_U64 flag); // TEST: NO                                                                                                                                  // Colorize: green
+    static NgosStatus clearFlag(MsrRegister msr, good_U64 flag); // TEST: NO                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline bool testFlag(MsrRegister msr, good_U64 flag) // TEST: NO                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | msr = %s, flag = 0x%016llX", enumToFullString(msr), flag));                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(msr != MsrRegister::NONE, "msr is invalid",  false);                                                                                                                               // Colorize: green
+        COMMON_ASSERT(flag > 0,                 "flag is invalid", false);                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return (read(msr) & flag) == flag;                                                                                                                                                               // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline good_U64 read(MsrRegister msr) // TEST: NO                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | msr = %s", enumToFullString(msr)));                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(msr != MsrRegister::NONE, "msr is invalid", 0);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return AsmUtils::rdmsr(msr);                                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static inline NgosStatus write(MsrRegister msr, good_U64 value) // TEST: NO                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LT((" | msr = %s, value = 0x%016llX", enumToFullString(msr), value));                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT(msr != MsrRegister::NONE, "msr is invalid", NgosStatus::ASSERTION);                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return AsmUtils::wrmsr(msr, value);                                                                                                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+    static NgosStatus setMsrFlag(MsrRegister msr, good_U64 flag, bool enabled); // TEST: NO                                                                                                              // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_CPU_MSR_MSR_H                                                                                                                                                           // Colorize: green
