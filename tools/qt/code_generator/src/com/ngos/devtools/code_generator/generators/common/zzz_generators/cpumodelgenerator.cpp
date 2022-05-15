@@ -27,7 +27,7 @@
                                                                                                                                                                                                          // Colorize: green
 CpuModelGenerator::CpuModelGenerator()                                                                                                                                                                   // Colorize: green
     : CommonGenerator()                                                                                                                                                                                  // Colorize: green
-    , mFamilyRegExp(".*Family *(\\d+).*?")                                                                                                                                                               // Colorize: green
+    , mFamilyRegExp(".*Family *(\\d+).*")                                                                                                                                                                // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
     // Nothing                                                                                                                                                                                           // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
