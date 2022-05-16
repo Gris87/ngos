@@ -1234,7 +1234,6 @@ src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32archcap
 src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32biossignid.h
 src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32eferflags.h
 src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32miscenableflags.h
-src/os/shared/common/src/com/ngos/shared/common/msr/msr.cpp
 src/os/shared/common/src/com/ngos/shared/common/msr/msr.h
 src/os/shared/common/src/com/ngos/shared/common/ngos/flags.h
 src/os/shared/common/src/com/ngos/shared/common/ngos/linkage.h

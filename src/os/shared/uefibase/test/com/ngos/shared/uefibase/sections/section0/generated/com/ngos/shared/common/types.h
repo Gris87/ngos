@@ -157,7 +157,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(temp.stepping,       8);
         TEST_ASSERT_EQUALS(temp.model,          0);
         TEST_ASSERT_EQUALS(temp.family,         2);
-        TEST_ASSERT_EQUALS(temp.processorType,  0);
+        TEST_ASSERT_EQUALS(temp.processorType,  static_cast<CpuidProcessorType>(0));
         TEST_ASSERT_EQUALS(temp._reserved,      1);
         TEST_ASSERT_EQUALS(temp.extendedModel,  6);
         TEST_ASSERT_EQUALS(temp.extendedFamily, 197);
@@ -199,7 +199,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0101      |     0110      |
         // |  01   |  11   |     1101      |
         // |     1111      |     0111      |
-        temp.processorType = 3;
+        temp.processorType = static_cast<CpuidProcessorType>(3);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x4C567DF7);
 
@@ -351,7 +351,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    101    |       01101       |
         temp.value32 = 0x41121EAD;
 
-        TEST_ASSERT_EQUALS(temp.cacheType,                  13);
+        TEST_ASSERT_EQUALS(temp.cacheType,                  static_cast<CpuidCacheType>(13));
         TEST_ASSERT_EQUALS(temp.cacheLevel,                 5);
         TEST_ASSERT_EQUALS(temp.selfInitializingCacheLevel, 0);
         TEST_ASSERT_EQUALS(temp.fullyAssociativeCache,      1);
@@ -365,7 +365,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00010010            |
         // |  00   |     0111      | 1 | 0 |
         // |    101    |       10010       |
-        temp.cacheType = 18;
+        temp.cacheType = static_cast<CpuidCacheType>(18);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x41121EB2);
 
