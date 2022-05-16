@@ -42,6 +42,8 @@
 
 #define CLAMP(a, minValue, maxValue) MIN(MAX(a, minValue), maxValue)
 
+#define IS_IN_RANGE(a, minValue, maxValue) ((a) >= (minValue) && (a) <= (maxValue))
+
 
 
 // Ignore CppAlignmentVerifier [BEGIN]
