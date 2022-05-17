@@ -154,14 +154,14 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0000      |     1000      |
         temp.value32 = 0x4C564208;
 
-        TEST_ASSERT_EQUALS(temp.stepping,       8);
-        TEST_ASSERT_EQUALS(temp.model,          0);
-        TEST_ASSERT_EQUALS(temp.family,         2);
+        TEST_ASSERT_EQUALS(temp.stepping,       static_cast<good_U32>(8));
+        TEST_ASSERT_EQUALS(temp.model,          static_cast<good_U32>(0));
+        TEST_ASSERT_EQUALS(temp.family,         static_cast<good_U32>(2));
         TEST_ASSERT_EQUALS(temp.processorType,  static_cast<CpuidProcessorType>(0));
-        TEST_ASSERT_EQUALS(temp._reserved,      1);
-        TEST_ASSERT_EQUALS(temp.extendedModel,  6);
-        TEST_ASSERT_EQUALS(temp.extendedFamily, 197);
-        TEST_ASSERT_EQUALS(temp._reserved2,     4);
+        TEST_ASSERT_EQUALS(temp._reserved,      static_cast<good_U32>(1));
+        TEST_ASSERT_EQUALS(temp.extendedModel,  static_cast<good_U32>(6));
+        TEST_ASSERT_EQUALS(temp.extendedFamily, static_cast<good_U32>(197));
+        TEST_ASSERT_EQUALS(temp._reserved2,     static_cast<good_U32>(4));
 
 
 
@@ -169,7 +169,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0101      |     0110      |
         // |  01   |  00   |     0010      |
         // |     0000      |     0111      |
-        temp.stepping = 7;
+        temp.stepping = static_cast<good_U32>(7);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x4C564207);
 
@@ -179,7 +179,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0101      |     0110      |
         // |  01   |  00   |     0010      |
         // |     1111      |     0111      |
-        temp.model = 15;
+        temp.model = static_cast<good_U32>(15);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x4C5642F7);
 
@@ -189,7 +189,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0101      |     0110      |
         // |  01   |  00   |     1101      |
         // |     1111      |     0111      |
-        temp.family = 13;
+        temp.family = static_cast<good_U32>(13);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x4C564DF7);
 
@@ -209,7 +209,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0101      |     0110      |
         // |  10   |  11   |     1101      |
         // |     1111      |     0111      |
-        temp._reserved = 2;
+        temp._reserved = static_cast<good_U32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x4C56BDF7);
 
@@ -219,7 +219,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0101      |     1001      |
         // |  10   |  11   |     1101      |
         // |     1111      |     0111      |
-        temp.extendedModel = 9;
+        temp.extendedModel = static_cast<good_U32>(9);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x4C59BDF7);
 
@@ -229,7 +229,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1010      |     1001      |
         // |  10   |  11   |     1101      |
         // |     1111      |     0111      |
-        temp.extendedFamily = 58;
+        temp.extendedFamily = static_cast<good_U32>(58);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x43A9BDF7);
 
@@ -239,7 +239,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1010      |     1001      |
         // |  10   |  11   |     1101      |
         // |     1111      |     0111      |
-        temp._reserved2 = 11;
+        temp._reserved2 = static_cast<good_U32>(11);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xB3A9BDF7);
     }
@@ -273,10 +273,10 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11100101            |
         temp.value32 = 0x3E033CE5;
 
-        TEST_ASSERT_EQUALS(temp.brandIndex,                229);
-        TEST_ASSERT_EQUALS(temp.cacheLineFlushSize,        60);
-        TEST_ASSERT_EQUALS(temp.numberOfApicIdsPerPackage, 3);
-        TEST_ASSERT_EQUALS(temp.localApicId,               62);
+        TEST_ASSERT_EQUALS(temp.brandIndex,                static_cast<good_U32>(229));
+        TEST_ASSERT_EQUALS(temp.cacheLineFlushSize,        static_cast<good_U32>(60));
+        TEST_ASSERT_EQUALS(temp.numberOfApicIdsPerPackage, static_cast<good_U32>(3));
+        TEST_ASSERT_EQUALS(temp.localApicId,               static_cast<good_U32>(62));
 
 
 
@@ -284,7 +284,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00000011            |
         // |           00111100            |
         // |           00011010            |
-        temp.brandIndex = 26;
+        temp.brandIndex = static_cast<good_U32>(26);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3E033C1A);
 
@@ -294,7 +294,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00000011            |
         // |           11000011            |
         // |           00011010            |
-        temp.cacheLineFlushSize = 195;
+        temp.cacheLineFlushSize = static_cast<good_U32>(195);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3E03C31A);
 
@@ -304,7 +304,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11111100            |
         // |           11000011            |
         // |           00011010            |
-        temp.numberOfApicIdsPerPackage = 252;
+        temp.numberOfApicIdsPerPackage = static_cast<good_U32>(252);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3EFCC31A);
 
@@ -314,7 +314,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11111100            |
         // |           11000011            |
         // |           00011010            |
-        temp.localApicId = 193;
+        temp.localApicId = static_cast<good_U32>(193);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xC1FCC31A);
     }
@@ -352,12 +352,12 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.value32 = 0x41121EAD;
 
         TEST_ASSERT_EQUALS(temp.cacheType,                  static_cast<CpuidCacheType>(13));
-        TEST_ASSERT_EQUALS(temp.cacheLevel,                 5);
-        TEST_ASSERT_EQUALS(temp.selfInitializingCacheLevel, 0);
-        TEST_ASSERT_EQUALS(temp.fullyAssociativeCache,      1);
-        TEST_ASSERT_EQUALS(temp._reserved,                  7);
-        TEST_ASSERT_EQUALS(temp.maximumNumberOfThreads,     1096);
-        TEST_ASSERT_EQUALS(temp.maximumNumberOfCores,       16);
+        TEST_ASSERT_EQUALS(temp.cacheLevel,                 static_cast<good_U32>(5));
+        TEST_ASSERT_EQUALS(temp.selfInitializingCacheLevel, static_cast<good_U32>(0));
+        TEST_ASSERT_EQUALS(temp.fullyAssociativeCache,      static_cast<good_U32>(1));
+        TEST_ASSERT_EQUALS(temp._reserved,                  static_cast<good_U32>(7));
+        TEST_ASSERT_EQUALS(temp.maximumNumberOfThreads,     static_cast<good_U32>(1096));
+        TEST_ASSERT_EQUALS(temp.maximumNumberOfCores,       static_cast<good_U32>(16));
 
 
 
@@ -375,7 +375,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00010010            |
         // |  00   |     0111      | 1 | 0 |
         // |    010    |       10010       |
-        temp.cacheLevel = 2;
+        temp.cacheLevel = static_cast<good_U32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x41121E52);
 
@@ -385,7 +385,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00010010            |
         // |  00   |     0111      | 1 | 1 |
         // |    010    |       10010       |
-        temp.selfInitializingCacheLevel = 1;
+        temp.selfInitializingCacheLevel = static_cast<good_U32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x41121F52);
 
@@ -395,7 +395,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00010010            |
         // |  00   |     0111      | 0 | 1 |
         // |    010    |       10010       |
-        temp.fullyAssociativeCache = 0;
+        temp.fullyAssociativeCache = static_cast<good_U32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x41121D52);
 
@@ -405,7 +405,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00010010            |
         // |  00   |     1000      | 0 | 1 |
         // |    010    |       10010       |
-        temp._reserved = 8;
+        temp._reserved = static_cast<good_U32>(8);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x41122152);
 
@@ -415,7 +415,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11101101            |
         // |  11   |     1000      | 0 | 1 |
         // |    010    |       10010       |
-        temp.maximumNumberOfThreads = 2999;
+        temp.maximumNumberOfThreads = static_cast<good_U32>(2999);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x42EDE152);
 
@@ -425,7 +425,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11101101            |
         // |  11   |     1000      | 0 | 1 |
         // |    010    |       10010       |
-        temp.maximumNumberOfCores = 47;
+        temp.maximumNumberOfCores = static_cast<good_U32>(47);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xBEEDE152);
     }
@@ -459,10 +459,10 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01111001            |
         temp.value32 = 0x6E077679;
 
-        TEST_ASSERT_EQUALS(temp.physicalAddressBits,      121);
-        TEST_ASSERT_EQUALS(temp.virtualAddressBits,       118);
-        TEST_ASSERT_EQUALS(temp.guestPhysicalAddressBits, 7);
-        TEST_ASSERT_EQUALS(temp._reserved,                110);
+        TEST_ASSERT_EQUALS(temp.physicalAddressBits,      static_cast<good_U32>(121));
+        TEST_ASSERT_EQUALS(temp.virtualAddressBits,       static_cast<good_U32>(118));
+        TEST_ASSERT_EQUALS(temp.guestPhysicalAddressBits, static_cast<good_U32>(7));
+        TEST_ASSERT_EQUALS(temp._reserved,                static_cast<good_U32>(110));
 
 
 
@@ -470,7 +470,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00000111            |
         // |           01110110            |
         // |           10000110            |
-        temp.physicalAddressBits = 134;
+        temp.physicalAddressBits = static_cast<good_U32>(134);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x6E077686);
 
@@ -480,7 +480,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00000111            |
         // |           10001001            |
         // |           10000110            |
-        temp.virtualAddressBits = 137;
+        temp.virtualAddressBits = static_cast<good_U32>(137);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x6E078986);
 
@@ -490,7 +490,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11111000            |
         // |           10001001            |
         // |           10000110            |
-        temp.guestPhysicalAddressBits = 248;
+        temp.guestPhysicalAddressBits = static_cast<good_U32>(248);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x6EF88986);
 
@@ -500,7 +500,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11111000            |
         // |           10001001            |
         // |           10000110            |
-        temp._reserved = 145;
+        temp._reserved = static_cast<good_U32>(145);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x91F88986);
     }
@@ -535,11 +535,11 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10000101            |
         temp.value32 = 0x9F7AB085;
 
-        TEST_ASSERT_EQUALS(temp.physicalCores,                   133);
-        TEST_ASSERT_EQUALS(temp._reserved,                       0);
-        TEST_ASSERT_EQUALS(temp.apicIdBits,                      11);
-        TEST_ASSERT_EQUALS(temp.performanceTimestampCounterSize, 2);
-        TEST_ASSERT_EQUALS(temp._reserved2,                      10206);
+        TEST_ASSERT_EQUALS(temp.physicalCores,                   static_cast<good_U32>(133));
+        TEST_ASSERT_EQUALS(temp._reserved,                       static_cast<good_U32>(0));
+        TEST_ASSERT_EQUALS(temp.apicIdBits,                      static_cast<good_U32>(11));
+        TEST_ASSERT_EQUALS(temp.performanceTimestampCounterSize, static_cast<good_U32>(2));
+        TEST_ASSERT_EQUALS(temp._reserved2,                      static_cast<good_U32>(10206));
 
 
 
@@ -547,7 +547,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        011110         |  10   |
         // |     1011      |     0000      |
         // |           01111010            |
-        temp.physicalCores = 122;
+        temp.physicalCores = static_cast<good_U32>(122);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9F7AB07A);
 
@@ -557,7 +557,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        011110         |  10   |
         // |     1011      |     1111      |
         // |           01111010            |
-        temp._reserved = 15;
+        temp._reserved = static_cast<good_U32>(15);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9F7ABF7A);
 
@@ -567,7 +567,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        011110         |  10   |
         // |     0100      |     1111      |
         // |           01111010            |
-        temp.apicIdBits = 4;
+        temp.apicIdBits = static_cast<good_U32>(4);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9F7A4F7A);
 
@@ -577,7 +577,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        011110         |  01   |
         // |     0100      |     1111      |
         // |           01111010            |
-        temp.performanceTimestampCounterSize = 1;
+        temp.performanceTimestampCounterSize = static_cast<good_U32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9F794F7A);
 
@@ -587,7 +587,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        100001         |  01   |
         // |     0100      |     1111      |
         // |           01111010            |
-        temp._reserved2 = 6177;
+        temp._reserved2 = static_cast<good_U32>(6177);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x60854F7A);
     }
@@ -627,8 +627,8 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1000      |     0001      |
         temp.value64 = 0x11F6F0DA3F43B081;
 
-        TEST_ASSERT_EQUALS(temp.taskPriority, 1);
-        TEST_ASSERT_EQUALS(temp._reserved,    80905422691908360);
+        TEST_ASSERT_EQUALS(temp.taskPriority, static_cast<good_U64>(1));
+        TEST_ASSERT_EQUALS(temp._reserved,    static_cast<good_U64>(80905422691908360));
 
 
 
@@ -640,7 +640,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01000011            |
         // |           10110000            |
         // |     1000      |     1110      |
-        temp.taskPriority = 14;
+        temp.taskPriority = static_cast<good_U64>(14);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x11F6F0DA3F43B08E);
 
@@ -654,7 +654,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10111100            |
         // |           01001111            |
         // |     0111      |     1110      |
-        temp._reserved = 1072016081914938615;
+        temp._reserved = static_cast<good_U64>(1072016081914938615);
 
         TEST_ASSERT_EQUALS(temp.value64, 0xEE090F25C0BC4F7E);
     }
@@ -682,14 +682,14 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01100111            |
         temp.value16 = 0x6567;
 
-        TEST_ASSERT_EQUALS(temp.value, 9575);
-        TEST_ASSERT_EQUALS(temp.unit,  1);
+        TEST_ASSERT_EQUALS(temp.value, static_cast<u16>(9575));
+        TEST_ASSERT_EQUALS(temp.unit,  static_cast<u16>(1));
 
 
 
         // |  01   |        011010         |
         // |           10011000            |
-        temp.value = 6808;
+        temp.value = static_cast<u16>(6808);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5A98);
 
@@ -697,7 +697,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  10   |        011010         |
         // |           10011000            |
-        temp.unit = 2;
+        temp.unit = static_cast<u16>(2);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x9A98);
     }
@@ -730,19 +730,19 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 |  11   | 0 | 0 |    100    |
         temp.value16 = 0xA664;
 
-        TEST_ASSERT_EQUALS(temp.level,           4);
-        TEST_ASSERT_EQUALS(temp.socketed,        0);
-        TEST_ASSERT_EQUALS(temp.__reserved,      0);
-        TEST_ASSERT_EQUALS(temp.location,        3);
-        TEST_ASSERT_EQUALS(temp.enabled,         0);
-        TEST_ASSERT_EQUALS(temp.operationalMode, 2);
-        TEST_ASSERT_EQUALS(temp.__reserved2,     41);
+        TEST_ASSERT_EQUALS(temp.level,           static_cast<u16>(4));
+        TEST_ASSERT_EQUALS(temp.socketed,        static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved,      static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.location,        static_cast<u16>(3));
+        TEST_ASSERT_EQUALS(temp.enabled,         static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.operationalMode, static_cast<u16>(2));
+        TEST_ASSERT_EQUALS(temp.__reserved2,     static_cast<u16>(41));
 
 
 
         // |        101001         |  10   |
         // | 0 |  11   | 0 | 0 |    011    |
-        temp.level = 3;
+        temp.level = static_cast<u16>(3);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xA663);
 
@@ -750,7 +750,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |        101001         |  10   |
         // | 0 |  11   | 0 | 1 |    011    |
-        temp.socketed = 1;
+        temp.socketed = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xA66B);
 
@@ -758,7 +758,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |        101001         |  10   |
         // | 0 |  11   | 1 | 1 |    011    |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xA67B);
 
@@ -766,7 +766,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |        101001         |  10   |
         // | 0 |  00   | 1 | 1 |    011    |
-        temp.location = 0;
+        temp.location = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xA61B);
 
@@ -774,7 +774,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |        101001         |  10   |
         // | 1 |  00   | 1 | 1 |    011    |
-        temp.enabled = 1;
+        temp.enabled = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xA69B);
 
@@ -782,7 +782,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |        101001         |  01   |
         // | 1 |  00   | 1 | 1 |    011    |
-        temp.operationalMode = 1;
+        temp.operationalMode = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xA59B);
 
@@ -790,7 +790,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |        010110         |  01   |
         // | 1 |  00   | 1 | 1 |    011    |
-        temp.__reserved2 = 22;
+        temp.__reserved2 = static_cast<u16>(22);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x599B);
     }
@@ -818,14 +818,14 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10001010            |
         temp.value16 = 0xA18A;
 
-        TEST_ASSERT_EQUALS(temp.value,       8586);
-        TEST_ASSERT_EQUALS(temp.granularity, 1);
+        TEST_ASSERT_EQUALS(temp.value,       static_cast<u16>(8586));
+        TEST_ASSERT_EQUALS(temp.granularity, static_cast<u16>(1));
 
 
 
         // | 1 |          1011110          |
         // |           01110101            |
-        temp.value = 24181;
+        temp.value = static_cast<u16>(24181);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xDE75);
 
@@ -833,7 +833,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |          1011110          |
         // |           01110101            |
-        temp.granularity = 0;
+        temp.granularity = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5E75);
     }
@@ -865,8 +865,8 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00101000            |
         temp.value32 = 0x77E3EB28;
 
-        TEST_ASSERT_EQUALS(temp.value,       2011425576);
-        TEST_ASSERT_EQUALS(temp.granularity, 0);
+        TEST_ASSERT_EQUALS(temp.value,       static_cast<u32>(2011425576));
+        TEST_ASSERT_EQUALS(temp.granularity, static_cast<u32>(0));
 
 
 
@@ -874,7 +874,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00011100            |
         // |           00010100            |
         // |           11010111            |
-        temp.value = 136058071;
+        temp.value = static_cast<u32>(136058071);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x081C14D7);
 
@@ -884,7 +884,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00011100            |
         // |           00010100            |
         // |           11010111            |
-        temp.granularity = 1;
+        temp.granularity = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x881C14D7);
     }
@@ -910,20 +910,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 1000000 |
         temp.value8 = 0xC0;
 
-        TEST_ASSERT_EQUALS(temp.type,   64);
-        TEST_ASSERT_EQUALS(temp.locked, 1);
+        TEST_ASSERT_EQUALS(temp.type,   static_cast<u8>(64));
+        TEST_ASSERT_EQUALS(temp.locked, static_cast<u8>(1));
 
 
 
         // | 1 | 0111111 |
-        temp.type = 63;
+        temp.type = static_cast<u8>(63);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xBF);
 
 
 
         // | 0 | 0111111 |
-        temp.locked = 0;
+        temp.locked = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x3F);
     }
@@ -949,20 +949,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 110 | 01100 |
         temp.value8 = 0xCC;
 
-        TEST_ASSERT_EQUALS(temp.deviceType, 12);
-        TEST_ASSERT_EQUALS(temp.status,     6);
+        TEST_ASSERT_EQUALS(temp.deviceType, static_cast<u8>(12));
+        TEST_ASSERT_EQUALS(temp.status,     static_cast<u8>(6));
 
 
 
         // | 110 | 10011 |
-        temp.deviceType = 19;
+        temp.deviceType = static_cast<u8>(19);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xD3);
 
 
 
         // | 001 | 10011 |
-        temp.status = 1;
+        temp.status = static_cast<u8>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x33);
     }
@@ -988,20 +988,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 101 | 01100 |
         temp.value8 = 0xAC;
 
-        TEST_ASSERT_EQUALS(temp.location, 12);
-        TEST_ASSERT_EQUALS(temp.status,   5);
+        TEST_ASSERT_EQUALS(temp.location, static_cast<u8>(12));
+        TEST_ASSERT_EQUALS(temp.status,   static_cast<u8>(5));
 
 
 
         // | 101 | 10011 |
-        temp.location = 19;
+        temp.location = static_cast<u8>(19);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xB3);
 
 
 
         // | 010 | 10011 |
-        temp.status = 2;
+        temp.status = static_cast<u8>(2);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x53);
     }
@@ -1027,20 +1027,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 11011 | 000 |
         temp.value8 = 0xD8;
 
-        TEST_ASSERT_EQUALS(temp.functionNumber, 0);
-        TEST_ASSERT_EQUALS(temp.deviceNumber,   27);
+        TEST_ASSERT_EQUALS(temp.functionNumber, static_cast<u8>(0));
+        TEST_ASSERT_EQUALS(temp.deviceNumber,   static_cast<u8>(27));
 
 
 
         // | 11011 | 111 |
-        temp.functionNumber = 7;
+        temp.functionNumber = static_cast<u8>(7);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xDF);
 
 
 
         // | 00100 | 111 |
-        temp.deviceNumber = 4;
+        temp.deviceNumber = static_cast<u8>(4);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x27);
     }
@@ -1068,36 +1068,36 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 00 | 00 | 00 | 11 |
         temp.value8 = 0x03;
 
-        TEST_ASSERT_EQUALS(temp.frontPanelResetStatus,       3);
-        TEST_ASSERT_EQUALS(temp.administratorPasswordStatus, 0);
-        TEST_ASSERT_EQUALS(temp.keyboardPasswordStatus,      0);
-        TEST_ASSERT_EQUALS(temp.powerOnPasswordStatus,       0);
+        TEST_ASSERT_EQUALS(temp.frontPanelResetStatus,       static_cast<u8>(3));
+        TEST_ASSERT_EQUALS(temp.administratorPasswordStatus, static_cast<u8>(0));
+        TEST_ASSERT_EQUALS(temp.keyboardPasswordStatus,      static_cast<u8>(0));
+        TEST_ASSERT_EQUALS(temp.powerOnPasswordStatus,       static_cast<u8>(0));
 
 
 
         // | 00 | 00 | 00 | 00 |
-        temp.frontPanelResetStatus = 0;
+        temp.frontPanelResetStatus = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x00);
 
 
 
         // | 00 | 00 | 11 | 00 |
-        temp.administratorPasswordStatus = 3;
+        temp.administratorPasswordStatus = static_cast<u8>(3);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x0C);
 
 
 
         // | 00 | 11 | 11 | 00 |
-        temp.keyboardPasswordStatus = 3;
+        temp.keyboardPasswordStatus = static_cast<u8>(3);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x3C);
 
 
 
         // | 11 | 11 | 11 | 00 |
-        temp.powerOnPasswordStatus = 3;
+        temp.powerOnPasswordStatus = static_cast<u8>(3);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xFC);
     }
@@ -1123,20 +1123,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0111 | 1101 |
         temp.value8 = 0x7D;
 
-        TEST_ASSERT_EQUALS(temp.rank,       13);
-        TEST_ASSERT_EQUALS(temp.__reserved, 7);
+        TEST_ASSERT_EQUALS(temp.rank,       static_cast<u8>(13));
+        TEST_ASSERT_EQUALS(temp.__reserved, static_cast<u8>(7));
 
 
 
         // | 0111 | 0010 |
-        temp.rank = 2;
+        temp.rank = static_cast<u8>(2);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x72);
 
 
 
         // | 1000 | 0010 |
-        temp.__reserved = 8;
+        temp.__reserved = static_cast<u8>(8);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x82);
     }
@@ -1168,8 +1168,8 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00110001            |
         temp.value32 = 0x1AE6BD31;
 
-        TEST_ASSERT_EQUALS(temp.value,      451329329);
-        TEST_ASSERT_EQUALS(temp.__reserved, 0);
+        TEST_ASSERT_EQUALS(temp.value,      static_cast<u32>(451329329));
+        TEST_ASSERT_EQUALS(temp.__reserved, static_cast<u32>(0));
 
 
 
@@ -1177,7 +1177,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00011001            |
         // |           01000010            |
         // |           11001110            |
-        temp.value = 1696154318;
+        temp.value = static_cast<u32>(1696154318);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x651942CE);
 
@@ -1187,7 +1187,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00011001            |
         // |           01000010            |
         // |           11001110            |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xE51942CE);
     }
@@ -1215,14 +1215,14 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00101101            |
         temp.value16 = 0xF02D;
 
-        TEST_ASSERT_EQUALS(temp.value,       28717);
-        TEST_ASSERT_EQUALS(temp.granularity, 1);
+        TEST_ASSERT_EQUALS(temp.value,       static_cast<u16>(28717));
+        TEST_ASSERT_EQUALS(temp.granularity, static_cast<u16>(1));
 
 
 
         // | 1 |          0001111          |
         // |           11010010            |
-        temp.value = 4050;
+        temp.value = static_cast<u16>(4050);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x8FD2);
 
@@ -1230,7 +1230,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |          0001111          |
         // |           11010010            |
-        temp.granularity = 0;
+        temp.granularity = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x0FD2);
     }
@@ -1256,20 +1256,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 0001000 |
         temp.value8 = 0x88;
 
-        TEST_ASSERT_EQUALS(temp.deviceType, 8);
-        TEST_ASSERT_EQUALS(temp.enabled,    1);
+        TEST_ASSERT_EQUALS(temp.deviceType, static_cast<u8>(8));
+        TEST_ASSERT_EQUALS(temp.enabled,    static_cast<u8>(1));
 
 
 
         // | 1 | 1110111 |
-        temp.deviceType = 119;
+        temp.deviceType = static_cast<u8>(119);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xF7);
 
 
 
         // | 0 | 1110111 |
-        temp.enabled = 0;
+        temp.enabled = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x77);
     }
@@ -1295,20 +1295,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 | 0111111 |
         temp.value8 = 0x3F;
 
-        TEST_ASSERT_EQUALS(temp.deviceType, 63);
-        TEST_ASSERT_EQUALS(temp.enabled,    0);
+        TEST_ASSERT_EQUALS(temp.deviceType, static_cast<u8>(63));
+        TEST_ASSERT_EQUALS(temp.enabled,    static_cast<u8>(0));
 
 
 
         // | 0 | 1000000 |
-        temp.deviceType = 64;
+        temp.deviceType = static_cast<u8>(64);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x40);
 
 
 
         // | 1 | 1000000 |
-        temp.enabled = 1;
+        temp.enabled = static_cast<u8>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xC0);
     }
@@ -1337,15 +1337,15 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    001    |       00011       |
         temp.value16 = 0x4223;
 
-        TEST_ASSERT_EQUALS(temp.date,  3);
-        TEST_ASSERT_EQUALS(temp.month, 1);
-        TEST_ASSERT_EQUALS(temp.year,  33);
+        TEST_ASSERT_EQUALS(temp.date,  static_cast<u16>(3));
+        TEST_ASSERT_EQUALS(temp.month, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.year,  static_cast<u16>(33));
 
 
 
         // |          0100001          | 0 |
         // |    001    |       11100       |
-        temp.date = 28;
+        temp.date = static_cast<u16>(28);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x423C);
 
@@ -1353,7 +1353,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          0100001          | 1 |
         // |    110    |       11100       |
-        temp.month = 14;
+        temp.month = static_cast<u16>(14);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x43DC);
 
@@ -1361,7 +1361,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          1011110          | 1 |
         // |    110    |       11100       |
-        temp.year = 94;
+        temp.year = static_cast<u16>(94);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xBDDC);
     }
@@ -1399,14 +1399,14 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1110      |     1001      |
         temp.value32 = 0xD98BA0E9;
 
-        TEST_ASSERT_EQUALS(temp.stepping,       9);
-        TEST_ASSERT_EQUALS(temp.model,          14);
-        TEST_ASSERT_EQUALS(temp.family,         0);
-        TEST_ASSERT_EQUALS(temp.type,           2);
-        TEST_ASSERT_EQUALS(temp.__reserved,     2);
-        TEST_ASSERT_EQUALS(temp.extendedModel,  11);
-        TEST_ASSERT_EQUALS(temp.extendedFamily, 152);
-        TEST_ASSERT_EQUALS(temp.__reserved2,    13);
+        TEST_ASSERT_EQUALS(temp.stepping,       static_cast<u32>(9));
+        TEST_ASSERT_EQUALS(temp.model,          static_cast<u32>(14));
+        TEST_ASSERT_EQUALS(temp.family,         static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.type,           static_cast<u32>(2));
+        TEST_ASSERT_EQUALS(temp.__reserved,     static_cast<u32>(2));
+        TEST_ASSERT_EQUALS(temp.extendedModel,  static_cast<u32>(11));
+        TEST_ASSERT_EQUALS(temp.extendedFamily, static_cast<u32>(152));
+        TEST_ASSERT_EQUALS(temp.__reserved2,    static_cast<u32>(13));
 
 
 
@@ -1414,7 +1414,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1000      |     1011      |
         // |  10   |  10   |     0000      |
         // |     1110      |     0110      |
-        temp.stepping = 6;
+        temp.stepping = static_cast<u32>(6);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xD98BA0E6);
 
@@ -1424,7 +1424,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1000      |     1011      |
         // |  10   |  10   |     0000      |
         // |     0001      |     0110      |
-        temp.model = 1;
+        temp.model = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xD98BA016);
 
@@ -1434,7 +1434,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1000      |     1011      |
         // |  10   |  10   |     1111      |
         // |     0001      |     0110      |
-        temp.family = 15;
+        temp.family = static_cast<u32>(15);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xD98BAF16);
 
@@ -1444,7 +1444,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1000      |     1011      |
         // |  10   |  01   |     1111      |
         // |     0001      |     0110      |
-        temp.type = 1;
+        temp.type = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xD98B9F16);
 
@@ -1454,7 +1454,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1000      |     1011      |
         // |  01   |  01   |     1111      |
         // |     0001      |     0110      |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xD98B5F16);
 
@@ -1464,7 +1464,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1000      |     0100      |
         // |  01   |  01   |     1111      |
         // |     0001      |     0110      |
-        temp.extendedModel = 4;
+        temp.extendedModel = static_cast<u32>(4);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xD9845F16);
 
@@ -1474,7 +1474,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0111      |     0100      |
         // |  01   |  01   |     1111      |
         // |     0001      |     0110      |
-        temp.extendedFamily = 103;
+        temp.extendedFamily = static_cast<u32>(103);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xD6745F16);
 
@@ -1484,7 +1484,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0111      |     0100      |
         // |  01   |  01   |     1111      |
         // |     0001      |     0110      |
-        temp.__reserved2 = 2;
+        temp.__reserved2 = static_cast<u32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x26745F16);
     }
@@ -1512,36 +1512,36 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 0 | 101 | 010 |
         temp.value8 = 0xAA;
 
-        TEST_ASSERT_EQUALS(temp.status,          2);
-        TEST_ASSERT_EQUALS(temp.__reserved,      5);
-        TEST_ASSERT_EQUALS(temp.socketPopulated, 0);
-        TEST_ASSERT_EQUALS(temp.__reserved2,     1);
+        TEST_ASSERT_EQUALS(temp.status,          static_cast<u8>(2));
+        TEST_ASSERT_EQUALS(temp.__reserved,      static_cast<u8>(5));
+        TEST_ASSERT_EQUALS(temp.socketPopulated, static_cast<u8>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved2,     static_cast<u8>(1));
 
 
 
         // | 1 | 0 | 101 | 101 |
-        temp.status = 5;
+        temp.status = static_cast<u8>(5);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xAD);
 
 
 
         // | 1 | 0 | 010 | 101 |
-        temp.__reserved = 2;
+        temp.__reserved = static_cast<u8>(2);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x95);
 
 
 
         // | 1 | 1 | 010 | 101 |
-        temp.socketPopulated = 1;
+        temp.socketPopulated = static_cast<u8>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xD5);
 
 
 
         // | 0 | 1 | 010 | 101 |
-        temp.__reserved2 = 0;
+        temp.__reserved2 = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x55);
     }
@@ -1574,19 +1574,19 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 |     0000      | 1 | 0 | 0 |
         temp.value16 = 0x5604;
 
-        TEST_ASSERT_EQUALS(temp.hotReplaceable,          0);
-        TEST_ASSERT_EQUALS(temp.present,                 0);
-        TEST_ASSERT_EQUALS(temp.unplugged,               1);
-        TEST_ASSERT_EQUALS(temp.inputVoltageRangeSwitch, 0);
-        TEST_ASSERT_EQUALS(temp.status,                  4);
-        TEST_ASSERT_EQUALS(temp.type,                    5);
-        TEST_ASSERT_EQUALS(temp.__reserved,              1);
+        TEST_ASSERT_EQUALS(temp.hotReplaceable,          static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.present,                 static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.unplugged,               static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.inputVoltageRangeSwitch, static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.status,                  static_cast<u16>(4));
+        TEST_ASSERT_EQUALS(temp.type,                    static_cast<u16>(5));
+        TEST_ASSERT_EQUALS(temp.__reserved,              static_cast<u16>(1));
 
 
 
         // |  01   |     0101      |  10   |
         // | 0 |     0000      | 1 | 0 | 1 |
-        temp.hotReplaceable = 1;
+        temp.hotReplaceable = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5605);
 
@@ -1594,7 +1594,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  01   |     0101      |  10   |
         // | 0 |     0000      | 1 | 1 | 1 |
-        temp.present = 1;
+        temp.present = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5607);
 
@@ -1602,7 +1602,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  01   |     0101      |  10   |
         // | 0 |     0000      | 0 | 1 | 1 |
-        temp.unplugged = 0;
+        temp.unplugged = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5603);
 
@@ -1610,7 +1610,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  01   |     0101      |  10   |
         // | 0 |     1111      | 0 | 1 | 1 |
-        temp.inputVoltageRangeSwitch = 15;
+        temp.inputVoltageRangeSwitch = static_cast<u16>(15);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x567B);
 
@@ -1618,7 +1618,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  01   |     0101      |  01   |
         // | 1 |     1111      | 0 | 1 | 1 |
-        temp.status = 3;
+        temp.status = static_cast<u16>(3);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x55FB);
 
@@ -1626,7 +1626,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  01   |     1010      |  01   |
         // | 1 |     1111      | 0 | 1 | 1 |
-        temp.type = 10;
+        temp.type = static_cast<u16>(10);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x69FB);
 
@@ -1634,7 +1634,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  10   |     1010      |  01   |
         // | 1 |     1111      | 0 | 1 | 1 |
-        temp.__reserved = 2;
+        temp.__reserved = static_cast<u16>(2);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xA9FB);
     }
@@ -1663,44 +1663,44 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 10 | 0 | 11 | 11 | 1 |
         temp.value8 = 0x9F;
 
-        TEST_ASSERT_EQUALS(temp.enabled,           1);
-        TEST_ASSERT_EQUALS(temp.bootOption,        3);
-        TEST_ASSERT_EQUALS(temp.bootOptionOnLimit, 3);
-        TEST_ASSERT_EQUALS(temp.watchdogEnabled,   0);
-        TEST_ASSERT_EQUALS(temp.__reserved,        2);
+        TEST_ASSERT_EQUALS(temp.enabled,           static_cast<u8>(1));
+        TEST_ASSERT_EQUALS(temp.bootOption,        static_cast<u8>(3));
+        TEST_ASSERT_EQUALS(temp.bootOptionOnLimit, static_cast<u8>(3));
+        TEST_ASSERT_EQUALS(temp.watchdogEnabled,   static_cast<u8>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved,        static_cast<u8>(2));
 
 
 
         // | 10 | 0 | 11 | 11 | 0 |
-        temp.enabled = 0;
+        temp.enabled = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x9E);
 
 
 
         // | 10 | 0 | 11 | 00 | 0 |
-        temp.bootOption = 0;
+        temp.bootOption = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x98);
 
 
 
         // | 10 | 0 | 00 | 00 | 0 |
-        temp.bootOptionOnLimit = 0;
+        temp.bootOptionOnLimit = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x80);
 
 
 
         // | 10 | 1 | 00 | 00 | 0 |
-        temp.watchdogEnabled = 1;
+        temp.watchdogEnabled = static_cast<u8>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xA0);
 
 
 
         // | 01 | 1 | 00 | 00 | 0 |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u8>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x60);
     }
@@ -1726,20 +1726,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 001 | 00100 |
         temp.value8 = 0x24;
 
-        TEST_ASSERT_EQUALS(temp.location, 4);
-        TEST_ASSERT_EQUALS(temp.status,   1);
+        TEST_ASSERT_EQUALS(temp.location, static_cast<u8>(4));
+        TEST_ASSERT_EQUALS(temp.status,   static_cast<u8>(1));
 
 
 
         // | 001 | 11011 |
-        temp.location = 27;
+        temp.location = static_cast<u8>(27);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x3B);
 
 
 
         // | 110 | 11011 |
-        temp.status = 6;
+        temp.status = static_cast<u8>(6);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xDB);
     }
@@ -1765,20 +1765,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 000 | 10000 |
         temp.value8 = 0x10;
 
-        TEST_ASSERT_EQUALS(temp.location, 16);
-        TEST_ASSERT_EQUALS(temp.status,   0);
+        TEST_ASSERT_EQUALS(temp.location, static_cast<u8>(16));
+        TEST_ASSERT_EQUALS(temp.status,   static_cast<u8>(0));
 
 
 
         // | 000 | 01111 |
-        temp.location = 15;
+        temp.location = static_cast<u8>(15);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x0F);
 
 
 
         // | 111 | 01111 |
-        temp.status = 7;
+        temp.status = static_cast<u8>(7);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xEF);
     }
@@ -1804,20 +1804,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1100 | 0110 |
         temp.value8 = 0xC6;
 
-        TEST_ASSERT_EQUALS(temp.bind, 6);
-        TEST_ASSERT_EQUALS(temp.type, 12);
+        TEST_ASSERT_EQUALS(temp.bind, static_cast<u8>(6));
+        TEST_ASSERT_EQUALS(temp.type, static_cast<u8>(12));
 
 
 
         // | 1100 | 1001 |
-        temp.bind = 9;
+        temp.bind = static_cast<u8>(9);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xC9);
 
 
 
         // | 0011 | 1001 |
-        temp.type = 3;
+        temp.type = static_cast<u8>(3);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x39);
     }
@@ -1843,20 +1843,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 111 | 00100 |
         temp.value8 = 0xE4;
 
-        TEST_ASSERT_EQUALS(temp.__reserved, 4);
-        TEST_ASSERT_EQUALS(temp.visibility, 7);
+        TEST_ASSERT_EQUALS(temp.__reserved, static_cast<u8>(4));
+        TEST_ASSERT_EQUALS(temp.visibility, static_cast<u8>(7));
 
 
 
         // | 111 | 11011 |
-        temp.__reserved = 27;
+        temp.__reserved = static_cast<u8>(27);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xFB);
 
 
 
         // | 000 | 11011 |
-        temp.visibility = 0;
+        temp.visibility = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x1B);
     }
@@ -1893,23 +1893,23 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  10   | 1 | 1 | 1 | 0 | 0 | 0 |
         temp.value16 = 0x2FB8;
 
-        TEST_ASSERT_EQUALS(temp.invalidOperationErrorMask,    0);
-        TEST_ASSERT_EQUALS(temp.denormalizedOperandErrorMask, 0);
-        TEST_ASSERT_EQUALS(temp.divideByZeroErrorMask,        0);
-        TEST_ASSERT_EQUALS(temp.overflowErrorMask,            1);
-        TEST_ASSERT_EQUALS(temp.underflowErrorMask,           1);
-        TEST_ASSERT_EQUALS(temp.precisionErrorMask,           1);
-        TEST_ASSERT_EQUALS(temp._reserved,                    2);
-        TEST_ASSERT_EQUALS(temp.precisionControl,             3);
-        TEST_ASSERT_EQUALS(temp.roundingControl,              3);
-        TEST_ASSERT_EQUALS(temp.infinityControl,              0);
-        TEST_ASSERT_EQUALS(temp._reserved2,                   1);
+        TEST_ASSERT_EQUALS(temp.invalidOperationErrorMask,    static_cast<good_U16>(0));
+        TEST_ASSERT_EQUALS(temp.denormalizedOperandErrorMask, static_cast<good_U16>(0));
+        TEST_ASSERT_EQUALS(temp.divideByZeroErrorMask,        static_cast<good_U16>(0));
+        TEST_ASSERT_EQUALS(temp.overflowErrorMask,            static_cast<good_U16>(1));
+        TEST_ASSERT_EQUALS(temp.underflowErrorMask,           static_cast<good_U16>(1));
+        TEST_ASSERT_EQUALS(temp.precisionErrorMask,           static_cast<good_U16>(1));
+        TEST_ASSERT_EQUALS(temp._reserved,                    static_cast<good_U16>(2));
+        TEST_ASSERT_EQUALS(temp.precisionControl,             static_cast<good_U16>(3));
+        TEST_ASSERT_EQUALS(temp.roundingControl,              static_cast<good_U16>(3));
+        TEST_ASSERT_EQUALS(temp.infinityControl,              static_cast<good_U16>(0));
+        TEST_ASSERT_EQUALS(temp._reserved2,                   static_cast<good_U16>(1));
 
 
 
         // |    001    | 0 |  11   |  11   |
         // |  10   | 1 | 1 | 1 | 0 | 0 | 1 |
-        temp.invalidOperationErrorMask = 1;
+        temp.invalidOperationErrorMask = static_cast<good_U16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2FB9);
 
@@ -1917,7 +1917,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 |  11   |  11   |
         // |  10   | 1 | 1 | 1 | 0 | 1 | 1 |
-        temp.denormalizedOperandErrorMask = 1;
+        temp.denormalizedOperandErrorMask = static_cast<good_U16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2FBB);
 
@@ -1925,7 +1925,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 |  11   |  11   |
         // |  10   | 1 | 1 | 1 | 1 | 1 | 1 |
-        temp.divideByZeroErrorMask = 1;
+        temp.divideByZeroErrorMask = static_cast<good_U16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2FBF);
 
@@ -1933,7 +1933,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 |  11   |  11   |
         // |  10   | 1 | 1 | 0 | 1 | 1 | 1 |
-        temp.overflowErrorMask = 0;
+        temp.overflowErrorMask = static_cast<good_U16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2FB7);
 
@@ -1941,7 +1941,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 |  11   |  11   |
         // |  10   | 1 | 0 | 0 | 1 | 1 | 1 |
-        temp.underflowErrorMask = 0;
+        temp.underflowErrorMask = static_cast<good_U16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2FA7);
 
@@ -1949,7 +1949,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 |  11   |  11   |
         // |  10   | 0 | 0 | 0 | 1 | 1 | 1 |
-        temp.precisionErrorMask = 0;
+        temp.precisionErrorMask = static_cast<good_U16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2F87);
 
@@ -1957,7 +1957,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 |  11   |  11   |
         // |  01   | 0 | 0 | 0 | 1 | 1 | 1 |
-        temp._reserved = 1;
+        temp._reserved = static_cast<good_U16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2F47);
 
@@ -1965,7 +1965,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 |  11   |  00   |
         // |  01   | 0 | 0 | 0 | 1 | 1 | 1 |
-        temp.precisionControl = 0;
+        temp.precisionControl = static_cast<good_U16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2C47);
 
@@ -1973,7 +1973,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 |  00   |  00   |
         // |  01   | 0 | 0 | 0 | 1 | 1 | 1 |
-        temp.roundingControl = 0;
+        temp.roundingControl = static_cast<good_U16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2047);
 
@@ -1981,7 +1981,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 1 |  00   |  00   |
         // |  01   | 0 | 0 | 0 | 1 | 1 | 1 |
-        temp.infinityControl = 1;
+        temp.infinityControl = static_cast<good_U16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3047);
 
@@ -1989,7 +1989,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    110    | 1 |  00   |  00   |
         // |  01   | 0 | 0 | 0 | 1 | 1 | 1 |
-        temp._reserved2 = 6;
+        temp._reserved2 = static_cast<good_U16>(6);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xD047);
     }
@@ -2029,26 +2029,26 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 | 1 | 0 | 1 | 1 | 1 | 0 | 1 |
         temp.value16 = 0x605D;
 
-        TEST_ASSERT_EQUALS(temp.invalidOperationError,    1);
-        TEST_ASSERT_EQUALS(temp.denormalizedOperandError, 0);
-        TEST_ASSERT_EQUALS(temp.divideByZeroError,        1);
-        TEST_ASSERT_EQUALS(temp.overflowError,            1);
-        TEST_ASSERT_EQUALS(temp.underflowError,           1);
-        TEST_ASSERT_EQUALS(temp.precisionError,           0);
-        TEST_ASSERT_EQUALS(temp.stackFault,               1);
-        TEST_ASSERT_EQUALS(temp.errorSummaryStatus,       0);
-        TEST_ASSERT_EQUALS(temp.c0,                       0);
-        TEST_ASSERT_EQUALS(temp.c1,                       0);
-        TEST_ASSERT_EQUALS(temp.c2,                       0);
-        TEST_ASSERT_EQUALS(temp.top,                      4);
-        TEST_ASSERT_EQUALS(temp.c3,                       1);
-        TEST_ASSERT_EQUALS(temp.busy,                     0);
+        TEST_ASSERT_EQUALS(temp.invalidOperationError,    static_cast<good_U16>(1));
+        TEST_ASSERT_EQUALS(temp.denormalizedOperandError, static_cast<good_U16>(0));
+        TEST_ASSERT_EQUALS(temp.divideByZeroError,        static_cast<good_U16>(1));
+        TEST_ASSERT_EQUALS(temp.overflowError,            static_cast<good_U16>(1));
+        TEST_ASSERT_EQUALS(temp.underflowError,           static_cast<good_U16>(1));
+        TEST_ASSERT_EQUALS(temp.precisionError,           static_cast<good_U16>(0));
+        TEST_ASSERT_EQUALS(temp.stackFault,               static_cast<good_U16>(1));
+        TEST_ASSERT_EQUALS(temp.errorSummaryStatus,       static_cast<good_U16>(0));
+        TEST_ASSERT_EQUALS(temp.c0,                       static_cast<good_U16>(0));
+        TEST_ASSERT_EQUALS(temp.c1,                       static_cast<good_U16>(0));
+        TEST_ASSERT_EQUALS(temp.c2,                       static_cast<good_U16>(0));
+        TEST_ASSERT_EQUALS(temp.top,                      static_cast<good_U16>(4));
+        TEST_ASSERT_EQUALS(temp.c3,                       static_cast<good_U16>(1));
+        TEST_ASSERT_EQUALS(temp.busy,                     static_cast<good_U16>(0));
 
 
 
         // | 0 | 1 |    100    | 0 | 0 | 0 |
         // | 0 | 1 | 0 | 1 | 1 | 1 | 0 | 0 |
-        temp.invalidOperationError = 0;
+        temp.invalidOperationError = static_cast<good_U16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x605C);
 
@@ -2056,7 +2056,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 |    100    | 0 | 0 | 0 |
         // | 0 | 1 | 0 | 1 | 1 | 1 | 1 | 0 |
-        temp.denormalizedOperandError = 1;
+        temp.denormalizedOperandError = static_cast<good_U16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x605E);
 
@@ -2064,7 +2064,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 |    100    | 0 | 0 | 0 |
         // | 0 | 1 | 0 | 1 | 1 | 0 | 1 | 0 |
-        temp.divideByZeroError = 0;
+        temp.divideByZeroError = static_cast<good_U16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x605A);
 
@@ -2072,7 +2072,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 |    100    | 0 | 0 | 0 |
         // | 0 | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
-        temp.overflowError = 0;
+        temp.overflowError = static_cast<good_U16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x6052);
 
@@ -2080,7 +2080,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 |    100    | 0 | 0 | 0 |
         // | 0 | 1 | 0 | 0 | 0 | 0 | 1 | 0 |
-        temp.underflowError = 0;
+        temp.underflowError = static_cast<good_U16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x6042);
 
@@ -2088,7 +2088,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 |    100    | 0 | 0 | 0 |
         // | 0 | 1 | 1 | 0 | 0 | 0 | 1 | 0 |
-        temp.precisionError = 1;
+        temp.precisionError = static_cast<good_U16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x6062);
 
@@ -2096,7 +2096,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 |    100    | 0 | 0 | 0 |
         // | 0 | 0 | 1 | 0 | 0 | 0 | 1 | 0 |
-        temp.stackFault = 0;
+        temp.stackFault = static_cast<good_U16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x6022);
 
@@ -2104,7 +2104,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 |    100    | 0 | 0 | 0 |
         // | 1 | 0 | 1 | 0 | 0 | 0 | 1 | 0 |
-        temp.errorSummaryStatus = 1;
+        temp.errorSummaryStatus = static_cast<good_U16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x60A2);
 
@@ -2112,7 +2112,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 |    100    | 0 | 0 | 1 |
         // | 1 | 0 | 1 | 0 | 0 | 0 | 1 | 0 |
-        temp.c0 = 1;
+        temp.c0 = static_cast<good_U16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x61A2);
 
@@ -2120,7 +2120,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 |    100    | 0 | 1 | 1 |
         // | 1 | 0 | 1 | 0 | 0 | 0 | 1 | 0 |
-        temp.c1 = 1;
+        temp.c1 = static_cast<good_U16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x63A2);
 
@@ -2128,7 +2128,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 |    100    | 1 | 1 | 1 |
         // | 1 | 0 | 1 | 0 | 0 | 0 | 1 | 0 |
-        temp.c2 = 1;
+        temp.c2 = static_cast<good_U16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x67A2);
 
@@ -2136,7 +2136,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 |    011    | 1 | 1 | 1 |
         // | 1 | 0 | 1 | 0 | 0 | 0 | 1 | 0 |
-        temp.top = 3;
+        temp.top = static_cast<good_U16>(3);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5FA2);
 
@@ -2144,7 +2144,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 0 |    011    | 1 | 1 | 1 |
         // | 1 | 0 | 1 | 0 | 0 | 0 | 1 | 0 |
-        temp.c3 = 0;
+        temp.c3 = static_cast<good_U16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x1FA2);
 
@@ -2152,7 +2152,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 0 |    011    | 1 | 1 | 1 |
         // | 1 | 0 | 1 | 0 | 0 | 0 | 1 | 0 |
-        temp.busy = 1;
+        temp.busy = static_cast<good_U16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x9FA2);
     }
@@ -2203,19 +2203,19 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11001010            |
         temp.value64 = 0x620AD99A05845ACA;
 
-        TEST_ASSERT_EQUALS(temp.limit0, 23242);
-        TEST_ASSERT_EQUALS(temp.base0,  1412);
-        TEST_ASSERT_EQUALS(temp.base1,  154);
-        TEST_ASSERT_EQUALS(temp.type,   9);
-        TEST_ASSERT_EQUALS(temp.s,      1);
-        TEST_ASSERT_EQUALS(temp.dpl,    2);
-        TEST_ASSERT_EQUALS(temp.p,      1);
-        TEST_ASSERT_EQUALS(temp.limit1, 10);
-        TEST_ASSERT_EQUALS(temp.avl,    0);
-        TEST_ASSERT_EQUALS(temp.l,      0);
-        TEST_ASSERT_EQUALS(temp.d,      0);
-        TEST_ASSERT_EQUALS(temp.g,      0);
-        TEST_ASSERT_EQUALS(temp.base2,  98);
+        TEST_ASSERT_EQUALS(temp.limit0, static_cast<u64>(23242));
+        TEST_ASSERT_EQUALS(temp.base0,  static_cast<u64>(1412));
+        TEST_ASSERT_EQUALS(temp.base1,  static_cast<u64>(154));
+        TEST_ASSERT_EQUALS(temp.type,   static_cast<u64>(9));
+        TEST_ASSERT_EQUALS(temp.s,      static_cast<u64>(1));
+        TEST_ASSERT_EQUALS(temp.dpl,    static_cast<u64>(2));
+        TEST_ASSERT_EQUALS(temp.p,      static_cast<u64>(1));
+        TEST_ASSERT_EQUALS(temp.limit1, static_cast<u64>(10));
+        TEST_ASSERT_EQUALS(temp.avl,    static_cast<u64>(0));
+        TEST_ASSERT_EQUALS(temp.l,      static_cast<u64>(0));
+        TEST_ASSERT_EQUALS(temp.d,      static_cast<u64>(0));
+        TEST_ASSERT_EQUALS(temp.g,      static_cast<u64>(0));
+        TEST_ASSERT_EQUALS(temp.base2,  static_cast<u64>(98));
 
 
 
@@ -2227,7 +2227,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10000100            |
         // |           10100101            |
         // |           00110101            |
-        temp.limit0 = 42293;
+        temp.limit0 = static_cast<u64>(42293);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x620AD99A0584A535);
 
@@ -2241,7 +2241,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01111011            |
         // |           10100101            |
         // |           00110101            |
-        temp.base0 = 64123;
+        temp.base0 = static_cast<u64>(64123);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x620AD99AFA7BA535);
 
@@ -2255,7 +2255,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01111011            |
         // |           10100101            |
         // |           00110101            |
-        temp.base1 = 101;
+        temp.base1 = static_cast<u64>(101);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x620AD965FA7BA535);
 
@@ -2269,7 +2269,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01111011            |
         // |           10100101            |
         // |           00110101            |
-        temp.type = 6;
+        temp.type = static_cast<u64>(6);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x620AD665FA7BA535);
 
@@ -2283,7 +2283,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01111011            |
         // |           10100101            |
         // |           00110101            |
-        temp.s = 0;
+        temp.s = static_cast<u64>(0);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x620AC665FA7BA535);
 
@@ -2297,7 +2297,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01111011            |
         // |           10100101            |
         // |           00110101            |
-        temp.dpl = 1;
+        temp.dpl = static_cast<u64>(1);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x620AA665FA7BA535);
 
@@ -2311,7 +2311,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01111011            |
         // |           10100101            |
         // |           00110101            |
-        temp.p = 0;
+        temp.p = static_cast<u64>(0);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x620A2665FA7BA535);
 
@@ -2325,7 +2325,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01111011            |
         // |           10100101            |
         // |           00110101            |
-        temp.limit1 = 5;
+        temp.limit1 = static_cast<u64>(5);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x62052665FA7BA535);
 
@@ -2339,7 +2339,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01111011            |
         // |           10100101            |
         // |           00110101            |
-        temp.avl = 1;
+        temp.avl = static_cast<u64>(1);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x62152665FA7BA535);
 
@@ -2353,7 +2353,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01111011            |
         // |           10100101            |
         // |           00110101            |
-        temp.l = 1;
+        temp.l = static_cast<u64>(1);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x62352665FA7BA535);
 
@@ -2367,7 +2367,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01111011            |
         // |           10100101            |
         // |           00110101            |
-        temp.d = 1;
+        temp.d = static_cast<u64>(1);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x62752665FA7BA535);
 
@@ -2381,7 +2381,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01111011            |
         // |           10100101            |
         // |           00110101            |
-        temp.g = 1;
+        temp.g = static_cast<u64>(1);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x62F52665FA7BA535);
 
@@ -2395,7 +2395,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01111011            |
         // |           10100101            |
         // |           00110101            |
-        temp.base2 = 157;
+        temp.base2 = static_cast<u64>(157);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x9DF52665FA7BA535);
     }
@@ -2422,28 +2422,28 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 111 | 0 | 1000 |
         temp.value8 = 0xE8;
 
-        TEST_ASSERT_EQUALS(temp.id,         8);
-        TEST_ASSERT_EQUALS(temp.type,       0);
-        TEST_ASSERT_EQUALS(temp.__reserved, 7);
+        TEST_ASSERT_EQUALS(temp.id,         static_cast<u8>(8));
+        TEST_ASSERT_EQUALS(temp.type,       static_cast<u8>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved, static_cast<u8>(7));
 
 
 
         // | 111 | 0 | 0111 |
-        temp.id = 7;
+        temp.id = static_cast<u8>(7);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xE7);
 
 
 
         // | 111 | 1 | 0111 |
-        temp.type = 1;
+        temp.type = static_cast<u8>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xF7);
 
 
 
         // | 000 | 1 | 0111 |
-        temp.__reserved = 0;
+        temp.__reserved = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x17);
     }
@@ -2469,20 +2469,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1011 | 0111 |
         temp.value8 = 0xB7;
 
-        TEST_ASSERT_EQUALS(temp.id,        7);
-        TEST_ASSERT_EQUALS(temp.precision, 11);
+        TEST_ASSERT_EQUALS(temp.id,        static_cast<u8>(7));
+        TEST_ASSERT_EQUALS(temp.precision, static_cast<u8>(11));
 
 
 
         // | 1011 | 1000 |
-        temp.id = 8;
+        temp.id = static_cast<u8>(8);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xB8);
 
 
 
         // | 0100 | 1000 |
-        temp.precision = 4;
+        temp.precision = static_cast<u8>(4);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x48);
     }
@@ -2508,20 +2508,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0100 | 0000 |
         temp.value8 = 0x40;
 
-        TEST_ASSERT_EQUALS(temp.y, 0);
-        TEST_ASSERT_EQUALS(temp.x, 4);
+        TEST_ASSERT_EQUALS(temp.y, static_cast<u8>(0));
+        TEST_ASSERT_EQUALS(temp.x, static_cast<u8>(4));
 
 
 
         // | 0100 | 1111 |
-        temp.y = 15;
+        temp.y = static_cast<u8>(15);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x4F);
 
 
 
         // | 1011 | 1111 |
-        temp.x = 11;
+        temp.x = static_cast<u8>(11);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xBF);
     }
@@ -2547,20 +2547,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0010 | 1110 |
         temp.value8 = 0x2E;
 
-        TEST_ASSERT_EQUALS(temp.ac, 14);
-        TEST_ASSERT_EQUALS(temp.dc, 2);
+        TEST_ASSERT_EQUALS(temp.ac, static_cast<u8>(14));
+        TEST_ASSERT_EQUALS(temp.dc, static_cast<u8>(2));
 
 
 
         // | 0010 | 0001 |
-        temp.ac = 1;
+        temp.ac = static_cast<u8>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x21);
 
 
 
         // | 1101 | 0001 |
-        temp.dc = 13;
+        temp.dc = static_cast<u8>(13);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xD1);
     }
@@ -2588,36 +2588,36 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 00 | 0 | 1101 |
         temp.value8 = 0x8D;
 
-        TEST_ASSERT_EQUALS(temp.gateType,   13);
-        TEST_ASSERT_EQUALS(temp.__reserved, 0);
-        TEST_ASSERT_EQUALS(temp.dpl,        0);
-        TEST_ASSERT_EQUALS(temp.p,          1);
+        TEST_ASSERT_EQUALS(temp.gateType,   static_cast<u8>(13));
+        TEST_ASSERT_EQUALS(temp.__reserved, static_cast<u8>(0));
+        TEST_ASSERT_EQUALS(temp.dpl,        static_cast<u8>(0));
+        TEST_ASSERT_EQUALS(temp.p,          static_cast<u8>(1));
 
 
 
         // | 1 | 00 | 0 | 0010 |
-        temp.gateType = 2;
+        temp.gateType = static_cast<u8>(2);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x82);
 
 
 
         // | 1 | 00 | 1 | 0010 |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u8>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x92);
 
 
 
         // | 1 | 11 | 1 | 0010 |
-        temp.dpl = 3;
+        temp.dpl = static_cast<u8>(3);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xF2);
 
 
 
         // | 0 | 11 | 1 | 0010 |
-        temp.p = 0;
+        temp.p = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x72);
     }
@@ -2657,8 +2657,8 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00001111            |
         temp.value64 = 0x0B05C5151CC73A0F;
 
-        TEST_ASSERT_EQUALS(temp._reserved,         482818575);
-        TEST_ASSERT_EQUALS(temp.microcodeRevision, 184927509);
+        TEST_ASSERT_EQUALS(temp._reserved,         static_cast<good_U64>(482818575));
+        TEST_ASSERT_EQUALS(temp.microcodeRevision, static_cast<good_U64>(184927509));
 
 
 
@@ -2670,7 +2670,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00111000            |
         // |           11000101            |
         // |           11110000            |
-        temp._reserved = 3812148720;
+        temp._reserved = static_cast<good_U64>(3812148720);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x0B05C515E338C5F0);
 
@@ -2684,7 +2684,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00111000            |
         // |           11000101            |
         // |           11110000            |
-        temp.microcodeRevision = 4110039786;
+        temp.microcodeRevision = static_cast<good_U64>(4110039786);
 
         TEST_ASSERT_EQUALS(temp.value64, 0xF4FA3AEAE338C5F0);
     }
@@ -2720,12 +2720,12 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       01101       |    110    |
         temp.value32 = 0x56D49A6E;
 
-        TEST_ASSERT_EQUALS(temp.rate,                           6);
-        TEST_ASSERT_EQUALS(temp.__reserved,                     13);
-        TEST_ASSERT_EQUALS(temp.enableAcceleratedGraphicsPort,  0);
-        TEST_ASSERT_EQUALS(temp.enableSideBandAddressing,       1);
-        TEST_ASSERT_EQUALS(temp.__reserved2,                    13606);
-        TEST_ASSERT_EQUALS(temp.maximumNumberOfCommandRequests, 86);
+        TEST_ASSERT_EQUALS(temp.rate,                           static_cast<u32>(6));
+        TEST_ASSERT_EQUALS(temp.__reserved,                     static_cast<u32>(13));
+        TEST_ASSERT_EQUALS(temp.enableAcceleratedGraphicsPort,  static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.enableSideBandAddressing,       static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved2,                    static_cast<u32>(13606));
+        TEST_ASSERT_EQUALS(temp.maximumNumberOfCommandRequests, static_cast<u32>(86));
 
 
 
@@ -2733,7 +2733,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11010100            |
         // |        100110         | 1 | 0 |
         // |       01101       |    001    |
-        temp.rate = 1;
+        temp.rate = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x56D49A69);
 
@@ -2743,7 +2743,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11010100            |
         // |        100110         | 1 | 0 |
         // |       10010       |    001    |
-        temp.__reserved = 18;
+        temp.__reserved = static_cast<u32>(18);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x56D49A91);
 
@@ -2753,7 +2753,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11010100            |
         // |        100110         | 1 | 1 |
         // |       10010       |    001    |
-        temp.enableAcceleratedGraphicsPort = 1;
+        temp.enableAcceleratedGraphicsPort = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x56D49B91);
 
@@ -2763,7 +2763,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11010100            |
         // |        100110         | 0 | 1 |
         // |       10010       |    001    |
-        temp.enableSideBandAddressing = 0;
+        temp.enableSideBandAddressing = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x56D49991);
 
@@ -2773,7 +2773,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00101011            |
         // |        011001         | 0 | 1 |
         // |       10010       |    001    |
-        temp.__reserved2 = 2777;
+        temp.__reserved2 = static_cast<u32>(2777);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x562B6591);
 
@@ -2783,7 +2783,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00101011            |
         // |        011001         | 0 | 1 |
         // |       10010       |    001    |
-        temp.maximumNumberOfCommandRequests = 169;
+        temp.maximumNumberOfCommandRequests = static_cast<u32>(169);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xA92B6591);
     }
@@ -2818,11 +2818,11 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        001000         |  11   |
         temp.value32 = 0x30DE5323;
 
-        TEST_ASSERT_EQUALS(temp.rate,                           3);
-        TEST_ASSERT_EQUALS(temp.__reserved,                     72);
-        TEST_ASSERT_EQUALS(temp.supportSideBandAddressing,      1);
-        TEST_ASSERT_EQUALS(temp.__reserved2,                    14228);
-        TEST_ASSERT_EQUALS(temp.maximumNumberOfCommandRequests, 48);
+        TEST_ASSERT_EQUALS(temp.rate,                           static_cast<u32>(3));
+        TEST_ASSERT_EQUALS(temp.__reserved,                     static_cast<u32>(72));
+        TEST_ASSERT_EQUALS(temp.supportSideBandAddressing,      static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved2,                    static_cast<u32>(14228));
+        TEST_ASSERT_EQUALS(temp.maximumNumberOfCommandRequests, static_cast<u32>(48));
 
 
 
@@ -2830,7 +2830,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11011110            |
         // |        010100         | 1 | 1 |
         // |        001000         |  00   |
-        temp.rate = 0;
+        temp.rate = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x30DE5320);
 
@@ -2840,7 +2840,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11011110            |
         // |        010100         | 1 | 0 |
         // |        110111         |  00   |
-        temp.__reserved = 55;
+        temp.__reserved = static_cast<u32>(55);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x30DE52DC);
 
@@ -2850,7 +2850,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11011110            |
         // |        010100         | 0 | 0 |
         // |        110111         |  00   |
-        temp.supportSideBandAddressing = 0;
+        temp.supportSideBandAddressing = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x30DE50DC);
 
@@ -2860,7 +2860,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100001            |
         // |        101011         | 0 | 0 |
         // |        110111         |  00   |
-        temp.__reserved2 = 2155;
+        temp.__reserved2 = static_cast<u32>(2155);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3021ACDC);
 
@@ -2870,7 +2870,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100001            |
         // |        101011         | 0 | 0 |
         // |        110111         |  00   |
-        temp.maximumNumberOfCommandRequests = 207;
+        temp.maximumNumberOfCommandRequests = static_cast<u32>(207);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xCF21ACDC);
     }
@@ -2898,36 +2898,36 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 1 | 10 | 0011 |
         temp.value8 = 0xE3;
 
-        TEST_ASSERT_EQUALS(temp.completionCode, 3);
-        TEST_ASSERT_EQUALS(temp.__reserved,     2);
-        TEST_ASSERT_EQUALS(temp.startBist,      1);
-        TEST_ASSERT_EQUALS(temp.capable,        1);
+        TEST_ASSERT_EQUALS(temp.completionCode, static_cast<u8>(3));
+        TEST_ASSERT_EQUALS(temp.__reserved,     static_cast<u8>(2));
+        TEST_ASSERT_EQUALS(temp.startBist,      static_cast<u8>(1));
+        TEST_ASSERT_EQUALS(temp.capable,        static_cast<u8>(1));
 
 
 
         // | 1 | 1 | 10 | 1100 |
-        temp.completionCode = 12;
+        temp.completionCode = static_cast<u8>(12);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xEC);
 
 
 
         // | 1 | 1 | 01 | 1100 |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u8>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xDC);
 
 
 
         // | 1 | 0 | 01 | 1100 |
-        temp.startBist = 0;
+        temp.startBist = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x9C);
 
 
 
         // | 0 | 0 | 01 | 1100 |
-        temp.capable = 0;
+        temp.capable = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x1C);
     }
@@ -2962,21 +2962,21 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 0 |
         temp.value16 = 0x3F18;
 
-        TEST_ASSERT_EQUALS(temp.acsSourceValidation,      0);
-        TEST_ASSERT_EQUALS(temp.acsTranslationBlocking,   0);
-        TEST_ASSERT_EQUALS(temp.acsP2pRequestRedirect,    0);
-        TEST_ASSERT_EQUALS(temp.acsP2pCompletionRedirect, 1);
-        TEST_ASSERT_EQUALS(temp.acsUpstreamForwarding,    1);
-        TEST_ASSERT_EQUALS(temp.acsP2pEgressControl,      0);
-        TEST_ASSERT_EQUALS(temp.acsDirectTranslatedP2p,   0);
-        TEST_ASSERT_EQUALS(temp.__reserved,               0);
-        TEST_ASSERT_EQUALS(temp.egressControlVectorSize,  63);
+        TEST_ASSERT_EQUALS(temp.acsSourceValidation,      static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.acsTranslationBlocking,   static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.acsP2pRequestRedirect,    static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.acsP2pCompletionRedirect, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.acsUpstreamForwarding,    static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.acsP2pEgressControl,      static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.acsDirectTranslatedP2p,   static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved,               static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.egressControlVectorSize,  static_cast<u16>(63));
 
 
 
         // |           00111111            |
         // | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 1 |
-        temp.acsSourceValidation = 1;
+        temp.acsSourceValidation = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3F19);
 
@@ -2984,7 +2984,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00111111            |
         // | 0 | 0 | 0 | 1 | 1 | 0 | 1 | 1 |
-        temp.acsTranslationBlocking = 1;
+        temp.acsTranslationBlocking = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3F1B);
 
@@ -2992,7 +2992,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00111111            |
         // | 0 | 0 | 0 | 1 | 1 | 1 | 1 | 1 |
-        temp.acsP2pRequestRedirect = 1;
+        temp.acsP2pRequestRedirect = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3F1F);
 
@@ -3000,7 +3000,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00111111            |
         // | 0 | 0 | 0 | 1 | 0 | 1 | 1 | 1 |
-        temp.acsP2pCompletionRedirect = 0;
+        temp.acsP2pCompletionRedirect = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3F17);
 
@@ -3008,7 +3008,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00111111            |
         // | 0 | 0 | 0 | 0 | 0 | 1 | 1 | 1 |
-        temp.acsUpstreamForwarding = 0;
+        temp.acsUpstreamForwarding = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3F07);
 
@@ -3016,7 +3016,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00111111            |
         // | 0 | 0 | 1 | 0 | 0 | 1 | 1 | 1 |
-        temp.acsP2pEgressControl = 1;
+        temp.acsP2pEgressControl = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3F27);
 
@@ -3024,7 +3024,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00111111            |
         // | 0 | 1 | 1 | 0 | 0 | 1 | 1 | 1 |
-        temp.acsDirectTranslatedP2p = 1;
+        temp.acsDirectTranslatedP2p = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3F67);
 
@@ -3032,7 +3032,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00111111            |
         // | 1 | 1 | 1 | 0 | 0 | 1 | 1 | 1 |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3FE7);
 
@@ -3040,7 +3040,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           11000000            |
         // | 1 | 1 | 1 | 0 | 0 | 1 | 1 | 1 |
-        temp.egressControlVectorSize = 192;
+        temp.egressControlVectorSize = static_cast<u16>(192);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC0E7);
     }
@@ -3079,15 +3079,15 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 | 0 | 0 |       01110       |
         temp.value32 = 0x9FAA1B0E;
 
-        TEST_ASSERT_EQUALS(temp.firstErrorPointer,              14);
-        TEST_ASSERT_EQUALS(temp.ecrcGenerationCapable,          0);
-        TEST_ASSERT_EQUALS(temp.ecrcGenerationEnable,           0);
-        TEST_ASSERT_EQUALS(temp.ecrcCheckCapable,               0);
-        TEST_ASSERT_EQUALS(temp.ecrcCheckEnable,                1);
-        TEST_ASSERT_EQUALS(temp.multipleHeaderRecordingCapable, 1);
-        TEST_ASSERT_EQUALS(temp.multipleHeaderRecordingEnable,  0);
-        TEST_ASSERT_EQUALS(temp.tlpPrefixLogPresent,            1);
-        TEST_ASSERT_EQUALS(temp.__reserved,                     653985);
+        TEST_ASSERT_EQUALS(temp.firstErrorPointer,              static_cast<u32>(14));
+        TEST_ASSERT_EQUALS(temp.ecrcGenerationCapable,          static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.ecrcGenerationEnable,           static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.ecrcCheckCapable,               static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.ecrcCheckEnable,                static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.multipleHeaderRecordingCapable, static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.multipleHeaderRecordingEnable,  static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.tlpPrefixLogPresent,            static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved,                     static_cast<u32>(653985));
 
 
 
@@ -3095,7 +3095,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10101010            |
         // |     0001      | 1 | 0 | 1 | 1 |
         // | 0 | 0 | 0 |       10001       |
-        temp.firstErrorPointer = 17;
+        temp.firstErrorPointer = static_cast<u32>(17);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9FAA1B11);
 
@@ -3105,7 +3105,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10101010            |
         // |     0001      | 1 | 0 | 1 | 1 |
         // | 0 | 0 | 1 |       10001       |
-        temp.ecrcGenerationCapable = 1;
+        temp.ecrcGenerationCapable = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9FAA1B31);
 
@@ -3115,7 +3115,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10101010            |
         // |     0001      | 1 | 0 | 1 | 1 |
         // | 0 | 1 | 1 |       10001       |
-        temp.ecrcGenerationEnable = 1;
+        temp.ecrcGenerationEnable = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9FAA1B71);
 
@@ -3125,7 +3125,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10101010            |
         // |     0001      | 1 | 0 | 1 | 1 |
         // | 1 | 1 | 1 |       10001       |
-        temp.ecrcCheckCapable = 1;
+        temp.ecrcCheckCapable = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9FAA1BF1);
 
@@ -3135,7 +3135,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10101010            |
         // |     0001      | 1 | 0 | 1 | 0 |
         // | 1 | 1 | 1 |       10001       |
-        temp.ecrcCheckEnable = 0;
+        temp.ecrcCheckEnable = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9FAA1AF1);
 
@@ -3145,7 +3145,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10101010            |
         // |     0001      | 1 | 0 | 0 | 0 |
         // | 1 | 1 | 1 |       10001       |
-        temp.multipleHeaderRecordingCapable = 0;
+        temp.multipleHeaderRecordingCapable = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9FAA18F1);
 
@@ -3155,7 +3155,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10101010            |
         // |     0001      | 1 | 1 | 0 | 0 |
         // | 1 | 1 | 1 |       10001       |
-        temp.multipleHeaderRecordingEnable = 1;
+        temp.multipleHeaderRecordingEnable = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9FAA1CF1);
 
@@ -3165,7 +3165,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10101010            |
         // |     0001      | 0 | 1 | 0 | 0 |
         // | 1 | 1 | 1 |       10001       |
-        temp.tlpPrefixLogPresent = 0;
+        temp.tlpPrefixLogPresent = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9FAA14F1);
 
@@ -3175,7 +3175,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01010101            |
         // |     1110      | 0 | 1 | 0 | 0 |
         // | 1 | 1 | 1 |       10001       |
-        temp.__reserved = 394590;
+        temp.__reserved = static_cast<u32>(394590);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x6055E4F1);
     }
@@ -3205,16 +3205,16 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        001001         | 0 | 0 |
         temp.value16 = 0x7424;
 
-        TEST_ASSERT_EQUALS(temp.mfvcFunctionGroupsCapability, 0);
-        TEST_ASSERT_EQUALS(temp.acsFunctionGroupsCapability,  0);
-        TEST_ASSERT_EQUALS(temp.__reserved,                   9);
-        TEST_ASSERT_EQUALS(temp.nextFunctionNumber,           116);
+        TEST_ASSERT_EQUALS(temp.mfvcFunctionGroupsCapability, static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.acsFunctionGroupsCapability,  static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved,                   static_cast<u16>(9));
+        TEST_ASSERT_EQUALS(temp.nextFunctionNumber,           static_cast<u16>(116));
 
 
 
         // |           01110100            |
         // |        001001         | 0 | 1 |
-        temp.mfvcFunctionGroupsCapability = 1;
+        temp.mfvcFunctionGroupsCapability = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x7425);
 
@@ -3222,7 +3222,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           01110100            |
         // |        001001         | 1 | 1 |
-        temp.acsFunctionGroupsCapability = 1;
+        temp.acsFunctionGroupsCapability = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x7427);
 
@@ -3230,7 +3230,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           01110100            |
         // |        110110         | 1 | 1 |
-        temp.__reserved = 54;
+        temp.__reserved = static_cast<u16>(54);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x74DB);
 
@@ -3238,7 +3238,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           10001011            |
         // |        110110         | 1 | 1 |
-        temp.nextFunctionNumber = 139;
+        temp.nextFunctionNumber = static_cast<u16>(139);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x8BDB);
     }
@@ -3269,17 +3269,17 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |    111    |  00   | 1 | 1 |
         temp.value16 = 0x03F3;
 
-        TEST_ASSERT_EQUALS(temp.mfvcFunctionGroupsEnable, 1);
-        TEST_ASSERT_EQUALS(temp.acsFunctionGroupsEnable,  1);
-        TEST_ASSERT_EQUALS(temp.__reserved,               0);
-        TEST_ASSERT_EQUALS(temp.functionGroup,            7);
-        TEST_ASSERT_EQUALS(temp.__reserved2,              7);
+        TEST_ASSERT_EQUALS(temp.mfvcFunctionGroupsEnable, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.acsFunctionGroupsEnable,  static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved,               static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.functionGroup,            static_cast<u16>(7));
+        TEST_ASSERT_EQUALS(temp.__reserved2,              static_cast<u16>(7));
 
 
 
         // |           00000011            |
         // | 1 |    111    |  00   | 1 | 0 |
-        temp.mfvcFunctionGroupsEnable = 0;
+        temp.mfvcFunctionGroupsEnable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x03F2);
 
@@ -3287,7 +3287,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00000011            |
         // | 1 |    111    |  00   | 0 | 0 |
-        temp.acsFunctionGroupsEnable = 0;
+        temp.acsFunctionGroupsEnable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x03F0);
 
@@ -3295,7 +3295,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00000011            |
         // | 1 |    111    |  11   | 0 | 0 |
-        temp.__reserved = 3;
+        temp.__reserved = static_cast<u16>(3);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x03FC);
 
@@ -3303,7 +3303,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00000011            |
         // | 1 |    000    |  11   | 0 | 0 |
-        temp.functionGroup = 0;
+        temp.functionGroup = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x038C);
 
@@ -3311,7 +3311,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           11111100            |
         // | 0 |    000    |  11   | 0 | 0 |
-        temp.__reserved2 = 504;
+        temp.__reserved2 = static_cast<u16>(504);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xFC0C);
     }
@@ -3343,18 +3343,18 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0000      |     1000      |
         temp.value16 = 0x1808;
 
-        TEST_ASSERT_EQUALS(temp.capabilityVersion,      8);
-        TEST_ASSERT_EQUALS(temp.devicePortType,         0);
-        TEST_ASSERT_EQUALS(temp.slotImplemented,        0);
-        TEST_ASSERT_EQUALS(temp.interruptMessageNumber, 12);
-        TEST_ASSERT_EQUALS(temp.undefined,              0);
-        TEST_ASSERT_EQUALS(temp.__reserved,             0);
+        TEST_ASSERT_EQUALS(temp.capabilityVersion,      static_cast<u16>(8));
+        TEST_ASSERT_EQUALS(temp.devicePortType,         static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.slotImplemented,        static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.interruptMessageNumber, static_cast<u16>(12));
+        TEST_ASSERT_EQUALS(temp.undefined,              static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved,             static_cast<u16>(0));
 
 
 
         // | 0 | 0 |       01100       | 0 |
         // |     0000      |     0111      |
-        temp.capabilityVersion = 7;
+        temp.capabilityVersion = static_cast<u16>(7);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x1807);
 
@@ -3362,7 +3362,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 0 |       01100       | 0 |
         // |     1111      |     0111      |
-        temp.devicePortType = 15;
+        temp.devicePortType = static_cast<u16>(15);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x18F7);
 
@@ -3370,7 +3370,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 0 |       01100       | 1 |
         // |     1111      |     0111      |
-        temp.slotImplemented = 1;
+        temp.slotImplemented = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x19F7);
 
@@ -3378,7 +3378,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 0 |       10011       | 1 |
         // |     1111      |     0111      |
-        temp.interruptMessageNumber = 19;
+        temp.interruptMessageNumber = static_cast<u16>(19);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x27F7);
 
@@ -3386,7 +3386,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 |       10011       | 1 |
         // |     1111      |     0111      |
-        temp.undefined = 1;
+        temp.undefined = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x67F7);
 
@@ -3394,7 +3394,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 |       10011       | 1 |
         // |     1111      |     0111      |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xE7F7);
     }
@@ -3436,18 +3436,18 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  01   | 0 |  10   |    011    |
         temp.value32 = 0x79828A53;
 
-        TEST_ASSERT_EQUALS(temp.maximumPayloadSizeSupported,  3);
-        TEST_ASSERT_EQUALS(temp.phantomFunctionsSupported,    2);
-        TEST_ASSERT_EQUALS(temp.extendedTagFieldSupported,    0);
-        TEST_ASSERT_EQUALS(temp.endpointL0sAcceptableLatency, 1);
-        TEST_ASSERT_EQUALS(temp.endpointL1AcceptableLatency,  5);
-        TEST_ASSERT_EQUALS(temp.undefined,                    0);
-        TEST_ASSERT_EQUALS(temp.roleBasedErrorReporting,      1);
-        TEST_ASSERT_EQUALS(temp.__reserved,                   2);
-        TEST_ASSERT_EQUALS(temp.capturedSlotPowerLimitValue,  96);
-        TEST_ASSERT_EQUALS(temp.capturedSlotPowerLimitScale,  2);
-        TEST_ASSERT_EQUALS(temp.functionLevelResetCapability, 1);
-        TEST_ASSERT_EQUALS(temp.__reserved2,                  3);
+        TEST_ASSERT_EQUALS(temp.maximumPayloadSizeSupported,  static_cast<u32>(3));
+        TEST_ASSERT_EQUALS(temp.phantomFunctionsSupported,    static_cast<u32>(2));
+        TEST_ASSERT_EQUALS(temp.extendedTagFieldSupported,    static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.endpointL0sAcceptableLatency, static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.endpointL1AcceptableLatency,  static_cast<u32>(5));
+        TEST_ASSERT_EQUALS(temp.undefined,                    static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.roleBasedErrorReporting,      static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved,                   static_cast<u32>(2));
+        TEST_ASSERT_EQUALS(temp.capturedSlotPowerLimitValue,  static_cast<u32>(96));
+        TEST_ASSERT_EQUALS(temp.capturedSlotPowerLimitScale,  static_cast<u32>(2));
+        TEST_ASSERT_EQUALS(temp.functionLevelResetCapability, static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved2,                  static_cast<u32>(3));
 
 
 
@@ -3455,7 +3455,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        100000         |  10   |
         // | 1 |    000    |    101    | 0 |
         // |  01   | 0 |  10   |    100    |
-        temp.maximumPayloadSizeSupported = 4;
+        temp.maximumPayloadSizeSupported = static_cast<u32>(4);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x79828A54);
 
@@ -3465,7 +3465,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        100000         |  10   |
         // | 1 |    000    |    101    | 0 |
         // |  01   | 0 |  01   |    100    |
-        temp.phantomFunctionsSupported = 1;
+        temp.phantomFunctionsSupported = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x79828A4C);
 
@@ -3475,7 +3475,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        100000         |  10   |
         // | 1 |    000    |    101    | 0 |
         // |  01   | 1 |  01   |    100    |
-        temp.extendedTagFieldSupported = 1;
+        temp.extendedTagFieldSupported = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x79828A6C);
 
@@ -3485,7 +3485,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        100000         |  10   |
         // | 1 |    000    |    101    | 1 |
         // |  10   | 1 |  01   |    100    |
-        temp.endpointL0sAcceptableLatency = 6;
+        temp.endpointL0sAcceptableLatency = static_cast<u32>(6);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x79828BAC);
 
@@ -3495,7 +3495,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        100000         |  10   |
         // | 1 |    000    |    010    | 1 |
         // |  10   | 1 |  01   |    100    |
-        temp.endpointL1AcceptableLatency = 2;
+        temp.endpointL1AcceptableLatency = static_cast<u32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x798285AC);
 
@@ -3505,7 +3505,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        100000         |  10   |
         // | 1 |    111    |    010    | 1 |
         // |  10   | 1 |  01   |    100    |
-        temp.undefined = 7;
+        temp.undefined = static_cast<u32>(7);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x7982F5AC);
 
@@ -3515,7 +3515,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        100000         |  10   |
         // | 0 |    111    |    010    | 1 |
         // |  10   | 1 |  01   |    100    |
-        temp.roleBasedErrorReporting = 0;
+        temp.roleBasedErrorReporting = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x798275AC);
 
@@ -3525,7 +3525,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        100000         |  01   |
         // | 0 |    111    |    010    | 1 |
         // |  10   | 1 |  01   |    100    |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x798175AC);
 
@@ -3535,7 +3535,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        011111         |  01   |
         // | 0 |    111    |    010    | 1 |
         // |  10   | 1 |  01   |    100    |
-        temp.capturedSlotPowerLimitValue = 159;
+        temp.capturedSlotPowerLimitValue = static_cast<u32>(159);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x7A7D75AC);
 
@@ -3545,7 +3545,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        011111         |  01   |
         // | 0 |    111    |    010    | 1 |
         // |  10   | 1 |  01   |    100    |
-        temp.capturedSlotPowerLimitScale = 1;
+        temp.capturedSlotPowerLimitScale = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x767D75AC);
 
@@ -3555,7 +3555,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        011111         |  01   |
         // | 0 |    111    |    010    | 1 |
         // |  10   | 1 |  01   |    100    |
-        temp.functionLevelResetCapability = 0;
+        temp.functionLevelResetCapability = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x667D75AC);
 
@@ -3565,7 +3565,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        011111         |  01   |
         // | 0 |    111    |    010    | 1 |
         // |  10   | 1 |  01   |    100    |
-        temp.__reserved2 = 4;
+        temp.__reserved2 = static_cast<u32>(4);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x867D75AC);
     }
@@ -3616,27 +3616,27 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 1 | 0 | 1 |     1011      |
         temp.value32 = 0x012605DB;
 
-        TEST_ASSERT_EQUALS(temp.completionTimeoutRangesSupported,              11);
-        TEST_ASSERT_EQUALS(temp.completionTimeoutDisableSupported,             1);
-        TEST_ASSERT_EQUALS(temp.ariForwardingSupported,                        0);
-        TEST_ASSERT_EQUALS(temp.atomicOpRoutingSupported,                      1);
-        TEST_ASSERT_EQUALS(temp.atomicOp32CompleterSupported,                  1);
-        TEST_ASSERT_EQUALS(temp.atomicOp64CompleterSupported,                  1);
-        TEST_ASSERT_EQUALS(temp.cas128CompleterSupported,                      0);
-        TEST_ASSERT_EQUALS(temp.noRoEnabledPrPrPassing,                        1);
-        TEST_ASSERT_EQUALS(temp.ltrMechanismSupported,                         0);
-        TEST_ASSERT_EQUALS(temp.tphCompleterSupported,                         0);
-        TEST_ASSERT_EQUALS(temp.lnSystemCls,                                   0);
-        TEST_ASSERT_EQUALS(temp.tenBitTagCompleterSupported,                   0);
-        TEST_ASSERT_EQUALS(temp.tenBitTagRequesterSupported,                   1);
-        TEST_ASSERT_EQUALS(temp.obff,                                          1);
-        TEST_ASSERT_EQUALS(temp.extendedFmtFieldSupported,                     0);
-        TEST_ASSERT_EQUALS(temp.endEndTlpPrefixSupported,                      1);
-        TEST_ASSERT_EQUALS(temp.maxEndEndTlpPrefixes,                          0);
-        TEST_ASSERT_EQUALS(temp.emergencyPowerReductionSupported,              1);
-        TEST_ASSERT_EQUALS(temp.emergencyPowerReductionInitializationRequired, 0);
-        TEST_ASSERT_EQUALS(temp.__reserved,                                    0);
-        TEST_ASSERT_EQUALS(temp.frsSupported,                                  0);
+        TEST_ASSERT_EQUALS(temp.completionTimeoutRangesSupported,              static_cast<u32>(11));
+        TEST_ASSERT_EQUALS(temp.completionTimeoutDisableSupported,             static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.ariForwardingSupported,                        static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.atomicOpRoutingSupported,                      static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.atomicOp32CompleterSupported,                  static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.atomicOp64CompleterSupported,                  static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.cas128CompleterSupported,                      static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.noRoEnabledPrPrPassing,                        static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.ltrMechanismSupported,                         static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.tphCompleterSupported,                         static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.lnSystemCls,                                   static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.tenBitTagCompleterSupported,                   static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.tenBitTagRequesterSupported,                   static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.obff,                                          static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.extendedFmtFieldSupported,                     static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.endEndTlpPrefixSupported,                      static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.maxEndEndTlpPrefixes,                          static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.emergencyPowerReductionSupported,              static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.emergencyPowerReductionInitializationRequired, static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved,                                    static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.frsSupported,                                  static_cast<u32>(0));
 
 
 
@@ -3644,7 +3644,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 0 |  01   | 1 | 0 |
         // |  00   |  00   | 0 | 1 | 0 | 1 |
         // | 1 | 1 | 0 | 1 |     0100      |
-        temp.completionTimeoutRangesSupported = 4;
+        temp.completionTimeoutRangesSupported = static_cast<u32>(4);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x012605D4);
 
@@ -3654,7 +3654,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 0 |  01   | 1 | 0 |
         // |  00   |  00   | 0 | 1 | 0 | 1 |
         // | 1 | 1 | 0 | 0 |     0100      |
-        temp.completionTimeoutDisableSupported = 0;
+        temp.completionTimeoutDisableSupported = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x012605C4);
 
@@ -3664,7 +3664,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 0 |  01   | 1 | 0 |
         // |  00   |  00   | 0 | 1 | 0 | 1 |
         // | 1 | 1 | 1 | 0 |     0100      |
-        temp.ariForwardingSupported = 1;
+        temp.ariForwardingSupported = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x012605E4);
 
@@ -3674,7 +3674,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 0 |  01   | 1 | 0 |
         // |  00   |  00   | 0 | 1 | 0 | 1 |
         // | 1 | 0 | 1 | 0 |     0100      |
-        temp.atomicOpRoutingSupported = 0;
+        temp.atomicOpRoutingSupported = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x012605A4);
 
@@ -3684,7 +3684,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 0 |  01   | 1 | 0 |
         // |  00   |  00   | 0 | 1 | 0 | 1 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.atomicOp32CompleterSupported = 0;
+        temp.atomicOp32CompleterSupported = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x01260524);
 
@@ -3694,7 +3694,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 0 |  01   | 1 | 0 |
         // |  00   |  00   | 0 | 1 | 0 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.atomicOp64CompleterSupported = 0;
+        temp.atomicOp64CompleterSupported = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x01260424);
 
@@ -3704,7 +3704,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 0 |  01   | 1 | 0 |
         // |  00   |  00   | 0 | 1 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.cas128CompleterSupported = 1;
+        temp.cas128CompleterSupported = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x01260624);
 
@@ -3714,7 +3714,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 0 |  01   | 1 | 0 |
         // |  00   |  00   | 0 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.noRoEnabledPrPrPassing = 0;
+        temp.noRoEnabledPrPrPassing = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x01260224);
 
@@ -3724,7 +3724,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 0 |  01   | 1 | 0 |
         // |  00   |  00   | 1 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.ltrMechanismSupported = 1;
+        temp.ltrMechanismSupported = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x01260A24);
 
@@ -3734,7 +3734,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 0 |  01   | 1 | 0 |
         // |  00   |  11   | 1 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.tphCompleterSupported = 3;
+        temp.tphCompleterSupported = static_cast<u32>(3);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x01263A24);
 
@@ -3744,7 +3744,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 0 |  01   | 1 | 0 |
         // |  11   |  11   | 1 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.lnSystemCls = 3;
+        temp.lnSystemCls = static_cast<u32>(3);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0126FA24);
 
@@ -3754,7 +3754,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 0 |  01   | 1 | 1 |
         // |  11   |  11   | 1 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.tenBitTagCompleterSupported = 1;
+        temp.tenBitTagCompleterSupported = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0127FA24);
 
@@ -3764,7 +3764,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 0 |  01   | 0 | 1 |
         // |  11   |  11   | 1 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.tenBitTagRequesterSupported = 0;
+        temp.tenBitTagRequesterSupported = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0125FA24);
 
@@ -3774,7 +3774,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 0 |  10   | 0 | 1 |
         // |  11   |  11   | 1 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.obff = 2;
+        temp.obff = static_cast<u32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0129FA24);
 
@@ -3784,7 +3784,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 1 | 1 |  10   | 0 | 1 |
         // |  11   |  11   | 1 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.extendedFmtFieldSupported = 1;
+        temp.extendedFmtFieldSupported = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0139FA24);
 
@@ -3794,7 +3794,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 0 | 1 |  10   | 0 | 1 |
         // |  11   |  11   | 1 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.endEndTlpPrefixSupported = 0;
+        temp.endEndTlpPrefixSupported = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0119FA24);
 
@@ -3804,7 +3804,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  11   | 0 | 1 |  10   | 0 | 1 |
         // |  11   |  11   | 1 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.maxEndEndTlpPrefixes = 3;
+        temp.maxEndEndTlpPrefixes = static_cast<u32>(3);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x01D9FA24);
 
@@ -3814,7 +3814,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  11   | 0 | 1 |  10   | 0 | 1 |
         // |  11   |  11   | 1 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.emergencyPowerReductionSupported = 2;
+        temp.emergencyPowerReductionSupported = static_cast<u32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x02D9FA24);
 
@@ -3824,7 +3824,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  11   | 0 | 1 |  10   | 0 | 1 |
         // |  11   |  11   | 1 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.emergencyPowerReductionInitializationRequired = 1;
+        temp.emergencyPowerReductionInitializationRequired = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x06D9FA24);
 
@@ -3834,7 +3834,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  11   | 0 | 1 |  10   | 0 | 1 |
         // |  11   |  11   | 1 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.__reserved = 15;
+        temp.__reserved = static_cast<u32>(15);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x7ED9FA24);
 
@@ -3844,7 +3844,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  11   | 0 | 1 |  10   | 0 | 1 |
         // |  11   |  11   | 1 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 |     0100      |
-        temp.frsSupported = 1;
+        temp.frsSupported = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xFED9FA24);
     }
@@ -3882,24 +3882,24 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    101    | 1 | 1 | 0 | 1 | 1 |
         temp.value16 = 0x07BB;
 
-        TEST_ASSERT_EQUALS(temp.correctableErrorReportingEnable,                            1);
-        TEST_ASSERT_EQUALS(temp.nonFatalErrorReportingEnable,                               1);
-        TEST_ASSERT_EQUALS(temp.fatalErrorReportingEnable,                                  0);
-        TEST_ASSERT_EQUALS(temp.unsupportedRequestReportingEnable,                          1);
-        TEST_ASSERT_EQUALS(temp.enableRelaxedOrdering,                                      1);
-        TEST_ASSERT_EQUALS(temp.maximumPayloadSize,                                         5);
-        TEST_ASSERT_EQUALS(temp.extendedTagFieldEnable,                                     1);
-        TEST_ASSERT_EQUALS(temp.phantomFunctionsEnable,                                     1);
-        TEST_ASSERT_EQUALS(temp.auxPowerPmEnable,                                           1);
-        TEST_ASSERT_EQUALS(temp.enableNoSnoop,                                              0);
-        TEST_ASSERT_EQUALS(temp.maximumReadRequestSize,                                     0);
-        TEST_ASSERT_EQUALS(temp.bridgeConfigurationRetryEnableOrInitiateFunctionLevelReset, 0);
+        TEST_ASSERT_EQUALS(temp.correctableErrorReportingEnable,                            static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.nonFatalErrorReportingEnable,                               static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.fatalErrorReportingEnable,                                  static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.unsupportedRequestReportingEnable,                          static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.enableRelaxedOrdering,                                      static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.maximumPayloadSize,                                         static_cast<u16>(5));
+        TEST_ASSERT_EQUALS(temp.extendedTagFieldEnable,                                     static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.phantomFunctionsEnable,                                     static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.auxPowerPmEnable,                                           static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.enableNoSnoop,                                              static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.maximumReadRequestSize,                                     static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.bridgeConfigurationRetryEnableOrInitiateFunctionLevelReset, static_cast<u16>(0));
 
 
 
         // | 0 |    000    | 0 | 1 | 1 | 1 |
         // |    101    | 1 | 1 | 0 | 1 | 0 |
-        temp.correctableErrorReportingEnable = 0;
+        temp.correctableErrorReportingEnable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x07BA);
 
@@ -3907,7 +3907,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    000    | 0 | 1 | 1 | 1 |
         // |    101    | 1 | 1 | 0 | 0 | 0 |
-        temp.nonFatalErrorReportingEnable = 0;
+        temp.nonFatalErrorReportingEnable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x07B8);
 
@@ -3915,7 +3915,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    000    | 0 | 1 | 1 | 1 |
         // |    101    | 1 | 1 | 1 | 0 | 0 |
-        temp.fatalErrorReportingEnable = 1;
+        temp.fatalErrorReportingEnable = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x07BC);
 
@@ -3923,7 +3923,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    000    | 0 | 1 | 1 | 1 |
         // |    101    | 1 | 0 | 1 | 0 | 0 |
-        temp.unsupportedRequestReportingEnable = 0;
+        temp.unsupportedRequestReportingEnable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x07B4);
 
@@ -3931,7 +3931,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    000    | 0 | 1 | 1 | 1 |
         // |    101    | 0 | 0 | 1 | 0 | 0 |
-        temp.enableRelaxedOrdering = 0;
+        temp.enableRelaxedOrdering = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x07A4);
 
@@ -3939,7 +3939,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    000    | 0 | 1 | 1 | 1 |
         // |    010    | 0 | 0 | 1 | 0 | 0 |
-        temp.maximumPayloadSize = 2;
+        temp.maximumPayloadSize = static_cast<u16>(2);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x0744);
 
@@ -3947,7 +3947,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    000    | 0 | 1 | 1 | 0 |
         // |    010    | 0 | 0 | 1 | 0 | 0 |
-        temp.extendedTagFieldEnable = 0;
+        temp.extendedTagFieldEnable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x0644);
 
@@ -3955,7 +3955,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    000    | 0 | 1 | 0 | 0 |
         // |    010    | 0 | 0 | 1 | 0 | 0 |
-        temp.phantomFunctionsEnable = 0;
+        temp.phantomFunctionsEnable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x0444);
 
@@ -3963,7 +3963,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    000    | 0 | 0 | 0 | 0 |
         // |    010    | 0 | 0 | 1 | 0 | 0 |
-        temp.auxPowerPmEnable = 0;
+        temp.auxPowerPmEnable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x0044);
 
@@ -3971,7 +3971,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    000    | 1 | 0 | 0 | 0 |
         // |    010    | 0 | 0 | 1 | 0 | 0 |
-        temp.enableNoSnoop = 1;
+        temp.enableNoSnoop = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x0844);
 
@@ -3979,7 +3979,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    111    | 1 | 0 | 0 | 0 |
         // |    010    | 0 | 0 | 1 | 0 | 0 |
-        temp.maximumReadRequestSize = 7;
+        temp.maximumReadRequestSize = static_cast<u16>(7);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x7844);
 
@@ -3987,7 +3987,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |    111    | 1 | 0 | 0 | 0 |
         // |    010    | 0 | 0 | 1 | 0 | 0 |
-        temp.bridgeConfigurationRetryEnableOrInitiateFunctionLevelReset = 1;
+        temp.bridgeConfigurationRetryEnableOrInitiateFunctionLevelReset = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xF844);
     }
@@ -4025,24 +4025,24 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 | 1 | 1 | 1 |     0101      |
         temp.value16 = 0xCA75;
 
-        TEST_ASSERT_EQUALS(temp.completionTimeoutValue,         5);
-        TEST_ASSERT_EQUALS(temp.completionTimeoutDisable,       1);
-        TEST_ASSERT_EQUALS(temp.ariForwardingEnable,            1);
-        TEST_ASSERT_EQUALS(temp.atomicOpRequesterEnable,        1);
-        TEST_ASSERT_EQUALS(temp.atomicOpEgressBlocking,         0);
-        TEST_ASSERT_EQUALS(temp.idoRequestEnable,               0);
-        TEST_ASSERT_EQUALS(temp.idoCompletionEnable,            1);
-        TEST_ASSERT_EQUALS(temp.ltrMechanismEnable,             0);
-        TEST_ASSERT_EQUALS(temp.emergencyPowerReductionRequest, 1);
-        TEST_ASSERT_EQUALS(temp.tenBitTagRequesterEnable,       0);
-        TEST_ASSERT_EQUALS(temp.obff,                           2);
-        TEST_ASSERT_EQUALS(temp.endEndTlpPrefixBlocking,        1);
+        TEST_ASSERT_EQUALS(temp.completionTimeoutValue,         static_cast<u16>(5));
+        TEST_ASSERT_EQUALS(temp.completionTimeoutDisable,       static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.ariForwardingEnable,            static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.atomicOpRequesterEnable,        static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.atomicOpEgressBlocking,         static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.idoRequestEnable,               static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.idoCompletionEnable,            static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.ltrMechanismEnable,             static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.emergencyPowerReductionRequest, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.tenBitTagRequesterEnable,       static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.obff,                           static_cast<u16>(2));
+        TEST_ASSERT_EQUALS(temp.endEndTlpPrefixBlocking,        static_cast<u16>(1));
 
 
 
         // | 1 |  10   | 0 | 1 | 0 | 1 | 0 |
         // | 0 | 1 | 1 | 1 |     1010      |
-        temp.completionTimeoutValue = 10;
+        temp.completionTimeoutValue = static_cast<u16>(10);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xCA7A);
 
@@ -4050,7 +4050,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  10   | 0 | 1 | 0 | 1 | 0 |
         // | 0 | 1 | 1 | 0 |     1010      |
-        temp.completionTimeoutDisable = 0;
+        temp.completionTimeoutDisable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xCA6A);
 
@@ -4058,7 +4058,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  10   | 0 | 1 | 0 | 1 | 0 |
         // | 0 | 1 | 0 | 0 |     1010      |
-        temp.ariForwardingEnable = 0;
+        temp.ariForwardingEnable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xCA4A);
 
@@ -4066,7 +4066,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  10   | 0 | 1 | 0 | 1 | 0 |
         // | 0 | 0 | 0 | 0 |     1010      |
-        temp.atomicOpRequesterEnable = 0;
+        temp.atomicOpRequesterEnable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xCA0A);
 
@@ -4074,7 +4074,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  10   | 0 | 1 | 0 | 1 | 0 |
         // | 1 | 0 | 0 | 0 |     1010      |
-        temp.atomicOpEgressBlocking = 1;
+        temp.atomicOpEgressBlocking = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xCA8A);
 
@@ -4082,7 +4082,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  10   | 0 | 1 | 0 | 1 | 1 |
         // | 1 | 0 | 0 | 0 |     1010      |
-        temp.idoRequestEnable = 1;
+        temp.idoRequestEnable = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xCB8A);
 
@@ -4090,7 +4090,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  10   | 0 | 1 | 0 | 0 | 1 |
         // | 1 | 0 | 0 | 0 |     1010      |
-        temp.idoCompletionEnable = 0;
+        temp.idoCompletionEnable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC98A);
 
@@ -4098,7 +4098,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  10   | 0 | 1 | 1 | 0 | 1 |
         // | 1 | 0 | 0 | 0 |     1010      |
-        temp.ltrMechanismEnable = 1;
+        temp.ltrMechanismEnable = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xCD8A);
 
@@ -4106,7 +4106,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  10   | 0 | 0 | 1 | 0 | 1 |
         // | 1 | 0 | 0 | 0 |     1010      |
-        temp.emergencyPowerReductionRequest = 0;
+        temp.emergencyPowerReductionRequest = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC58A);
 
@@ -4114,7 +4114,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  10   | 1 | 0 | 1 | 0 | 1 |
         // | 1 | 0 | 0 | 0 |     1010      |
-        temp.tenBitTagRequesterEnable = 1;
+        temp.tenBitTagRequesterEnable = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xD58A);
 
@@ -4122,7 +4122,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  01   | 1 | 0 | 1 | 0 | 1 |
         // | 1 | 0 | 0 | 0 |     1010      |
-        temp.obff = 1;
+        temp.obff = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xB58A);
 
@@ -4130,7 +4130,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |  01   | 1 | 0 | 1 | 0 | 1 |
         // | 1 | 0 | 0 | 0 |     1010      |
-        temp.endEndTlpPrefixBlocking = 0;
+        temp.endEndTlpPrefixBlocking = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x358A);
     }
@@ -4168,14 +4168,14 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    000    |       00110       |
         temp.value32 = 0x0A24D406;
 
-        TEST_ASSERT_EQUALS(temp.substateMaximum,         6);
-        TEST_ASSERT_EQUALS(temp.__reserved,              0);
-        TEST_ASSERT_EQUALS(temp.transitionLatencyUnit,   0);
-        TEST_ASSERT_EQUALS(temp.__reserved2,             1);
-        TEST_ASSERT_EQUALS(temp.powerAllocationScale,    1);
-        TEST_ASSERT_EQUALS(temp.__reserved3,             3);
-        TEST_ASSERT_EQUALS(temp.transitionLatencyValue0, 36);
-        TEST_ASSERT_EQUALS(temp.transitionLatencyValue1, 10);
+        TEST_ASSERT_EQUALS(temp.substateMaximum,         static_cast<u32>(6));
+        TEST_ASSERT_EQUALS(temp.__reserved,              static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.transitionLatencyUnit,   static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved2,             static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.powerAllocationScale,    static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved3,             static_cast<u32>(3));
+        TEST_ASSERT_EQUALS(temp.transitionLatencyValue0, static_cast<u32>(36));
+        TEST_ASSERT_EQUALS(temp.transitionLatencyValue1, static_cast<u32>(10));
 
 
 
@@ -4183,7 +4183,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100100            |
         // |  11   |  01   |  01   |  00   |
         // |    000    |       11001       |
-        temp.substateMaximum = 25;
+        temp.substateMaximum = static_cast<u32>(25);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0A24D419);
 
@@ -4193,7 +4193,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100100            |
         // |  11   |  01   |  01   |  00   |
         // |    111    |       11001       |
-        temp.__reserved = 7;
+        temp.__reserved = static_cast<u32>(7);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0A24D4F9);
 
@@ -4203,7 +4203,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100100            |
         // |  11   |  01   |  01   |  11   |
         // |    111    |       11001       |
-        temp.transitionLatencyUnit = 3;
+        temp.transitionLatencyUnit = static_cast<u32>(3);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0A24D7F9);
 
@@ -4213,7 +4213,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100100            |
         // |  11   |  01   |  10   |  11   |
         // |    111    |       11001       |
-        temp.__reserved2 = 2;
+        temp.__reserved2 = static_cast<u32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0A24DBF9);
 
@@ -4223,7 +4223,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100100            |
         // |  11   |  10   |  10   |  11   |
         // |    111    |       11001       |
-        temp.powerAllocationScale = 2;
+        temp.powerAllocationScale = static_cast<u32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0A24EBF9);
 
@@ -4233,7 +4233,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100100            |
         // |  00   |  10   |  10   |  11   |
         // |    111    |       11001       |
-        temp.__reserved3 = 0;
+        temp.__reserved3 = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0A242BF9);
 
@@ -4243,7 +4243,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11011011            |
         // |  00   |  10   |  10   |  11   |
         // |    111    |       11001       |
-        temp.transitionLatencyValue0 = 219;
+        temp.transitionLatencyValue0 = static_cast<u32>(219);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0ADB2BF9);
 
@@ -4253,7 +4253,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11011011            |
         // |  00   |  10   |  10   |  11   |
         // |    111    |       11001       |
-        temp.transitionLatencyValue1 = 245;
+        temp.transitionLatencyValue1 = static_cast<u32>(245);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF5DB2BF9);
     }
@@ -4281,14 +4281,14 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    010    |       00110       |
         temp.value16 = 0xF446;
 
-        TEST_ASSERT_EQUALS(temp.substateControl, 6);
-        TEST_ASSERT_EQUALS(temp.__reserved,      1954);
+        TEST_ASSERT_EQUALS(temp.substateControl, static_cast<u16>(6));
+        TEST_ASSERT_EQUALS(temp.__reserved,      static_cast<u16>(1954));
 
 
 
         // |           11110100            |
         // |    010    |       11001       |
-        temp.substateControl = 25;
+        temp.substateControl = static_cast<u16>(25);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xF459);
 
@@ -4296,7 +4296,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00001011            |
         // |    101    |       11001       |
-        temp.__reserved = 93;
+        temp.__reserved = static_cast<u16>(93);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x0BB9);
     }
@@ -4326,16 +4326,16 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    110    |       01110       |
         temp.value16 = 0xD9CE;
 
-        TEST_ASSERT_EQUALS(temp.substateStatus,         14);
-        TEST_ASSERT_EQUALS(temp.__reserved,             6);
-        TEST_ASSERT_EQUALS(temp.substateControlEnabled, 1);
-        TEST_ASSERT_EQUALS(temp.__reserved2,            108);
+        TEST_ASSERT_EQUALS(temp.substateStatus,         static_cast<u16>(14));
+        TEST_ASSERT_EQUALS(temp.__reserved,             static_cast<u16>(6));
+        TEST_ASSERT_EQUALS(temp.substateControlEnabled, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved2,            static_cast<u16>(108));
 
 
 
         // |          1101100          | 1 |
         // |    110    |       10001       |
-        temp.substateStatus = 17;
+        temp.substateStatus = static_cast<u16>(17);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xD9D1);
 
@@ -4343,7 +4343,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          1101100          | 1 |
         // |    001    |       10001       |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xD931);
 
@@ -4351,7 +4351,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          1101100          | 0 |
         // |    001    |       10001       |
-        temp.substateControlEnabled = 0;
+        temp.substateControlEnabled = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xD831);
 
@@ -4359,7 +4359,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          0010011          | 0 |
         // |    001    |       10001       |
-        temp.__reserved2 = 19;
+        temp.__reserved2 = static_cast<u16>(19);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2631);
     }
@@ -4388,15 +4388,15 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11100110            |
         temp.value16 = 0xC5E6;
 
-        TEST_ASSERT_EQUALS(temp.latencyValue, 486);
-        TEST_ASSERT_EQUALS(temp.latencyScale, 1);
-        TEST_ASSERT_EQUALS(temp.__reserved,   6);
+        TEST_ASSERT_EQUALS(temp.latencyValue, static_cast<u16>(486));
+        TEST_ASSERT_EQUALS(temp.latencyScale, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved,   static_cast<u16>(6));
 
 
 
         // |    110    |    001    |  10   |
         // |           00011001            |
-        temp.latencyValue = 537;
+        temp.latencyValue = static_cast<u16>(537);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC619);
 
@@ -4404,7 +4404,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    110    |    110    |  10   |
         // |           00011001            |
-        temp.latencyScale = 6;
+        temp.latencyScale = static_cast<u16>(6);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xDA19);
 
@@ -4412,7 +4412,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    |    110    |  10   |
         // |           00011001            |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3A19);
     }
@@ -4441,15 +4441,15 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11000000            |
         temp.value16 = 0x93C0;
 
-        TEST_ASSERT_EQUALS(temp.latencyValue, 960);
-        TEST_ASSERT_EQUALS(temp.latencyScale, 4);
-        TEST_ASSERT_EQUALS(temp.__reserved,   4);
+        TEST_ASSERT_EQUALS(temp.latencyValue, static_cast<u16>(960));
+        TEST_ASSERT_EQUALS(temp.latencyScale, static_cast<u16>(4));
+        TEST_ASSERT_EQUALS(temp.__reserved,   static_cast<u16>(4));
 
 
 
         // |    100    |    100    |  00   |
         // |           00111111            |
-        temp.latencyValue = 63;
+        temp.latencyValue = static_cast<u16>(63);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x903F);
 
@@ -4457,7 +4457,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    100    |    011    |  00   |
         // |           00111111            |
-        temp.latencyScale = 3;
+        temp.latencyScale = static_cast<u16>(3);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x8C3F);
 
@@ -4465,7 +4465,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    011    |    011    |  00   |
         // |           00111111            |
-        temp.__reserved = 3;
+        temp.__reserved = static_cast<u16>(3);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x6C3F);
     }
@@ -4507,18 +4507,18 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1111      |     1000      |
         temp.value32 = 0x3EB06AF8;
 
-        TEST_ASSERT_EQUALS(temp.supportedLinkSpeeds,                     8);
-        TEST_ASSERT_EQUALS(temp.maximumLinkWidth,                        47);
-        TEST_ASSERT_EQUALS(temp.aspmSupport,                             2);
-        TEST_ASSERT_EQUALS(temp.l0sExitLatency,                          6);
-        TEST_ASSERT_EQUALS(temp.l1ExitLatency,                           0);
-        TEST_ASSERT_EQUALS(temp.clockPowerManagement,                    0);
-        TEST_ASSERT_EQUALS(temp.surpriseDownErrorReportingCapable,       0);
-        TEST_ASSERT_EQUALS(temp.dataLinkLayerLinkActiveReportingCapable, 1);
-        TEST_ASSERT_EQUALS(temp.linkBandwidthNotificationCapability,     1);
-        TEST_ASSERT_EQUALS(temp.aspmOptionalityCompliance,               0);
-        TEST_ASSERT_EQUALS(temp.__reserved,                              1);
-        TEST_ASSERT_EQUALS(temp.portNumber,                              62);
+        TEST_ASSERT_EQUALS(temp.supportedLinkSpeeds,                     static_cast<u32>(8));
+        TEST_ASSERT_EQUALS(temp.maximumLinkWidth,                        static_cast<u32>(47));
+        TEST_ASSERT_EQUALS(temp.aspmSupport,                             static_cast<u32>(2));
+        TEST_ASSERT_EQUALS(temp.l0sExitLatency,                          static_cast<u32>(6));
+        TEST_ASSERT_EQUALS(temp.l1ExitLatency,                           static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.clockPowerManagement,                    static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.surpriseDownErrorReportingCapable,       static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.dataLinkLayerLinkActiveReportingCapable, static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.linkBandwidthNotificationCapability,     static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.aspmOptionalityCompliance,               static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved,                              static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.portNumber,                              static_cast<u32>(62));
 
 
 
@@ -4526,7 +4526,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 0 | 1 | 1 | 0 | 0 |  00   |
         // | 0 |    110    |  10   |  10   |
         // |     1111      |     0111      |
-        temp.supportedLinkSpeeds = 7;
+        temp.supportedLinkSpeeds = static_cast<u32>(7);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3EB06AF7);
 
@@ -4536,7 +4536,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 0 | 1 | 1 | 0 | 0 |  00   |
         // | 0 |    110    |  10   |  01   |
         // |     0000      |     0111      |
-        temp.maximumLinkWidth = 16;
+        temp.maximumLinkWidth = static_cast<u32>(16);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3EB06907);
 
@@ -4546,7 +4546,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 0 | 1 | 1 | 0 | 0 |  00   |
         // | 0 |    110    |  01   |  01   |
         // |     0000      |     0111      |
-        temp.aspmSupport = 1;
+        temp.aspmSupport = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3EB06507);
 
@@ -4556,7 +4556,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 0 | 1 | 1 | 0 | 0 |  00   |
         // | 0 |    001    |  01   |  01   |
         // |     0000      |     0111      |
-        temp.l0sExitLatency = 1;
+        temp.l0sExitLatency = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3EB01507);
 
@@ -4566,7 +4566,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 0 | 1 | 1 | 0 | 0 |  11   |
         // | 1 |    001    |  01   |  01   |
         // |     0000      |     0111      |
-        temp.l1ExitLatency = 7;
+        temp.l1ExitLatency = static_cast<u32>(7);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3EB39507);
 
@@ -4576,7 +4576,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 0 | 1 | 1 | 0 | 1 |  11   |
         // | 1 |    001    |  01   |  01   |
         // |     0000      |     0111      |
-        temp.clockPowerManagement = 1;
+        temp.clockPowerManagement = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3EB79507);
 
@@ -4586,7 +4586,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 0 | 1 | 1 | 1 | 1 |  11   |
         // | 1 |    001    |  01   |  01   |
         // |     0000      |     0111      |
-        temp.surpriseDownErrorReportingCapable = 1;
+        temp.surpriseDownErrorReportingCapable = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3EBF9507);
 
@@ -4596,7 +4596,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 0 | 1 | 0 | 1 | 1 |  11   |
         // | 1 |    001    |  01   |  01   |
         // |     0000      |     0111      |
-        temp.dataLinkLayerLinkActiveReportingCapable = 0;
+        temp.dataLinkLayerLinkActiveReportingCapable = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3EAF9507);
 
@@ -4606,7 +4606,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 0 | 0 | 0 | 1 | 1 |  11   |
         // | 1 |    001    |  01   |  01   |
         // |     0000      |     0111      |
-        temp.linkBandwidthNotificationCapability = 0;
+        temp.linkBandwidthNotificationCapability = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3E8F9507);
 
@@ -4616,7 +4616,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 1 | 0 | 0 | 1 | 1 |  11   |
         // | 1 |    001    |  01   |  01   |
         // |     0000      |     0111      |
-        temp.aspmOptionalityCompliance = 1;
+        temp.aspmOptionalityCompliance = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3ECF9507);
 
@@ -4626,7 +4626,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 | 1 | 0 | 0 | 1 | 1 |  11   |
         // | 1 |    001    |  01   |  01   |
         // |     0000      |     0111      |
-        temp.__reserved = 0;
+        temp.__reserved = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3E4F9507);
 
@@ -4636,7 +4636,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 | 1 | 0 | 0 | 1 | 1 |  11   |
         // | 1 |    001    |  01   |  01   |
         // |     0000      |     0111      |
-        temp.portNumber = 193;
+        temp.portNumber = static_cast<u32>(193);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xC14F9507);
     }
@@ -4670,10 +4670,10 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |          1101100          | 1 |
         temp.value32 = 0xDA4B4ED9;
 
-        TEST_ASSERT_EQUALS(temp.__reserved,       1);
-        TEST_ASSERT_EQUALS(temp.linkSpeedsVector, 108);
-        TEST_ASSERT_EQUALS(temp.crosslink,        0);
-        TEST_ASSERT_EQUALS(temp.__reserved2,      7153063);
+        TEST_ASSERT_EQUALS(temp.__reserved,       static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.linkSpeedsVector, static_cast<u32>(108));
+        TEST_ASSERT_EQUALS(temp.crosslink,        static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved2,      static_cast<u32>(7153063));
 
 
 
@@ -4681,7 +4681,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01001011            |
         // |          0100111          | 0 |
         // |          1101100          | 0 |
-        temp.__reserved = 0;
+        temp.__reserved = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xDA4B4ED8);
 
@@ -4691,7 +4691,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01001011            |
         // |          0100111          | 0 |
         // |          0010011          | 0 |
-        temp.linkSpeedsVector = 19;
+        temp.linkSpeedsVector = static_cast<u32>(19);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xDA4B4E26);
 
@@ -4701,7 +4701,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01001011            |
         // |          0100111          | 1 |
         // |          0010011          | 0 |
-        temp.crosslink = 1;
+        temp.crosslink = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xDA4B4F26);
 
@@ -4711,7 +4711,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10110100            |
         // |          1011000          | 1 |
         // |          0010011          | 0 |
-        temp.__reserved2 = 1235544;
+        temp.__reserved2 = static_cast<u32>(1235544);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x25B4B126);
     }
@@ -4749,24 +4749,24 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 | 0 | 0 | 1 | 1 | 0 |  00   |
         temp.value16 = 0x2218;
 
-        TEST_ASSERT_EQUALS(temp.aspmControl,                            0);
-        TEST_ASSERT_EQUALS(temp.__reserved,                             0);
-        TEST_ASSERT_EQUALS(temp.readCompletionBoundary,                 1);
-        TEST_ASSERT_EQUALS(temp.linkDisable,                            1);
-        TEST_ASSERT_EQUALS(temp.retrainLink,                            0);
-        TEST_ASSERT_EQUALS(temp.commonClockConfiguration,               0);
-        TEST_ASSERT_EQUALS(temp.extendedSynch,                          0);
-        TEST_ASSERT_EQUALS(temp.enableClockPowerManagement,             0);
-        TEST_ASSERT_EQUALS(temp.hardwareAutonomousWidthDisable,         1);
-        TEST_ASSERT_EQUALS(temp.linkBandwidthManagementInterruptEnable, 0);
-        TEST_ASSERT_EQUALS(temp.linkAutonomousBandwidthInterruptEnable, 0);
-        TEST_ASSERT_EQUALS(temp.__reserved2,                            2);
+        TEST_ASSERT_EQUALS(temp.aspmControl,                            static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved,                             static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.readCompletionBoundary,                 static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.linkDisable,                            static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.retrainLink,                            static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.commonClockConfiguration,               static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.extendedSynch,                          static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.enableClockPowerManagement,             static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.hardwareAutonomousWidthDisable,         static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.linkBandwidthManagementInterruptEnable, static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.linkAutonomousBandwidthInterruptEnable, static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved2,                            static_cast<u16>(2));
 
 
 
         // |     0010      | 0 | 0 | 1 | 0 |
         // | 0 | 0 | 0 | 1 | 1 | 0 |  11   |
-        temp.aspmControl = 3;
+        temp.aspmControl = static_cast<u16>(3);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x221B);
 
@@ -4774,7 +4774,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0010      | 0 | 0 | 1 | 0 |
         // | 0 | 0 | 0 | 1 | 1 | 1 |  11   |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x221F);
 
@@ -4782,7 +4782,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0010      | 0 | 0 | 1 | 0 |
         // | 0 | 0 | 0 | 1 | 0 | 1 |  11   |
-        temp.readCompletionBoundary = 0;
+        temp.readCompletionBoundary = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2217);
 
@@ -4790,7 +4790,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0010      | 0 | 0 | 1 | 0 |
         // | 0 | 0 | 0 | 0 | 0 | 1 |  11   |
-        temp.linkDisable = 0;
+        temp.linkDisable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2207);
 
@@ -4798,7 +4798,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0010      | 0 | 0 | 1 | 0 |
         // | 0 | 0 | 1 | 0 | 0 | 1 |  11   |
-        temp.retrainLink = 1;
+        temp.retrainLink = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2227);
 
@@ -4806,7 +4806,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0010      | 0 | 0 | 1 | 0 |
         // | 0 | 1 | 1 | 0 | 0 | 1 |  11   |
-        temp.commonClockConfiguration = 1;
+        temp.commonClockConfiguration = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2267);
 
@@ -4814,7 +4814,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0010      | 0 | 0 | 1 | 0 |
         // | 1 | 1 | 1 | 0 | 0 | 1 |  11   |
-        temp.extendedSynch = 1;
+        temp.extendedSynch = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x22E7);
 
@@ -4822,7 +4822,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0010      | 0 | 0 | 1 | 1 |
         // | 1 | 1 | 1 | 0 | 0 | 1 |  11   |
-        temp.enableClockPowerManagement = 1;
+        temp.enableClockPowerManagement = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x23E7);
 
@@ -4830,7 +4830,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0010      | 0 | 0 | 0 | 1 |
         // | 1 | 1 | 1 | 0 | 0 | 1 |  11   |
-        temp.hardwareAutonomousWidthDisable = 0;
+        temp.hardwareAutonomousWidthDisable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x21E7);
 
@@ -4838,7 +4838,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0010      | 0 | 1 | 0 | 1 |
         // | 1 | 1 | 1 | 0 | 0 | 1 |  11   |
-        temp.linkBandwidthManagementInterruptEnable = 1;
+        temp.linkBandwidthManagementInterruptEnable = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x25E7);
 
@@ -4846,7 +4846,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0010      | 1 | 1 | 0 | 1 |
         // | 1 | 1 | 1 | 0 | 0 | 1 |  11   |
-        temp.linkAutonomousBandwidthInterruptEnable = 1;
+        temp.linkAutonomousBandwidthInterruptEnable = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2DE7);
 
@@ -4854,7 +4854,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     1101      | 1 | 1 | 0 | 1 |
         // | 1 | 1 | 1 | 0 | 0 | 1 |  11   |
-        temp.__reserved2 = 13;
+        temp.__reserved2 = static_cast<u16>(13);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xDDE7);
     }
@@ -4888,20 +4888,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 0 | 1 | 1 |     0111      |
         temp.value16 = 0x31B7;
 
-        TEST_ASSERT_EQUALS(temp.targetLinkSpeed,                7);
-        TEST_ASSERT_EQUALS(temp.enterCompliance,                1);
-        TEST_ASSERT_EQUALS(temp.hardwareAutonomousSpeedDisable, 1);
-        TEST_ASSERT_EQUALS(temp.selectableDeemphasis,           0);
-        TEST_ASSERT_EQUALS(temp.transmitMargin,                 3);
-        TEST_ASSERT_EQUALS(temp.enterModifiedCompliance,        0);
-        TEST_ASSERT_EQUALS(temp.complianceSos,                  0);
-        TEST_ASSERT_EQUALS(temp.complianceDeemphasis,           3);
+        TEST_ASSERT_EQUALS(temp.targetLinkSpeed,                static_cast<u16>(7));
+        TEST_ASSERT_EQUALS(temp.enterCompliance,                static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.hardwareAutonomousSpeedDisable, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.selectableDeemphasis,           static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.transmitMargin,                 static_cast<u16>(3));
+        TEST_ASSERT_EQUALS(temp.enterModifiedCompliance,        static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.complianceSos,                  static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.complianceDeemphasis,           static_cast<u16>(3));
 
 
 
         // |     0011      | 0 | 0 |  01   |
         // | 1 | 0 | 1 | 1 |     1000      |
-        temp.targetLinkSpeed = 8;
+        temp.targetLinkSpeed = static_cast<u16>(8);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x31B8);
 
@@ -4909,7 +4909,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0011      | 0 | 0 |  01   |
         // | 1 | 0 | 1 | 0 |     1000      |
-        temp.enterCompliance = 0;
+        temp.enterCompliance = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x31A8);
 
@@ -4917,7 +4917,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0011      | 0 | 0 |  01   |
         // | 1 | 0 | 0 | 0 |     1000      |
-        temp.hardwareAutonomousSpeedDisable = 0;
+        temp.hardwareAutonomousSpeedDisable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3188);
 
@@ -4925,7 +4925,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0011      | 0 | 0 |  01   |
         // | 1 | 1 | 0 | 0 |     1000      |
-        temp.selectableDeemphasis = 1;
+        temp.selectableDeemphasis = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x31C8);
 
@@ -4933,7 +4933,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0011      | 0 | 0 |  10   |
         // | 0 | 1 | 0 | 0 |     1000      |
-        temp.transmitMargin = 4;
+        temp.transmitMargin = static_cast<u16>(4);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3248);
 
@@ -4941,7 +4941,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0011      | 0 | 1 |  10   |
         // | 0 | 1 | 0 | 0 |     1000      |
-        temp.enterModifiedCompliance = 1;
+        temp.enterModifiedCompliance = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3648);
 
@@ -4949,7 +4949,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     0011      | 1 | 1 |  10   |
         // | 0 | 1 | 0 | 0 |     1000      |
-        temp.complianceSos = 1;
+        temp.complianceSos = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3E48);
 
@@ -4957,7 +4957,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     1100      | 1 | 1 |  10   |
         // | 0 | 1 | 0 | 0 |     1000      |
-        temp.complianceDeemphasis = 12;
+        temp.complianceDeemphasis = static_cast<u16>(12);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xCE48);
     }
@@ -4991,20 +4991,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0010      |     1010      |
         temp.value16 = 0xDF2A;
 
-        TEST_ASSERT_EQUALS(temp.currentLinkSpeed,              10);
-        TEST_ASSERT_EQUALS(temp.negotiatedLinkWidth,           50);
-        TEST_ASSERT_EQUALS(temp.undefined,                     1);
-        TEST_ASSERT_EQUALS(temp.linkTraining,                  1);
-        TEST_ASSERT_EQUALS(temp.slotClockConfiguration,        1);
-        TEST_ASSERT_EQUALS(temp.dataLinkLayerLinkActive,       0);
-        TEST_ASSERT_EQUALS(temp.linkBandwidthManagementStatus, 1);
-        TEST_ASSERT_EQUALS(temp.linkAutonomousBandwidthStatus, 1);
+        TEST_ASSERT_EQUALS(temp.currentLinkSpeed,              static_cast<u16>(10));
+        TEST_ASSERT_EQUALS(temp.negotiatedLinkWidth,           static_cast<u16>(50));
+        TEST_ASSERT_EQUALS(temp.undefined,                     static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.linkTraining,                  static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.slotClockConfiguration,        static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.dataLinkLayerLinkActive,       static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.linkBandwidthManagementStatus, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.linkAutonomousBandwidthStatus, static_cast<u16>(1));
 
 
 
         // | 1 | 1 | 0 | 1 | 1 | 1 |  11   |
         // |     0010      |     0101      |
-        temp.currentLinkSpeed = 5;
+        temp.currentLinkSpeed = static_cast<u16>(5);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xDF25);
 
@@ -5012,7 +5012,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 0 | 1 | 1 | 1 |  00   |
         // |     1101      |     0101      |
-        temp.negotiatedLinkWidth = 13;
+        temp.negotiatedLinkWidth = static_cast<u16>(13);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xDCD5);
 
@@ -5020,7 +5020,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 0 | 1 | 1 | 0 |  00   |
         // |     1101      |     0101      |
-        temp.undefined = 0;
+        temp.undefined = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xD8D5);
 
@@ -5028,7 +5028,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 0 | 1 | 0 | 0 |  00   |
         // |     1101      |     0101      |
-        temp.linkTraining = 0;
+        temp.linkTraining = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xD0D5);
 
@@ -5036,7 +5036,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 0 | 0 | 0 | 0 |  00   |
         // |     1101      |     0101      |
-        temp.slotClockConfiguration = 0;
+        temp.slotClockConfiguration = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC0D5);
 
@@ -5044,7 +5044,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 1 | 0 | 0 | 0 |  00   |
         // |     1101      |     0101      |
-        temp.dataLinkLayerLinkActive = 1;
+        temp.dataLinkLayerLinkActive = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xE0D5);
 
@@ -5052,7 +5052,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 0 | 1 | 0 | 0 | 0 |  00   |
         // |     1101      |     0101      |
-        temp.linkBandwidthManagementStatus = 0;
+        temp.linkBandwidthManagementStatus = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xA0D5);
 
@@ -5060,7 +5060,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 0 | 1 | 0 | 0 | 0 |  00   |
         // |     1101      |     0101      |
-        temp.linkAutonomousBandwidthStatus = 0;
+        temp.linkAutonomousBandwidthStatus = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x20D5);
     }
@@ -5093,19 +5093,19 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  01   | 1 | 0 | 1 | 1 | 1 | 1 |
         temp.value16 = 0x1E6F;
 
-        TEST_ASSERT_EQUALS(temp.currentDeemphasisLevel,       1);
-        TEST_ASSERT_EQUALS(temp.equalizationComplete,         1);
-        TEST_ASSERT_EQUALS(temp.equalizationPhase1Successful, 1);
-        TEST_ASSERT_EQUALS(temp.equalizationPhase2Successful, 1);
-        TEST_ASSERT_EQUALS(temp.equalizationPhase3Successful, 0);
-        TEST_ASSERT_EQUALS(temp.linkEqualizationRequest,      1);
-        TEST_ASSERT_EQUALS(temp.__reserved,                   121);
+        TEST_ASSERT_EQUALS(temp.currentDeemphasisLevel,       static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.equalizationComplete,         static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.equalizationPhase1Successful, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.equalizationPhase2Successful, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.equalizationPhase3Successful, static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.linkEqualizationRequest,      static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved,                   static_cast<u16>(121));
 
 
 
         // |           00011110            |
         // |  01   | 1 | 0 | 1 | 1 | 1 | 0 |
-        temp.currentDeemphasisLevel = 0;
+        temp.currentDeemphasisLevel = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x1E6E);
 
@@ -5113,7 +5113,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00011110            |
         // |  01   | 1 | 0 | 1 | 1 | 0 | 0 |
-        temp.equalizationComplete = 0;
+        temp.equalizationComplete = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x1E6C);
 
@@ -5121,7 +5121,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00011110            |
         // |  01   | 1 | 0 | 1 | 0 | 0 | 0 |
-        temp.equalizationPhase1Successful = 0;
+        temp.equalizationPhase1Successful = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x1E68);
 
@@ -5129,7 +5129,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00011110            |
         // |  01   | 1 | 0 | 0 | 0 | 0 | 0 |
-        temp.equalizationPhase2Successful = 0;
+        temp.equalizationPhase2Successful = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x1E60);
 
@@ -5137,7 +5137,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00011110            |
         // |  01   | 1 | 1 | 0 | 0 | 0 | 0 |
-        temp.equalizationPhase3Successful = 1;
+        temp.equalizationPhase3Successful = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x1E70);
 
@@ -5145,7 +5145,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00011110            |
         // |  01   | 0 | 1 | 0 | 0 | 0 | 0 |
-        temp.linkEqualizationRequest = 0;
+        temp.linkEqualizationRequest = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x1E50);
 
@@ -5153,7 +5153,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           11100001            |
         // |  10   | 0 | 1 | 0 | 0 | 0 | 0 |
-        temp.__reserved = 902;
+        temp.__reserved = static_cast<u16>(902);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xE190);
     }
@@ -5194,9 +5194,9 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  10   |        101111         |
         temp.value64 = 0xFAFEFA1F1E6F8FAF;
 
-        TEST_ASSERT_EQUALS(temp.mcIndexPosition, 47);
-        TEST_ASSERT_EQUALS(temp.__reserved,      62);
-        TEST_ASSERT_EQUALS(temp.mcBaseAddress,   4415568399689464);
+        TEST_ASSERT_EQUALS(temp.mcIndexPosition, static_cast<u64>(47));
+        TEST_ASSERT_EQUALS(temp.__reserved,      static_cast<u64>(62));
+        TEST_ASSERT_EQUALS(temp.mcBaseAddress,   static_cast<u64>(4415568399689464));
 
 
 
@@ -5208,7 +5208,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01101111            |
         // |     1000      |     1111      |
         // |  10   |        010000         |
-        temp.mcIndexPosition = 16;
+        temp.mcIndexPosition = static_cast<u64>(16);
 
         TEST_ASSERT_EQUALS(temp.value64, 0xFAFEFA1F1E6F8F90);
 
@@ -5222,7 +5222,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01101111            |
         // |     1000      |     0000      |
         // |  01   |        010000         |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u64>(1);
 
         TEST_ASSERT_EQUALS(temp.value64, 0xFAFEFA1F1E6F8050);
 
@@ -5236,7 +5236,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10010000            |
         // |     0111      |     0000      |
         // |  01   |        010000         |
-        temp.mcBaseAddress = 88031227681031;
+        temp.mcBaseAddress = static_cast<u64>(88031227681031);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x050105E0E1907050);
     }
@@ -5267,17 +5267,17 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   |        110111         |
         temp.value16 = 0x7737;
 
-        TEST_ASSERT_EQUALS(temp.mcMaxGroup,                  55);
-        TEST_ASSERT_EQUALS(temp.__reserved,                  0);
-        TEST_ASSERT_EQUALS(temp.mcWindowSizeRequested,       55);
-        TEST_ASSERT_EQUALS(temp.__reserved2,                 1);
-        TEST_ASSERT_EQUALS(temp.mcEcrcRegenerationSupported, 0);
+        TEST_ASSERT_EQUALS(temp.mcMaxGroup,                  static_cast<u16>(55));
+        TEST_ASSERT_EQUALS(temp.__reserved,                  static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.mcWindowSizeRequested,       static_cast<u16>(55));
+        TEST_ASSERT_EQUALS(temp.__reserved2,                 static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.mcEcrcRegenerationSupported, static_cast<u16>(0));
 
 
 
         // | 0 | 1 |        110111         |
         // |  00   |        001000         |
-        temp.mcMaxGroup = 8;
+        temp.mcMaxGroup = static_cast<u16>(8);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x7708);
 
@@ -5285,7 +5285,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 |        110111         |
         // |  11   |        001000         |
-        temp.__reserved = 3;
+        temp.__reserved = static_cast<u16>(3);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x77C8);
 
@@ -5293,7 +5293,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 |        001000         |
         // |  11   |        001000         |
-        temp.mcWindowSizeRequested = 8;
+        temp.mcWindowSizeRequested = static_cast<u16>(8);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x48C8);
 
@@ -5301,7 +5301,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 0 |        001000         |
         // |  11   |        001000         |
-        temp.__reserved2 = 0;
+        temp.__reserved2 = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x08C8);
 
@@ -5309,7 +5309,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 0 |        001000         |
         // |  11   |        001000         |
-        temp.mcEcrcRegenerationSupported = 1;
+        temp.mcEcrcRegenerationSupported = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x88C8);
     }
@@ -5338,15 +5338,15 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  10   |        011100         |
         temp.value16 = 0x119C;
 
-        TEST_ASSERT_EQUALS(temp.mcNumGroup, 28);
-        TEST_ASSERT_EQUALS(temp.__reserved, 70);
-        TEST_ASSERT_EQUALS(temp.mcEnable,   0);
+        TEST_ASSERT_EQUALS(temp.mcNumGroup, static_cast<u16>(28));
+        TEST_ASSERT_EQUALS(temp.__reserved, static_cast<u16>(70));
+        TEST_ASSERT_EQUALS(temp.mcEnable,   static_cast<u16>(0));
 
 
 
         // | 0 |          0010001          |
         // |  10   |        100011         |
-        temp.mcNumGroup = 35;
+        temp.mcNumGroup = static_cast<u16>(35);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x11A3);
 
@@ -5354,7 +5354,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |          1101110          |
         // |  01   |        100011         |
-        temp.__reserved = 441;
+        temp.__reserved = static_cast<u16>(441);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x6E63);
 
@@ -5362,7 +5362,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |          1101110          |
         // |  01   |        100011         |
-        temp.mcEnable = 1;
+        temp.mcEnable = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xEE63);
     }
@@ -5402,8 +5402,8 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  10   |        010101         |
         temp.value64 = 0xAE18B995AEC93295;
 
-        TEST_ASSERT_EQUALS(temp.mcOverlaySize,        21);
-        TEST_ASSERT_EQUALS(temp.mcOverlayBaseAddress, 196015325227721930);
+        TEST_ASSERT_EQUALS(temp.mcOverlaySize,        static_cast<u64>(21));
+        TEST_ASSERT_EQUALS(temp.mcOverlayBaseAddress, static_cast<u64>(196015325227721930));
 
 
 
@@ -5415,7 +5415,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11001001            |
         // |           00110010            |
         // |  10   |        101010         |
-        temp.mcOverlaySize = 42;
+        temp.mcOverlaySize = static_cast<u64>(42);
 
         TEST_ASSERT_EQUALS(temp.value64, 0xAE18B995AEC932AA);
 
@@ -5429,7 +5429,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00110110            |
         // |           11001101            |
         // |  01   |        101010         |
-        temp.mcOverlayBaseAddress = 92215050923989813;
+        temp.mcOverlayBaseAddress = static_cast<u64>(92215050923989813);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x51E7466A5136CD6A);
     }
@@ -5466,13 +5466,13 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11001010            |
         temp.value32 = 0x91D0DACA;
 
-        TEST_ASSERT_EQUALS(temp.basePower,  202);
-        TEST_ASSERT_EQUALS(temp.dataScale,  2);
-        TEST_ASSERT_EQUALS(temp.pmSubState, 6);
-        TEST_ASSERT_EQUALS(temp.pmState,    2);
-        TEST_ASSERT_EQUALS(temp.type,       1);
-        TEST_ASSERT_EQUALS(temp.powerRail,  4);
-        TEST_ASSERT_EQUALS(temp.__reserved, 1166);
+        TEST_ASSERT_EQUALS(temp.basePower,  static_cast<u32>(202));
+        TEST_ASSERT_EQUALS(temp.dataScale,  static_cast<u32>(2));
+        TEST_ASSERT_EQUALS(temp.pmSubState, static_cast<u32>(6));
+        TEST_ASSERT_EQUALS(temp.pmState,    static_cast<u32>(2));
+        TEST_ASSERT_EQUALS(temp.type,       static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.powerRail,  static_cast<u32>(4));
+        TEST_ASSERT_EQUALS(temp.__reserved, static_cast<u32>(1166));
 
 
 
@@ -5480,7 +5480,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    110    |    100    |  00   |
         // | 1 |  10   |    110    |  10   |
         // |           00110101            |
-        temp.basePower = 53;
+        temp.basePower = static_cast<u32>(53);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x91D0DA35);
 
@@ -5490,7 +5490,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    110    |    100    |  00   |
         // | 1 |  10   |    110    |  01   |
         // |           00110101            |
-        temp.dataScale = 1;
+        temp.dataScale = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x91D0D935);
 
@@ -5500,7 +5500,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    110    |    100    |  00   |
         // | 1 |  10   |    001    |  01   |
         // |           00110101            |
-        temp.pmSubState = 1;
+        temp.pmSubState = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x91D0C535);
 
@@ -5510,7 +5510,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    110    |    100    |  00   |
         // | 1 |  01   |    001    |  01   |
         // |           00110101            |
-        temp.pmState = 1;
+        temp.pmState = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x91D0A535);
 
@@ -5520,7 +5520,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    110    |    100    |  11   |
         // | 0 |  01   |    001    |  01   |
         // |           00110101            |
-        temp.type = 6;
+        temp.type = static_cast<u32>(6);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x91D32535);
 
@@ -5530,7 +5530,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    110    |    011    |  11   |
         // | 0 |  01   |    001    |  01   |
         // |           00110101            |
-        temp.powerRail = 3;
+        temp.powerRail = static_cast<u32>(3);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x91CF2535);
 
@@ -5540,7 +5540,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    001    |    011    |  11   |
         // | 0 |  01   |    001    |  01   |
         // |           00110101            |
-        temp.__reserved = 881;
+        temp.__reserved = static_cast<u32>(881);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x6E2F2535);
     }
@@ -5575,11 +5575,11 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    101    |  01   |    101    |
         temp.value32 = 0x59B961AD;
 
-        TEST_ASSERT_EQUALS(temp.barIndex,              5);
-        TEST_ASSERT_EQUALS(temp.__reserved,            1);
-        TEST_ASSERT_EQUALS(temp.numberOfResizableBars, 5);
-        TEST_ASSERT_EQUALS(temp.barSize,               1);
-        TEST_ASSERT_EQUALS(temp.__reserved2,           183755);
+        TEST_ASSERT_EQUALS(temp.barIndex,              static_cast<u32>(5));
+        TEST_ASSERT_EQUALS(temp.__reserved,            static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.numberOfResizableBars, static_cast<u32>(5));
+        TEST_ASSERT_EQUALS(temp.barSize,               static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved2,           static_cast<u32>(183755));
 
 
 
@@ -5587,7 +5587,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10111001            |
         // |    011    |       00001       |
         // |    101    |  01   |    010    |
-        temp.barIndex = 2;
+        temp.barIndex = static_cast<u32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x59B961AA);
 
@@ -5597,7 +5597,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10111001            |
         // |    011    |       00001       |
         // |    101    |  10   |    010    |
-        temp.__reserved = 2;
+        temp.__reserved = static_cast<u32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x59B961B2);
 
@@ -5607,7 +5607,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10111001            |
         // |    011    |       00001       |
         // |    010    |  10   |    010    |
-        temp.numberOfResizableBars = 2;
+        temp.numberOfResizableBars = static_cast<u32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x59B96152);
 
@@ -5617,7 +5617,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10111001            |
         // |    011    |       11110       |
         // |    010    |  10   |    010    |
-        temp.barSize = 30;
+        temp.barSize = static_cast<u32>(30);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x59B97E52);
 
@@ -5627,7 +5627,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01000110            |
         // |    100    |       11110       |
         // |    010    |  10   |    010    |
-        temp.__reserved2 = 340532;
+        temp.__reserved2 = static_cast<u32>(340532);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xA6469E52);
     }
@@ -5663,12 +5663,12 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0000      |     0111      |
         temp.value32 = 0xA9255607;
 
-        TEST_ASSERT_EQUALS(temp.supportedLinkSpeeds, 7);
-        TEST_ASSERT_EQUALS(temp.maximumLinkWidth,    32);
-        TEST_ASSERT_EQUALS(temp.aspmSupport,         1);
-        TEST_ASSERT_EQUALS(temp.l0sExitLatency,      5);
-        TEST_ASSERT_EQUALS(temp.l1ExitLatency,       2);
-        TEST_ASSERT_EQUALS(temp.__reserved,          10825);
+        TEST_ASSERT_EQUALS(temp.supportedLinkSpeeds, static_cast<u32>(7));
+        TEST_ASSERT_EQUALS(temp.maximumLinkWidth,    static_cast<u32>(32));
+        TEST_ASSERT_EQUALS(temp.aspmSupport,         static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.l0sExitLatency,      static_cast<u32>(5));
+        TEST_ASSERT_EQUALS(temp.l1ExitLatency,       static_cast<u32>(2));
+        TEST_ASSERT_EQUALS(temp.__reserved,          static_cast<u32>(10825));
 
 
 
@@ -5676,7 +5676,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        001001         |  01   |
         // | 0 |    101    |  01   |  10   |
         // |     0000      |     1000      |
-        temp.supportedLinkSpeeds = 8;
+        temp.supportedLinkSpeeds = static_cast<u32>(8);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xA9255608);
 
@@ -5686,7 +5686,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        001001         |  01   |
         // | 0 |    101    |  01   |  01   |
         // |     1111      |     1000      |
-        temp.maximumLinkWidth = 31;
+        temp.maximumLinkWidth = static_cast<u32>(31);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xA92555F8);
 
@@ -5696,7 +5696,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        001001         |  01   |
         // | 0 |    101    |  10   |  01   |
         // |     1111      |     1000      |
-        temp.aspmSupport = 2;
+        temp.aspmSupport = static_cast<u32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xA92559F8);
 
@@ -5706,7 +5706,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        001001         |  01   |
         // | 0 |    010    |  10   |  01   |
         // |     1111      |     1000      |
-        temp.l0sExitLatency = 2;
+        temp.l0sExitLatency = static_cast<u32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xA92529F8);
 
@@ -5716,7 +5716,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        001001         |  10   |
         // | 1 |    010    |  10   |  01   |
         // |     1111      |     1000      |
-        temp.l1ExitLatency = 5;
+        temp.l1ExitLatency = static_cast<u32>(5);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xA926A9F8);
 
@@ -5726,7 +5726,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        110110         |  10   |
         // | 1 |    010    |  10   |  01   |
         // |     1111      |     1000      |
-        temp.__reserved = 5558;
+        temp.__reserved = static_cast<u32>(5558);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x56DAA9F8);
     }
@@ -5756,16 +5756,16 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |       01111       |  10   |
         temp.value16 = 0xF5BE;
 
-        TEST_ASSERT_EQUALS(temp.aspmControl,   2);
-        TEST_ASSERT_EQUALS(temp.__reserved,    15);
-        TEST_ASSERT_EQUALS(temp.extendedSynch, 1);
-        TEST_ASSERT_EQUALS(temp.__reserved2,   245);
+        TEST_ASSERT_EQUALS(temp.aspmControl,   static_cast<u16>(2));
+        TEST_ASSERT_EQUALS(temp.__reserved,    static_cast<u16>(15));
+        TEST_ASSERT_EQUALS(temp.extendedSynch, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved2,   static_cast<u16>(245));
 
 
 
         // |           11110101            |
         // | 1 |       01111       |  01   |
-        temp.aspmControl = 1;
+        temp.aspmControl = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xF5BD);
 
@@ -5773,7 +5773,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           11110101            |
         // | 1 |       10000       |  01   |
-        temp.__reserved = 16;
+        temp.__reserved = static_cast<u16>(16);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xF5C1);
 
@@ -5781,7 +5781,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           11110101            |
         // | 0 |       10000       |  01   |
-        temp.extendedSynch = 0;
+        temp.extendedSynch = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xF541);
 
@@ -5789,7 +5789,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00001010            |
         // | 0 |       10000       |  01   |
-        temp.__reserved2 = 10;
+        temp.__reserved2 = static_cast<u16>(10);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x0A41);
     }
@@ -5818,15 +5818,15 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1011      |     1000      |
         temp.value16 = 0xC1B8;
 
-        TEST_ASSERT_EQUALS(temp.currentLinkSpeed,    8);
-        TEST_ASSERT_EQUALS(temp.negotiatedLinkWidth, 27);
-        TEST_ASSERT_EQUALS(temp.__reserved,          48);
+        TEST_ASSERT_EQUALS(temp.currentLinkSpeed,    static_cast<u16>(8));
+        TEST_ASSERT_EQUALS(temp.negotiatedLinkWidth, static_cast<u16>(27));
+        TEST_ASSERT_EQUALS(temp.__reserved,          static_cast<u16>(48));
 
 
 
         // |        110000         |  01   |
         // |     1011      |     0111      |
-        temp.currentLinkSpeed = 7;
+        temp.currentLinkSpeed = static_cast<u16>(7);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC1B7);
 
@@ -5834,7 +5834,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |        110000         |  10   |
         // |     0100      |     0111      |
-        temp.negotiatedLinkWidth = 36;
+        temp.negotiatedLinkWidth = static_cast<u16>(36);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC247);
 
@@ -5842,7 +5842,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |        001111         |  10   |
         // |     0100      |     0111      |
-        temp.__reserved = 15;
+        temp.__reserved = static_cast<u16>(15);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3E47);
     }
@@ -5877,11 +5877,11 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0101      |     0000      |
         temp.value32 = 0x9820CC50;
 
-        TEST_ASSERT_EQUALS(temp.elementType,         0);
-        TEST_ASSERT_EQUALS(temp.__reserved,          5);
-        TEST_ASSERT_EQUALS(temp.numberOfLinkEntries, 204);
-        TEST_ASSERT_EQUALS(temp.componentId,         32);
-        TEST_ASSERT_EQUALS(temp.portNumber,          152);
+        TEST_ASSERT_EQUALS(temp.elementType,         static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved,          static_cast<u32>(5));
+        TEST_ASSERT_EQUALS(temp.numberOfLinkEntries, static_cast<u32>(204));
+        TEST_ASSERT_EQUALS(temp.componentId,         static_cast<u32>(32));
+        TEST_ASSERT_EQUALS(temp.portNumber,          static_cast<u32>(152));
 
 
 
@@ -5889,7 +5889,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100000            |
         // |           11001100            |
         // |     0101      |     1111      |
-        temp.elementType = 15;
+        temp.elementType = static_cast<u32>(15);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9820CC5F);
 
@@ -5899,7 +5899,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100000            |
         // |           11001100            |
         // |     1010      |     1111      |
-        temp.__reserved = 10;
+        temp.__reserved = static_cast<u32>(10);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9820CCAF);
 
@@ -5909,7 +5909,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100000            |
         // |           00110011            |
         // |     1010      |     1111      |
-        temp.numberOfLinkEntries = 51;
+        temp.numberOfLinkEntries = static_cast<u32>(51);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x982033AF);
 
@@ -5919,7 +5919,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11011111            |
         // |           00110011            |
         // |     1010      |     1111      |
-        temp.componentId = 223;
+        temp.componentId = static_cast<u32>(223);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x98DF33AF);
 
@@ -5929,7 +5929,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11011111            |
         // |           00110011            |
         // |     1010      |     1111      |
-        temp.portNumber = 103;
+        temp.portNumber = static_cast<u32>(103);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x67DF33AF);
     }
@@ -5973,12 +5973,12 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       10010       |    100    |
         temp.value64 = 0xA399F73D7F0A5D94;
 
-        TEST_ASSERT_EQUALS(temp.encodedNumberOfBusNumberBits,  4);
-        TEST_ASSERT_EQUALS(temp.__reserved,                    434);
-        TEST_ASSERT_EQUALS(temp.functionNumber,                5);
-        TEST_ASSERT_EQUALS(temp.deviceNumber,                  20);
-        TEST_ASSERT_EQUALS(temp.busNumber,                     240);
-        TEST_ASSERT_EQUALS(temp.configurationSpaceBaseAddress, 43916424151);
+        TEST_ASSERT_EQUALS(temp.encodedNumberOfBusNumberBits,  static_cast<u64>(4));
+        TEST_ASSERT_EQUALS(temp.__reserved,                    static_cast<u64>(434));
+        TEST_ASSERT_EQUALS(temp.functionNumber,                static_cast<u64>(5));
+        TEST_ASSERT_EQUALS(temp.deviceNumber,                  static_cast<u64>(20));
+        TEST_ASSERT_EQUALS(temp.busNumber,                     static_cast<u64>(240));
+        TEST_ASSERT_EQUALS(temp.configurationSpaceBaseAddress, static_cast<u64>(43916424151));
 
 
 
@@ -5990,7 +5990,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0000      |     1010      |
         // | 0 |    101    |     1101      |
         // |       10010       |    011    |
-        temp.encodedNumberOfBusNumberBits = 3;
+        temp.encodedNumberOfBusNumberBits = static_cast<u64>(3);
 
         TEST_ASSERT_EQUALS(temp.value64, 0xA399F73D7F0A5D93);
 
@@ -6004,7 +6004,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0000      |     1010      |
         // | 0 |    101    |     0010      |
         // |       01101       |    011    |
-        temp.__reserved = 77;
+        temp.__reserved = static_cast<u64>(77);
 
         TEST_ASSERT_EQUALS(temp.value64, 0xA399F73D7F0A526B);
 
@@ -6018,7 +6018,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0000      |     1010      |
         // | 0 |    010    |     0010      |
         // |       01101       |    011    |
-        temp.functionNumber = 2;
+        temp.functionNumber = static_cast<u64>(2);
 
         TEST_ASSERT_EQUALS(temp.value64, 0xA399F73D7F0A226B);
 
@@ -6032,7 +6032,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0000      |     0101      |
         // | 1 |    010    |     0010      |
         // |       01101       |    011    |
-        temp.deviceNumber = 11;
+        temp.deviceNumber = static_cast<u64>(11);
 
         TEST_ASSERT_EQUALS(temp.value64, 0xA399F73D7F05A26B);
 
@@ -6046,7 +6046,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1111      |     0101      |
         // | 1 |    010    |     0010      |
         // |       01101       |    011    |
-        temp.busNumber = 15;
+        temp.busNumber = static_cast<u64>(15);
 
         TEST_ASSERT_EQUALS(temp.value64, 0xA399F73D70F5A26B);
 
@@ -6060,7 +6060,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1111      |     0101      |
         // | 1 |    010    |     0010      |
         // |       01101       |    011    |
-        temp.configurationSpaceBaseAddress = 24803052584;
+        temp.configurationSpaceBaseAddress = static_cast<u64>(24803052584);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x5C6608C280F5A26B);
     }
@@ -6096,12 +6096,12 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       11101       | 1 | 0 | 0 |
         temp.value32 = 0x5134E3EC;
 
-        TEST_ASSERT_EQUALS(temp.linkValid,           0);
-        TEST_ASSERT_EQUALS(temp.linkType,            0);
-        TEST_ASSERT_EQUALS(temp.associateRcrbHeader, 1);
-        TEST_ASSERT_EQUALS(temp.__reserved,          7293);
-        TEST_ASSERT_EQUALS(temp.targetComponentId,   52);
-        TEST_ASSERT_EQUALS(temp.targetPortNumber,    81);
+        TEST_ASSERT_EQUALS(temp.linkValid,           static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.linkType,            static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.associateRcrbHeader, static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved,          static_cast<u32>(7293));
+        TEST_ASSERT_EQUALS(temp.targetComponentId,   static_cast<u32>(52));
+        TEST_ASSERT_EQUALS(temp.targetPortNumber,    static_cast<u32>(81));
 
 
 
@@ -6109,7 +6109,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00110100            |
         // |           11100011            |
         // |       11101       | 1 | 0 | 1 |
-        temp.linkValid = 1;
+        temp.linkValid = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x5134E3ED);
 
@@ -6119,7 +6119,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00110100            |
         // |           11100011            |
         // |       11101       | 1 | 1 | 1 |
-        temp.linkType = 1;
+        temp.linkType = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x5134E3EF);
 
@@ -6129,7 +6129,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00110100            |
         // |           11100011            |
         // |       11101       | 0 | 1 | 1 |
-        temp.associateRcrbHeader = 0;
+        temp.associateRcrbHeader = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x5134E3EB);
 
@@ -6139,7 +6139,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00110100            |
         // |           00011100            |
         // |       00010       | 0 | 1 | 1 |
-        temp.__reserved = 898;
+        temp.__reserved = static_cast<u32>(898);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x51341C13);
 
@@ -6149,7 +6149,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11001011            |
         // |           00011100            |
         // |       00010       | 0 | 1 | 1 |
-        temp.targetComponentId = 203;
+        temp.targetComponentId = static_cast<u32>(203);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x51CB1C13);
 
@@ -6159,7 +6159,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11001011            |
         // |           00011100            |
         // |       00010       | 0 | 1 | 1 |
-        temp.targetPortNumber = 174;
+        temp.targetPortNumber = static_cast<u32>(174);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xAECB1C13);
     }
@@ -6198,15 +6198,15 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 1 | 1 | 0 | 1 | 1 | 0 | 0 |
         temp.value32 = 0x005423EC;
 
-        TEST_ASSERT_EQUALS(temp.errCorReceived,                      0);
-        TEST_ASSERT_EQUALS(temp.multipleErrCorReceived,              0);
-        TEST_ASSERT_EQUALS(temp.errFatalOrNonFatalReceived,          1);
-        TEST_ASSERT_EQUALS(temp.multipleErrFatalOrNonFatalReceived,  1);
-        TEST_ASSERT_EQUALS(temp.firstUncorrectableFatal,             0);
-        TEST_ASSERT_EQUALS(temp.nonFatalErrorMessagesReceived,       1);
-        TEST_ASSERT_EQUALS(temp.fatalErrorMessagesReceived,          1);
-        TEST_ASSERT_EQUALS(temp.__reserved,                          43079);
-        TEST_ASSERT_EQUALS(temp.advancedErrorInterruptMessageNumber, 0);
+        TEST_ASSERT_EQUALS(temp.errCorReceived,                      static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.multipleErrCorReceived,              static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.errFatalOrNonFatalReceived,          static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.multipleErrFatalOrNonFatalReceived,  static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.firstUncorrectableFatal,             static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.nonFatalErrorMessagesReceived,       static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.fatalErrorMessagesReceived,          static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved,                          static_cast<u32>(43079));
+        TEST_ASSERT_EQUALS(temp.advancedErrorInterruptMessageNumber, static_cast<u32>(0));
 
 
 
@@ -6214,7 +6214,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01010100            |
         // |           00100011            |
         // | 1 | 1 | 1 | 0 | 1 | 1 | 0 | 1 |
-        temp.errCorReceived = 1;
+        temp.errCorReceived = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x005423ED);
 
@@ -6224,7 +6224,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01010100            |
         // |           00100011            |
         // | 1 | 1 | 1 | 0 | 1 | 1 | 1 | 1 |
-        temp.multipleErrCorReceived = 1;
+        temp.multipleErrCorReceived = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x005423EF);
 
@@ -6234,7 +6234,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01010100            |
         // |           00100011            |
         // | 1 | 1 | 1 | 0 | 1 | 0 | 1 | 1 |
-        temp.errFatalOrNonFatalReceived = 0;
+        temp.errFatalOrNonFatalReceived = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x005423EB);
 
@@ -6244,7 +6244,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01010100            |
         // |           00100011            |
         // | 1 | 1 | 1 | 0 | 0 | 0 | 1 | 1 |
-        temp.multipleErrFatalOrNonFatalReceived = 0;
+        temp.multipleErrFatalOrNonFatalReceived = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x005423E3);
 
@@ -6254,7 +6254,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01010100            |
         // |           00100011            |
         // | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 |
-        temp.firstUncorrectableFatal = 1;
+        temp.firstUncorrectableFatal = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x005423F3);
 
@@ -6264,7 +6264,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01010100            |
         // |           00100011            |
         // | 1 | 1 | 0 | 1 | 0 | 0 | 1 | 1 |
-        temp.nonFatalErrorMessagesReceived = 0;
+        temp.nonFatalErrorMessagesReceived = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x005423D3);
 
@@ -6274,7 +6274,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01010100            |
         // |           00100011            |
         // | 1 | 0 | 0 | 1 | 0 | 0 | 1 | 1 |
-        temp.fatalErrorMessagesReceived = 0;
+        temp.fatalErrorMessagesReceived = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x00542393);
 
@@ -6284,7 +6284,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10101011            |
         // |           11011100            |
         // | 0 | 0 | 0 | 1 | 0 | 0 | 1 | 1 |
-        temp.__reserved = 1005496;
+        temp.__reserved = static_cast<u32>(1005496);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x07ABDC13);
 
@@ -6294,7 +6294,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10101011            |
         // |           11011100            |
         // | 0 | 0 | 0 | 1 | 0 | 0 | 1 | 1 |
-        temp.advancedErrorInterruptMessageNumber = 31;
+        temp.advancedErrorInterruptMessageNumber = static_cast<u32>(31);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xFFABDC13);
     }
@@ -6328,10 +6328,10 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100000            |
         temp.value32 = 0x2491DB20;
 
-        TEST_ASSERT_EQUALS(temp.pmeRequesterId, 56096);
-        TEST_ASSERT_EQUALS(temp.pmeStatus,      1);
-        TEST_ASSERT_EQUALS(temp.pmePending,     0);
-        TEST_ASSERT_EQUALS(temp.__reserved,     2340);
+        TEST_ASSERT_EQUALS(temp.pmeRequesterId, static_cast<u32>(56096));
+        TEST_ASSERT_EQUALS(temp.pmeStatus,      static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.pmePending,     static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved,     static_cast<u32>(2340));
 
 
 
@@ -6339,7 +6339,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        100100         | 0 | 1 |
         // |           00100100            |
         // |           11011111            |
-        temp.pmeRequesterId = 9439;
+        temp.pmeRequesterId = static_cast<u32>(9439);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x249124DF);
 
@@ -6349,7 +6349,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        100100         | 0 | 0 |
         // |           00100100            |
         // |           11011111            |
-        temp.pmeStatus = 0;
+        temp.pmeStatus = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x249024DF);
 
@@ -6359,7 +6359,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        100100         | 1 | 0 |
         // |           00100100            |
         // |           11011111            |
-        temp.pmePending = 1;
+        temp.pmePending = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x249224DF);
 
@@ -6369,7 +6369,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        011011         | 1 | 0 |
         // |           00100100            |
         // |           11011111            |
-        temp.__reserved = 14043;
+        temp.__reserved = static_cast<u32>(14043);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xDB6E24DF);
     }
@@ -6411,18 +6411,18 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 | 1 | 0 | 0 | 1 | 1 | 0 | 1 |
         temp.value32 = 0xF5FE244D;
 
-        TEST_ASSERT_EQUALS(temp.attentionButtonPresent,            1);
-        TEST_ASSERT_EQUALS(temp.powerControllerPresent,            0);
-        TEST_ASSERT_EQUALS(temp.mrlSensorPresent,                  1);
-        TEST_ASSERT_EQUALS(temp.attentionIndicatorPresent,         1);
-        TEST_ASSERT_EQUALS(temp.powerIndicatorPresent,             0);
-        TEST_ASSERT_EQUALS(temp.hotPlugSurprise,                   0);
-        TEST_ASSERT_EQUALS(temp.hotPlugCapable,                    1);
-        TEST_ASSERT_EQUALS(temp.slotPowerLimitValue,               72);
-        TEST_ASSERT_EQUALS(temp.slotPowerLimitScale,               0);
-        TEST_ASSERT_EQUALS(temp.electromechanicalInterlockPresent, 1);
-        TEST_ASSERT_EQUALS(temp.noCommandCompletedSupport,         1);
-        TEST_ASSERT_EQUALS(temp.physicalSlotNumber,                7871);
+        TEST_ASSERT_EQUALS(temp.attentionButtonPresent,            static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.powerControllerPresent,            static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.mrlSensorPresent,                  static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.attentionIndicatorPresent,         static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.powerIndicatorPresent,             static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.hotPlugSurprise,                   static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.hotPlugCapable,                    static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.slotPowerLimitValue,               static_cast<u32>(72));
+        TEST_ASSERT_EQUALS(temp.slotPowerLimitScale,               static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.electromechanicalInterlockPresent, static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.noCommandCompletedSupport,         static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.physicalSlotNumber,                static_cast<u32>(7871));
 
 
 
@@ -6430,7 +6430,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       11111       | 1 | 1 | 0 |
         // | 0 |          0100100          |
         // | 0 | 1 | 0 | 0 | 1 | 1 | 0 | 0 |
-        temp.attentionButtonPresent = 0;
+        temp.attentionButtonPresent = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF5FE244C);
 
@@ -6440,7 +6440,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       11111       | 1 | 1 | 0 |
         // | 0 |          0100100          |
         // | 0 | 1 | 0 | 0 | 1 | 1 | 1 | 0 |
-        temp.powerControllerPresent = 1;
+        temp.powerControllerPresent = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF5FE244E);
 
@@ -6450,7 +6450,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       11111       | 1 | 1 | 0 |
         // | 0 |          0100100          |
         // | 0 | 1 | 0 | 0 | 1 | 0 | 1 | 0 |
-        temp.mrlSensorPresent = 0;
+        temp.mrlSensorPresent = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF5FE244A);
 
@@ -6460,7 +6460,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       11111       | 1 | 1 | 0 |
         // | 0 |          0100100          |
         // | 0 | 1 | 0 | 0 | 0 | 0 | 1 | 0 |
-        temp.attentionIndicatorPresent = 0;
+        temp.attentionIndicatorPresent = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF5FE2442);
 
@@ -6470,7 +6470,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       11111       | 1 | 1 | 0 |
         // | 0 |          0100100          |
         // | 0 | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
-        temp.powerIndicatorPresent = 1;
+        temp.powerIndicatorPresent = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF5FE2452);
 
@@ -6480,7 +6480,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       11111       | 1 | 1 | 0 |
         // | 0 |          0100100          |
         // | 0 | 1 | 1 | 1 | 0 | 0 | 1 | 0 |
-        temp.hotPlugSurprise = 1;
+        temp.hotPlugSurprise = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF5FE2472);
 
@@ -6490,7 +6490,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       11111       | 1 | 1 | 0 |
         // | 0 |          0100100          |
         // | 0 | 0 | 1 | 1 | 0 | 0 | 1 | 0 |
-        temp.hotPlugCapable = 0;
+        temp.hotPlugCapable = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF5FE2432);
 
@@ -6500,7 +6500,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       11111       | 1 | 1 | 0 |
         // | 0 |          1011011          |
         // | 1 | 0 | 1 | 1 | 0 | 0 | 1 | 0 |
-        temp.slotPowerLimitValue = 183;
+        temp.slotPowerLimitValue = static_cast<u32>(183);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF5FE5BB2);
 
@@ -6510,7 +6510,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       11111       | 1 | 1 | 1 |
         // | 1 |          1011011          |
         // | 1 | 0 | 1 | 1 | 0 | 0 | 1 | 0 |
-        temp.slotPowerLimitScale = 3;
+        temp.slotPowerLimitScale = static_cast<u32>(3);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF5FFDBB2);
 
@@ -6520,7 +6520,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       11111       | 1 | 0 | 1 |
         // | 1 |          1011011          |
         // | 1 | 0 | 1 | 1 | 0 | 0 | 1 | 0 |
-        temp.electromechanicalInterlockPresent = 0;
+        temp.electromechanicalInterlockPresent = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF5FDDBB2);
 
@@ -6530,7 +6530,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       11111       | 0 | 0 | 1 |
         // | 1 |          1011011          |
         // | 1 | 0 | 1 | 1 | 0 | 0 | 1 | 0 |
-        temp.noCommandCompletedSupport = 0;
+        temp.noCommandCompletedSupport = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF5F9DBB2);
 
@@ -6540,7 +6540,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       00000       | 0 | 0 | 1 |
         // | 1 |          1011011          |
         // | 1 | 0 | 1 | 1 | 0 | 0 | 1 | 0 |
-        temp.physicalSlotNumber = 320;
+        temp.physicalSlotNumber = static_cast<u32>(320);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0A01DBB2);
     }
@@ -6578,24 +6578,24 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  01   | 0 | 0 | 0 | 1 | 0 | 0 |
         temp.value16 = 0x3944;
 
-        TEST_ASSERT_EQUALS(temp.attentionButtonPressedEnable,      0);
-        TEST_ASSERT_EQUALS(temp.powerFaultDetectedEnable,          0);
-        TEST_ASSERT_EQUALS(temp.mrlSensorChangedEnable,            1);
-        TEST_ASSERT_EQUALS(temp.presenceDetectChangedEnable,       0);
-        TEST_ASSERT_EQUALS(temp.commandCompletedInterruptEnable,   0);
-        TEST_ASSERT_EQUALS(temp.hotPlugInterruptEnable,            0);
-        TEST_ASSERT_EQUALS(temp.attentionIndicatorControl,         1);
-        TEST_ASSERT_EQUALS(temp.powerIndicatorControl,             1);
-        TEST_ASSERT_EQUALS(temp.powerControllerControl,            0);
-        TEST_ASSERT_EQUALS(temp.electromechanicalInterlockControl, 1);
-        TEST_ASSERT_EQUALS(temp.dataLinkLayerStateChangedEnable,   1);
-        TEST_ASSERT_EQUALS(temp.__reserved,                        1);
+        TEST_ASSERT_EQUALS(temp.attentionButtonPressedEnable,      static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.powerFaultDetectedEnable,          static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.mrlSensorChangedEnable,            static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.presenceDetectChangedEnable,       static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.commandCompletedInterruptEnable,   static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.hotPlugInterruptEnable,            static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.attentionIndicatorControl,         static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.powerIndicatorControl,             static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.powerControllerControl,            static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.electromechanicalInterlockControl, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.dataLinkLayerStateChangedEnable,   static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved,                        static_cast<u16>(1));
 
 
 
         // |    001    | 1 | 1 | 0 |  01   |
         // |  01   | 0 | 0 | 0 | 1 | 0 | 1 |
-        temp.attentionButtonPressedEnable = 1;
+        temp.attentionButtonPressedEnable = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3945);
 
@@ -6603,7 +6603,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 1 | 1 | 0 |  01   |
         // |  01   | 0 | 0 | 0 | 1 | 1 | 1 |
-        temp.powerFaultDetectedEnable = 1;
+        temp.powerFaultDetectedEnable = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3947);
 
@@ -6611,7 +6611,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 1 | 1 | 0 |  01   |
         // |  01   | 0 | 0 | 0 | 0 | 1 | 1 |
-        temp.mrlSensorChangedEnable = 0;
+        temp.mrlSensorChangedEnable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3943);
 
@@ -6619,7 +6619,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 1 | 1 | 0 |  01   |
         // |  01   | 0 | 0 | 1 | 0 | 1 | 1 |
-        temp.presenceDetectChangedEnable = 1;
+        temp.presenceDetectChangedEnable = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x394B);
 
@@ -6627,7 +6627,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 1 | 1 | 0 |  01   |
         // |  01   | 0 | 1 | 1 | 0 | 1 | 1 |
-        temp.commandCompletedInterruptEnable = 1;
+        temp.commandCompletedInterruptEnable = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x395B);
 
@@ -6635,7 +6635,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 1 | 1 | 0 |  01   |
         // |  01   | 1 | 1 | 1 | 0 | 1 | 1 |
-        temp.hotPlugInterruptEnable = 1;
+        temp.hotPlugInterruptEnable = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x397B);
 
@@ -6643,7 +6643,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 1 | 1 | 0 |  01   |
         // |  10   | 1 | 1 | 1 | 0 | 1 | 1 |
-        temp.attentionIndicatorControl = 2;
+        temp.attentionIndicatorControl = static_cast<u16>(2);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x39BB);
 
@@ -6651,7 +6651,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 1 | 1 | 0 |  10   |
         // |  10   | 1 | 1 | 1 | 0 | 1 | 1 |
-        temp.powerIndicatorControl = 2;
+        temp.powerIndicatorControl = static_cast<u16>(2);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3ABB);
 
@@ -6659,7 +6659,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 1 | 1 | 1 |  10   |
         // |  10   | 1 | 1 | 1 | 0 | 1 | 1 |
-        temp.powerControllerControl = 1;
+        temp.powerControllerControl = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3EBB);
 
@@ -6667,7 +6667,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 1 | 0 | 1 |  10   |
         // |  10   | 1 | 1 | 1 | 0 | 1 | 1 |
-        temp.electromechanicalInterlockControl = 0;
+        temp.electromechanicalInterlockControl = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x36BB);
 
@@ -6675,7 +6675,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 | 0 | 1 |  10   |
         // |  10   | 1 | 1 | 1 | 0 | 1 | 1 |
-        temp.dataLinkLayerStateChangedEnable = 0;
+        temp.dataLinkLayerStateChangedEnable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x26BB);
 
@@ -6683,7 +6683,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    110    | 0 | 0 | 1 |  10   |
         // |  10   | 1 | 1 | 1 | 0 | 1 | 1 |
-        temp.__reserved = 6;
+        temp.__reserved = static_cast<u16>(6);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC6BB);
     }
@@ -6722,15 +6722,15 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       01011       | 0 | 1 | 1 |
         temp.value32 = 0xED3C375B;
 
-        TEST_ASSERT_EQUALS(temp.noStModeSupported,             1);
-        TEST_ASSERT_EQUALS(temp.interruptVectorModeSupported,  1);
-        TEST_ASSERT_EQUALS(temp.deviceSpecificModeSupported,   0);
-        TEST_ASSERT_EQUALS(temp.__reserved,                    11);
-        TEST_ASSERT_EQUALS(temp.extendedTphRequesterSupported, 1);
-        TEST_ASSERT_EQUALS(temp.stTableLocation,               3);
-        TEST_ASSERT_EQUALS(temp.__reserved2,                   6);
-        TEST_ASSERT_EQUALS(temp.stTableSize,                   1340);
-        TEST_ASSERT_EQUALS(temp.__reserved3,                   29);
+        TEST_ASSERT_EQUALS(temp.noStModeSupported,             static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.interruptVectorModeSupported,  static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.deviceSpecificModeSupported,   static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved,                    static_cast<u32>(11));
+        TEST_ASSERT_EQUALS(temp.extendedTphRequesterSupported, static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.stTableLocation,               static_cast<u32>(3));
+        TEST_ASSERT_EQUALS(temp.__reserved2,                   static_cast<u32>(6));
+        TEST_ASSERT_EQUALS(temp.stTableSize,                   static_cast<u32>(1340));
+        TEST_ASSERT_EQUALS(temp.__reserved3,                   static_cast<u32>(29));
 
 
 
@@ -6738,7 +6738,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00111100            |
         // |       00110       |  11   | 1 |
         // |       01011       | 0 | 1 | 0 |
-        temp.noStModeSupported = 0;
+        temp.noStModeSupported = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xED3C375A);
 
@@ -6748,7 +6748,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00111100            |
         // |       00110       |  11   | 1 |
         // |       01011       | 0 | 0 | 0 |
-        temp.interruptVectorModeSupported = 0;
+        temp.interruptVectorModeSupported = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xED3C3758);
 
@@ -6758,7 +6758,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00111100            |
         // |       00110       |  11   | 1 |
         // |       01011       | 1 | 0 | 0 |
-        temp.deviceSpecificModeSupported = 1;
+        temp.deviceSpecificModeSupported = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xED3C375C);
 
@@ -6768,7 +6768,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00111100            |
         // |       00110       |  11   | 1 |
         // |       10100       | 1 | 0 | 0 |
-        temp.__reserved = 20;
+        temp.__reserved = static_cast<u32>(20);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xED3C37A4);
 
@@ -6778,7 +6778,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00111100            |
         // |       00110       |  11   | 0 |
         // |       10100       | 1 | 0 | 0 |
-        temp.extendedTphRequesterSupported = 0;
+        temp.extendedTphRequesterSupported = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xED3C36A4);
 
@@ -6788,7 +6788,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00111100            |
         // |       00110       |  00   | 0 |
         // |       10100       | 1 | 0 | 0 |
-        temp.stTableLocation = 0;
+        temp.stTableLocation = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xED3C30A4);
 
@@ -6798,7 +6798,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00111100            |
         // |       11001       |  00   | 0 |
         // |       10100       | 1 | 0 | 0 |
-        temp.__reserved2 = 25;
+        temp.__reserved2 = static_cast<u32>(25);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xED3CC8A4);
 
@@ -6808,7 +6808,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11000011            |
         // |       11001       |  00   | 0 |
         // |       10100       | 1 | 0 | 0 |
-        temp.stTableSize = 707;
+        temp.stTableSize = static_cast<u32>(707);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xEAC3C8A4);
 
@@ -6818,7 +6818,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11000011            |
         // |       11001       |  00   | 0 |
         // |       10100       | 1 | 0 | 0 |
-        temp.__reserved3 = 2;
+        temp.__reserved3 = static_cast<u32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x12C3C8A4);
     }
@@ -6852,10 +6852,10 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       00110       |    000    |
         temp.value32 = 0xF824A630;
 
-        TEST_ASSERT_EQUALS(temp.stModeSelect,       0);
-        TEST_ASSERT_EQUALS(temp.__reserved,         6);
-        TEST_ASSERT_EQUALS(temp.tphRequesterEnable, 2);
-        TEST_ASSERT_EQUALS(temp.__reserved2,        4065577);
+        TEST_ASSERT_EQUALS(temp.stModeSelect,       static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved,         static_cast<u32>(6));
+        TEST_ASSERT_EQUALS(temp.tphRequesterEnable, static_cast<u32>(2));
+        TEST_ASSERT_EQUALS(temp.__reserved2,        static_cast<u32>(4065577));
 
 
 
@@ -6863,7 +6863,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100100            |
         // |        101001         |  10   |
         // |       00110       |    111    |
-        temp.stModeSelect = 7;
+        temp.stModeSelect = static_cast<u32>(7);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF824A637);
 
@@ -6873,7 +6873,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100100            |
         // |        101001         |  10   |
         // |       11001       |    111    |
-        temp.__reserved = 25;
+        temp.__reserved = static_cast<u32>(25);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF824A6CF);
 
@@ -6883,7 +6883,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00100100            |
         // |        101001         |  01   |
         // |       11001       |    111    |
-        temp.tphRequesterEnable = 1;
+        temp.tphRequesterEnable = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xF824A5CF);
 
@@ -6893,7 +6893,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11011011            |
         // |        010110         |  01   |
         // |       11001       |    111    |
-        temp.__reserved2 = 128726;
+        temp.__reserved2 = static_cast<u32>(128726);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x07DB59CF);
     }
@@ -6926,9 +6926,9 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00101110            |
         temp.value32 = 0xAB7E0D2E;
 
-        TEST_ASSERT_EQUALS(temp.id,       3374);
-        TEST_ASSERT_EQUALS(temp.revision, 14);
-        TEST_ASSERT_EQUALS(temp.length,   2743);
+        TEST_ASSERT_EQUALS(temp.id,       static_cast<u32>(3374));
+        TEST_ASSERT_EQUALS(temp.revision, static_cast<u32>(14));
+        TEST_ASSERT_EQUALS(temp.length,   static_cast<u32>(2743));
 
 
 
@@ -6936,7 +6936,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0111      |     1110      |
         // |           11110010            |
         // |           11010001            |
-        temp.id = 62161;
+        temp.id = static_cast<u32>(62161);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xAB7EF2D1);
 
@@ -6946,7 +6946,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0111      |     0001      |
         // |           11110010            |
         // |           11010001            |
-        temp.revision = 1;
+        temp.revision = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xAB71F2D1);
 
@@ -6956,7 +6956,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1000      |     0001      |
         // |           11110010            |
         // |           11010001            |
-        temp.length = 1352;
+        temp.length = static_cast<u32>(1352);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x5481F2D1);
     }
@@ -6993,13 +6993,13 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |    000    | 0 |    100    |
         temp.value32 = 0xCAF20F84;
 
-        TEST_ASSERT_EQUALS(temp.extendedVirtualChannelCount,            4);
-        TEST_ASSERT_EQUALS(temp.__reserved,                             0);
-        TEST_ASSERT_EQUALS(temp.lowPriorityExtendedVirtualChannelCount, 0);
-        TEST_ASSERT_EQUALS(temp.__reserved2,                            1);
-        TEST_ASSERT_EQUALS(temp.referenceClock,                         3);
-        TEST_ASSERT_EQUALS(temp.portArbitrationTableEntrySize,          3);
-        TEST_ASSERT_EQUALS(temp.__reserved3,                            831264);
+        TEST_ASSERT_EQUALS(temp.extendedVirtualChannelCount,            static_cast<u32>(4));
+        TEST_ASSERT_EQUALS(temp.__reserved,                             static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.lowPriorityExtendedVirtualChannelCount, static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved2,                            static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.referenceClock,                         static_cast<u32>(3));
+        TEST_ASSERT_EQUALS(temp.portArbitrationTableEntrySize,          static_cast<u32>(3));
+        TEST_ASSERT_EQUALS(temp.__reserved3,                            static_cast<u32>(831264));
 
 
 
@@ -7007,7 +7007,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11110010            |
         // |     0000      |  11   |  11   |
         // | 1 |    000    | 0 |    011    |
-        temp.extendedVirtualChannelCount = 3;
+        temp.extendedVirtualChannelCount = static_cast<u32>(3);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xCAF20F83);
 
@@ -7017,7 +7017,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11110010            |
         // |     0000      |  11   |  11   |
         // | 1 |    000    | 1 |    011    |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xCAF20F8B);
 
@@ -7027,7 +7027,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11110010            |
         // |     0000      |  11   |  11   |
         // | 1 |    111    | 1 |    011    |
-        temp.lowPriorityExtendedVirtualChannelCount = 7;
+        temp.lowPriorityExtendedVirtualChannelCount = static_cast<u32>(7);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xCAF20FFB);
 
@@ -7037,7 +7037,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11110010            |
         // |     0000      |  11   |  11   |
         // | 0 |    111    | 1 |    011    |
-        temp.__reserved2 = 0;
+        temp.__reserved2 = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xCAF20F7B);
 
@@ -7047,7 +7047,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11110010            |
         // |     0000      |  11   |  00   |
         // | 0 |    111    | 1 |    011    |
-        temp.referenceClock = 0;
+        temp.referenceClock = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xCAF20C7B);
 
@@ -7057,7 +7057,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11110010            |
         // |     0000      |  00   |  00   |
         // | 0 |    111    | 1 |    011    |
-        temp.portArbitrationTableEntrySize = 0;
+        temp.portArbitrationTableEntrySize = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xCAF2007B);
 
@@ -7067,7 +7067,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00001101            |
         // |     1111      |  00   |  00   |
         // | 0 |    111    | 1 |    011    |
-        temp.__reserved3 = 217311;
+        temp.__reserved3 = static_cast<u32>(217311);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x350DF07B);
     }
@@ -7100,9 +7100,9 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11011001            |
         temp.value32 = 0xD4AB51D9;
 
-        TEST_ASSERT_EQUALS(temp.virtualChannelArbitrationCapability,  217);
-        TEST_ASSERT_EQUALS(temp.__reserved,                           43857);
-        TEST_ASSERT_EQUALS(temp.virtualChannelArbitrationTableOffset, 212);
+        TEST_ASSERT_EQUALS(temp.virtualChannelArbitrationCapability,  static_cast<u32>(217));
+        TEST_ASSERT_EQUALS(temp.__reserved,                           static_cast<u32>(43857));
+        TEST_ASSERT_EQUALS(temp.virtualChannelArbitrationTableOffset, static_cast<u32>(212));
 
 
 
@@ -7110,7 +7110,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10101011            |
         // |           01010001            |
         // |           00100110            |
-        temp.virtualChannelArbitrationCapability = 38;
+        temp.virtualChannelArbitrationCapability = static_cast<u32>(38);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xD4AB5126);
 
@@ -7120,7 +7120,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01010100            |
         // |           10101110            |
         // |           00100110            |
-        temp.__reserved = 21678;
+        temp.__reserved = static_cast<u32>(21678);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xD454AE26);
 
@@ -7130,7 +7130,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01010100            |
         // |           10101110            |
         // |           00100110            |
-        temp.virtualChannelArbitrationTableOffset = 43;
+        temp.virtualChannelArbitrationTableOffset = static_cast<u32>(43);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x2B54AE26);
     }
@@ -7159,15 +7159,15 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0111      |    110    | 1 |
         temp.value16 = 0x317D;
 
-        TEST_ASSERT_EQUALS(temp.loadVirtualChannelArbitrationTable, 1);
-        TEST_ASSERT_EQUALS(temp.virtualChannelArbitrationSelect,    6);
-        TEST_ASSERT_EQUALS(temp.__reserved,                         791);
+        TEST_ASSERT_EQUALS(temp.loadVirtualChannelArbitrationTable, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.virtualChannelArbitrationSelect,    static_cast<u16>(6));
+        TEST_ASSERT_EQUALS(temp.__reserved,                         static_cast<u16>(791));
 
 
 
         // |           00110001            |
         // |     0111      |    110    | 0 |
-        temp.loadVirtualChannelArbitrationTable = 0;
+        temp.loadVirtualChannelArbitrationTable = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x317C);
 
@@ -7175,7 +7175,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           00110001            |
         // |     0111      |    001    | 0 |
-        temp.virtualChannelArbitrationSelect = 1;
+        temp.virtualChannelArbitrationSelect = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3172);
 
@@ -7183,7 +7183,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           11001110            |
         // |     1000      |    001    | 0 |
-        temp.__reserved = 3304;
+        temp.__reserved = static_cast<u16>(3304);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xCE82);
     }
@@ -7220,13 +7220,13 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10010110            |
         temp.value32 = 0xFFBE5F96;
 
-        TEST_ASSERT_EQUALS(temp.portArbitrationCapability,  150);
-        TEST_ASSERT_EQUALS(temp.__reserved,                 31);
-        TEST_ASSERT_EQUALS(temp.undefined,                  1);
-        TEST_ASSERT_EQUALS(temp.rejectSnoopTransactions,    0);
-        TEST_ASSERT_EQUALS(temp.maximumTimeSlots,           62);
-        TEST_ASSERT_EQUALS(temp.__reserved2,                1);
-        TEST_ASSERT_EQUALS(temp.portArbitrationTableOffset, 255);
+        TEST_ASSERT_EQUALS(temp.portArbitrationCapability,  static_cast<u32>(150));
+        TEST_ASSERT_EQUALS(temp.__reserved,                 static_cast<u32>(31));
+        TEST_ASSERT_EQUALS(temp.undefined,                  static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.rejectSnoopTransactions,    static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.maximumTimeSlots,           static_cast<u32>(62));
+        TEST_ASSERT_EQUALS(temp.__reserved2,                static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.portArbitrationTableOffset, static_cast<u32>(255));
 
 
 
@@ -7234,7 +7234,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |          0111110          |
         // | 0 | 1 |        011111         |
         // |           01101001            |
-        temp.portArbitrationCapability = 105;
+        temp.portArbitrationCapability = static_cast<u32>(105);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xFFBE5F69);
 
@@ -7244,7 +7244,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |          0111110          |
         // | 0 | 1 |        100000         |
         // |           01101001            |
-        temp.__reserved = 32;
+        temp.__reserved = static_cast<u32>(32);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xFFBE6069);
 
@@ -7254,7 +7254,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |          0111110          |
         // | 0 | 0 |        100000         |
         // |           01101001            |
-        temp.undefined = 0;
+        temp.undefined = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xFFBE2069);
 
@@ -7264,7 +7264,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |          0111110          |
         // | 1 | 0 |        100000         |
         // |           01101001            |
-        temp.rejectSnoopTransactions = 1;
+        temp.rejectSnoopTransactions = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xFFBEA069);
 
@@ -7274,7 +7274,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |          1000001          |
         // | 1 | 0 |        100000         |
         // |           01101001            |
-        temp.maximumTimeSlots = 65;
+        temp.maximumTimeSlots = static_cast<u32>(65);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xFFC1A069);
 
@@ -7284,7 +7284,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 |          1000001          |
         // | 1 | 0 |        100000         |
         // |           01101001            |
-        temp.__reserved2 = 0;
+        temp.__reserved2 = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xFF41A069);
 
@@ -7294,7 +7294,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 |          1000001          |
         // | 1 | 0 |        100000         |
         // |           01101001            |
-        temp.portArbitrationTableOffset = 0;
+        temp.portArbitrationTableOffset = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x0041A069);
     }
@@ -7332,14 +7332,14 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01100010            |
         temp.value32 = 0x76B3E362;
 
-        TEST_ASSERT_EQUALS(temp.tcVcMap,                  98);
-        TEST_ASSERT_EQUALS(temp.__reserved,               227);
-        TEST_ASSERT_EQUALS(temp.loadPortArbitrationTable, 1);
-        TEST_ASSERT_EQUALS(temp.portArbitrationSelect,    1);
-        TEST_ASSERT_EQUALS(temp.__reserved2,              11);
-        TEST_ASSERT_EQUALS(temp.virtualChannelId,         6);
-        TEST_ASSERT_EQUALS(temp.__reserved3,              14);
-        TEST_ASSERT_EQUALS(temp.virtualChannelEnable,     0);
+        TEST_ASSERT_EQUALS(temp.tcVcMap,                  static_cast<u32>(98));
+        TEST_ASSERT_EQUALS(temp.__reserved,               static_cast<u32>(227));
+        TEST_ASSERT_EQUALS(temp.loadPortArbitrationTable, static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.portArbitrationSelect,    static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved2,              static_cast<u32>(11));
+        TEST_ASSERT_EQUALS(temp.virtualChannelId,         static_cast<u32>(6));
+        TEST_ASSERT_EQUALS(temp.__reserved3,              static_cast<u32>(14));
+        TEST_ASSERT_EQUALS(temp.virtualChannelEnable,     static_cast<u32>(0));
 
 
 
@@ -7347,7 +7347,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1011      |    001    | 1 |
         // |           11100011            |
         // |           10011101            |
-        temp.tcVcMap = 157;
+        temp.tcVcMap = static_cast<u32>(157);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x76B3E39D);
 
@@ -7357,7 +7357,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1011      |    001    | 1 |
         // |           00011100            |
         // |           10011101            |
-        temp.__reserved = 28;
+        temp.__reserved = static_cast<u32>(28);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x76B31C9D);
 
@@ -7367,7 +7367,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1011      |    001    | 0 |
         // |           00011100            |
         // |           10011101            |
-        temp.loadPortArbitrationTable = 0;
+        temp.loadPortArbitrationTable = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x76B21C9D);
 
@@ -7377,7 +7377,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1011      |    110    | 0 |
         // |           00011100            |
         // |           10011101            |
-        temp.portArbitrationSelect = 6;
+        temp.portArbitrationSelect = static_cast<u32>(6);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x76BC1C9D);
 
@@ -7387,7 +7387,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0100      |    110    | 0 |
         // |           00011100            |
         // |           10011101            |
-        temp.__reserved2 = 4;
+        temp.__reserved2 = static_cast<u32>(4);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x764C1C9D);
 
@@ -7397,7 +7397,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0100      |    110    | 0 |
         // |           00011100            |
         // |           10011101            |
-        temp.virtualChannelId = 1;
+        temp.virtualChannelId = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x714C1C9D);
 
@@ -7407,7 +7407,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0100      |    110    | 0 |
         // |           00011100            |
         // |           10011101            |
-        temp.__reserved3 = 1;
+        temp.__reserved3 = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x094C1C9D);
 
@@ -7417,7 +7417,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0100      |    110    | 0 |
         // |           00011100            |
         // |           10011101            |
-        temp.virtualChannelEnable = 1;
+        temp.virtualChannelEnable = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x894C1C9D);
     }
@@ -7451,20 +7451,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  10   | 0 | 1 | 0 | 0 | 1 | 1 |
         temp.value16 = 0x5D93;
 
-        TEST_ASSERT_EQUALS(temp.is64BitDevice,             1);
-        TEST_ASSERT_EQUALS(temp.support133MHz,             1);
-        TEST_ASSERT_EQUALS(temp.splitCompletionDiscarded,  0);
-        TEST_ASSERT_EQUALS(temp.unexpectedSplitCompletion, 0);
-        TEST_ASSERT_EQUALS(temp.splitCompletionOverrun,    1);
-        TEST_ASSERT_EQUALS(temp.splitRequestDelayed,       0);
-        TEST_ASSERT_EQUALS(temp.secondaryClockFrequency,   6);
-        TEST_ASSERT_EQUALS(temp.__reserved,                46);
+        TEST_ASSERT_EQUALS(temp.is64BitDevice,             static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.support133MHz,             static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.splitCompletionDiscarded,  static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.unexpectedSplitCompletion, static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.splitCompletionOverrun,    static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.splitRequestDelayed,       static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.secondaryClockFrequency,   static_cast<u16>(6));
+        TEST_ASSERT_EQUALS(temp.__reserved,                static_cast<u16>(46));
 
 
 
         // |          0101110          | 1 |
         // |  10   | 0 | 1 | 0 | 0 | 1 | 0 |
-        temp.is64BitDevice = 0;
+        temp.is64BitDevice = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5D92);
 
@@ -7472,7 +7472,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          0101110          | 1 |
         // |  10   | 0 | 1 | 0 | 0 | 0 | 0 |
-        temp.support133MHz = 0;
+        temp.support133MHz = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5D90);
 
@@ -7480,7 +7480,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          0101110          | 1 |
         // |  10   | 0 | 1 | 0 | 1 | 0 | 0 |
-        temp.splitCompletionDiscarded = 1;
+        temp.splitCompletionDiscarded = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5D94);
 
@@ -7488,7 +7488,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          0101110          | 1 |
         // |  10   | 0 | 1 | 1 | 1 | 0 | 0 |
-        temp.unexpectedSplitCompletion = 1;
+        temp.unexpectedSplitCompletion = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5D9C);
 
@@ -7496,7 +7496,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          0101110          | 1 |
         // |  10   | 0 | 0 | 1 | 1 | 0 | 0 |
-        temp.splitCompletionOverrun = 0;
+        temp.splitCompletionOverrun = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5D8C);
 
@@ -7504,7 +7504,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          0101110          | 1 |
         // |  10   | 1 | 0 | 1 | 1 | 0 | 0 |
-        temp.splitRequestDelayed = 1;
+        temp.splitRequestDelayed = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5DAC);
 
@@ -7512,7 +7512,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          0101110          | 0 |
         // |  01   | 1 | 0 | 1 | 1 | 0 | 0 |
-        temp.secondaryClockFrequency = 1;
+        temp.secondaryClockFrequency = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5C6C);
 
@@ -7520,7 +7520,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          1010001          | 0 |
         // |  01   | 1 | 0 | 1 | 1 | 0 | 0 |
-        temp.__reserved = 81;
+        temp.__reserved = static_cast<u16>(81);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xA26C);
     }
@@ -7560,16 +7560,16 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       00010       |    100    |
         temp.value32 = 0x52E10014;
 
-        TEST_ASSERT_EQUALS(temp.functionNumber,            4);
-        TEST_ASSERT_EQUALS(temp.deviceNumber,              2);
-        TEST_ASSERT_EQUALS(temp.busNumber,                 0);
-        TEST_ASSERT_EQUALS(temp.is64BitDevice,             1);
-        TEST_ASSERT_EQUALS(temp.support133MHz,             0);
-        TEST_ASSERT_EQUALS(temp.splitCompletionDiscarded,  0);
-        TEST_ASSERT_EQUALS(temp.unexpectedSplitCompletion, 0);
-        TEST_ASSERT_EQUALS(temp.splitCompletionOverrun,    0);
-        TEST_ASSERT_EQUALS(temp.splitRequestDelayed,       1);
-        TEST_ASSERT_EQUALS(temp.__reserved,                331);
+        TEST_ASSERT_EQUALS(temp.functionNumber,            static_cast<u32>(4));
+        TEST_ASSERT_EQUALS(temp.deviceNumber,              static_cast<u32>(2));
+        TEST_ASSERT_EQUALS(temp.busNumber,                 static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.is64BitDevice,             static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.support133MHz,             static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.splitCompletionDiscarded,  static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.unexpectedSplitCompletion, static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.splitCompletionOverrun,    static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.splitRequestDelayed,       static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved,                static_cast<u32>(331));
 
 
 
@@ -7577,7 +7577,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  11   | 1 | 0 | 0 | 0 | 0 | 1 |
         // |           00000000            |
         // |       00010       |    011    |
-        temp.functionNumber = 3;
+        temp.functionNumber = static_cast<u32>(3);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x52E10013);
 
@@ -7587,7 +7587,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  11   | 1 | 0 | 0 | 0 | 0 | 1 |
         // |           00000000            |
         // |       11101       |    011    |
-        temp.deviceNumber = 29;
+        temp.deviceNumber = static_cast<u32>(29);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x52E100EB);
 
@@ -7597,7 +7597,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  11   | 1 | 0 | 0 | 0 | 0 | 1 |
         // |           11111111            |
         // |       11101       |    011    |
-        temp.busNumber = 255;
+        temp.busNumber = static_cast<u32>(255);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x52E1FFEB);
 
@@ -7607,7 +7607,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  11   | 1 | 0 | 0 | 0 | 0 | 0 |
         // |           11111111            |
         // |       11101       |    011    |
-        temp.is64BitDevice = 0;
+        temp.is64BitDevice = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x52E0FFEB);
 
@@ -7617,7 +7617,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  11   | 1 | 0 | 0 | 0 | 1 | 0 |
         // |           11111111            |
         // |       11101       |    011    |
-        temp.support133MHz = 1;
+        temp.support133MHz = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x52E2FFEB);
 
@@ -7627,7 +7627,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  11   | 1 | 0 | 0 | 1 | 1 | 0 |
         // |           11111111            |
         // |       11101       |    011    |
-        temp.splitCompletionDiscarded = 1;
+        temp.splitCompletionDiscarded = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x52E6FFEB);
 
@@ -7637,7 +7637,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  11   | 1 | 0 | 1 | 1 | 1 | 0 |
         // |           11111111            |
         // |       11101       |    011    |
-        temp.unexpectedSplitCompletion = 1;
+        temp.unexpectedSplitCompletion = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x52EEFFEB);
 
@@ -7647,7 +7647,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  11   | 1 | 1 | 1 | 1 | 1 | 0 |
         // |           11111111            |
         // |       11101       |    011    |
-        temp.splitCompletionOverrun = 1;
+        temp.splitCompletionOverrun = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x52FEFFEB);
 
@@ -7657,7 +7657,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  11   | 0 | 1 | 1 | 1 | 1 | 0 |
         // |           11111111            |
         // |       11101       |    011    |
-        temp.splitRequestDelayed = 0;
+        temp.splitRequestDelayed = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x52DEFFEB);
 
@@ -7667,7 +7667,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  00   | 0 | 1 | 1 | 1 | 1 | 0 |
         // |           11111111            |
         // |       11101       |    011    |
-        temp.__reserved = 692;
+        temp.__reserved = static_cast<u32>(692);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xAD1EFFEB);
     }
@@ -7698,17 +7698,17 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 |    111    |  10   | 0 | 0 |
         temp.value16 = 0xB478;
 
-        TEST_ASSERT_EQUALS(temp.enableDataParityErrorRecovery,       0);
-        TEST_ASSERT_EQUALS(temp.enableRelaxedOrdering,               0);
-        TEST_ASSERT_EQUALS(temp.maximumMemoryReadByteCount,          2);
-        TEST_ASSERT_EQUALS(temp.maximumOutstandingSplitTransactions, 7);
-        TEST_ASSERT_EQUALS(temp.__reserved,                          360);
+        TEST_ASSERT_EQUALS(temp.enableDataParityErrorRecovery,       static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.enableRelaxedOrdering,               static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.maximumMemoryReadByteCount,          static_cast<u16>(2));
+        TEST_ASSERT_EQUALS(temp.maximumOutstandingSplitTransactions, static_cast<u16>(7));
+        TEST_ASSERT_EQUALS(temp.__reserved,                          static_cast<u16>(360));
 
 
 
         // |           10110100            |
         // | 0 |    111    |  10   | 0 | 1 |
-        temp.enableDataParityErrorRecovery = 1;
+        temp.enableDataParityErrorRecovery = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xB479);
 
@@ -7716,7 +7716,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           10110100            |
         // | 0 |    111    |  10   | 1 | 1 |
-        temp.enableRelaxedOrdering = 1;
+        temp.enableRelaxedOrdering = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xB47B);
 
@@ -7724,7 +7724,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           10110100            |
         // | 0 |    111    |  01   | 1 | 1 |
-        temp.maximumMemoryReadByteCount = 1;
+        temp.maximumMemoryReadByteCount = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xB477);
 
@@ -7732,7 +7732,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           10110100            |
         // | 0 |    000    |  01   | 1 | 1 |
-        temp.maximumOutstandingSplitTransactions = 0;
+        temp.maximumOutstandingSplitTransactions = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xB407);
 
@@ -7740,7 +7740,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |           01001011            |
         // | 1 |    000    |  01   | 1 | 1 |
-        temp.__reserved = 151;
+        temp.__reserved = static_cast<u16>(151);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x4B87);
     }
@@ -7783,19 +7783,19 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       11110       |    100    |
         temp.value32 = 0x460C76F4;
 
-        TEST_ASSERT_EQUALS(temp.functionNumber,                              4);
-        TEST_ASSERT_EQUALS(temp.deviceNumber,                                30);
-        TEST_ASSERT_EQUALS(temp.busNumber,                                   118);
-        TEST_ASSERT_EQUALS(temp.is64BitDevice,                               0);
-        TEST_ASSERT_EQUALS(temp.support133MHz,                               0);
-        TEST_ASSERT_EQUALS(temp.splitCompletionDiscarded,                    1);
-        TEST_ASSERT_EQUALS(temp.unexpectedSplitCompletion,                   1);
-        TEST_ASSERT_EQUALS(temp.deviceComplexity,                            0);
-        TEST_ASSERT_EQUALS(temp.designedMaximumMemoryReadByteCount,          0);
-        TEST_ASSERT_EQUALS(temp.designedMaximumOutstandingSplitTransactions, 4);
-        TEST_ASSERT_EQUALS(temp.designedMaximumCumulativeReadSize,           1);
-        TEST_ASSERT_EQUALS(temp.receivedSplitCompletionErrorMessage,         0);
-        TEST_ASSERT_EQUALS(temp.__reserved,                                  1);
+        TEST_ASSERT_EQUALS(temp.functionNumber,                              static_cast<u32>(4));
+        TEST_ASSERT_EQUALS(temp.deviceNumber,                                static_cast<u32>(30));
+        TEST_ASSERT_EQUALS(temp.busNumber,                                   static_cast<u32>(118));
+        TEST_ASSERT_EQUALS(temp.is64BitDevice,                               static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.support133MHz,                               static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.splitCompletionDiscarded,                    static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.unexpectedSplitCompletion,                   static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.deviceComplexity,                            static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.designedMaximumMemoryReadByteCount,          static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.designedMaximumOutstandingSplitTransactions, static_cast<u32>(4));
+        TEST_ASSERT_EQUALS(temp.designedMaximumCumulativeReadSize,           static_cast<u32>(1));
+        TEST_ASSERT_EQUALS(temp.receivedSplitCompletionErrorMessage,         static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved,                                  static_cast<u32>(1));
 
 
 
@@ -7803,7 +7803,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 |  00   | 0 | 1 | 1 | 0 | 0 |
         // |           01110110            |
         // |       11110       |    011    |
-        temp.functionNumber = 3;
+        temp.functionNumber = static_cast<u32>(3);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x460C76F3);
 
@@ -7813,7 +7813,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 |  00   | 0 | 1 | 1 | 0 | 0 |
         // |           01110110            |
         // |       00001       |    011    |
-        temp.deviceNumber = 1;
+        temp.deviceNumber = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x460C760B);
 
@@ -7823,7 +7823,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 |  00   | 0 | 1 | 1 | 0 | 0 |
         // |           10001001            |
         // |       00001       |    011    |
-        temp.busNumber = 137;
+        temp.busNumber = static_cast<u32>(137);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x460C890B);
 
@@ -7833,7 +7833,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 |  00   | 0 | 1 | 1 | 0 | 1 |
         // |           10001001            |
         // |       00001       |    011    |
-        temp.is64BitDevice = 1;
+        temp.is64BitDevice = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x460D890B);
 
@@ -7843,7 +7843,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 |  00   | 0 | 1 | 1 | 1 | 1 |
         // |           10001001            |
         // |       00001       |    011    |
-        temp.support133MHz = 1;
+        temp.support133MHz = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x460F890B);
 
@@ -7853,7 +7853,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 |  00   | 0 | 1 | 0 | 1 | 1 |
         // |           10001001            |
         // |       00001       |    011    |
-        temp.splitCompletionDiscarded = 0;
+        temp.splitCompletionDiscarded = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x460B890B);
 
@@ -7863,7 +7863,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 |  00   | 0 | 0 | 0 | 1 | 1 |
         // |           10001001            |
         // |       00001       |    011    |
-        temp.unexpectedSplitCompletion = 0;
+        temp.unexpectedSplitCompletion = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x4603890B);
 
@@ -7873,7 +7873,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 |  00   | 1 | 0 | 0 | 1 | 1 |
         // |           10001001            |
         // |       00001       |    011    |
-        temp.deviceComplexity = 1;
+        temp.deviceComplexity = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x4613890B);
 
@@ -7883,7 +7883,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 |  11   | 1 | 0 | 0 | 1 | 1 |
         // |           10001001            |
         // |       00001       |    011    |
-        temp.designedMaximumMemoryReadByteCount = 3;
+        temp.designedMaximumMemoryReadByteCount = static_cast<u32>(3);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x4673890B);
 
@@ -7893,7 +7893,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |  11   | 1 | 0 | 0 | 1 | 1 |
         // |           10001001            |
         // |       00001       |    011    |
-        temp.designedMaximumOutstandingSplitTransactions = 3;
+        temp.designedMaximumOutstandingSplitTransactions = static_cast<u32>(3);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x45F3890B);
 
@@ -7903,7 +7903,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |  11   | 1 | 0 | 0 | 1 | 1 |
         // |           10001001            |
         // |       00001       |    011    |
-        temp.designedMaximumCumulativeReadSize = 6;
+        temp.designedMaximumCumulativeReadSize = static_cast<u32>(6);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x59F3890B);
 
@@ -7913,7 +7913,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |  11   | 1 | 0 | 0 | 1 | 1 |
         // |           10001001            |
         // |       00001       |    011    |
-        temp.receivedSplitCompletionErrorMessage = 1;
+        temp.receivedSplitCompletionErrorMessage = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x79F3890B);
 
@@ -7923,7 +7923,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |  11   | 1 | 0 | 0 | 1 | 1 |
         // |           10001001            |
         // |       00001       |    011    |
-        temp.__reserved = 2;
+        temp.__reserved = static_cast<u32>(2);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xB9F3890B);
     }
@@ -7949,20 +7949,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 | 1111111 |
         temp.value8 = 0x7F;
 
-        TEST_ASSERT_EQUALS(temp.type,            127);
-        TEST_ASSERT_EQUALS(temp.isMultiFunction, 0);
+        TEST_ASSERT_EQUALS(temp.type,            static_cast<u8>(127));
+        TEST_ASSERT_EQUALS(temp.isMultiFunction, static_cast<u8>(0));
 
 
 
         // | 0 | 0000000 |
-        temp.type = 0;
+        temp.type = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x00);
 
 
 
         // | 1 | 0000000 |
-        temp.isMultiFunction = 1;
+        temp.isMultiFunction = static_cast<u8>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x80);
     }
@@ -7990,14 +7990,14 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01001001            |
         temp.value16 = 0x6C49;
 
-        TEST_ASSERT_EQUALS(temp.__reserved,     3145);
-        TEST_ASSERT_EQUALS(temp.capabilityType, 3);
+        TEST_ASSERT_EQUALS(temp.__reserved,     static_cast<u16>(3145));
+        TEST_ASSERT_EQUALS(temp.capabilityType, static_cast<u16>(3));
 
 
 
         // |    011    |       10011       |
         // |           10110110            |
-        temp.__reserved = 5046;
+        temp.__reserved = static_cast<u16>(5046);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x73B6);
 
@@ -8005,7 +8005,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    100    |       10011       |
         // |           10110110            |
-        temp.capabilityType = 4;
+        temp.capabilityType = static_cast<u16>(4);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x93B6);
     }
@@ -8041,22 +8041,22 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |       11001       | 1 | 0 |
         temp.value16 = 0x26E6;
 
-        TEST_ASSERT_EQUALS(temp.warmReset,                  0);
-        TEST_ASSERT_EQUALS(temp.doubleEnded,                1);
-        TEST_ASSERT_EQUALS(temp.deviceNumber,               25);
-        TEST_ASSERT_EQUALS(temp.chainSide,                  1);
-        TEST_ASSERT_EQUALS(temp.hostHide,                   0);
-        TEST_ASSERT_EQUALS(temp.__reserved,                 1);
-        TEST_ASSERT_EQUALS(temp.actAsSlave,                 1);
-        TEST_ASSERT_EQUALS(temp.hostInboundEndOfChainError, 0);
-        TEST_ASSERT_EQUALS(temp.dropOnUninit,               0);
-        TEST_ASSERT_EQUALS(temp.capabilityType,             1);
+        TEST_ASSERT_EQUALS(temp.warmReset,                  static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.doubleEnded,                static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.deviceNumber,               static_cast<u16>(25));
+        TEST_ASSERT_EQUALS(temp.chainSide,                  static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.hostHide,                   static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved,                 static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.actAsSlave,                 static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.hostInboundEndOfChainError, static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.dropOnUninit,               static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.capabilityType,             static_cast<u16>(1));
 
 
 
         // |    001    | 0 | 0 | 1 | 1 | 0 |
         // | 1 |       11001       | 1 | 1 |
-        temp.warmReset = 1;
+        temp.warmReset = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x26E7);
 
@@ -8064,7 +8064,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 | 0 | 1 | 1 | 0 |
         // | 1 |       11001       | 0 | 1 |
-        temp.doubleEnded = 0;
+        temp.doubleEnded = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x26E5);
 
@@ -8072,7 +8072,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 | 0 | 1 | 1 | 0 |
         // | 1 |       00110       | 0 | 1 |
-        temp.deviceNumber = 6;
+        temp.deviceNumber = static_cast<u16>(6);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2699);
 
@@ -8080,7 +8080,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 | 0 | 1 | 1 | 0 |
         // | 0 |       00110       | 0 | 1 |
-        temp.chainSide = 0;
+        temp.chainSide = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2619);
 
@@ -8088,7 +8088,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 | 0 | 1 | 1 | 1 |
         // | 0 |       00110       | 0 | 1 |
-        temp.hostHide = 1;
+        temp.hostHide = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2719);
 
@@ -8096,7 +8096,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 | 0 | 1 | 0 | 1 |
         // | 0 |       00110       | 0 | 1 |
-        temp.__reserved = 0;
+        temp.__reserved = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2519);
 
@@ -8104,7 +8104,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 | 0 | 0 | 0 | 1 |
         // | 0 |       00110       | 0 | 1 |
-        temp.actAsSlave = 0;
+        temp.actAsSlave = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2119);
 
@@ -8112,7 +8112,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 0 | 1 | 0 | 0 | 1 |
         // | 0 |       00110       | 0 | 1 |
-        temp.hostInboundEndOfChainError = 1;
+        temp.hostInboundEndOfChainError = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2919);
 
@@ -8120,7 +8120,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    001    | 1 | 1 | 0 | 0 | 1 |
         // | 0 |       00110       | 0 | 1 |
-        temp.dropOnUninit = 1;
+        temp.dropOnUninit = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3919);
 
@@ -8128,7 +8128,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    110    | 1 | 1 | 0 | 0 | 1 |
         // | 0 |       00110       | 0 | 1 |
-        temp.capabilityType = 6;
+        temp.capabilityType = static_cast<u16>(6);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xD919);
     }
@@ -8162,20 +8162,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |    100    | 0 |    111    |
         temp.value16 = 0x3AC7;
 
-        TEST_ASSERT_EQUALS(temp.maximumLinkWidthIn,             7);
-        TEST_ASSERT_EQUALS(temp.doublewordFlowControlIn,        0);
-        TEST_ASSERT_EQUALS(temp.maximumLinkWidthOut,            4);
-        TEST_ASSERT_EQUALS(temp.doublewordFlowControlOut,       1);
-        TEST_ASSERT_EQUALS(temp.linkWidthIn,                    2);
-        TEST_ASSERT_EQUALS(temp.enableDoublewordFlowControlIn,  1);
-        TEST_ASSERT_EQUALS(temp.linkWidthOut,                   3);
-        TEST_ASSERT_EQUALS(temp.enableDoublewordFlowControlOut, 0);
+        TEST_ASSERT_EQUALS(temp.maximumLinkWidthIn,             static_cast<u16>(7));
+        TEST_ASSERT_EQUALS(temp.doublewordFlowControlIn,        static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.maximumLinkWidthOut,            static_cast<u16>(4));
+        TEST_ASSERT_EQUALS(temp.doublewordFlowControlOut,       static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.linkWidthIn,                    static_cast<u16>(2));
+        TEST_ASSERT_EQUALS(temp.enableDoublewordFlowControlIn,  static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.linkWidthOut,                   static_cast<u16>(3));
+        TEST_ASSERT_EQUALS(temp.enableDoublewordFlowControlOut, static_cast<u16>(0));
 
 
 
         // | 0 |    011    | 1 |    010    |
         // | 1 |    100    | 0 |    000    |
-        temp.maximumLinkWidthIn = 0;
+        temp.maximumLinkWidthIn = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3AC0);
 
@@ -8183,7 +8183,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    011    | 1 |    010    |
         // | 1 |    100    | 1 |    000    |
-        temp.doublewordFlowControlIn = 1;
+        temp.doublewordFlowControlIn = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3AC8);
 
@@ -8191,7 +8191,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    011    | 1 |    010    |
         // | 1 |    011    | 1 |    000    |
-        temp.maximumLinkWidthOut = 3;
+        temp.maximumLinkWidthOut = static_cast<u16>(3);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3AB8);
 
@@ -8199,7 +8199,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    011    | 1 |    010    |
         // | 0 |    011    | 1 |    000    |
-        temp.doublewordFlowControlOut = 0;
+        temp.doublewordFlowControlOut = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3A38);
 
@@ -8207,7 +8207,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    011    | 1 |    101    |
         // | 0 |    011    | 1 |    000    |
-        temp.linkWidthIn = 5;
+        temp.linkWidthIn = static_cast<u16>(5);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3D38);
 
@@ -8215,7 +8215,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    011    | 0 |    101    |
         // | 0 |    011    | 1 |    000    |
-        temp.enableDoublewordFlowControlIn = 0;
+        temp.enableDoublewordFlowControlIn = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3538);
 
@@ -8223,7 +8223,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    100    | 0 |    101    |
         // | 0 |    011    | 1 |    000    |
-        temp.linkWidthOut = 4;
+        temp.linkWidthOut = static_cast<u16>(4);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x4538);
 
@@ -8231,7 +8231,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |    100    | 0 |    101    |
         // | 0 |    011    | 1 |    000    |
-        temp.enableDoublewordFlowControlOut = 1;
+        temp.enableDoublewordFlowControlOut = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC538);
     }
@@ -8270,25 +8270,25 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 | 1 | 0 | 1 | 0 | 0 | 1 | 0 |
         temp.value16 = 0xEA52;
 
-        TEST_ASSERT_EQUALS(temp.enableSourceId,               0);
-        TEST_ASSERT_EQUALS(temp.enableCrcFlood,               1);
-        TEST_ASSERT_EQUALS(temp.crcStartTest,                 0);
-        TEST_ASSERT_EQUALS(temp.crcForceError,                0);
-        TEST_ASSERT_EQUALS(temp.linkFailure,                  1);
-        TEST_ASSERT_EQUALS(temp.initializationComplete,       0);
-        TEST_ASSERT_EQUALS(temp.endOfChain,                   1);
-        TEST_ASSERT_EQUALS(temp.transmitterOff,               0);
-        TEST_ASSERT_EQUALS(temp.crcError,                     10);
-        TEST_ASSERT_EQUALS(temp.enableIsochronousFlowControl, 0);
-        TEST_ASSERT_EQUALS(temp.enableLdtStopTristate,        1);
-        TEST_ASSERT_EQUALS(temp.extendedCtlTime,              1);
-        TEST_ASSERT_EQUALS(temp.enable64BitAddressing,        1);
+        TEST_ASSERT_EQUALS(temp.enableSourceId,               static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.enableCrcFlood,               static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.crcStartTest,                 static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.crcForceError,                static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.linkFailure,                  static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.initializationComplete,       static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.endOfChain,                   static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.transmitterOff,               static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.crcError,                     static_cast<u16>(10));
+        TEST_ASSERT_EQUALS(temp.enableIsochronousFlowControl, static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.enableLdtStopTristate,        static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.extendedCtlTime,              static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.enable64BitAddressing,        static_cast<u16>(1));
 
 
 
         // | 1 | 1 | 1 | 0 |     1010      |
         // | 0 | 1 | 0 | 1 | 0 | 0 | 1 | 1 |
-        temp.enableSourceId = 1;
+        temp.enableSourceId = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xEA53);
 
@@ -8296,7 +8296,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 1 | 0 |     1010      |
         // | 0 | 1 | 0 | 1 | 0 | 0 | 0 | 1 |
-        temp.enableCrcFlood = 0;
+        temp.enableCrcFlood = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xEA51);
 
@@ -8304,7 +8304,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 1 | 0 |     1010      |
         // | 0 | 1 | 0 | 1 | 0 | 1 | 0 | 1 |
-        temp.crcStartTest = 1;
+        temp.crcStartTest = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xEA55);
 
@@ -8312,7 +8312,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 1 | 0 |     1010      |
         // | 0 | 1 | 0 | 1 | 1 | 1 | 0 | 1 |
-        temp.crcForceError = 1;
+        temp.crcForceError = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xEA5D);
 
@@ -8320,7 +8320,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 1 | 0 |     1010      |
         // | 0 | 1 | 0 | 0 | 1 | 1 | 0 | 1 |
-        temp.linkFailure = 0;
+        temp.linkFailure = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xEA4D);
 
@@ -8328,7 +8328,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 1 | 0 |     1010      |
         // | 0 | 1 | 1 | 0 | 1 | 1 | 0 | 1 |
-        temp.initializationComplete = 1;
+        temp.initializationComplete = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xEA6D);
 
@@ -8336,7 +8336,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 1 | 0 |     1010      |
         // | 0 | 0 | 1 | 0 | 1 | 1 | 0 | 1 |
-        temp.endOfChain = 0;
+        temp.endOfChain = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xEA2D);
 
@@ -8344,7 +8344,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 1 | 0 |     1010      |
         // | 1 | 0 | 1 | 0 | 1 | 1 | 0 | 1 |
-        temp.transmitterOff = 1;
+        temp.transmitterOff = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xEAAD);
 
@@ -8352,7 +8352,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 1 | 0 |     0101      |
         // | 1 | 0 | 1 | 0 | 1 | 1 | 0 | 1 |
-        temp.crcError = 5;
+        temp.crcError = static_cast<u16>(5);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xE5AD);
 
@@ -8360,7 +8360,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 1 | 1 |     0101      |
         // | 1 | 0 | 1 | 0 | 1 | 1 | 0 | 1 |
-        temp.enableIsochronousFlowControl = 1;
+        temp.enableIsochronousFlowControl = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xF5AD);
 
@@ -8368,7 +8368,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 0 | 1 |     0101      |
         // | 1 | 0 | 1 | 0 | 1 | 1 | 0 | 1 |
-        temp.enableLdtStopTristate = 0;
+        temp.enableLdtStopTristate = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xD5AD);
 
@@ -8376,7 +8376,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 0 | 0 | 1 |     0101      |
         // | 1 | 0 | 1 | 0 | 1 | 1 | 0 | 1 |
-        temp.extendedCtlTime = 0;
+        temp.extendedCtlTime = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x95AD);
 
@@ -8384,7 +8384,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 0 | 0 | 1 |     0101      |
         // | 1 | 0 | 1 | 0 | 1 | 1 | 0 | 1 |
-        temp.enable64BitAddressing = 0;
+        temp.enable64BitAddressing = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x15AD);
     }
@@ -8410,20 +8410,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0000 | 0001 |
         temp.value8 = 0x01;
 
-        TEST_ASSERT_EQUALS(temp.frequency, 1);
-        TEST_ASSERT_EQUALS(temp.error,     0);
+        TEST_ASSERT_EQUALS(temp.frequency, static_cast<u8>(1));
+        TEST_ASSERT_EQUALS(temp.error,     static_cast<u8>(0));
 
 
 
         // | 0000 | 1110 |
-        temp.frequency = 14;
+        temp.frequency = static_cast<u8>(14);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x0E);
 
 
 
         // | 1111 | 1110 |
-        temp.error = 15;
+        temp.error = static_cast<u8>(15);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xFE);
     }
@@ -8455,18 +8455,18 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |    101    |       10011       |
         temp.value16 = 0x88B3;
 
-        TEST_ASSERT_EQUALS(temp.baseUnitId,       19);
-        TEST_ASSERT_EQUALS(temp.unitCount,        5);
-        TEST_ASSERT_EQUALS(temp.masterHost,       0);
-        TEST_ASSERT_EQUALS(temp.defaultDirection, 1);
-        TEST_ASSERT_EQUALS(temp.dropOnUninit,     0);
-        TEST_ASSERT_EQUALS(temp.capabilityType,   4);
+        TEST_ASSERT_EQUALS(temp.baseUnitId,       static_cast<u16>(19));
+        TEST_ASSERT_EQUALS(temp.unitCount,        static_cast<u16>(5));
+        TEST_ASSERT_EQUALS(temp.masterHost,       static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.defaultDirection, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.dropOnUninit,     static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.capabilityType,   static_cast<u16>(4));
 
 
 
         // |    100    | 0 | 1 | 0 |  00   |
         // |    101    |       01100       |
-        temp.baseUnitId = 12;
+        temp.baseUnitId = static_cast<u16>(12);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x88AC);
 
@@ -8474,7 +8474,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    100    | 0 | 1 | 0 |  11   |
         // |    010    |       01100       |
-        temp.unitCount = 26;
+        temp.unitCount = static_cast<u16>(26);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x8B4C);
 
@@ -8482,7 +8482,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    100    | 0 | 1 | 1 |  11   |
         // |    010    |       01100       |
-        temp.masterHost = 1;
+        temp.masterHost = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x8F4C);
 
@@ -8490,7 +8490,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    100    | 0 | 0 | 1 |  11   |
         // |    010    |       01100       |
-        temp.defaultDirection = 0;
+        temp.defaultDirection = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x874C);
 
@@ -8498,7 +8498,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    100    | 1 | 0 | 1 |  11   |
         // |    010    |       01100       |
-        temp.dropOnUninit = 1;
+        temp.dropOnUninit = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x974C);
 
@@ -8506,7 +8506,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |    011    | 1 | 0 | 1 |  11   |
         // |    010    |       01100       |
-        temp.capabilityType = 3;
+        temp.capabilityType = static_cast<u16>(3);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x774C);
     }
@@ -8535,15 +8535,15 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10110010            |
         temp.value16 = 0xB5B2;
 
-        TEST_ASSERT_EQUALS(temp.tableSize,  1458);
-        TEST_ASSERT_EQUALS(temp.__reserved, 6);
-        TEST_ASSERT_EQUALS(temp.enableMSIX, 1);
+        TEST_ASSERT_EQUALS(temp.tableSize,  static_cast<u16>(1458));
+        TEST_ASSERT_EQUALS(temp.__reserved, static_cast<u16>(6));
+        TEST_ASSERT_EQUALS(temp.enableMSIX, static_cast<u16>(1));
 
 
 
         // | 1 |     0110      |    010    |
         // |           01001101            |
-        temp.tableSize = 589;
+        temp.tableSize = static_cast<u16>(589);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xB24D);
 
@@ -8551,7 +8551,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |     1001      |    010    |
         // |           01001101            |
-        temp.__reserved = 9;
+        temp.__reserved = static_cast<u16>(9);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xCA4D);
 
@@ -8559,7 +8559,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |     1001      |    010    |
         // |           01001101            |
-        temp.enableMSIX = 0;
+        temp.enableMSIX = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x4A4D);
     }
@@ -8591,8 +8591,8 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       11000       |    111    |
         temp.value32 = 0x286C39C7;
 
-        TEST_ASSERT_EQUALS(temp.baseAddressIndicator, 7);
-        TEST_ASSERT_EQUALS(temp.tableOffset,          84772664);
+        TEST_ASSERT_EQUALS(temp.baseAddressIndicator, static_cast<u32>(7));
+        TEST_ASSERT_EQUALS(temp.tableOffset,          static_cast<u32>(84772664));
 
 
 
@@ -8600,7 +8600,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01101100            |
         // |           00111001            |
         // |       11000       |    000    |
-        temp.baseAddressIndicator = 0;
+        temp.baseAddressIndicator = static_cast<u32>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x286C39C0);
 
@@ -8610,7 +8610,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           10010011            |
         // |           11000110            |
         // |       00111       |    000    |
-        temp.tableOffset = 452098247;
+        temp.tableOffset = static_cast<u32>(452098247);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xD793C638);
     }
@@ -8642,8 +8642,8 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        101001         |  10   |
         temp.value32 = 0xC4D4A9A6;
 
-        TEST_ASSERT_EQUALS(temp.__reserved, 2);
-        TEST_ASSERT_EQUALS(temp.value,      825567849);
+        TEST_ASSERT_EQUALS(temp.__reserved, static_cast<u32>(2));
+        TEST_ASSERT_EQUALS(temp.value,      static_cast<u32>(825567849));
 
 
 
@@ -8651,7 +8651,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11010100            |
         // |           10101001            |
         // |        101001         |  01   |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u32>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xC4D4A9A5);
 
@@ -8661,7 +8661,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00101011            |
         // |           01010110            |
         // |        010110         |  01   |
-        temp.value = 248173974;
+        temp.value = static_cast<u32>(248173974);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x3B2B5659);
     }
@@ -8693,18 +8693,18 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 |    011    |    011    | 1 |
         temp.value16 = 0x7DB7;
 
-        TEST_ASSERT_EQUALS(temp.enableMSI,               1);
-        TEST_ASSERT_EQUALS(temp.supportMultipleMessage,  3);
-        TEST_ASSERT_EQUALS(temp.enableMultipleMessage,   3);
-        TEST_ASSERT_EQUALS(temp.support64BitAddress,     1);
-        TEST_ASSERT_EQUALS(temp.supportPerVectorMasking, 1);
-        TEST_ASSERT_EQUALS(temp.__reserved,              62);
+        TEST_ASSERT_EQUALS(temp.enableMSI,               static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.supportMultipleMessage,  static_cast<u16>(3));
+        TEST_ASSERT_EQUALS(temp.enableMultipleMessage,   static_cast<u16>(3));
+        TEST_ASSERT_EQUALS(temp.support64BitAddress,     static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.supportPerVectorMasking, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved,              static_cast<u16>(62));
 
 
 
         // |          0111110          | 1 |
         // | 1 |    011    |    011    | 0 |
-        temp.enableMSI = 0;
+        temp.enableMSI = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x7DB6);
 
@@ -8712,7 +8712,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          0111110          | 1 |
         // | 1 |    011    |    100    | 0 |
-        temp.supportMultipleMessage = 4;
+        temp.supportMultipleMessage = static_cast<u16>(4);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x7DB8);
 
@@ -8720,7 +8720,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          0111110          | 1 |
         // | 1 |    100    |    100    | 0 |
-        temp.enableMultipleMessage = 4;
+        temp.enableMultipleMessage = static_cast<u16>(4);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x7DC8);
 
@@ -8728,7 +8728,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          0111110          | 1 |
         // | 0 |    100    |    100    | 0 |
-        temp.support64BitAddress = 0;
+        temp.support64BitAddress = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x7D48);
 
@@ -8736,7 +8736,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          0111110          | 0 |
         // | 0 |    100    |    100    | 0 |
-        temp.supportPerVectorMasking = 0;
+        temp.supportPerVectorMasking = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x7C48);
 
@@ -8744,7 +8744,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |          1000001          | 0 |
         // | 0 |    100    |    100    | 0 |
-        temp.__reserved = 65;
+        temp.__reserved = static_cast<u16>(65);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x8248);
     }
@@ -8771,28 +8771,28 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 | 0 | 010011 |
         temp.value8 = 0x13;
 
-        TEST_ASSERT_EQUALS(temp.__reserved,           19);
-        TEST_ASSERT_EQUALS(temp.b2B3ForD3Hot,         0);
-        TEST_ASSERT_EQUALS(temp.busPowerClockControl, 0);
+        TEST_ASSERT_EQUALS(temp.__reserved,           static_cast<u8>(19));
+        TEST_ASSERT_EQUALS(temp.b2B3ForD3Hot,         static_cast<u8>(0));
+        TEST_ASSERT_EQUALS(temp.busPowerClockControl, static_cast<u8>(0));
 
 
 
         // | 0 | 0 | 101100 |
-        temp.__reserved = 44;
+        temp.__reserved = static_cast<u8>(44);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x2C);
 
 
 
         // | 0 | 1 | 101100 |
-        temp.b2B3ForD3Hot = 1;
+        temp.b2B3ForD3Hot = static_cast<u8>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x6C);
 
 
 
         // | 1 | 1 | 101100 |
-        temp.busPowerClockControl = 1;
+        temp.busPowerClockControl = static_cast<u8>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xEC);
     }
@@ -8826,20 +8826,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  10   | 1 | 0 | 1 |    110    |
         temp.value16 = 0xC9AE;
 
-        TEST_ASSERT_EQUALS(temp.version,                      6);
-        TEST_ASSERT_EQUALS(temp.pmeClock,                     1);
-        TEST_ASSERT_EQUALS(temp.__reserved,                   0);
-        TEST_ASSERT_EQUALS(temp.deviceSpecificInitialization, 1);
-        TEST_ASSERT_EQUALS(temp.auxCurrent,                   6);
-        TEST_ASSERT_EQUALS(temp.supportD1,                    0);
-        TEST_ASSERT_EQUALS(temp.supportD2,                    0);
-        TEST_ASSERT_EQUALS(temp.supportPme,                   25);
+        TEST_ASSERT_EQUALS(temp.version,                      static_cast<u16>(6));
+        TEST_ASSERT_EQUALS(temp.pmeClock,                     static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved,                   static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.deviceSpecificInitialization, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.auxCurrent,                   static_cast<u16>(6));
+        TEST_ASSERT_EQUALS(temp.supportD1,                    static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.supportD2,                    static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.supportPme,                   static_cast<u16>(25));
 
 
 
         // |       11001       | 0 | 0 | 1 |
         // |  10   | 1 | 0 | 1 |    001    |
-        temp.version = 1;
+        temp.version = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC9A9);
 
@@ -8847,7 +8847,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |       11001       | 0 | 0 | 1 |
         // |  10   | 1 | 0 | 0 |    001    |
-        temp.pmeClock = 0;
+        temp.pmeClock = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC9A1);
 
@@ -8855,7 +8855,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |       11001       | 0 | 0 | 1 |
         // |  10   | 1 | 1 | 0 |    001    |
-        temp.__reserved = 1;
+        temp.__reserved = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC9B1);
 
@@ -8863,7 +8863,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |       11001       | 0 | 0 | 1 |
         // |  10   | 0 | 1 | 0 |    001    |
-        temp.deviceSpecificInitialization = 0;
+        temp.deviceSpecificInitialization = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC991);
 
@@ -8871,7 +8871,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |       11001       | 0 | 0 | 0 |
         // |  01   | 0 | 1 | 0 |    001    |
-        temp.auxCurrent = 1;
+        temp.auxCurrent = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC851);
 
@@ -8879,7 +8879,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |       11001       | 0 | 1 | 0 |
         // |  01   | 0 | 1 | 0 |    001    |
-        temp.supportD1 = 1;
+        temp.supportD1 = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xCA51);
 
@@ -8887,7 +8887,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |       11001       | 1 | 1 | 0 |
         // |  01   | 0 | 1 | 0 |    001    |
-        temp.supportD2 = 1;
+        temp.supportD2 = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xCE51);
 
@@ -8895,7 +8895,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |       00110       | 1 | 1 | 0 |
         // |  01   | 0 | 1 | 0 |    001    |
-        temp.supportPme = 6;
+        temp.supportPme = static_cast<u16>(6);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3651);
     }
@@ -8929,20 +8929,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1011      | 1 | 0 |  11   |
         temp.value16 = 0xC4BB;
 
-        TEST_ASSERT_EQUALS(temp.powerState,              3);
-        TEST_ASSERT_EQUALS(temp.__reservedForPciExpress, 0);
-        TEST_ASSERT_EQUALS(temp.noSoftReset,             1);
-        TEST_ASSERT_EQUALS(temp.__reserved,              11);
-        TEST_ASSERT_EQUALS(temp.enablePme,               0);
-        TEST_ASSERT_EQUALS(temp.dataSelect,              2);
-        TEST_ASSERT_EQUALS(temp.dataScale,               2);
-        TEST_ASSERT_EQUALS(temp.pmeStatus,               1);
+        TEST_ASSERT_EQUALS(temp.powerState,              static_cast<u16>(3));
+        TEST_ASSERT_EQUALS(temp.__reservedForPciExpress, static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.noSoftReset,             static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved,              static_cast<u16>(11));
+        TEST_ASSERT_EQUALS(temp.enablePme,               static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.dataSelect,              static_cast<u16>(2));
+        TEST_ASSERT_EQUALS(temp.dataScale,               static_cast<u16>(2));
+        TEST_ASSERT_EQUALS(temp.pmeStatus,               static_cast<u16>(1));
 
 
 
         // | 1 |  10   |     0010      | 0 |
         // |     1011      | 1 | 0 |  00   |
-        temp.powerState = 0;
+        temp.powerState = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC4B8);
 
@@ -8950,7 +8950,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  10   |     0010      | 0 |
         // |     1011      | 1 | 1 |  00   |
-        temp.__reservedForPciExpress = 1;
+        temp.__reservedForPciExpress = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC4BC);
 
@@ -8958,7 +8958,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  10   |     0010      | 0 |
         // |     1011      | 0 | 1 |  00   |
-        temp.noSoftReset = 0;
+        temp.noSoftReset = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC4B4);
 
@@ -8966,7 +8966,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  10   |     0010      | 0 |
         // |     0100      | 0 | 1 |  00   |
-        temp.__reserved = 4;
+        temp.__reserved = static_cast<u16>(4);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC444);
 
@@ -8974,7 +8974,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  10   |     0010      | 1 |
         // |     0100      | 0 | 1 |  00   |
-        temp.enablePme = 1;
+        temp.enablePme = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC544);
 
@@ -8982,7 +8982,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  10   |     1101      | 1 |
         // |     0100      | 0 | 1 |  00   |
-        temp.dataSelect = 13;
+        temp.dataSelect = static_cast<u16>(13);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xDB44);
 
@@ -8990,7 +8990,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |  01   |     1101      | 1 |
         // |     0100      | 0 | 1 |  00   |
-        temp.dataScale = 1;
+        temp.dataScale = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xBB44);
 
@@ -8998,7 +8998,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |  01   |     1101      | 1 |
         // |     0100      | 0 | 1 |  00   |
-        temp.pmeStatus = 0;
+        temp.pmeStatus = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3B44);
     }
@@ -9025,28 +9025,28 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 11 | 1 | 00100 |
         temp.value8 = 0xE4;
 
-        TEST_ASSERT_EQUALS(temp.expansionSlotsProvided, 4);
-        TEST_ASSERT_EQUALS(temp.firstInChassis,         1);
-        TEST_ASSERT_EQUALS(temp.__reserved,             3);
+        TEST_ASSERT_EQUALS(temp.expansionSlotsProvided, static_cast<u8>(4));
+        TEST_ASSERT_EQUALS(temp.firstInChassis,         static_cast<u8>(1));
+        TEST_ASSERT_EQUALS(temp.__reserved,             static_cast<u8>(3));
 
 
 
         // | 11 | 1 | 11011 |
-        temp.expansionSlotsProvided = 27;
+        temp.expansionSlotsProvided = static_cast<u8>(27);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xFB);
 
 
 
         // | 11 | 0 | 11011 |
-        temp.firstInChassis = 0;
+        temp.firstInChassis = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xDB);
 
 
 
         // | 00 | 0 | 11011 |
-        temp.__reserved = 0;
+        temp.__reserved = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x1B);
     }
@@ -9085,25 +9085,25 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 | 0 | 0 | 1 | 0 |    101    |
         temp.value16 = 0x9C15;
 
-        TEST_ASSERT_EQUALS(temp.__reserved,            5);
-        TEST_ASSERT_EQUALS(temp.interruptStatus,       0);
-        TEST_ASSERT_EQUALS(temp.capabilitiesList,      1);
-        TEST_ASSERT_EQUALS(temp.support64MHz,          0);
-        TEST_ASSERT_EQUALS(temp.__reserved2,           0);
-        TEST_ASSERT_EQUALS(temp.fastBackToBackCapable, 0);
-        TEST_ASSERT_EQUALS(temp.masterDataParityError, 0);
-        TEST_ASSERT_EQUALS(temp.deviceSelectTiming,    2);
-        TEST_ASSERT_EQUALS(temp.signaledTargetAbort,   1);
-        TEST_ASSERT_EQUALS(temp.receivedTargetAbort,   1);
-        TEST_ASSERT_EQUALS(temp.receivedMasterAbort,   0);
-        TEST_ASSERT_EQUALS(temp.signaledSystemError,   0);
-        TEST_ASSERT_EQUALS(temp.detectedParityError,   1);
+        TEST_ASSERT_EQUALS(temp.__reserved,            static_cast<u16>(5));
+        TEST_ASSERT_EQUALS(temp.interruptStatus,       static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.capabilitiesList,      static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.support64MHz,          static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.__reserved2,           static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.fastBackToBackCapable, static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.masterDataParityError, static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.deviceSelectTiming,    static_cast<u16>(2));
+        TEST_ASSERT_EQUALS(temp.signaledTargetAbort,   static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.receivedTargetAbort,   static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.receivedMasterAbort,   static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.signaledSystemError,   static_cast<u16>(0));
+        TEST_ASSERT_EQUALS(temp.detectedParityError,   static_cast<u16>(1));
 
 
 
         // | 1 | 0 | 0 | 1 | 1 |  10   | 0 |
         // | 0 | 0 | 0 | 1 | 0 |    010    |
-        temp.__reserved = 2;
+        temp.__reserved = static_cast<u16>(2);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x9C12);
 
@@ -9111,7 +9111,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 0 | 0 | 1 | 1 |  10   | 0 |
         // | 0 | 0 | 0 | 1 | 1 |    010    |
-        temp.interruptStatus = 1;
+        temp.interruptStatus = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x9C1A);
 
@@ -9119,7 +9119,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 0 | 0 | 1 | 1 |  10   | 0 |
         // | 0 | 0 | 0 | 0 | 1 |    010    |
-        temp.capabilitiesList = 0;
+        temp.capabilitiesList = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x9C0A);
 
@@ -9127,7 +9127,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 0 | 0 | 1 | 1 |  10   | 0 |
         // | 0 | 0 | 1 | 0 | 1 |    010    |
-        temp.support64MHz = 1;
+        temp.support64MHz = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x9C2A);
 
@@ -9135,7 +9135,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 0 | 0 | 1 | 1 |  10   | 0 |
         // | 0 | 1 | 1 | 0 | 1 |    010    |
-        temp.__reserved2 = 1;
+        temp.__reserved2 = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x9C6A);
 
@@ -9143,7 +9143,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 0 | 0 | 1 | 1 |  10   | 0 |
         // | 1 | 1 | 1 | 0 | 1 |    010    |
-        temp.fastBackToBackCapable = 1;
+        temp.fastBackToBackCapable = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x9CEA);
 
@@ -9151,7 +9151,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 0 | 0 | 1 | 1 |  10   | 1 |
         // | 1 | 1 | 1 | 0 | 1 |    010    |
-        temp.masterDataParityError = 1;
+        temp.masterDataParityError = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x9DEA);
 
@@ -9159,7 +9159,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 0 | 0 | 1 | 1 |  01   | 1 |
         // | 1 | 1 | 1 | 0 | 1 |    010    |
-        temp.deviceSelectTiming = 1;
+        temp.deviceSelectTiming = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x9BEA);
 
@@ -9167,7 +9167,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 0 | 0 | 1 | 0 |  01   | 1 |
         // | 1 | 1 | 1 | 0 | 1 |    010    |
-        temp.signaledTargetAbort = 0;
+        temp.signaledTargetAbort = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x93EA);
 
@@ -9175,7 +9175,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 0 | 0 | 0 | 0 |  01   | 1 |
         // | 1 | 1 | 1 | 0 | 1 |    010    |
-        temp.receivedTargetAbort = 0;
+        temp.receivedTargetAbort = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x83EA);
 
@@ -9183,7 +9183,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 0 | 1 | 0 | 0 |  01   | 1 |
         // | 1 | 1 | 1 | 0 | 1 |    010    |
-        temp.receivedMasterAbort = 1;
+        temp.receivedMasterAbort = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xA3EA);
 
@@ -9191,7 +9191,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 | 1 | 1 | 0 | 0 |  01   | 1 |
         // | 1 | 1 | 1 | 0 | 1 |    010    |
-        temp.signaledSystemError = 1;
+        temp.signaledSystemError = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xE3EA);
 
@@ -9199,7 +9199,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 | 1 | 1 | 0 | 0 |  01   | 1 |
         // | 1 | 1 | 1 | 0 | 1 |    010    |
-        temp.detectedParityError = 0;
+        temp.detectedParityError = static_cast<u16>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x63EA);
     }
@@ -9227,14 +9227,14 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00111010            |
         temp.value16 = 0x2F3A;
 
-        TEST_ASSERT_EQUALS(temp.value,    12090);
-        TEST_ASSERT_EQUALS(temp.finished, 0);
+        TEST_ASSERT_EQUALS(temp.value,    static_cast<u16>(12090));
+        TEST_ASSERT_EQUALS(temp.finished, static_cast<u16>(0));
 
 
 
         // | 0 |          1010000          |
         // |           11000101            |
-        temp.value = 20677;
+        temp.value = static_cast<u16>(20677);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x50C5);
 
@@ -9242,7 +9242,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 1 |          1010000          |
         // |           11000101            |
-        temp.finished = 1;
+        temp.finished = static_cast<u16>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xD0C5);
     }
@@ -9275,9 +9275,9 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00010001            |
         temp.value32 = 0xBC68F211;
 
-        TEST_ASSERT_EQUALS(temp.capabilityId,         61969);
-        TEST_ASSERT_EQUALS(temp.capabilityVersion,    8);
-        TEST_ASSERT_EQUALS(temp.nextCapabilityOffset, 3014);
+        TEST_ASSERT_EQUALS(temp.capabilityId,         static_cast<u32>(61969));
+        TEST_ASSERT_EQUALS(temp.capabilityVersion,    static_cast<u32>(8));
+        TEST_ASSERT_EQUALS(temp.nextCapabilityOffset, static_cast<u32>(3014));
 
 
 
@@ -9285,7 +9285,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0110      |     1000      |
         // |           00001101            |
         // |           11101110            |
-        temp.capabilityId = 3566;
+        temp.capabilityId = static_cast<u32>(3566);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xBC680DEE);
 
@@ -9295,7 +9295,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0110      |     0111      |
         // |           00001101            |
         // |           11101110            |
-        temp.capabilityVersion = 7;
+        temp.capabilityVersion = static_cast<u32>(7);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xBC670DEE);
 
@@ -9305,7 +9305,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1001      |     0111      |
         // |           00001101            |
         // |           11101110            |
-        temp.nextCapabilityOffset = 1081;
+        temp.nextCapabilityOffset = static_cast<u32>(1081);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x43970DEE);
     }
@@ -9336,17 +9336,17 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0001      |     1001      |
         temp.value16 = 0x8B19;
 
-        TEST_ASSERT_EQUALS(temp.compressionMethod, 9);
-        TEST_ASSERT_EQUALS(temp.compressionInfo,   1);
-        TEST_ASSERT_EQUALS(temp.checkBits,         11);
-        TEST_ASSERT_EQUALS(temp.presetDictionary,  0);
-        TEST_ASSERT_EQUALS(temp.compressionLevel,  2);
+        TEST_ASSERT_EQUALS(temp.compressionMethod, static_cast<u8>(9));
+        TEST_ASSERT_EQUALS(temp.compressionInfo,   static_cast<u8>(1));
+        TEST_ASSERT_EQUALS(temp.checkBits,         static_cast<u8>(11));
+        TEST_ASSERT_EQUALS(temp.presetDictionary,  static_cast<u8>(0));
+        TEST_ASSERT_EQUALS(temp.compressionLevel,  static_cast<u8>(2));
 
 
 
         // |  10   | 0 |       01011       |
         // |     0001      |     0110      |
-        temp.compressionMethod = 6;
+        temp.compressionMethod = static_cast<u8>(6);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x8B16);
 
@@ -9354,7 +9354,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  10   | 0 |       01011       |
         // |     1110      |     0110      |
-        temp.compressionInfo = 14;
+        temp.compressionInfo = static_cast<u8>(14);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x8BE6);
 
@@ -9362,7 +9362,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  10   | 0 |       10100       |
         // |     1110      |     0110      |
-        temp.checkBits = 20;
+        temp.checkBits = static_cast<u8>(20);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x94E6);
 
@@ -9370,7 +9370,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  10   | 1 |       10100       |
         // |     1110      |     0110      |
-        temp.presetDictionary = 1;
+        temp.presetDictionary = static_cast<u8>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xB4E6);
 
@@ -9378,7 +9378,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  01   | 1 |       10100       |
         // |     1110      |     0110      |
-        temp.compressionLevel = 1;
+        temp.compressionLevel = static_cast<u8>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x74E6);
     }

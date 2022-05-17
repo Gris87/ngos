@@ -8,6 +8,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 struct ElfRela
 {
     u64 offset;
@@ -25,6 +26,7 @@ struct ElfRela
 
     i64 addend;
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

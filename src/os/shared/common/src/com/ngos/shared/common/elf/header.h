@@ -11,6 +11,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 struct ElfHeader
 {
     ElfHeaderIdentification identification;
@@ -28,6 +29,7 @@ struct ElfHeader
     u16                     sectionHeaderTableEntryCount;
     u16                     sectionHeaderTableNamesIndex;
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

@@ -8,6 +8,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 struct ElfSymbolInfo
 {
     union
@@ -21,6 +22,7 @@ struct ElfSymbolInfo
         u8 value8;
     };
 } __attribute__((packed));
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

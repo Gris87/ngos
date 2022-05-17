@@ -11,6 +11,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 typedef u64 elf_section_flags;
 
 enum class ElfSectionFlag: elf_section_flags
@@ -31,6 +32,7 @@ enum class ElfSectionFlag: elf_section_flags
 };
 
 DEFINE_FLAGS(ElfSectionFlags, elf_section_flags); // TEST: NO
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

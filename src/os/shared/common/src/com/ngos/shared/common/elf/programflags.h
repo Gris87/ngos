@@ -11,6 +11,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 typedef u32 elf_program_flags;
 
 enum class ElfProgramFlag: elf_program_flags
@@ -22,6 +23,7 @@ enum class ElfProgramFlag: elf_program_flags
 };
 
 DEFINE_FLAGS(ElfProgramFlags, elf_program_flags); // TEST: NO
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

@@ -8,6 +8,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfProgramType: u32
 {
     NONE    = 0,
@@ -18,6 +19,7 @@ enum class ElfProgramType: u32
     SHLIB   = 0x00000005,
     PHDR    = 0x00000006
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

@@ -8,6 +8,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfSymbolVisibility: u8
 {
     DEFAULT   = 0,
@@ -18,6 +19,7 @@ enum class ElfSymbolVisibility: u8
     SINGLETON = 5,
     ELIMINATE = 6
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

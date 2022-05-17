@@ -9,6 +9,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 struct ElfSymbol
 {
     u32            nameOffset;
@@ -18,6 +19,7 @@ struct ElfSymbol
     u64            value;
     u64            size;
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

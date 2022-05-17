@@ -8,12 +8,14 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfSymbolBind: u8
 {
     LOCAL  = 0,
     GLOBAL = 1,
     WEAK   = 2
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

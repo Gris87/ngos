@@ -9,6 +9,7 @@
                                                                                                                                                                                                          // Colorize: green
 struct BitsField                                                                                                                                                                                         // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
+    QString type;                                                                                                                                                                                        // Colorize: green
     QString name;                                                                                                                                                                                        // Colorize: green
     qint8   length;                                                                                                                                                                                      // Colorize: green
 };                                                                                                                                                                                                       // Colorize: green

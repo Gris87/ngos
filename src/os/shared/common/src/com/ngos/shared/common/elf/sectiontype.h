@@ -8,6 +8,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfSectionType: u32
 {
     NONE           = 0,
@@ -29,6 +30,7 @@ enum class ElfSectionType: u32
     SYMTAB_SHNDX   = 0x00000012,
     NUM            = 0x00000013
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

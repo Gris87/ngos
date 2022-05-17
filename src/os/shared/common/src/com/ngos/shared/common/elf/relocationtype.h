@@ -8,6 +8,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfRelocationType: u32
 {
     NONE      = 0,  // No reloc
@@ -27,6 +28,7 @@ enum class ElfRelocationType: u32
     D8        = 14, // Direct 8 bit sign extended
     PC8       = 15  // 8 bit sign extended pc relative
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

@@ -8,6 +8,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfType: u16
 {
     NONE            = 0,
@@ -16,6 +17,7 @@ enum class ElfType: u16
     DYNAMIC_LIBRARY = 3,
     CORE            = 4
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

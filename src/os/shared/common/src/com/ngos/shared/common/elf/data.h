@@ -8,12 +8,14 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfData: u8
 {
     NONE                   = 0,
     LEAST_SIGNIFICANT_BYTE = 1,
     MOST_SIGNIFICANT_BYTE  = 2
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

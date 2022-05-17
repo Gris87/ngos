@@ -8,6 +8,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfMachine: u16
 {
     NONE             = 0,
@@ -27,6 +28,7 @@ enum class ElfMachine: u16
     MACHINE_AARCH64  = 0x00B7,
     MACHINE_RISC_V   = 0x00F3
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

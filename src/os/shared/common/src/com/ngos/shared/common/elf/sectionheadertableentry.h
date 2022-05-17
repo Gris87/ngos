@@ -8,6 +8,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 struct ElfSectionHeaderTableEntry
 {
     u32             nameOffset;
@@ -21,6 +22,7 @@ struct ElfSectionHeaderTableEntry
     u64             align;
     u64             entrySize;
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

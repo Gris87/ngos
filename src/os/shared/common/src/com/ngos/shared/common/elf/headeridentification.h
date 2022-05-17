@@ -10,10 +10,12 @@
 
 
 
+// Verified with ElfSpecVerifier // https://www.uclibc.org/docs/elf-64-gen.pdf
 #define ELF_SIGNATURE 0x464C457F // 0x7F + ELF
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 struct ElfHeaderIdentification
 {
     u32            signature;
@@ -24,6 +26,7 @@ struct ElfHeaderIdentification
     u8             abiVersion;
     u8             __pad[7];
 } __attribute__((packed));
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

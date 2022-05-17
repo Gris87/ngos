@@ -8,12 +8,14 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfClass: u8
 {
     NONE     = 0,
     CLASS_32 = 1,
     CLASS_64 = 2
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

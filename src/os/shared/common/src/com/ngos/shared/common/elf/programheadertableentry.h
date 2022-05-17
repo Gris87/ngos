@@ -8,6 +8,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 struct ElfProgramHeaderTableEntry
 {
     ElfProgramType  type;
@@ -19,6 +20,7 @@ struct ElfProgramHeaderTableEntry
     u64             memorySize;
     u64             align;
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

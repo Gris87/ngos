@@ -8,6 +8,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfSymbolType: u8
 {
     NOTYPE  = 0,
@@ -18,6 +19,7 @@ enum class ElfSymbolType: u8
     COMMON  = 5,
     TLS     = 6
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

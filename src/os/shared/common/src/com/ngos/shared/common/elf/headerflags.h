@@ -11,6 +11,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 typedef u32 elf_header_flags;
 
 enum class ElfHeaderFlag: elf_header_flags
@@ -19,6 +20,7 @@ enum class ElfHeaderFlag: elf_header_flags
 };
 
 DEFINE_FLAGS(ElfHeaderFlags, elf_header_flags); // TEST: NO
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

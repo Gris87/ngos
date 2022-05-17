@@ -8,6 +8,7 @@
 
 
 
+// Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfOsAbi: u8
 {
     SYSTEM_V       = 0,
@@ -30,6 +31,7 @@ enum class ElfOsAbi: u8
     SORTIX         = 0x53,
     STANDALONE     = 0xFF
 };
+// Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
 
 

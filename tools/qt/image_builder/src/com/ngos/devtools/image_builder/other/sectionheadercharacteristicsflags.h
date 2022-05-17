@@ -14,6 +14,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
+// Verified with PeSpecVerifier [BEGIN] // https://docs.microsoft.com/en-us/windows/win32/debug/pe-format                                                                                                // Colorize: green
 typedef quint32 section_header_characteristics_flags;                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 enum class SectionHeaderCharacteristicsFlag: section_header_characteristics_flags                                                                                                                        // Colorize: green
@@ -61,6 +62,7 @@ enum class SectionHeaderCharacteristicsFlag: section_header_characteristics_flag
 };                                                                                                                                                                                                       // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 DEFINE_FLAGS(SectionHeaderCharacteristicsFlags, section_header_characteristics_flags); // TEST: NO                                                                                            // Colorize: green
+// Verified with PeSpecVerifier [END] // https://docs.microsoft.com/en-us/windows/win32/debug/pe-format                                                                                                // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 #define SECTION_HEADER_CHARACTERISTICS_FLAG_ALIGN_BITS FLAGS( \
         SectionHeaderCharacteristicsFlag::ALIGN_BIT_0, \
