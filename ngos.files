@@ -6077,10 +6077,12 @@ tools/qt/specs_verifier/README.md
 tools/qt/specs_verifier/Screenshot.png
 tools/qt/specs_verifier/specs_verifier.pro
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/main.cpp
-tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/cpuid/amdcpuidspecverifier.cpp
-tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/cpuid/amdcpuidspecverifier.h
-tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/cpuid/intelcpuidspecverifier.cpp
-tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/cpuid/intelcpuidspecverifier.h
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/cpu/amdcpuidspecverifier.cpp
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/cpu/amdcpuidspecverifier.h
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/cpu/intelcpuidspecverifier.cpp
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/cpu/intelcpuidspecverifier.h
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/cpu/x86registersspecverifier.cpp
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/cpu/x86registersspecverifier.h
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/elf/elfspecverifier.cpp
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/elf/elfspecverifier.h
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/msr/intelmsrspecverifier.cpp
