@@ -507,8 +507,6 @@ void IntelMsrSpecVerifier::checkMsrRegistersSignature(SpecVerifyThread *thread, 
                     {                                                                                                                                                                                    // Colorize: green
                         start = hex.toLongLong(nullptr, 16);                                                                                                                                             // Colorize: green
                         end   = start;                                                                                                                                                                   // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-                        qDebug() << hex << start;                                                                                                                                                        // Colorize: green
                     }                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -581,7 +579,7 @@ void IntelMsrSpecVerifier::checkMsrRegistersSignature(SpecVerifyThread *thread, 
         msrRegistersLines.insert(512, "    KVM_CLOCKSOURCE2_SYSTEM_TIME  = 0x4B564D01  // KVM clock 2 system time");                                                                                      // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-    qDebug() << msrRegistersLines.join('\n').toUtf8().data();// Colorize: green
+                                                                                                                                                                                                         // Colorize: green
                                                                                                                                                                                                          // Colorize: green
     if (!checkLinesInFile(msrRegistersLines, thread->getPath() + "/" + MSRREGISTER_H))                                                                                     // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
