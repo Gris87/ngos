@@ -204,6 +204,10 @@ void IntelMsrSpecVerifier::checkWithSpecification(SpecVerifyThread *thread, cons
     {                                                                                                                                                                                                    // Colorize: green
         checkIntelSpecification(thread, specContent, xml);                                                                                                                                                      // Colorize: green
         checkMsrRegistersSignature(thread, specContent, xml);                                                                                                                                                      // Colorize: green
+        checkMsrIa32ArchCapabilitiesFlags(thread, specContent, xml);                                                                                                                                                      // Colorize: green
+        checkMsrIa32BiosSignId(thread, specContent, xml);                                                                                                                                                      // Colorize: green
+        checkMsrIa32EferFlags(thread, specContent, xml);                                                                                                                                                      // Colorize: green
+        checkMsrIa32MiscEnableFlags(thread, specContent, xml);                                                                                                                                                      // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -467,7 +471,7 @@ void IntelMsrSpecVerifier::checkMsrRegistersSignature(SpecVerifyThread *thread, 
                                                                                                                                                                                                          // Colorize: green
                 if (index >= 0)                                                                                                                                                                          // Colorize: green
                 {                                                                                                                                                                                        // Colorize: green
-                    hex = hex.mid(index + 38);                                                                                                                                                           // Colorize: green
+                    hex = hex.mid(index + 37);                                                                                                                                                           // Colorize: green
                 }                                                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                 hex.remove(' ');                                                                                                                                                                         // Colorize: green
@@ -503,6 +507,8 @@ void IntelMsrSpecVerifier::checkMsrRegistersSignature(SpecVerifyThread *thread, 
                     {                                                                                                                                                                                    // Colorize: green
                         start = hex.toLongLong(nullptr, 16);                                                                                                                                             // Colorize: green
                         end   = start;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        qDebug() << hex << start;                                                                                                                                                        // Colorize: green
                     }                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -575,13 +581,45 @@ void IntelMsrSpecVerifier::checkMsrRegistersSignature(SpecVerifyThread *thread, 
         msrRegistersLines.insert(512, "    KVM_CLOCKSOURCE2_SYSTEM_TIME  = 0x4B564D01  // KVM clock 2 system time");                                                                                      // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
+    qDebug() << msrRegistersLines.join('\n').toUtf8().data();// Colorize: green
                                                                                                                                                                                                          // Colorize: green
     if (!checkLinesInFile(msrRegistersLines, thread->getPath() + "/" + MSRREGISTER_H))                                                                                     // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
         thread->addError("Failed to check INTEL MSR Registers with specification");                                                                                                                      // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void IntelMsrSpecVerifier::checkMsrIa32ArchCapabilitiesFlags(SpecVerifyThread *thread, const QString &specContent, QDomDocument &xml)
+{
+    Q_ASSERT(thread      != nullptr);
+    Q_ASSERT(specContent != "");
+
+    Q_UNUSED(xml);
+}
+                                                                                                                                                                                                         // Colorize: green
+void IntelMsrSpecVerifier::checkMsrIa32BiosSignId(SpecVerifyThread *thread, const QString &specContent, QDomDocument &xml)
+{
+    Q_ASSERT(thread      != nullptr);
+    Q_ASSERT(specContent != "");
+
+    Q_UNUSED(xml);
+}
+                                                                                                                                                                                                         // Colorize: green
+void IntelMsrSpecVerifier::checkMsrIa32EferFlags(SpecVerifyThread *thread, const QString &specContent, QDomDocument &xml)
+{
+    Q_ASSERT(thread      != nullptr);
+    Q_ASSERT(specContent != "");
+
+    Q_UNUSED(xml);
+}
+                                                                                                                                                                                                         // Colorize: green
+void IntelMsrSpecVerifier::checkMsrIa32MiscEnableFlags(SpecVerifyThread *thread, const QString &specContent, QDomDocument &xml)
+{
+    Q_ASSERT(thread      != nullptr);
+    Q_ASSERT(specContent != "");
+
+    Q_UNUSED(xml);
+}
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
