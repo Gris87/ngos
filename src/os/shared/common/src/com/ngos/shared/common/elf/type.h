@@ -11,11 +11,11 @@
 // Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfType: u16
 {
-    NONE            = 0,
-    RELOCATABLE     = 1,
-    EXECUTABLE      = 2,
-    DYNAMIC_LIBRARY = 3,
-    CORE            = 4
+    NONE            = 0, // No file type
+    RELOCATABLE     = 1, // Relocatable object file
+    EXECUTABLE      = 2, // Executable file
+    DYNAMIC_LIBRARY = 3, // Shared object file
+    CORE            = 4  // Core file
 };
 // Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
