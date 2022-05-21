@@ -6037,9 +6037,7 @@ tools/qt/image_builder/src/com/ngos/devtools/image_builder/main/imagebuilder.cpp
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/main/imagebuilder.h
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/other/coffheadercharacteristicsflags.h
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/other/coffheadermachine.h
-tools/qt/image_builder/src/com/ngos/devtools/image_builder/other/datadirectorytype.h
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/other/peoptionalheaderdllcharacteristicsflags.h
-tools/qt/image_builder/src/com/ngos/devtools/image_builder/other/peoptionalheadermagic.h
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/other/peoptionalheadersubsystem.h
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/other/section.h
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/other/sectionheadercharacteristicsflags.h

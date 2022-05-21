@@ -18,13 +18,13 @@
 // Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 struct ElfHeaderIdentification
 {
-    u32            signature; // File identification
-    ElfClass       fileClass;  // File class
-    ElfData        fileData;   // Data encoding
-    ElfFileVersion version;    // File version
-    ElfOsAbi       osAbi;      // OS/ABI identification
-    u8             abiVersion; // ABI version
-    u8             __pad[7];   // Start of padding bytes
+    u32            signature;
+    ElfClass       fileClass;
+    ElfData        fileData;
+    ElfFileVersion version;
+    ElfOsAbi       osAbi;
+    u8             abiVersion;
+    u8             __pad[7];
 } __attribute__((packed));
 // Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
