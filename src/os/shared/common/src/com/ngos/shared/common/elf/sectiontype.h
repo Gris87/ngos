@@ -11,18 +11,18 @@
 // Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfSectionType: u32
 {
-    NONE           = 0,
-    PROGBITS       = 0x00000001,
-    SYMTAB         = 0x00000002,
-    STRTAB         = 0x00000003,
-    RELA           = 0x00000004,
-    HASH           = 0x00000005,
-    DYNAMIC        = 0x00000006,
-    NOTE           = 0x00000007,
-    NOBITS         = 0x00000008,
-    REL            = 0x00000009,
-    SHLIB          = 0x0000000A,
-    DYNSYM         = 0x0000000B,
+    NONE           = 0,          // Marks an unused section header
+    PROGBITS       = 0x00000001, // Contains information defined by the program
+    SYMTAB         = 0x00000002, // Contains a linker symbol table
+    STRTAB         = 0x00000003, // Contains a string table
+    RELA           = 0x00000004, // Contains "Rela" type relocation entries
+    HASH           = 0x00000005, // Contains a symbol hash table
+    DYNAMIC        = 0x00000006, // Contains dynamic linking tables
+    NOTE           = 0x00000007, // Contains note information
+    NOBITS         = 0x00000008, // Contains uninitialized space; does not occupy any space in the file
+    REL            = 0x00000009, // Contains "Rel" type relocation entries
+    SHLIB          = 0x0000000A, // Reserved
+    DYNSYM         = 0x0000000B, // Contains a dynamic loader symbol table
     INIT_ARRAY     = 0x0000000E,
     FINI_ARRAY     = 0x0000000F,
     PREINIT_ARRAY  = 0x00000010,

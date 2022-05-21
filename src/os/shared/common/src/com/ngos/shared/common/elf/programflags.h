@@ -17,9 +17,9 @@ typedef u32 elf_program_flags;
 enum class ElfProgramFlag: elf_program_flags
 {
     NONE       = 0,
-    EXECUTABLE = (1ULL << 0),
-    WRITABLE   = (1ULL << 1),
-    READABLE   = (1ULL << 2)
+    EXECUTABLE = (1ULL << 0),  // Execute permission
+    WRITABLE   = (1ULL << 1),  // Write permission
+    READABLE   = (1ULL << 2)   // Read permission
 };
 
 DEFINE_FLAGS(ElfProgramFlags, elf_program_flags); // TEST: NO

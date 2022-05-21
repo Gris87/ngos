@@ -11,9 +11,9 @@
 // Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfSymbolBind: u8
 {
-    LOCAL  = 0,
-    GLOBAL = 1,
-    WEAK   = 2
+    LOCAL  = 0, // Not visible outside the object file
+    GLOBAL = 1, // Global symbol, visible to all object files
+    WEAK   = 2  // Global scope, but with lower precedence than global symbols
 };
 // Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 

@@ -18,7 +18,7 @@
 // Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 struct ElfHeaderIdentification
 {
-    u32            signature; // File identification
+    u32            signature;  // File identification
     ElfClass       fileClass;  // File class
     ElfData        fileData;   // Data encoding
     ElfFileVersion version;    // File version

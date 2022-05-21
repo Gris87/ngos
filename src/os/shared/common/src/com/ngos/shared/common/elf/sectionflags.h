@@ -17,9 +17,9 @@ typedef u64 elf_section_flags;
 enum class ElfSectionFlag: elf_section_flags
 {
     NONE             = 0,
-    WRITE            = (1ULL << 0),
-    ALLOC            = (1ULL << 1),
-    EXECINSTR        = (1ULL << 2),
+    WRITE            = (1ULL << 0),  // Section contains writable data
+    ALLOC            = (1ULL << 1),  // Section is allocated in memory image of program
+    EXECINSTR        = (1ULL << 2),  // Section contains executable instructions
     MERGE            = (1ULL << 4),
     STRINGS          = (1ULL << 5),
     INFO_LINK        = (1ULL << 6),

@@ -11,13 +11,13 @@
 // Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfProgramType: u32
 {
-    NONE    = 0,
-    LOAD    = 0x00000001,
-    DYNAMIC = 0x00000002,
-    INTERP  = 0x00000003,
-    NOTE    = 0x00000004,
-    SHLIB   = 0x00000005,
-    PHDR    = 0x00000006
+    NONE    = 0,          // Unused entry
+    LOAD    = 0x00000001, // Loadable segment
+    DYNAMIC = 0x00000002, // Dynamic linking tables
+    INTERP  = 0x00000003, // Program interpreter path name
+    NOTE    = 0x00000004, // Note sections
+    SHLIB   = 0x00000005, // Reserved
+    PHDR    = 0x00000006  // Program header table
 };
 // Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
