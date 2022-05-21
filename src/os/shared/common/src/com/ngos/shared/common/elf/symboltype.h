@@ -11,11 +11,11 @@
 // Verified with ElfSpecVerifier [BEGIN] // https://www.uclibc.org/docs/elf-64-gen.pdf
 enum class ElfSymbolType: u8
 {
-    NOTYPE  = 0,
-    OBJECT  = 1,
-    FUNC    = 2,
-    SECTION = 3,
-    FILE    = 4,
+    NOTYPE  = 0, // No type specified (e.g., an absolute symbol)
+    OBJECT  = 1, // Data object
+    FUNC    = 2, // Function entry point
+    SECTION = 3, // Symbol is associated with a section
+    FILE    = 4, // Source file associated with the object file
     COMMON  = 5,
     TLS     = 6
 };
