@@ -12,8 +12,8 @@
 enum class ElfData: u8
 {
     NONE                   = 0,
-    LEAST_SIGNIFICANT_BYTE = 1,
-    MOST_SIGNIFICANT_BYTE  = 2
+    LEAST_SIGNIFICANT_BYTE = 1, // Object file data structures are littleendian
+    MOST_SIGNIFICANT_BYTE  = 2  // Object file data structures are bigendian
 };
 // Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 

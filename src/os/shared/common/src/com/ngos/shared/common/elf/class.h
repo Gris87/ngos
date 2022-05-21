@@ -12,8 +12,8 @@
 enum class ElfClass: u8
 {
     NONE     = 0,
-    CLASS_32 = 1,
-    CLASS_64 = 2
+    CLASS_32 = 1, // 32-bit objects
+    CLASS_64 = 2  // 64-bit objects
 };
 // Verified with ElfSpecVerifier [END] // https://www.uclibc.org/docs/elf-64-gen.pdf
 
