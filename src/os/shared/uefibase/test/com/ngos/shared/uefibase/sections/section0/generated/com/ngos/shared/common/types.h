@@ -612,8 +612,8 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           BBBBBBBB            |
         // |     BBBB      |     AAAA      |
         //
-        // taskPriority : 4  'A'
-        // _reserved    : 60 'B'
+        // taskPriorityLevel : 4  'A'
+        // _reserved         : 60 'B'
 
 
 
@@ -627,8 +627,8 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     1000      |     0001      |
         temp.value64 = 0x11F6F0DA3F43B081;
 
-        TEST_ASSERT_EQUALS(temp.taskPriority, static_cast<good_U64>(1));
-        TEST_ASSERT_EQUALS(temp._reserved,    static_cast<good_U64>(80905422691908360));
+        TEST_ASSERT_EQUALS(temp.taskPriorityLevel, static_cast<good_U64>(1));
+        TEST_ASSERT_EQUALS(temp._reserved,         static_cast<good_U64>(80905422691908360));
 
 
 
@@ -640,7 +640,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01000011            |
         // |           10110000            |
         // |     1000      |     1110      |
-        temp.taskPriority = static_cast<good_U64>(14);
+        temp.taskPriorityLevel = static_cast<good_U64>(14);
 
         TEST_ASSERT_EQUALS(temp.value64, 0x11F6F0DA3F43B08E);
 
