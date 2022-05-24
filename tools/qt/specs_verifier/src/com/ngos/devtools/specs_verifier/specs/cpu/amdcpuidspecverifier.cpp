@@ -15,7 +15,7 @@
 #define AMD_PDF               "amdcpuid.pdf"                                                                                                                                                             // Colorize: green
 #define AMD_TXT               "amdcpuid.txt"                                                                                                                                                             // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#define AMD_CPUID00000000EAX_H "src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid00000000eax.h"                                                                                        // Colorize: green
+#define AMD_CPUID80000000EAX_H "src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid80000000eax.h"                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
