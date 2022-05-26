@@ -253,7 +253,7 @@ NgosStatus FPU::initXState()
 
         COMMON_ASSERT_EXECUTION(CPU::cpuid(
                                     CpuidLeaf::XSAVE_FEATURES,
-                                    CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_0,
+                                    CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_MAIN,
                                     &eax,
                                     &ignored,
                                     &ignored,
@@ -476,7 +476,7 @@ NgosStatus FPU::initStateSizes()
     // containing all the *user* state components corresponding to bits currently set in XCR0
     COMMON_ASSERT_EXECUTION(CPU::cpuid(
                                 CpuidLeaf::XSAVE_FEATURES,
-                                CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_0,
+                                CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_MAIN,
                                 &ignored,
                                 &sStateUserSize,
                                 &ignored,
@@ -492,7 +492,7 @@ NgosStatus FPU::initStateSizes()
         // containing all the state components corresponding to bits currently set in XCR0 | IA32_XSS
         COMMON_ASSERT_EXECUTION(CPU::cpuid(
                                     CpuidLeaf::XSAVE_FEATURES,
-                                    CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_ENUMERATION_1,
+                                    CpuidSubLeaf::XSAVE_FEATURES_PROCESSOR_EXTENDED_STATE_SUB,
                                     &ignored,
                                     &sStateKernelSize,
                                     &ignored,

@@ -19,7 +19,7 @@ NgosStatus setupCr4()
 
 
 
-    cr4 |= FLAGS(X86Cr4Flag::PHYSICAL_ADDRESS_EXTENSION, X86Cr4Flag::PAGE_GLOBAL_ENABLED);
+    cr4 |= FLAGS(X86Cr4Flag::PHYSICAL_ADDRESS_EXTENSION, X86Cr4Flag::PAGE_GLOBAL_ENABLE);
 
     if (CPU::hasFeature(X86Feature::FXSR))
     {

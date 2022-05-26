@@ -253,7 +253,7 @@ NgosStatus CpuTest::initCpuCachesIntel()
         } while(true);
     }
     else
-    if (CPU::isCpuIdLevelSupported(CpuidLeaf::CACHE_DESCRIPTORS))
+    if (CPU::isCpuIdLevelSupported(CpuidLeaf::CACHE_INFORMATION))
     {
         UEFI_LW(("DETERMINISTIC_CACHE_PARAMETERS not supported"));
 
@@ -262,7 +262,7 @@ NgosStatus CpuTest::initCpuCachesIntel()
         u32 registers[4];
 
         UEFI_ASSERT_EXECUTION(CPU::cpuid(
-                                        CpuidLeaf::CACHE_DESCRIPTORS,
+                                        CpuidLeaf::CACHE_INFORMATION,
                                         CpuidSubLeaf::NONE,
                                         &registers[0],
                                         &registers[1],
@@ -393,7 +393,7 @@ NgosStatus CpuTest::initCpuCachesIntel()
 
                 default:
                 {
-                    UEFI_LF(("Unknown register byte for CACHE_DESCRIPTORS: 0x%02X, %s:%u", registerByte[i], __FILE__, __LINE__));
+                    UEFI_LF(("Unknown register byte for CACHE_INFORMATION: 0x%02X, %s:%u", registerByte[i], __FILE__, __LINE__));
 
                     return NgosStatus::UNEXPECTED_BEHAVIOUR;
                 }
@@ -404,7 +404,7 @@ NgosStatus CpuTest::initCpuCachesIntel()
     else
     {
         UEFI_LW(("DETERMINISTIC_CACHE_PARAMETERS not supported"));
-        UEFI_LW(("CACHE_DESCRIPTORS not supported"));
+        UEFI_LW(("CACHE_INFORMATION not supported"));
     }
 
 
