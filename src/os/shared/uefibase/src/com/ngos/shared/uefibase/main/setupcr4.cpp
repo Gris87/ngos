@@ -26,7 +26,7 @@ NgosStatus setupCr4()
         cr4 |= FLAGS(X86Cr4Flag::SUPPORT_FXSAVE);
     }
 
-    if (CPU::hasFeature(X86Feature::XMM))
+    if (CPU::hasFeature(X86Feature::SSE))
     {
         cr4 |= FLAGS(X86Cr4Flag::SUPPORT_UNMASKED_SSE_EXCEPTIONS);
     }

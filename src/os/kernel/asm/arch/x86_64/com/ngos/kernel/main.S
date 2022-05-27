@@ -127,7 +127,7 @@ virtual_address_space:                                                          
 # Setup CR0                                                                     #
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
-    movq    $(X86_CR0_PROTECTED_MODE_ENABLE | X86_CR0_MONITOR_CO_PROCESSOR | \
+    movq    $(X86_CR0_PROTECTION_ENABLE | X86_CR0_MONITOR_COPROCESSOR | \
               X86_CR0_EXTENSION_TYPE | X86_CR0_NUMERIC_ERROR | \
               X86_CR0_WRITE_PROTECT | X86_CR0_ALIGNMENT_MASK | \
               X86_CR0_PAGING), %rax                                             # Put flags to RAX

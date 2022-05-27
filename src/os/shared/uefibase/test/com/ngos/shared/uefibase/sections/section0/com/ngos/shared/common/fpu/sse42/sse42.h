@@ -18,7 +18,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse42_sse42);
 {
     TEST_CASE("pcmpgtq");
     {
-        if (CPU::hasFeature(X86Feature::XMM4_2))
+        if (CPU::hasFeature(X86Feature::SSE4_2))
         {
             i64 a[2] = { 1987965842, -1987077212 };
             i64 b[2] = { 1981132191, 1271329132 };
@@ -37,7 +37,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse42_sse42);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM4_2 not supported"));
+            UEFI_LVV(("X86Feature::SSE4_2 not supported"));
         }
     }
     TEST_CASE_END();

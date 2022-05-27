@@ -42,7 +42,8 @@ enum class PciDevice1028: u16 // Ignore CppEnumVerifier
     DEVICE_0014 = 0x0014,
     DEVICE_0015 = 0x0015,
     DEVICE_0016 = 0x0016,
-    DEVICE_0073 = 0x0073
+    DEVICE_0073 = 0x0073,
+    DEVICE_1028 = 0x1028
 };
 
 
@@ -77,6 +78,7 @@ inline const char8* enumToString(PciDevice1028 device) // TEST: NO
         case PciDevice1028::DEVICE_0015: return "DEVICE_0015";
         case PciDevice1028::DEVICE_0016: return "DEVICE_0016";
         case PciDevice1028::DEVICE_0073: return "DEVICE_0073";
+        case PciDevice1028::DEVICE_1028: return "DEVICE_1028";
 
         default: return "UNKNOWN";
     }
@@ -128,6 +130,7 @@ inline const char8* enumToHumanString(PciDevice1028 device) // TEST: NO
         case PciDevice1028::DEVICE_0015: return "PowerEdge Expandable RAID controller 5";
         case PciDevice1028::DEVICE_0016: return "PowerEdge Expandable RAID controller S300";
         case PciDevice1028::DEVICE_0073: return "NV-RAM Adapter";
+        case PciDevice1028::DEVICE_1028: return "PCIe Bridge riser";
 
         default: return "Unknown device";
     }
@@ -164,6 +167,7 @@ inline const char8* enumToHumanString(PciDevice1028 device, u16 subsystemVendorI
         case PciDevice1028::DEVICE_0015: return enumToHumanString((PciSubDevice10280015)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1028::DEVICE_0016: return enumToHumanString((PciSubDevice10280016)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1028::DEVICE_0073: return "Unknown device";
+        case PciDevice1028::DEVICE_1028: return "Unknown device";
 
         default: return "Unknown device";
     }

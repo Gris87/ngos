@@ -27,7 +27,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 {
     TEST_CASE("addsubps");
     {
-        if (CPU::hasFeature(X86Feature::XMM3))
+        if (CPU::hasFeature(X86Feature::SSE3))
         {
             float a[4] = { 0.5, 0.4, 0.2, 0.1 };
             float b[4] = { 0.8, 0.3, 0.8, 0.6 };
@@ -52,7 +52,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM3 not supported"));
+            UEFI_LVV(("X86Feature::SSE3 not supported"));
         }
     }
     TEST_CASE_END();
@@ -61,7 +61,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 
     TEST_CASE("addsubpd");
     {
-        if (CPU::hasFeature(X86Feature::XMM3))
+        if (CPU::hasFeature(X86Feature::SSE3))
         {
             double a[2] = { 0.5, 0.4 };
             double b[2] = { 0.8, 0.3 };
@@ -80,7 +80,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM3 not supported"));
+            UEFI_LVV(("X86Feature::SSE3 not supported"));
         }
     }
     TEST_CASE_END();
@@ -89,7 +89,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 
     TEST_CASE("haddps");
     {
-        if (CPU::hasFeature(X86Feature::XMM3))
+        if (CPU::hasFeature(X86Feature::SSE3))
         {
             float a[4] = { 0.8, 0.5, 0.7, 0.4 };
             float b[4] = { 0.3, 0.2, 0.4, 0.6 };
@@ -114,7 +114,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM3 not supported"));
+            UEFI_LVV(("X86Feature::SSE3 not supported"));
         }
     }
     TEST_CASE_END();
@@ -123,7 +123,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 
     TEST_CASE("haddpd");
     {
-        if (CPU::hasFeature(X86Feature::XMM3))
+        if (CPU::hasFeature(X86Feature::SSE3))
         {
             double a[2] = { 0.1, 0.6 };
             double b[2] = { 0.7, 0.8 };
@@ -142,7 +142,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM3 not supported"));
+            UEFI_LVV(("X86Feature::SSE3 not supported"));
         }
     }
     TEST_CASE_END();
@@ -151,7 +151,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 
     TEST_CASE("hsubps");
     {
-        if (CPU::hasFeature(X86Feature::XMM3))
+        if (CPU::hasFeature(X86Feature::SSE3))
         {
             float a[4] = { 0.1, 0.7, 0.5, 0.9 };
             float b[4] = { 0.2, 0.8, 0.3, 0.7 };
@@ -176,7 +176,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM3 not supported"));
+            UEFI_LVV(("X86Feature::SSE3 not supported"));
         }
     }
     TEST_CASE_END();
@@ -185,7 +185,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
 
     TEST_CASE("hsubpd");
     {
-        if (CPU::hasFeature(X86Feature::XMM3))
+        if (CPU::hasFeature(X86Feature::SSE3))
         {
             double a[2] = { 0.5, 0.3 };
             double b[2] = { 0.9, 0.2 };
@@ -204,7 +204,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM3 not supported"));
+            UEFI_LVV(("X86Feature::SSE3 not supported"));
         }
     }
     TEST_CASE_END();

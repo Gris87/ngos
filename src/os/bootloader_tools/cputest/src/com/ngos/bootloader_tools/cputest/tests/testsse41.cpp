@@ -31,7 +31,7 @@ void UEFI_API testSse41Procedure(void *buffer)
 
     TestSse41 *test = (TestSse41 *)buffer;
 
-    if (CPU::hasFeature(X86Feature::XMM4_1))
+    if (CPU::hasFeature(X86Feature::SSE4_1))
     {
         i8 a[16] = { 10, 64, 32, -46, -34, 97, -13, 64, 31, 97, -43, 37, 67, -24, 95, 32 };
         i8 b[16] = { 31, 13, 92, -16, -54, 27, -73, 34, 41, 87, -63, 27, 47, -94, 35, 62 };

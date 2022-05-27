@@ -32,6 +32,7 @@ enum class PciSubDevice808615FF: u32 // Ignore CppEnumVerifier
     SUBDEVICE_8086000A = 0x8086000A,
     SUBDEVICE_8086000B = 0x8086000B,
     SUBDEVICE_8086000C = 0x8086000C,
+    SUBDEVICE_8086000D = 0x8086000D,
     SUBDEVICE_8086000F = 0x8086000F,
     SUBDEVICE_80864009 = 0x80864009,
     SUBDEVICE_80864012 = 0x80864012,
@@ -69,6 +70,7 @@ inline const char8* enumToString(PciSubDevice808615FF subDevice) // TEST: NO
         case PciSubDevice808615FF::SUBDEVICE_8086000A: return "SUBDEVICE_8086000A";
         case PciSubDevice808615FF::SUBDEVICE_8086000B: return "SUBDEVICE_8086000B";
         case PciSubDevice808615FF::SUBDEVICE_8086000C: return "SUBDEVICE_8086000C";
+        case PciSubDevice808615FF::SUBDEVICE_8086000D: return "SUBDEVICE_8086000D";
         case PciSubDevice808615FF::SUBDEVICE_8086000F: return "SUBDEVICE_8086000F";
         case PciSubDevice808615FF::SUBDEVICE_80864009: return "SUBDEVICE_80864009";
         case PciSubDevice808615FF::SUBDEVICE_80864012: return "SUBDEVICE_80864012";
@@ -123,6 +125,7 @@ inline const char8* enumToHumanString(PciSubDevice808615FF subDevice) // TEST: N
         case PciSubDevice808615FF::SUBDEVICE_8086000A: return "Ethernet Network Adapter X710-T4L for OCP 3.0";
         case PciSubDevice808615FF::SUBDEVICE_8086000B: return "Ethernet Network Adapter X710-T2L for OCP 3.0";
         case PciSubDevice808615FF::SUBDEVICE_8086000C: return "Ethernet Network Adapter X710-T2L for OCP 3.0";
+        case PciSubDevice808615FF::SUBDEVICE_8086000D: return "Ethernet 10G 2P X710-T2L-t OCP";
         case PciSubDevice808615FF::SUBDEVICE_8086000F: return "Ethernet Network Adapter X710-T2L for OCP 3.0";
         case PciSubDevice808615FF::SUBDEVICE_80864009: return "Ethernet Network Adapter X710-T2L";
         case PciSubDevice808615FF::SUBDEVICE_80864012: return "Ethernet Network Adapter X710-T4L for OCP 3.0";

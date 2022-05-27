@@ -31,7 +31,7 @@ void UEFI_API testSse42Procedure(void *buffer)
 
     TestSse42 *test = (TestSse42 *)buffer;
 
-    if (CPU::hasFeature(X86Feature::XMM4_2))
+    if (CPU::hasFeature(X86Feature::SSE4_2))
     {
         i64 a[2] = { 1987965842, -1987077212 };
         i64 b[2] = { 1981132191, 1271329132 };

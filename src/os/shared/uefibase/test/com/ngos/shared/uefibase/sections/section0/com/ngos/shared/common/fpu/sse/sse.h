@@ -26,7 +26,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
 {
     TEST_CASE("addps");
     {
-        if (CPU::hasFeature(X86Feature::XMM))
+        if (CPU::hasFeature(X86Feature::SSE))
         {
             float a[4] = { 0.5, 0.4, 0.2, 0.1 };
             float b[4] = { 0.8, 0.3, 0.8, 0.6 };
@@ -51,7 +51,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::SSE not supported"));
         }
     }
     TEST_CASE_END();
@@ -60,7 +60,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
 
     TEST_CASE("subps");
     {
-        if (CPU::hasFeature(X86Feature::XMM))
+        if (CPU::hasFeature(X86Feature::SSE))
         {
             float a[4] = { 0.1, 0.5, 0.6, 0.3 };
             float b[4] = { 0.7, 0.3, 0.2, 0.6 };
@@ -85,7 +85,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::SSE not supported"));
         }
     }
     TEST_CASE_END();
@@ -94,7 +94,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
 
     TEST_CASE("mulps");
     {
-        if (CPU::hasFeature(X86Feature::XMM))
+        if (CPU::hasFeature(X86Feature::SSE))
         {
             float a[4] = { 0.3, 0.5, 0.7, 0.9 };
             float b[4] = { 0.4, 0.6, 0.8, 0.2 };
@@ -119,7 +119,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::SSE not supported"));
         }
     }
     TEST_CASE_END();
@@ -128,7 +128,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
 
     TEST_CASE("divps");
     {
-        if (CPU::hasFeature(X86Feature::XMM))
+        if (CPU::hasFeature(X86Feature::SSE))
         {
             float a[4] = { 0.8, 0.2, 0.5, 0.6 };
             float b[4] = { 0.3, 0.1, 0.7, 0.4 };
@@ -153,7 +153,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::SSE not supported"));
         }
     }
     TEST_CASE_END();
@@ -162,7 +162,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
 
     TEST_CASE("sqrtps");
     {
-        if (CPU::hasFeature(X86Feature::XMM))
+        if (CPU::hasFeature(X86Feature::SSE))
         {
             float a[4] = { 1.0, 4.0, 3.14, 0.09 };
             float b[4];
@@ -181,7 +181,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::SSE not supported"));
         }
     }
     TEST_CASE_END();
@@ -190,7 +190,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
 
     TEST_CASE("rcpps");
     {
-        if (CPU::hasFeature(X86Feature::XMM))
+        if (CPU::hasFeature(X86Feature::SSE))
         {
             float a[4] = { 0.1, 0.3, 0.2, 0.5 };
             float b[4];
@@ -209,7 +209,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::SSE not supported"));
         }
     }
     TEST_CASE_END();
@@ -218,7 +218,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
 
     TEST_CASE("rsqrtps");
     {
-        if (CPU::hasFeature(X86Feature::XMM))
+        if (CPU::hasFeature(X86Feature::SSE))
         {
             float a[4] = { 1.0, 4.0, 9.0, 3.14 };
             float b[4];
@@ -237,7 +237,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::SSE not supported"));
         }
     }
     TEST_CASE_END();
@@ -246,7 +246,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
 
     TEST_CASE("maxps");
     {
-        if (CPU::hasFeature(X86Feature::XMM))
+        if (CPU::hasFeature(X86Feature::SSE))
         {
             float a[4] = { 0.9, 0.3, 0.7, 0.4 };
             float b[4] = { 0.1, 0.5, 0.7, 0.2 };
@@ -271,7 +271,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::SSE not supported"));
         }
     }
     TEST_CASE_END();
@@ -280,7 +280,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
 
     TEST_CASE("minps");
     {
-        if (CPU::hasFeature(X86Feature::XMM))
+        if (CPU::hasFeature(X86Feature::SSE))
         {
             float a[4] = { 0.9, 0.3, 0.7, 0.4 };
             float b[4] = { 0.1, 0.5, 0.7, 0.2 };
@@ -305,7 +305,7 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse_sse);
         }
         else
         {
-            UEFI_LVV(("X86Feature::XMM not supported"));
+            UEFI_LVV(("X86Feature::SSE not supported"));
         }
     }
     TEST_CASE_END();

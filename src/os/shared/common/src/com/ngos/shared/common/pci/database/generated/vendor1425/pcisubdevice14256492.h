@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice14256492 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice14256492::SUBDEVICE_01DEFFF9: return "Gimlet T6";
+        case PciSubDevice14256492::SUBDEVICE_01DEFFF9: return "Gimlet Baseboard";
 
         default: return "Unknown device";
     }

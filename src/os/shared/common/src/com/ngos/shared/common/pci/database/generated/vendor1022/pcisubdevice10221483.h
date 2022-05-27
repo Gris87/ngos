@@ -1,7 +1,7 @@
 // This file generated with the code_generator
 // Please do not modify it manually
-#ifndef COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1425_PCISUBDEVICE14256092_H
-#define COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1425_PCISUBDEVICE14256092_H
+#ifndef COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1022_PCISUBDEVICE10221483_H
+#define COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1022_PCISUBDEVICE10221483_H
 
 
 
@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice14256092: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice10221483: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_01DEFFF9 = 0x01DEFFF9
@@ -18,7 +18,7 @@ enum class PciSubDevice14256092: u32 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciSubDevice14256092 subDevice) // TEST: NO
+inline const char8* enumToString(PciSubDevice10221483 subDevice) // TEST: NO
 {
     // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
 
@@ -26,8 +26,8 @@ inline const char8* enumToString(PciSubDevice14256092 subDevice) // TEST: NO
 
     switch (subDevice)
     {
-        case PciSubDevice14256092::NONE:               return "NONE";
-        case PciSubDevice14256092::SUBDEVICE_01DEFFF9: return "SUBDEVICE_01DEFFF9";
+        case PciSubDevice10221483::NONE:               return "NONE";
+        case PciSubDevice10221483::SUBDEVICE_01DEFFF9: return "SUBDEVICE_01DEFFF9";
 
         default: return "UNKNOWN";
     }
@@ -35,7 +35,7 @@ inline const char8* enumToString(PciSubDevice14256092 subDevice) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciSubDevice14256092 subDevice) // TEST: NO
+inline const char8* enumToFullString(PciSubDevice10221483 subDevice) // TEST: NO
 {
     // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
 
@@ -50,7 +50,7 @@ inline const char8* enumToFullString(PciSubDevice14256092 subDevice) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciSubDevice14256092 subDevice) // TEST: NO
+inline const char8* enumToHumanString(PciSubDevice10221483 subDevice) // TEST: NO
 {
     // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
 
@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice14256092 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice14256092::SUBDEVICE_01DEFFF9: return "Gimlet Baseboard";
+        case PciSubDevice10221483::SUBDEVICE_01DEFFF9: return "Gimlet Baseboard";
 
         default: return "Unknown device";
     }
@@ -66,4 +66,4 @@ inline const char8* enumToHumanString(PciSubDevice14256092 subDevice) // TEST: N
 
 
 
-#endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1425_PCISUBDEVICE14256092_H
+#endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1022_PCISUBDEVICE10221483_H

@@ -3219,6 +3219,12 @@ enum class PciDevice8086: u16 // Ignore CppEnumVerifier
     DEVICE_31A8 = 0x31A8,
     DEVICE_31AC = 0x31AC,
     DEVICE_31AE = 0x31AE,
+    DEVICE_31B0 = 0x31B0,
+    DEVICE_31B2 = 0x31B2,
+    DEVICE_31B4 = 0x31B4,
+    DEVICE_31B6 = 0x31B6,
+    DEVICE_31B8 = 0x31B8,
+    DEVICE_31BA = 0x31BA,
     DEVICE_31BC = 0x31BC,
     DEVICE_31BE = 0x31BE,
     DEVICE_31C0 = 0x31C0,
@@ -4205,6 +4211,7 @@ enum class PciDevice8086: u16 // Ignore CppEnumVerifier
     DEVICE_8817 = 0x8817,
     DEVICE_8818 = 0x8818,
     DEVICE_8819 = 0x8819,
+    DEVICE_8A03 = 0x8A03,
     DEVICE_8A0D = 0x8A0D,
     DEVICE_8A12 = 0x8A12,
     DEVICE_8A13 = 0x8A13,
@@ -7277,6 +7284,12 @@ inline const char8* enumToString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_31A8: return "DEVICE_31A8";
         case PciDevice8086::DEVICE_31AC: return "DEVICE_31AC";
         case PciDevice8086::DEVICE_31AE: return "DEVICE_31AE";
+        case PciDevice8086::DEVICE_31B0: return "DEVICE_31B0";
+        case PciDevice8086::DEVICE_31B2: return "DEVICE_31B2";
+        case PciDevice8086::DEVICE_31B4: return "DEVICE_31B4";
+        case PciDevice8086::DEVICE_31B6: return "DEVICE_31B6";
+        case PciDevice8086::DEVICE_31B8: return "DEVICE_31B8";
+        case PciDevice8086::DEVICE_31BA: return "DEVICE_31BA";
         case PciDevice8086::DEVICE_31BC: return "DEVICE_31BC";
         case PciDevice8086::DEVICE_31BE: return "DEVICE_31BE";
         case PciDevice8086::DEVICE_31C0: return "DEVICE_31C0";
@@ -8263,6 +8276,7 @@ inline const char8* enumToString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_8817: return "DEVICE_8817";
         case PciDevice8086::DEVICE_8818: return "DEVICE_8818";
         case PciDevice8086::DEVICE_8819: return "DEVICE_8819";
+        case PciDevice8086::DEVICE_8A03: return "DEVICE_8A03";
         case PciDevice8086::DEVICE_8A0D: return "DEVICE_8A0D";
         case PciDevice8086::DEVICE_8A12: return "DEVICE_8A12";
         case PciDevice8086::DEVICE_8A13: return "DEVICE_8A13";
@@ -11350,8 +11364,14 @@ inline const char8* enumToHumanString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_319A: return "Celeron/Pentium Silver Processor Trusted Execution Engine Interface";
         case PciDevice8086::DEVICE_31A2: return "Celeron/Pentium Silver Processor Integrated Sensor Solution";
         case PciDevice8086::DEVICE_31A8: return "Celeron/Pentium Silver Processor USB 3.0 xHCI Controller";
-        case PciDevice8086::DEVICE_31AC: return "Celeron/Pentium Silver Processor Serial IO I2C Host Controller";
-        case PciDevice8086::DEVICE_31AE: return "Celeron/Pentium Silver Processor Serial IO I2C Host Controller";
+        case PciDevice8086::DEVICE_31AC: return "Celeron/Pentium Silver Processor I2C 0";
+        case PciDevice8086::DEVICE_31AE: return "Celeron/Pentium Silver Processor I2C 1";
+        case PciDevice8086::DEVICE_31B0: return "Celeron/Pentium Silver Processor I2C 2";
+        case PciDevice8086::DEVICE_31B2: return "Celeron/Pentium Silver Processor I2C 3";
+        case PciDevice8086::DEVICE_31B4: return "Celeron/Pentium Silver Processor I2C 4";
+        case PciDevice8086::DEVICE_31B6: return "Celeron/Pentium Silver Processor I2C 5";
+        case PciDevice8086::DEVICE_31B8: return "Celeron/Pentium Silver Processor I2C 6";
+        case PciDevice8086::DEVICE_31BA: return "Celeron/Pentium Silver Processor I2C 7";
         case PciDevice8086::DEVICE_31BC: return "Celeron/Pentium Silver Processor Serial IO UART Host Controller";
         case PciDevice8086::DEVICE_31BE: return "Celeron/Pentium Silver Processor Serial IO UART Host Controller";
         case PciDevice8086::DEVICE_31C0: return "Celeron/Pentium Silver Processor Serial IO UART Host Controller";
@@ -12338,6 +12358,7 @@ inline const char8* enumToHumanString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_8817: return "Platform Controller Hub EG20T I2C Controller";
         case PciDevice8086::DEVICE_8818: return "Platform Controller Hub EG20T Controller Area Network (CAN) Controller";
         case PciDevice8086::DEVICE_8819: return "Platform Controller Hub EG20T IEEE 1588 Hardware Assist";
+        case PciDevice8086::DEVICE_8A03: return "Processor Power and Thermal Controller";
         case PciDevice8086::DEVICE_8A0D: return "Ice Lake Thunderbolt 3 NHI #1";
         case PciDevice8086::DEVICE_8A12: return "Ice Lake-LP Processor Host Bridge/DRAM Registers";
         case PciDevice8086::DEVICE_8A13: return "Ice Lake Thunderbolt 3 USB Controller";
@@ -15412,6 +15433,12 @@ inline const char8* enumToHumanString(PciDevice8086 device, u16 subsystemVendorI
         case PciDevice8086::DEVICE_31A8: return enumToHumanString((PciSubDevice808631A8)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice8086::DEVICE_31AC: return "Unknown device";
         case PciDevice8086::DEVICE_31AE: return "Unknown device";
+        case PciDevice8086::DEVICE_31B0: return "Unknown device";
+        case PciDevice8086::DEVICE_31B2: return "Unknown device";
+        case PciDevice8086::DEVICE_31B4: return "Unknown device";
+        case PciDevice8086::DEVICE_31B6: return "Unknown device";
+        case PciDevice8086::DEVICE_31B8: return "Unknown device";
+        case PciDevice8086::DEVICE_31BA: return "Unknown device";
         case PciDevice8086::DEVICE_31BC: return "Unknown device";
         case PciDevice8086::DEVICE_31BE: return "Unknown device";
         case PciDevice8086::DEVICE_31C0: return "Unknown device";
@@ -16398,6 +16425,7 @@ inline const char8* enumToHumanString(PciDevice8086 device, u16 subsystemVendorI
         case PciDevice8086::DEVICE_8817: return "Unknown device";
         case PciDevice8086::DEVICE_8818: return "Unknown device";
         case PciDevice8086::DEVICE_8819: return "Unknown device";
+        case PciDevice8086::DEVICE_8A03: return "Unknown device";
         case PciDevice8086::DEVICE_8A0D: return "Unknown device";
         case PciDevice8086::DEVICE_8A12: return "Unknown device";
         case PciDevice8086::DEVICE_8A13: return "Unknown device";

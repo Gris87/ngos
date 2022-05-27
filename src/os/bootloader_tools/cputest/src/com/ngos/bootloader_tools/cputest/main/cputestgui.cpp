@@ -224,12 +224,12 @@ X86Feature testedFeatures[] =
     X86Feature::NX
     , X86Feature::LA57
     , X86Feature::MMX
-    , X86Feature::XMM
-    , X86Feature::XMM2
-    , X86Feature::XMM3
+    , X86Feature::SSE
+    , X86Feature::SSE2
+    , X86Feature::SSE3
     , X86Feature::SSSE3
-    , X86Feature::XMM4_1
-    , X86Feature::XMM4_2
+    , X86Feature::SSE4_1
+    , X86Feature::SSE4_2
     , X86Feature::AVX
     , X86Feature::AVX2
     , X86Feature::AVX512F
@@ -242,7 +242,7 @@ X86Feature testedFeatures[] =
     , X86Feature::AVX512IFMA
     , X86Feature::AVX512VBMI
     , X86Feature::FMA
-    , X86Feature::AES
+    , X86Feature::AESNI
     , X86Feature::RTM
     , X86Feature::VMX
 };
@@ -252,12 +252,12 @@ u64 testedFeaturesScores[] =
     100     // X86Feature::NX
     , 50    // X86Feature::LA57
     , 16    // X86Feature::MMX
-    , 20    // X86Feature::XMM
-    , 25    // X86Feature::XMM2
-    , 50    // X86Feature::XMM3
+    , 20    // X86Feature::SSE
+    , 25    // X86Feature::SSE2
+    , 50    // X86Feature::SSE3
     , 50    // X86Feature::SSSE3
-    , 100   // X86Feature::XMM4_1
-    , 125   // X86Feature::XMM4_2
+    , 100   // X86Feature::SSE4_1
+    , 125   // X86Feature::SSE4_2
     , 200   // X86Feature::AVX
     , 250   // X86Feature::AVX2
     , 500   // X86Feature::AVX512F
@@ -270,7 +270,7 @@ u64 testedFeaturesScores[] =
     , 500   // X86Feature::AVX512IFMA
     , 500   // X86Feature::AVX512VBMI
     , 250   // X86Feature::FMA
-    , 250   // X86Feature::AES
+    , 250   // X86Feature::AESNI
     , 500   // X86Feature::RTM
     , 100   // X86Feature::VMX
 };
@@ -1074,7 +1074,7 @@ NgosStatus CpuTestGUI::fillIssuesTable()
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support XSAVE that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFeature(X86Feature::AES))
+    if (!CPU::hasFeature(X86Feature::AESNI))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support AES that highly required"), NgosStatus::ASSERTION);
     }
@@ -1101,17 +1101,17 @@ NgosStatus CpuTestGUI::fillIssuesTable()
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support FMA3 that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFeature(X86Feature::XMM))
+    if (!CPU::hasFeature(X86Feature::SSE))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFeature(X86Feature::XMM2))
+    if (!CPU::hasFeature(X86Feature::SSE2))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE2 that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFeature(X86Feature::XMM3))
+    if (!CPU::hasFeature(X86Feature::SSE3))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE3 that highly required"), NgosStatus::ASSERTION);
     }
@@ -1121,12 +1121,12 @@ NgosStatus CpuTestGUI::fillIssuesTable()
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSSE3 that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFeature(X86Feature::XMM4_1))
+    if (!CPU::hasFeature(X86Feature::SSE4_1))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE4.1 that highly required"), NgosStatus::ASSERTION);
     }
 
-    if (!CPU::hasFeature(X86Feature::XMM4_2))
+    if (!CPU::hasFeature(X86Feature::SSE4_2))
     {
         UEFI_ASSERT_EXECUTION(addIssueEntry(sCriticalImage, "CPU doesn't support SSE4.2 that highly required"), NgosStatus::ASSERTION);
     }

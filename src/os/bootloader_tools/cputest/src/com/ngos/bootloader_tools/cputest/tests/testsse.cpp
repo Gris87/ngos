@@ -31,7 +31,7 @@ void UEFI_API testSseProcedure(void *buffer)
 
     TestSse *test = (TestSse *)buffer;
 
-    if (CPU::hasFeature(X86Feature::XMM))
+    if (CPU::hasFeature(X86Feature::SSE))
     {
         float a[4] = { 0.5, 0.4, 0.2, 0.1 };
         float b[4] = { 0.8, 0.3, 0.8, 0.6 };

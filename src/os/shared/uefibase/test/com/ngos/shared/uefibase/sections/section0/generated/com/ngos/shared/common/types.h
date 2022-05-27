@@ -9,6 +9,8 @@
 #include <com/ngos/shared/common/cpu/lib/cpuid/cpuid00000001eax.h>
 #include <com/ngos/shared/common/cpu/lib/cpuid/cpuid00000001ebx.h>
 #include <com/ngos/shared/common/cpu/lib/cpuid/cpuid00000004eax.h>
+#include <com/ngos/shared/common/cpu/lib/cpuid/cpuid0000000bebx0.h>
+#include <com/ngos/shared/common/cpu/lib/cpuid/cpuid0000000bebx1.h>
 #include <com/ngos/shared/common/cpu/lib/cpuid/cpuid80000008eax.h>
 #include <com/ngos/shared/common/cpu/lib/cpuid/cpuid80000008ecx.h>
 #include <com/ngos/shared/common/cpu/lib/registers/x86cr8.h>
@@ -428,6 +430,108 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.maximumNumberOfCores = static_cast<good_U32>(47);
 
         TEST_ASSERT_EQUALS(temp.value32, 0xBEEDE152);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("Cpuid0000000BEbx0");
+    {
+        Cpuid0000000BEbx0 temp;
+
+
+
+        // Cpuid0000000BEbx0:
+        //
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           AAAAAAAA            |
+        // |           AAAAAAAA            |
+        //
+        // numberOfThreadsPerCore : 16 'A'
+        // _reserved              : 16 'B'
+
+
+
+        // |           11101010            |
+        // |           01101111            |
+        // |           10010001            |
+        // |           11001001            |
+        temp.value32 = 0xEA6F91C9;
+
+        TEST_ASSERT_EQUALS(temp.numberOfThreadsPerCore, static_cast<good_U32>(37321));
+        TEST_ASSERT_EQUALS(temp._reserved,              static_cast<good_U32>(60015));
+
+
+
+        // |           11101010            |
+        // |           01101111            |
+        // |           01101110            |
+        // |           00110110            |
+        temp.numberOfThreadsPerCore = static_cast<good_U32>(28214);
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xEA6F6E36);
+
+
+
+        // |           00010101            |
+        // |           10010000            |
+        // |           01101110            |
+        // |           00110110            |
+        temp._reserved = static_cast<good_U32>(5520);
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x15906E36);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("Cpuid0000000BEbx1");
+    {
+        Cpuid0000000BEbx1 temp;
+
+
+
+        // Cpuid0000000BEbx1:
+        //
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           AAAAAAAA            |
+        // |           AAAAAAAA            |
+        //
+        // numberOfThreads : 16 'A'
+        // _reserved       : 16 'B'
+
+
+
+        // |           10101001            |
+        // |           01101110            |
+        // |           00100100            |
+        // |           00111010            |
+        temp.value32 = 0xA96E243A;
+
+        TEST_ASSERT_EQUALS(temp.numberOfThreads, static_cast<good_U32>(9274));
+        TEST_ASSERT_EQUALS(temp._reserved,       static_cast<good_U32>(43374));
+
+
+
+        // |           10101001            |
+        // |           01101110            |
+        // |           11011011            |
+        // |           11000101            |
+        temp.numberOfThreads = static_cast<good_U32>(56261);
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xA96EDBC5);
+
+
+
+        // |           01010110            |
+        // |           10010001            |
+        // |           11011011            |
+        // |           11000101            |
+        temp._reserved = static_cast<good_U32>(22161);
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x5691DBC5);
     }
     TEST_CASE_END();
 

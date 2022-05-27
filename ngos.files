@@ -847,13 +847,11 @@ src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid0000000febx0.
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid0000000febx1.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid0000000fecx1.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid80000000eax.h
-src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid80000007edx.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid80000008eax.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid80000008ecx.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuidmodelname.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuidvendor.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/lib/cpuidcachetype.h
-src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/lib/cpuidpowerflags.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/lib/cpuidprocessortype.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuidleaf.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuidsubleaf.h

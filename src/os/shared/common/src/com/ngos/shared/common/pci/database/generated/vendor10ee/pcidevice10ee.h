@@ -32,11 +32,20 @@ enum class PciDevice10EE: u16 // Ignore CppEnumVerifier
     DEVICE_3FC4 = 0x3FC4,
     DEVICE_3FC5 = 0x3FC5,
     DEVICE_3FC6 = 0x3FC6,
+    DEVICE_5000 = 0x5000,
+    DEVICE_5004 = 0x5004,
     DEVICE_5005 = 0x5005,
+    DEVICE_500C = 0x500C,
+    DEVICE_5020 = 0x5020,
+    DEVICE_505C = 0x505C,
     DEVICE_7038 = 0x7038,
     DEVICE_8019 = 0x8019,
     DEVICE_8380 = 0x8380,
     DEVICE_8381 = 0x8381,
+    DEVICE_D000 = 0xD000,
+    DEVICE_D004 = 0xD004,
+    DEVICE_D00C = 0xD00C,
+    DEVICE_D020 = 0xD020,
     DEVICE_D154 = 0xD154,
     DEVICE_EBF0 = 0xEBF0,
     DEVICE_EBF1 = 0xEBF1,
@@ -72,11 +81,20 @@ inline const char8* enumToString(PciDevice10EE device) // TEST: NO
         case PciDevice10EE::DEVICE_3FC4: return "DEVICE_3FC4";
         case PciDevice10EE::DEVICE_3FC5: return "DEVICE_3FC5";
         case PciDevice10EE::DEVICE_3FC6: return "DEVICE_3FC6";
+        case PciDevice10EE::DEVICE_5000: return "DEVICE_5000";
+        case PciDevice10EE::DEVICE_5004: return "DEVICE_5004";
         case PciDevice10EE::DEVICE_5005: return "DEVICE_5005";
+        case PciDevice10EE::DEVICE_500C: return "DEVICE_500C";
+        case PciDevice10EE::DEVICE_5020: return "DEVICE_5020";
+        case PciDevice10EE::DEVICE_505C: return "DEVICE_505C";
         case PciDevice10EE::DEVICE_7038: return "DEVICE_7038";
         case PciDevice10EE::DEVICE_8019: return "DEVICE_8019";
         case PciDevice10EE::DEVICE_8380: return "DEVICE_8380";
         case PciDevice10EE::DEVICE_8381: return "DEVICE_8381";
+        case PciDevice10EE::DEVICE_D000: return "DEVICE_D000";
+        case PciDevice10EE::DEVICE_D004: return "DEVICE_D004";
+        case PciDevice10EE::DEVICE_D00C: return "DEVICE_D00C";
+        case PciDevice10EE::DEVICE_D020: return "DEVICE_D020";
         case PciDevice10EE::DEVICE_D154: return "DEVICE_D154";
         case PciDevice10EE::DEVICE_EBF0: return "DEVICE_EBF0";
         case PciDevice10EE::DEVICE_EBF1: return "DEVICE_EBF1";
@@ -129,11 +147,20 @@ inline const char8* enumToHumanString(PciDevice10EE device) // TEST: NO
         case PciDevice10EE::DEVICE_3FC4: return "RME Digi9652 (Hammerfall)";
         case PciDevice10EE::DEVICE_3FC5: return "RME Hammerfall DSP";
         case PciDevice10EE::DEVICE_3FC6: return "RME Hammerfall DSP MADI";
+        case PciDevice10EE::DEVICE_5000: return "Alveo U200 XDMA Platform";
+        case PciDevice10EE::DEVICE_5004: return "Alveo U250 XDMA Platform";
         case PciDevice10EE::DEVICE_5005: return "Alveo U250";
+        case PciDevice10EE::DEVICE_500C: return "Alveo U280 XDMA Platform";
+        case PciDevice10EE::DEVICE_5020: return "Alveo U50 XMDA Platform";
+        case PciDevice10EE::DEVICE_505C: return "Alveo U55C";
         case PciDevice10EE::DEVICE_7038: return "FPGA Card XC7VX690T";
         case PciDevice10EE::DEVICE_8019: return "Memory controller";
         case PciDevice10EE::DEVICE_8380: return "Ellips ProfiXpress Profibus Master";
         case PciDevice10EE::DEVICE_8381: return "Ellips Santos Frame Grabber";
+        case PciDevice10EE::DEVICE_D000: return "Alveo U200 Golden Image";
+        case PciDevice10EE::DEVICE_D004: return "Alveo U250 Golden Image";
+        case PciDevice10EE::DEVICE_D00C: return "Alveo U280 Golden Image";
+        case PciDevice10EE::DEVICE_D020: return "Alveo U50 Golden Image";
         case PciDevice10EE::DEVICE_D154: return "Copley Controls CAN card (PCI-CAN-02)";
         case PciDevice10EE::DEVICE_EBF0: return "SED Systems Modulator/Demodulator";
         case PciDevice10EE::DEVICE_EBF1: return "SED Systems Audio Interface Card";
@@ -171,11 +198,20 @@ inline const char8* enumToHumanString(PciDevice10EE device, u16 subsystemVendorI
         case PciDevice10EE::DEVICE_3FC4: return "Unknown device";
         case PciDevice10EE::DEVICE_3FC5: return "Unknown device";
         case PciDevice10EE::DEVICE_3FC6: return "Unknown device";
+        case PciDevice10EE::DEVICE_5000: return "Unknown device";
+        case PciDevice10EE::DEVICE_5004: return "Unknown device";
         case PciDevice10EE::DEVICE_5005: return "Unknown device";
+        case PciDevice10EE::DEVICE_500C: return "Unknown device";
+        case PciDevice10EE::DEVICE_5020: return "Unknown device";
+        case PciDevice10EE::DEVICE_505C: return "Unknown device";
         case PciDevice10EE::DEVICE_7038: return enumToHumanString((PciSubDevice10EE7038)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice10EE::DEVICE_8019: return enumToHumanString((PciSubDevice10EE8019)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice10EE::DEVICE_8380: return "Unknown device";
         case PciDevice10EE::DEVICE_8381: return "Unknown device";
+        case PciDevice10EE::DEVICE_D000: return "Unknown device";
+        case PciDevice10EE::DEVICE_D004: return "Unknown device";
+        case PciDevice10EE::DEVICE_D00C: return "Unknown device";
+        case PciDevice10EE::DEVICE_D020: return "Unknown device";
         case PciDevice10EE::DEVICE_D154: return "Unknown device";
         case PciDevice10EE::DEVICE_EBF0: return "Unknown device";
         case PciDevice10EE::DEVICE_EBF1: return "Unknown device";

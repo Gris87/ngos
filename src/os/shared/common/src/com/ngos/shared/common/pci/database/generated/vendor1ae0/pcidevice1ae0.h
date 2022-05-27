@@ -13,6 +13,7 @@
 enum class PciDevice1AE0: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
+    DEVICE_001F = 0x001F,
     DEVICE_0042 = 0x0042,
     DEVICE_ABCD = 0xABCD
 };
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciDevice1AE0 device) // TEST: NO
     switch (device)
     {
         case PciDevice1AE0::NONE:        return "NONE";
+        case PciDevice1AE0::DEVICE_001F: return "DEVICE_001F";
         case PciDevice1AE0::DEVICE_0042: return "DEVICE_0042";
         case PciDevice1AE0::DEVICE_ABCD: return "DEVICE_ABCD";
 
@@ -60,6 +62,7 @@ inline const char8* enumToHumanString(PciDevice1AE0 device) // TEST: NO
 
     switch (device)
     {
+        case PciDevice1AE0::DEVICE_001F: return "NVMe device";
         case PciDevice1AE0::DEVICE_0042: return "Compute Engine Virtual Ethernet [gVNIC]";
         case PciDevice1AE0::DEVICE_ABCD: return "Airbrush Combined Paintbox IPU/Oscar Edge TPU [Pixel Neural Core]";
 
