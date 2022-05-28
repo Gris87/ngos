@@ -852,6 +852,7 @@ src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuid80000008ecx.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuidmodelname.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/cpuidvendor.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/lib/cpuidcachetype.h
+src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/lib/cpuidperformancetscsize.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuid/lib/cpuidprocessortype.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuidleaf.h
 src/os/shared/common/src/com/ngos/shared/common/cpu/lib/cpuidsubleaf.h

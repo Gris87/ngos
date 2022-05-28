@@ -628,7 +628,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // physicalCores                   : 8  'A'
         // _reserved                       : 4  'B'
         // apicIdBits                      : 4  'C'
-        // performanceTimestampCounterSize : 2  'D'
+        // performanceTscSize : 2  'D'
         // _reserved2                      : 14 'E'
 
 
@@ -642,7 +642,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(temp.physicalCores,                   static_cast<good_U32>(133));
         TEST_ASSERT_EQUALS(temp._reserved,                       static_cast<good_U32>(0));
         TEST_ASSERT_EQUALS(temp.apicIdBits,                      static_cast<good_U32>(11));
-        TEST_ASSERT_EQUALS(temp.performanceTimestampCounterSize, static_cast<good_U32>(2));
+        TEST_ASSERT_EQUALS(temp.performanceTscSize, static_cast<CpuidPerformanceTscSize>(2));
         TEST_ASSERT_EQUALS(temp._reserved2,                      static_cast<good_U32>(10206));
 
 
@@ -681,7 +681,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        011110         |  01   |
         // |     0100      |     1111      |
         // |           01111010            |
-        temp.performanceTimestampCounterSize = static_cast<good_U32>(1);
+        temp.performanceTscSize = static_cast<CpuidPerformanceTscSize>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x9F794F7A);
 
