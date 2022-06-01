@@ -87,6 +87,213 @@ TEST_CASES(section0, com_ngos_shared_common_ngos_utils);
 
 
 
+    TEST_CASE("ALIGN_2()");
+    {
+        TEST_ASSERT_EQUALS(ALIGN_2(0), 0);
+        TEST_ASSERT_EQUALS(ALIGN_2(1), 2);
+        TEST_ASSERT_EQUALS(ALIGN_2(2), 2);
+        TEST_ASSERT_EQUALS(ALIGN_2(3), 4);
+        TEST_ASSERT_EQUALS(ALIGN_2(4), 4);
+        TEST_ASSERT_EQUALS(ALIGN_2(5), 6);
+        TEST_ASSERT_EQUALS(ALIGN_2(6), 6);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ALIGN_4()");
+    {
+        TEST_ASSERT_EQUALS(ALIGN_4(0), 0);
+        TEST_ASSERT_EQUALS(ALIGN_4(1), 4);
+        TEST_ASSERT_EQUALS(ALIGN_4(2), 4);
+        TEST_ASSERT_EQUALS(ALIGN_4(3), 4);
+        TEST_ASSERT_EQUALS(ALIGN_4(4), 4);
+        TEST_ASSERT_EQUALS(ALIGN_4(5), 8);
+        TEST_ASSERT_EQUALS(ALIGN_4(6), 8);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ALIGN_8()");
+    {
+        TEST_ASSERT_EQUALS(ALIGN_8(0), 0);
+        TEST_ASSERT_EQUALS(ALIGN_8(1), 8);
+        TEST_ASSERT_EQUALS(ALIGN_8(2), 8);
+        TEST_ASSERT_EQUALS(ALIGN_8(3), 8);
+        TEST_ASSERT_EQUALS(ALIGN_8(4), 8);
+        TEST_ASSERT_EQUALS(ALIGN_8(5), 8);
+        TEST_ASSERT_EQUALS(ALIGN_8(6), 8);
+        TEST_ASSERT_EQUALS(ALIGN_8(7), 8);
+        TEST_ASSERT_EQUALS(ALIGN_8(8), 8);
+        TEST_ASSERT_EQUALS(ALIGN_8(9), 16);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ALIGN_16()");
+    {
+        TEST_ASSERT_EQUALS(ALIGN_16(0),  0);
+        TEST_ASSERT_EQUALS(ALIGN_16(1),  16);
+        TEST_ASSERT_EQUALS(ALIGN_16(2),  16);
+        TEST_ASSERT_EQUALS(ALIGN_16(3),  16);
+        TEST_ASSERT_EQUALS(ALIGN_16(29), 32);
+        TEST_ASSERT_EQUALS(ALIGN_16(40), 48);
+        TEST_ASSERT_EQUALS(ALIGN_16(59), 64);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ALIGN_32()");
+    {
+        TEST_ASSERT_EQUALS(ALIGN_32(0),  0);
+        TEST_ASSERT_EQUALS(ALIGN_32(1),  32);
+        TEST_ASSERT_EQUALS(ALIGN_32(2),  32);
+        TEST_ASSERT_EQUALS(ALIGN_32(3),  32);
+        TEST_ASSERT_EQUALS(ALIGN_32(36), 64);
+        TEST_ASSERT_EQUALS(ALIGN_32(88), 96);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ALIGN_64()");
+    {
+        TEST_ASSERT_EQUALS(ALIGN_64(0),  0);
+        TEST_ASSERT_EQUALS(ALIGN_64(1),  64);
+        TEST_ASSERT_EQUALS(ALIGN_64(2),  64);
+        TEST_ASSERT_EQUALS(ALIGN_64(3),  64);
+        TEST_ASSERT_EQUALS(ALIGN_64(100), 128);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ALIGN_128()");
+    {
+        TEST_ASSERT_EQUALS(ALIGN_128(0),   0);
+        TEST_ASSERT_EQUALS(ALIGN_128(1),   128);
+        TEST_ASSERT_EQUALS(ALIGN_128(2),   128);
+        TEST_ASSERT_EQUALS(ALIGN_128(3),   128);
+        TEST_ASSERT_EQUALS(ALIGN_128(200), 256);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ALIGN_256()");
+    {
+        TEST_ASSERT_EQUALS(ALIGN_256(0),   0);
+        TEST_ASSERT_EQUALS(ALIGN_256(1),   256);
+        TEST_ASSERT_EQUALS(ALIGN_256(2),   256);
+        TEST_ASSERT_EQUALS(ALIGN_256(3),   256);
+        TEST_ASSERT_EQUALS(ALIGN_256(400), 512);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ALIGN_512()");
+    {
+        TEST_ASSERT_EQUALS(ALIGN_512(0),   0);
+        TEST_ASSERT_EQUALS(ALIGN_512(1),   512);
+        TEST_ASSERT_EQUALS(ALIGN_512(2),   512);
+        TEST_ASSERT_EQUALS(ALIGN_512(3),   512);
+        TEST_ASSERT_EQUALS(ALIGN_512(800), 1024);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ALIGN_1024()");
+    {
+        TEST_ASSERT_EQUALS(ALIGN_1024(0),    0);
+        TEST_ASSERT_EQUALS(ALIGN_1024(1),    1024);
+        TEST_ASSERT_EQUALS(ALIGN_1024(2),    1024);
+        TEST_ASSERT_EQUALS(ALIGN_1024(3),    1024);
+        TEST_ASSERT_EQUALS(ALIGN_1024(1600), 2048);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ALIGN_2048()");
+    {
+        TEST_ASSERT_EQUALS(ALIGN_2048(0),    0);
+        TEST_ASSERT_EQUALS(ALIGN_2048(1),    2048);
+        TEST_ASSERT_EQUALS(ALIGN_2048(2),    2048);
+        TEST_ASSERT_EQUALS(ALIGN_2048(3),    2048);
+        TEST_ASSERT_EQUALS(ALIGN_2048(3200), 4096);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("ALIGN_4096()");
+    {
+        TEST_ASSERT_EQUALS(ALIGN_4096(0),    0);
+        TEST_ASSERT_EQUALS(ALIGN_4096(1),    4096);
+        TEST_ASSERT_EQUALS(ALIGN_4096(2),    4096);
+        TEST_ASSERT_EQUALS(ALIGN_4096(3),    4096);
+        TEST_ASSERT_EQUALS(ALIGN_4096(6400), 8192);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("IS_ALIGNED()");
+    {
+        TEST_ASSERT_EQUALS(IS_ALIGNED(1, 1), true);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(2, 1), true);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(3, 1), true);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(4, 1), true);
+
+        TEST_ASSERT_EQUALS(IS_ALIGNED(1, 2), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(2, 2), true);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(3, 2), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(4, 2), true);
+
+        TEST_ASSERT_EQUALS(IS_ALIGNED(1, 4), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(2, 4), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(3, 4), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(4, 4), true);
+
+        TEST_ASSERT_EQUALS(IS_ALIGNED(1,  8), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(2,  8), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(3,  8), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(7,  8), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(8,  8), true);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(9,  8), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(10, 8), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(16, 8), true);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(23, 8), false);
+        TEST_ASSERT_EQUALS(IS_ALIGNED(24, 8), true);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("IS_POWER_OF_2()");
+    {
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(1),  true);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(2),  true);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(3),  false);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(4),  true);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(5),  false);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(6),  false);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(7),  false);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(8),  true);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(9),  false);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(16), true);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(32), true);
+        TEST_ASSERT_EQUALS(IS_POWER_OF_2(64), true);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("DIV_UP()");
     {
         TEST_ASSERT_EQUALS(DIV_UP(4, 2), 2);
@@ -147,57 +354,6 @@ TEST_CASES(section0, com_ngos_shared_common_ngos_utils);
         TEST_ASSERT_EQUALS(OFFSET_OF(TestStruct, f), 18);
         TEST_ASSERT_EQUALS(OFFSET_OF(TestStruct, g), 24);
         TEST_ASSERT_EQUALS(OFFSET_OF(TestStruct, h), 32);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("IS_ALIGNED()");
-    {
-        TEST_ASSERT_EQUALS(IS_ALIGNED(1, 1), true);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(2, 1), true);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(3, 1), true);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(4, 1), true);
-
-        TEST_ASSERT_EQUALS(IS_ALIGNED(1, 2), false);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(2, 2), true);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(3, 2), false);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(4, 2), true);
-
-        TEST_ASSERT_EQUALS(IS_ALIGNED(1, 4), false);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(2, 4), false);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(3, 4), false);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(4, 4), true);
-
-        TEST_ASSERT_EQUALS(IS_ALIGNED(1,  8), false);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(2,  8), false);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(3,  8), false);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(7,  8), false);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(8,  8), true);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(9,  8), false);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(10, 8), false);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(16, 8), true);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(23, 8), false);
-        TEST_ASSERT_EQUALS(IS_ALIGNED(24, 8), true);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("IS_POWER_OF_2()");
-    {
-        TEST_ASSERT_EQUALS(IS_POWER_OF_2(1),  true);
-        TEST_ASSERT_EQUALS(IS_POWER_OF_2(2),  true);
-        TEST_ASSERT_EQUALS(IS_POWER_OF_2(3),  false);
-        TEST_ASSERT_EQUALS(IS_POWER_OF_2(4),  true);
-        TEST_ASSERT_EQUALS(IS_POWER_OF_2(5),  false);
-        TEST_ASSERT_EQUALS(IS_POWER_OF_2(6),  false);
-        TEST_ASSERT_EQUALS(IS_POWER_OF_2(7),  false);
-        TEST_ASSERT_EQUALS(IS_POWER_OF_2(8),  true);
-        TEST_ASSERT_EQUALS(IS_POWER_OF_2(9),  false);
-        TEST_ASSERT_EQUALS(IS_POWER_OF_2(16), true);
-        TEST_ASSERT_EQUALS(IS_POWER_OF_2(32), true);
-        TEST_ASSERT_EQUALS(IS_POWER_OF_2(64), true);
     }
     TEST_CASE_END();
 
