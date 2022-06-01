@@ -50,10 +50,10 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 {
     COMMON_LT((" | codeType = %d, lengthBuffer = 0x%p, numberOfCodes = %u, table = 0x%p, bits = 0x%p", codeType, lengthBuffer, numberOfCodes, table, bits));
 
-    COMMON_ASSERT(lengthBuffer,      "lengthBuffer is null",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(numberOfCodes > 0, "numberOfCodes is zero", NgosStatus::ASSERTION);
-    COMMON_ASSERT(table,             "table is null",         NgosStatus::ASSERTION);
-    COMMON_ASSERT(bits,              "bits is null",          NgosStatus::ASSERTION);
+    COMMON_ASSERT(lengthBuffer,      "lengthBuffer is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(numberOfCodes > 0, "numberOfCodes is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(table,             "table is null",            NgosStatus::ASSERTION);
+    COMMON_ASSERT(bits,              "bits is null",             NgosStatus::ASSERTION);
 
 
 
@@ -496,11 +496,11 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 {
     COMMON_LT((" | decoder = 0x%p, lengthCodes = 0x%p, lengthBits = %u, distanceCodes = 0x%p, distanceBits = %u", decoder, lengthCodes, lengthBits, distanceCodes, distanceBits));
 
-    COMMON_ASSERT(decoder,          "decoder is null",       NgosStatus::ASSERTION);
-    COMMON_ASSERT(lengthCodes,      "lengthCodes is null",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(lengthBits > 0,   "lengthBits is zero",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(distanceCodes,    "distanceCodes is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(distanceBits > 0, "distanceBits is zero",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,          "decoder is null",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(lengthCodes,      "lengthCodes is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(lengthBits > 0,   "lengthBits is invalid",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(distanceCodes,    "distanceCodes is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(distanceBits > 0, "distanceBits is invalid", NgosStatus::ASSERTION);
 
 
 

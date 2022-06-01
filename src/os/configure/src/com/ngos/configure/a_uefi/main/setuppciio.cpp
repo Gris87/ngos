@@ -105,7 +105,7 @@ NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size, uefi
 
     UEFI_ASSERT(params,       "params is null",       NgosStatus::ASSERTION);
     UEFI_ASSERT(protocol,     "protocol is null",     NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0,     "size is zero",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0,     "size is invalid",      NgosStatus::ASSERTION);
     UEFI_ASSERT(pciIoHandles, "pciIoHandles is null", NgosStatus::ASSERTION);
 
 
@@ -250,7 +250,7 @@ NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size)
 
     UEFI_ASSERT(params,   "params is null",   NgosStatus::ASSERTION);
     UEFI_ASSERT(protocol, "protocol is null", NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0, "size is zero",     NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0, "size is invalid",  NgosStatus::ASSERTION);
 
 
 

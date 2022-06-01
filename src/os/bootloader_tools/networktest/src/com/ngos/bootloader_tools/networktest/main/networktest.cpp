@@ -58,7 +58,7 @@ NgosStatus NetworkTest::initSimpleNetworkProtocols(Guid *protocol, u64 size)
     UEFI_LT((" | protocol = 0x%p, size = %u", protocol, size));
 
     UEFI_ASSERT(protocol, "protocol is null", NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0, "size is zero",     NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0, "size is invalid",  NgosStatus::ASSERTION);
 
 
 
@@ -111,7 +111,7 @@ NgosStatus NetworkTest::initSimpleNetworkProtocols(Guid *protocol, u64 size, uef
     UEFI_LT((" | protocol = 0x%p, size = %u, handles = 0x%p", protocol, size, handles));
 
     UEFI_ASSERT(protocol, "protocol is null", NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0, "size is zero",     NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0, "size is invalid",  NgosStatus::ASSERTION);
     UEFI_ASSERT(handles,  "handles is null",  NgosStatus::ASSERTION);
 
 

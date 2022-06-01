@@ -48,8 +48,8 @@ NgosStatus BRK::allocate(u64 size, u64 align, u8 **result)
 {
     COMMON_LT((" | size = %u, align = %u, result = 0x%p", size, align, result));
 
-    COMMON_ASSERT(size > 0,             "size is zero",            NgosStatus::ASSERTION);
-    COMMON_ASSERT(align > 0,            "align is zero",           NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,             "size is invalid",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(align > 0,            "align is invalid",        NgosStatus::ASSERTION);
     COMMON_ASSERT(IS_POWER_OF_2(align), "align is not power of 2", NgosStatus::ASSERTION);
     COMMON_ASSERT(result,               "result is null",          NgosStatus::ASSERTION);
 

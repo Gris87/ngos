@@ -1,17 +1,17 @@
-#include "aes.h"
-
-#include <com/ngos/shared/common/cpu/cpu.h>
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/macro/utils.h>
-#include <com/ngos/shared/common/memory/malloc.h>
-#include <com/ngos/shared/common/memory/memory.h>
-#include <com/ngos/shared/common/ngos/linkage.h>
-#include <com/ngos/shared/common/ngos/utils.h>
-
-
-
-// Ignore CppAlignmentVerifier [BEGIN]
+#include "aes.h"                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/cpu/cpu.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/macro/utils.h>                                                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/memory/malloc.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/memory/memory.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/ngos/linkage.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/utils.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+// Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                                   // Colorize: green
 #define __AES_KEY_EXPANSION(roundConstant, xmm1, xmm2, order) \
     "aeskeygenassist    $" #roundConstant ", %%" #xmm1 ", %%xmm2"   "\n\t"    /* aeskeygenassist    $0x01, %xmm1, %xmm2     # Assist in AES round key generation using an 8 bits Round Constant */                                                                                                                                                                              \
                                                                     "\n\t"                                                                                                                                                                                                                                                                                                      \
@@ -20,37 +20,37 @@
     "pxor               %%xmm3, %%" #xmm2 ""                        "\n\t"    /* pxor               %xmm3, %xmm1            # Perform bitwise XOR of XMM3 and XMM1 and store the result in XMM1 */                                                                                                                                                                              \
     "shufps             $0x8C, %%" #xmm2 ", %%xmm3"                 "\n\t"    /* shufps             $0x8C, %xmm1, %xmm3     # Select from quadruplet of single-precision floating-point values in XMM3 and XMM1 using encoding in first argument, interleaved result pairs are stored in XMM3   # XMM3[0] = XMM3[0], XMM3[1] = XMM3[3], XMM3[2] = XMM1[0], XMM3[3] = XMM1[2] */ \
     "pxor               %%xmm3, %%" #xmm2 ""                        "\n\t"    /* pxor               %xmm3, %xmm1            # Perform bitwise XOR of XMM3 and XMM1 and store the result in XMM1 */                                                                                                                                                                              \
-    "pxor               %%xmm2, %%" #xmm2 ""                        "\n\t"    /* pxor               %xmm2, %xmm1            # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1 */
-
-
-
+    "pxor               %%xmm2, %%" #xmm2 ""                        "\n\t"    /* pxor               %xmm2, %xmm1            # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1 */       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define __AES_KEY_EXPANSION_128(roundConstant) \
-    __AES_KEY_EXPANSION(roundConstant, xmm1, xmm1, 0xFF)
-
-
-
+    __AES_KEY_EXPANSION(roundConstant, xmm1, xmm1, 0xFF)                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define AES_KEY_EXPANSION_128(roundConstant, round) \
     __AES_KEY_EXPANSION_128(roundConstant)                                                                                                                                                                                  \
                                                                         "\n\t"                                                                                                                                              \
     "aesimc     %%xmm1, %%xmm4"                                         "\n\t"    /* aesimc     %xmm1, %xmm4    # Perform the InvMixColumn transformation on a 128-bit round key from XMM1 and store the result in XMM4 */  \
     "movaps     %%xmm1, " PP_STRINGIZE(round * 16)        "(%%rax)"     "\n\t"    /* movaps     %xmm1, (%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey // Ignore CppShiftVerifier */                               \
-    "movaps     %%xmm4, " PP_STRINGIZE((10 - round) * 16) "(%%rbx)"     "\n\t"    /* movaps     %xmm4, (%rbx)   # Put content of XMM4 to 16 bytes of mDecodeKey // Ignore CppShiftVerifier */
-
-
-
+    "movaps     %%xmm4, " PP_STRINGIZE((10 - round) * 16) "(%%rbx)"     "\n\t"    /* movaps     %xmm4, (%rbx)   # Put content of XMM4 to 16 bytes of mDecodeKey // Ignore CppShiftVerifier */            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define AES_KEY_EXPANSION_128_LAST(roundConstant) \
     __AES_KEY_EXPANSION_128(roundConstant)                                                                                              \
                                         "\n\t"                                                                                          \
     "movaps     %%xmm1, 0xA0(%%rax)"    "\n\t"    /* movaps     %xmm1, 0xA0(%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey */  \
-    "movaps     %%xmm1, (%%rbx)"        "\n\t"    /* movaps     %xmm1, (%rbx)       # Put content of XMM1 to 16 bytes of mDecodeKey */
-
-
-
+    "movaps     %%xmm1, (%%rbx)"        "\n\t"    /* movaps     %xmm1, (%rbx)       # Put content of XMM1 to 16 bytes of mDecodeKey */                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define __AES_ENCODE_KEY_EXPANSION_192(roundConstant) \
-    __AES_KEY_EXPANSION(roundConstant, xmm4, xmm1, 0xFF)
-
-
-
+    __AES_KEY_EXPANSION(roundConstant, xmm4, xmm1, 0xFF)                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define __AES_ENCODE_KEY_EXPANSION_192_COMMON(roundConstant) \
     __AES_ENCODE_KEY_EXPANSION_192(roundConstant)                                                                                                                                                                                                                                                                                               \
                                             "\n\t"                                                                                                                                                                                                                                                                                              \
@@ -59,50 +59,50 @@
     "shufps     $0xF0, %%xmm1, %%xmm6"      "\n\t"    /* shufps     $0xF0, %xmm1, %xmm6     # Select from quadruplet of single-precision floating-point values in XMM6 and XMM1 using encoding in first argument, interleaved result pairs are stored in XMM6   # XMM6[0] = XMM6[0], XMM6[1] = XMM6[0], XMM6[2] = XMM1[3], XMM6[3] = XMM1[3] */ \
     "pxor       %%xmm5, %%xmm6"             "\n\t"    /* pxor       %xmm5, %xmm6            # Perform bitwise XOR of XMM5 and XMM6 and store the result in XMM6 */                                                                                                                                                                              \
     "pxor       %%xmm6, %%xmm4"             "\n\t"    /* pxor       %xmm6, %xmm4            # Perform bitwise XOR of XMM6 and XMM4 and store the result in XMM4 */                                                                                                                                                                              \
-    "pshufd     $0x0E, %%xmm4, %%xmm7"      "\n\t"    /* pshufd     $0x0E, %xmm4, %xmm7     # Shuffle the doublewords in XMM4 based on the encoding in first argument and store the result in XMM7  # XMM7[0] = XMM4[2], XMM7[1] = XMM4[3], XMM7[2] = XMM4[0], XMM7[3] = XMM4[0] */
-
-
-
+    "pshufd     $0x0E, %%xmm4, %%xmm7"      "\n\t"    /* pshufd     $0x0E, %xmm4, %xmm7     # Shuffle the doublewords in XMM4 based on the encoding in first argument and store the result in XMM7  # XMM7[0] = XMM4[2], XMM7[1] = XMM4[3], XMM7[2] = XMM4[0], XMM7[3] = XMM4[0] */ // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define AES_ENCODE_KEY_EXPANSION_192_ODD(roundConstant, round) \
     __AES_ENCODE_KEY_EXPANSION_192_COMMON(roundConstant)                                                                                                                \
                                                                     "\n\t"                                                                                              \
     "movups     %%xmm1, " PP_STRINGIZE(round * 24) "(%%rax)"        "\n\t"    /* movups     %xmm1, (%rax)           # Put content of XMM1 to 16 bytes of mEncodeKey */  \
-    "movups     %%xmm7, " PP_STRINGIZE(round * 24 + 16) "(%%rax)"   "\n\t"    /* movups     %xmm7, 0x10(%rax)       # Put content of XMM7 to 16 bytes of mEncodeKey */
-
-
-
+    "movups     %%xmm7, " PP_STRINGIZE(round * 24 + 16) "(%%rax)"   "\n\t"    /* movups     %xmm7, 0x10(%rax)       # Put content of XMM7 to 16 bytes of mEncodeKey */                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define AES_ENCODE_KEY_EXPANSION_192_EVEN(roundConstant, round) \
     __AES_ENCODE_KEY_EXPANSION_192_COMMON(roundConstant)                                                                                                                \
                                                                     "\n\t"                                                                                              \
     "movaps     %%xmm1, " PP_STRINGIZE(round * 24) "(%%rax)"        "\n\t"    /* movaps     %xmm1, (%rax)           # Put content of XMM1 to 16 bytes of mEncodeKey */  \
-    "movaps     %%xmm7, " PP_STRINGIZE(round * 24 + 16) "(%%rax)"   "\n\t"    /* movaps     %xmm7, 0x10(%rax)       # Put content of XMM7 to 16 bytes of mEncodeKey */
-
-
-
+    "movaps     %%xmm7, " PP_STRINGIZE(round * 24 + 16) "(%%rax)"   "\n\t"    /* movaps     %xmm7, 0x10(%rax)       # Put content of XMM7 to 16 bytes of mEncodeKey */                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define AES_ENCODE_KEY_EXPANSION_192_LAST(roundConstant) \
     __AES_ENCODE_KEY_EXPANSION_192(roundConstant)                                                                                       \
                                         "\n\t"                                                                                          \
-    "movaps     %%xmm1, 0xC0(%%rax)"    "\n\t"    /* movaps     %xmm1, 0xC0(%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey */
-
-
-
+    "movaps     %%xmm1, 0xC0(%%rax)"    "\n\t"    /* movaps     %xmm1, 0xC0(%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey */                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define AES_DECODE_KEY_EXPANSION_192(round) \
     "movaps     " PP_STRINGIZE((12 - round) * 16) "(%%rax), %%xmm0"     "\n\t"    /* movaps     (%rax), %xmm0   # Put 16 bytes from mEncodeKey to XMM0 // Ignore CppShiftVerifier */                                        \
     "aesimc     %%xmm0, %%xmm1"                                         "\n\t"    /* aesimc     %xmm0, %xmm1    # Perform the InvMixColumn transformation on a 128-bit round key from XMM0 and store the result in XMM1 */  \
-    "movaps     %%xmm1, " PP_STRINGIZE(round * 16) "(%%rbx)"            "\n\t"    /* movaps     %xmm1, (%rbx)   # Put content of XMM1 to 16 bytes of mDecodeKey // Ignore CppShiftVerifier */
-
-
-
+    "movaps     %%xmm1, " PP_STRINGIZE(round * 16) "(%%rbx)"            "\n\t"    /* movaps     %xmm1, (%rbx)   # Put content of XMM1 to 16 bytes of mDecodeKey // Ignore CppShiftVerifier */            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define __AES_KEY_EXPANSION_256_FOR_XMM1(roundConstant) \
-    __AES_KEY_EXPANSION(roundConstant, xmm4, xmm1, 0xFF)
-
-
-
+    __AES_KEY_EXPANSION(roundConstant, xmm4, xmm1, 0xFF)                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define __AES_KEY_EXPANSION_256_FOR_XMM4(roundConstant) \
-    __AES_KEY_EXPANSION(roundConstant, xmm1, xmm4, 0xAA)
-
-
-
+    __AES_KEY_EXPANSION(roundConstant, xmm1, xmm4, 0xAA)                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define AES_KEY_EXPANSION_256(roundConstant, round) \
     __AES_KEY_EXPANSION_256_FOR_XMM1(roundConstant)                                                                                                                                                                                                     \
                                                                                     "\n\t"                                                                                                                                                              \
@@ -114,709 +114,770 @@
                                                                                     "\n\t"                                                                                                                                                              \
     "aesimc             %%xmm4, %%xmm0"                                             "\n\t"    /* aesimc             %xmm4, %xmm0            # Perform the InvMixColumn transformation on a 128-bit round key from XMM4 and store the result in XMM0 */  \
     "movaps             %%xmm4, " PP_STRINGIZE(round * 32 + 16)       "(%%rax)"     "\n\t"    /* movaps             %xmm4, 0x10(%rax)       # Put content of XMM4 to 16 bytes of mEncodeKey // Ignore CppShiftVerifier */                               \
-    "movaps             %%xmm0, " PP_STRINGIZE((7 - round) * 32 - 16) "(%%rbx)"     "\n\t"    /* movaps             %xmm0, -0x10(%rbx)      # Put content of XMM0 to 16 bytes of mDecodeKey // Ignore CppShiftVerifier */
-
-
-
+    "movaps             %%xmm0, " PP_STRINGIZE((7 - round) * 32 - 16) "(%%rbx)"     "\n\t"    /* movaps             %xmm0, -0x10(%rbx)      # Put content of XMM0 to 16 bytes of mDecodeKey // Ignore CppShiftVerifier */ // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define AES_KEY_EXPANSION_256_LAST(roundConstant) \
     __AES_KEY_EXPANSION_256_FOR_XMM1(roundConstant)                                                                                     \
                                         "\n\t"                                                                                          \
     "movaps     %%xmm1, 0xE0(%%rax)"    "\n\t"    /* movaps     %xmm1, 0xE0(%rax)   # Put content of XMM1 to 16 bytes of mEncodeKey */  \
-    "movaps     %%xmm1, (%%rbx)"        "\n\t"    /* movaps     %xmm1, (%rbx)       # Put content of XMM1 to 16 bytes of mDecodeKey */
-
-
-
+    "movaps     %%xmm1, (%%rbx)"        "\n\t"    /* movaps     %xmm1, (%rbx)       # Put content of XMM1 to 16 bytes of mDecodeKey */                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define __AES_ENCODE_DECODE_ROUND(round) \
-    "movaps     " PP_STRINGIZE(round * 16) "(%%rax), %%xmm2"    "\n\t"    /* movaps     (%rax), %xmm2   # Put 16 bytes from mEncodeKey / mDecodeKey to XMM2 // Ignore CppShiftVerifier */
-
-
-
+    "movaps     " PP_STRINGIZE(round * 16) "(%%rax), %%xmm2"    "\n\t"    /* movaps     (%rax), %xmm2   # Put 16 bytes from mEncodeKey / mDecodeKey to XMM2 // Ignore CppShiftVerifier */                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define AES_ENCODE_ROUND(round) \
     __AES_ENCODE_DECODE_ROUND(round)                                                                                                                                                                            \
                                     "\n\t"                                                                                                                                                                      \
-    "aesenc     %%xmm2, %%xmm1"     "\n\t"    /* aesenc     %xmm2, %xmm1    # Perform one round of an AES encryption flow, operating on a 128-bit data (state) from XMM1 with a 128-bit round key from XMM2 */
-
-
-
+    "aesenc     %%xmm2, %%xmm1"     "\n\t"    /* aesenc     %xmm2, %xmm1    # Perform one round of an AES encryption flow, operating on a 128-bit data (state) from XMM1 with a 128-bit round key from XMM2 */ // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define AES_ENCODE_ROUND_LAST(round) \
     __AES_ENCODE_DECODE_ROUND(round)                                                                                                                                                                                        \
                                         "\n\t"                                                                                                                                                                              \
-    "aesenclast     %%xmm2, %%xmm1"     "\n\t"    /* aesenclast     %xmm2, %xmm1    # Perform the last round of an AES encryption flow, operating on a 128-bit data (state) from XMM1 with a 128-bit round key from XMM2 */
-
-
-
+    "aesenclast     %%xmm2, %%xmm1"     "\n\t"    /* aesenclast     %xmm2, %xmm1    # Perform the last round of an AES encryption flow, operating on a 128-bit data (state) from XMM1 with a 128-bit round key from XMM2 */ // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define AES_DECODE_ROUND(round) \
     __AES_ENCODE_DECODE_ROUND(round)                                                                                                                                                                                                                \
                                     "\n\t"                                                                                                                                                                                                          \
-    "aesdec     %%xmm2, %%xmm1"     "\n\t"    /* aesdec     %xmm2, %xmm1    # Perform one round of an AES decryption flow, using the Equivalent Inverse Cipher, operating on a 128-bit data (state) from XMM1 with a 128-bit round key from XMM2 */
-
-
-
+    "aesdec     %%xmm2, %%xmm1"     "\n\t"    /* aesdec     %xmm2, %xmm1    # Perform one round of an AES decryption flow, using the Equivalent Inverse Cipher, operating on a 128-bit data (state) from XMM1 with a 128-bit round key from XMM2 */ // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define AES_DECODE_ROUND_LAST(round) \
     __AES_ENCODE_DECODE_ROUND(round)                                                                                                                                                                                                                                \
                                         "\n\t"                                                                                                                                                                                                                      \
-    "aesdeclast     %%xmm2, %%xmm1"     "\n\t"    /* aesdeclast     %xmm2, %xmm1    # Perform the last round of an AES decryption flow, using the Equivalent Inverse Cipher, operating on a 128-bit data (state) from XMM1 with a 128-bit round key from XMM2 */
-// Ignore CppAlignmentVerifier [END]
-
-
-
-AES::AES()
-    : mEncodeBlockFunction(nullptr)
-    , mDecodeBlockFunction(nullptr)
-    , mEncodeKeyAllocated(nullptr)
-    , mDecodeKeyAllocated(nullptr)
-    , mEncodeKey(nullptr)
-    , mDecodeKey(nullptr)
-{
-    // COMMON_LT(("")); // Commented to avoid bad looking logs
-
-    COMMON_TEST_ASSERT(CPU::hasFeature(X86Feature::AESNI));
-}
-
-AES::~AES()
-{
-    // COMMON_LT(("")); // Commented to avoid bad looking logs
-
-
-
-    if (mEncodeKeyAllocated)
-    {
-        COMMON_ASSERT_EXECUTION(free(mEncodeKeyAllocated));
-    }
-
-    if (mDecodeKeyAllocated)
-    {
-        COMMON_ASSERT_EXECUTION(free(mDecodeKeyAllocated));
-    }
-}
-
-NgosStatus AES::setKey(u8 *key, u8 size)
-{
-    // COMMON_LT((" | key = 0x%p, size = %u", key, size)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(key,      "key is null",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0, "size is zero", NgosStatus::ASSERTION);
-
-
-
-    COMMON_ASSERT_EXECUTION(releaseKey(), NgosStatus::ASSERTION);
-
-    switch (size * 8)
-    {
-        case 128:
-        {
-            mEncodeBlockFunction = &AES::encodeBlock128;
-            mDecodeBlockFunction = &AES::decodeBlock128;
-
-            mEncodeKeyAllocated = (u8 *)malloc(12 * 16); // Key should contains of 11 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
-            mDecodeKeyAllocated = (u8 *)malloc(12 * 16); // Key should contains of 11 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
-
-            COMMON_TEST_ASSERT(mEncodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(mDecodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
-
-            mEncodeKey = (u8 *)(ROUND_UP((address_t)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
-            mDecodeKey = (u8 *)(ROUND_UP((address_t)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
-
-            COMMON_ASSERT_EXECUTION(expandKey128(key), NgosStatus::ASSERTION);
-        }
-        break;
-
-        case 192:
-        {
-            mEncodeBlockFunction = &AES::encodeBlock192;
-            mDecodeBlockFunction = &AES::decodeBlock192;
-
-            mEncodeKeyAllocated = (u8 *)malloc(14 * 16); // Key should contains of 13 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
-            mDecodeKeyAllocated = (u8 *)malloc(14 * 16); // Key should contains of 13 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
-
-            COMMON_TEST_ASSERT(mEncodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(mDecodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
-
-            mEncodeKey = (u8 *)(ROUND_UP((address_t)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
-            mDecodeKey = (u8 *)(ROUND_UP((address_t)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
-
-            COMMON_ASSERT_EXECUTION(expandKey192(key), NgosStatus::ASSERTION);
-        }
-        break;
-
-        case 256:
-        {
-            mEncodeBlockFunction = &AES::encodeBlock256;
-            mDecodeBlockFunction = &AES::decodeBlock256;
-
-            mEncodeKeyAllocated = (u8 *)malloc(16 * 16); // Key should contains of 15 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
-            mDecodeKeyAllocated = (u8 *)malloc(16 * 16); // Key should contains of 15 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
-
-            COMMON_TEST_ASSERT(mEncodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(mDecodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
-
-            mEncodeKey = (u8 *)(ROUND_UP((address_t)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
-            mDecodeKey = (u8 *)(ROUND_UP((address_t)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
-
-            COMMON_ASSERT_EXECUTION(expandKey256(key), NgosStatus::ASSERTION);
-        }
-        break;
-
-        default:
-        {
-            COMMON_LF(("Unexpected key size: %u, %s:%u", size, __FILE__, __LINE__));
-
-            return NgosStatus::INVALID_DATA;
-        }
-        break;
-    }
-
-
-
-    COMMON_TEST_ASSERT(mEncodeBlockFunction != nullptr, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mDecodeBlockFunction != nullptr, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mEncodeKeyAllocated  != nullptr, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mDecodeKeyAllocated  != nullptr, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mEncodeKey           != nullptr, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(mDecodeKey           != nullptr, NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus AES::releaseKey()
-{
-    // COMMON_LT(("")); // Commented to avoid bad looking logs
-
-
-
-    if (mEncodeKeyAllocated)
-    {
-        COMMON_ASSERT_EXECUTION(free(mEncodeKeyAllocated), NgosStatus::ASSERTION);
-
-        mEncodeKeyAllocated = nullptr;
-        mEncodeKey          = nullptr;
-    }
-
-    if (mDecodeKeyAllocated)
-    {
-        COMMON_ASSERT_EXECUTION(free(mDecodeKeyAllocated), NgosStatus::ASSERTION);
-
-        mDecodeKeyAllocated = nullptr;
-        mDecodeKey          = nullptr;
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus AES::encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize)
-{
-    // COMMON_LT((" | in = 0x%p, inSize = %u, out = 0x%p, outSize = %u, resultSize = 0x%p", in, inSize, out, outSize, resultSize)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(in,                  "in is null",         NgosStatus::ASSERTION);
-    COMMON_ASSERT(IS_ALIGNED(in, 16),  "in is invalid",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(inSize > 0,          "inSize is zero",     NgosStatus::ASSERTION);
-    COMMON_ASSERT(out,                 "out is null",        NgosStatus::ASSERTION);
-    COMMON_ASSERT(IS_ALIGNED(out, 16), "out is invalid",     NgosStatus::ASSERTION);
-    COMMON_ASSERT(outSize > 0,         "outSize is zero",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(resultSize,          "resultSize is null", NgosStatus::ASSERTION);
-
-
-
-    COMMON_TEST_ASSERT(mEncodeKey, NgosStatus::ASSERTION);
-
-
-
-    u8  padding = inSize & 0x0F;
-    u64 size;
-
-    if (padding)
-    {
-        padding = 16 - padding;
-        size    = inSize + padding;
-    }
-    else
-    {
-        size = inSize;
-    }
-
-
-
-    if (outSize < size)
-    {
-        return NgosStatus::BUFFER_TOO_SMALL;
-    }
-
-    *resultSize = size;
-
-
-
-    i64 blocksCount = inSize / 16;
-
-    for (good_I64 i = 0; i < blocksCount; ++i)
-    {
-        COMMON_ASSERT_EXECUTION((this->*mEncodeBlockFunction)(in, out), NgosStatus::ASSERTION);
-
-        in  += 16;
-        out += 16;
-    }
-
-
-
-    if (padding)
-    {
-        u8 paddingBlock[16] __attribute__((aligned(16)));
-
-        memcpy(paddingBlock, in, 16 - padding);
-        memzero(&paddingBlock[16 - padding], padding);
-
-        COMMON_ASSERT_EXECUTION((this->*mEncodeBlockFunction)(paddingBlock, out), NgosStatus::ASSERTION);
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus AES::decode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize)
-{
-    // COMMON_LT((" | in = 0x%p, inSize = %u, out = 0x%p, outSize = %u, resultSize = 0x%p", in, inSize, out, outSize, resultSize)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(in,                     "in is null",         NgosStatus::ASSERTION);
-    COMMON_ASSERT(IS_ALIGNED(in, 16),     "in is invalid",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(inSize > 0,             "inSize is zero",     NgosStatus::ASSERTION);
-    COMMON_ASSERT(IS_ALIGNED(inSize, 16), "inSize is invalid",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(out,                    "out is null",        NgosStatus::ASSERTION);
-    COMMON_ASSERT(IS_ALIGNED(out, 16),    "out is invalid",     NgosStatus::ASSERTION);
-    COMMON_ASSERT(outSize > 0,            "outSize is zero",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(resultSize,             "resultSize is null", NgosStatus::ASSERTION);
-
-
-
-    COMMON_TEST_ASSERT(mDecodeKey, NgosStatus::ASSERTION);
-
-
-
-    u64 size = inSize;
-
-    if (outSize < size)
-    {
-        return NgosStatus::BUFFER_TOO_SMALL;
-    }
-
-    *resultSize = size;
-
-
-
-    i64 blocksCount = inSize / 16;
-
-    for (good_I64 i = 0; i < blocksCount; ++i)
-    {
-        COMMON_ASSERT_EXECUTION((this->*mDecodeBlockFunction)(in, out), NgosStatus::ASSERTION);
-
-        in  += 16;
-        out += 16;
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus AES::expandKey128(u8 *key)
-{
-    // COMMON_LT((" | key = 0x%p", key)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(key, "key is null", NgosStatus::ASSERTION);
-
-
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "movups     %0, %%xmm1"                     "\n\t"    // movups     (%rsi), %xmm1       # Put 16 bytes from key to XMM1
-                                                    "\n\t"    //
-        "movaps     %%xmm1, (%%rax)"                "\n\t"    // movaps     %xmm1, (%rax)       # Put content of XMM1 to 16 bytes of mEncodeKey
-        "movaps     %%xmm1, 0xA0(%%rbx)"            "\n\t"    // movaps     %xmm1, 0xA0(%rbx)   # Put content of XMM1 to 16 bytes of mDecodeKey
-                                                    "\n\t"    //
-        "pxor       %%xmm3, %%xmm3"                 "\n\t"    // pxor       %xmm3, %xmm3        # Fill XMM3 with zeros
-                                                    "\n\t"    //
-                AES_KEY_EXPANSION_128(0x01, 1)                // Round 1
-                AES_KEY_EXPANSION_128(0x02, 2)                // Round 2
-                AES_KEY_EXPANSION_128(0x04, 3)                // Round 3
-                AES_KEY_EXPANSION_128(0x08, 4)                // Round 4
-                AES_KEY_EXPANSION_128(0x10, 5)                // Round 5
-                AES_KEY_EXPANSION_128(0x20, 6)                // Round 6
-                AES_KEY_EXPANSION_128(0x40, 7)                // Round 7
-                AES_KEY_EXPANSION_128(0x80, 8)                // Round 8
-                AES_KEY_EXPANSION_128(0x1B, 9)                // Round 9
-                AES_KEY_EXPANSION_128_LAST(0x36)              // Round 10
-            :                                                 // Output parameters
-            :                                                 // Input parameters
-                "m" (*key),                                   // 'm' - use memory // Ignore CppSingleCharVerifier
-                "a" (mEncodeKey),                             // 'a' - RAX // Ignore CppSingleCharVerifier
-                "b" (mDecodeKey)                              // 'b' - RBX // Ignore CppSingleCharVerifier
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus AES::expandKey192(u8 *key)
-{
-    // COMMON_LT((" | key = 0x%p", key)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(key, "key is null", NgosStatus::ASSERTION);
-
-
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "movq       %0, %%xmm7"                     "\n\t"    // movq       0x10(%rsi), %xmm7       # Put 8 bytes from key to XMM7
-        "movq       %%xmm7, 0x10(%%rax)"            "\n\t"    // movq       %xmm7, 0x10(%%rax)      # Put 8 bytes of XMM7 to mEncodeKey
-                                                    "\n\t"    //
-        "pshufd     $0x4F, %%xmm7, %%xmm4"          "\n\t"    // pshufd     $0x4F, %xmm7, %xmm4     # Shuffle the doublewords in XMM7 based on the encoding in first argument and store the result in XMM4  # XMM4[0] = XMM7[3], XMM4[1] = XMM7[3], XMM4[2] = XMM7[0], XMM4[3] = XMM7[1]
-        "movups     %1, %%xmm1"                     "\n\t"    // movups     (%rsi), %xmm1           # Put 16 bytes from key to XMM1
-                                                    "\n\t"    //
-        "movaps     %%xmm1, (%%rax)"                "\n\t"    // movaps     %xmm1, (%rax)           # Put content of XMM1 to 16 bytes of mEncodeKey
-        "movaps     %%xmm1, 0xC0(%%rbx)"            "\n\t"    // movaps     %xmm1, 0xC0(%rbx)       # Put content of XMM1 to 16 bytes of mDecodeKey
-                                                    "\n\t"    //
-        "pxor       %%xmm3, %%xmm3"                 "\n\t"    // pxor       %xmm3, %xmm3            # Fill XMM3 with zeros
-        "pxor       %%xmm6, %%xmm6"                 "\n\t"    // pxor       %xmm6, %xmm6            # Fill XMM6 with zeros
-                                                    "\n\t"    //
-                AES_ENCODE_KEY_EXPANSION_192_ODD(0x01,  1)    // Round 1
-                AES_ENCODE_KEY_EXPANSION_192_EVEN(0x02, 2)    // Round 2
-                AES_ENCODE_KEY_EXPANSION_192_ODD(0x04,  3)    // Round 3
-                AES_ENCODE_KEY_EXPANSION_192_EVEN(0x08, 4)    // Round 4
-                AES_ENCODE_KEY_EXPANSION_192_ODD(0x10,  5)    // Round 5
-                AES_ENCODE_KEY_EXPANSION_192_EVEN(0x20, 6)    // Round 6
-                AES_ENCODE_KEY_EXPANSION_192_ODD(0x40,  7)    // Round 7
-                AES_ENCODE_KEY_EXPANSION_192_LAST(0x80)       // Round 8
-                                                    "\n\t"    //
-        "movaps     %%xmm1, (%%rbx)"                "\n\t"    // movaps     %xmm1, (%rbx)           # Put content of XMM1 to 16 bytes of mDecodeKey
-                                                    "\n\t"    //
-                AES_DECODE_KEY_EXPANSION_192(1)               // Round 1
-                AES_DECODE_KEY_EXPANSION_192(2)               // Round 2
-                AES_DECODE_KEY_EXPANSION_192(3)               // Round 3
-                AES_DECODE_KEY_EXPANSION_192(4)               // Round 4
-                AES_DECODE_KEY_EXPANSION_192(5)               // Round 5
-                AES_DECODE_KEY_EXPANSION_192(6)               // Round 6
-                AES_DECODE_KEY_EXPANSION_192(7)               // Round 7
-                AES_DECODE_KEY_EXPANSION_192(8)               // Round 8
-                AES_DECODE_KEY_EXPANSION_192(9)               // Round 9
-                AES_DECODE_KEY_EXPANSION_192(10)              // Round 10
-                AES_DECODE_KEY_EXPANSION_192(11)              // Round 11
-            :                                                 // Output parameters
-            :                                                 // Input parameters
-                "m" (key[16]),                                // 'm' - use memory // Ignore CppSingleCharVerifier
-                "m" (key[0]),                                 // 'm' - use memory // Ignore CppSingleCharVerifier
-                "a" (mEncodeKey),                             // 'a' - RAX // Ignore CppSingleCharVerifier
-                "b" (mDecodeKey)                              // 'b' - RBX // Ignore CppSingleCharVerifier
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus AES::expandKey256(u8 *key)
-{
-    // COMMON_LT((" | key = 0x%p", key)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(key, "key is null", NgosStatus::ASSERTION);
-
-
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "movups     %0, %%xmm1"                     "\n\t"    // movups     (%rsi), %xmm1           # Put 16 bytes from key to XMM1
-                                                    "\n\t"    //
-        "movaps     %%xmm1, (%%rax)"                "\n\t"    // movaps     %xmm1, (%rax)           # Put content of XMM1 to 16 bytes of mEncodeKey
-        "movaps     %%xmm1, 0xE0(%%rbx)"            "\n\t"    // movaps     %xmm1, 0xE0(%rbx)       # Put content of XMM1 to 16 bytes of mDecodeKey
-
-        "movups     %1, %%xmm4"                     "\n\t"    // movups     0x10(%rsi), %xmm4       # Put 16 bytes from key to XMM4
-        "aesimc     %%xmm4, %%xmm0"                 "\n\t"    // aesimc     %xmm4, %xmm0            # Perform the InvMixColumn transformation on a 128-bit round key from XMM4 and store the result in XMM0
-                                                    "\n\t"    //
-        "movaps     %%xmm4, 0x10(%%rax)"            "\n\t"    // movaps     %xmm4, 0x10(%rax)       # Put content of XMM4 to 16 bytes of mEncodeKey
-        "movaps     %%xmm0, 0xD0(%%rbx)"            "\n\t"    // movaps     %xmm0, 0xD0(%rbx)       # Put content of XMM0 to 16 bytes of mDecodeKey
-                                                    "\n\t"    //
-        "pxor       %%xmm3, %%xmm3"                 "\n\t"    // pxor       %xmm3, %xmm3            # Fill XMM3 with zeros
-                                                    "\n\t"    //
-                AES_KEY_EXPANSION_256(0x01, 1)                // Round 1
-                AES_KEY_EXPANSION_256(0x02, 2)                // Round 2
-                AES_KEY_EXPANSION_256(0x04, 3)                // Round 3
-                AES_KEY_EXPANSION_256(0x08, 4)                // Round 4
-                AES_KEY_EXPANSION_256(0x10, 5)                // Round 5
-                AES_KEY_EXPANSION_256(0x20, 6)                // Round 6
-                AES_KEY_EXPANSION_256_LAST(0x40)              // Round 7
-            :                                                 // Output parameters
-            :                                                 // Input parameters
-                "m" (key[0]),                                 // 'm' - use memory // Ignore CppSingleCharVerifier
-                "m" (key[16]),                                // 'm' - use memory // Ignore CppSingleCharVerifier
-                "a" (mEncodeKey),                             // 'a' - RAX // Ignore CppSingleCharVerifier
-                "b" (mDecodeKey)                              // 'b' - RBX // Ignore CppSingleCharVerifier
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus AES::encodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
-{
-    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(sourceAddress,      "sourceAddress is null",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(destinationAddress, "destinationAddress is null", NgosStatus::ASSERTION);
-
-
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1
-        "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mEncodeKey to XMM2
-                                        "\n\t"    //
-        "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1
-                                        "\n\t"    //
-                AES_ENCODE_ROUND(1)               // Round 1
-                AES_ENCODE_ROUND(2)               // Round 2
-                AES_ENCODE_ROUND(3)               // Round 3
-                AES_ENCODE_ROUND(4)               // Round 4
-                AES_ENCODE_ROUND(5)               // Round 5
-                AES_ENCODE_ROUND(6)               // Round 6
-                AES_ENCODE_ROUND(7)               // Round 7
-                AES_ENCODE_ROUND(8)               // Round 8
-                AES_ENCODE_ROUND(9)               // Round 9
-                AES_ENCODE_ROUND_LAST(10)         // Round 10
-                                        "\n\t"    //
-        "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
-            :                                     // Output parameters
-            :                                     // Input parameters
-                "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier
-                "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier
-                "a" (mEncodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus AES::encodeBlock192(u8 *sourceAddress, u8 *destinationAddress)
-{
-    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(sourceAddress,      "sourceAddress is null",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(destinationAddress, "destinationAddress is null", NgosStatus::ASSERTION);
-
-
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1
-        "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mEncodeKey to XMM2
-                                        "\n\t"    //
-        "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1
-                                        "\n\t"    //
-                AES_ENCODE_ROUND(1)               // Round 1
-                AES_ENCODE_ROUND(2)               // Round 2
-                AES_ENCODE_ROUND(3)               // Round 3
-                AES_ENCODE_ROUND(4)               // Round 4
-                AES_ENCODE_ROUND(5)               // Round 5
-                AES_ENCODE_ROUND(6)               // Round 6
-                AES_ENCODE_ROUND(7)               // Round 7
-                AES_ENCODE_ROUND(8)               // Round 8
-                AES_ENCODE_ROUND(9)               // Round 9
-                AES_ENCODE_ROUND(10)              // Round 10
-                AES_ENCODE_ROUND(11)              // Round 11
-                AES_ENCODE_ROUND_LAST(12)         // Round 12
-                                        "\n\t"    //
-        "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
-            :                                     // Output parameters
-            :                                     // Input parameters
-                "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier
-                "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier
-                "a" (mEncodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus AES::encodeBlock256(u8 *sourceAddress, u8 *destinationAddress)
-{
-    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(sourceAddress,      "sourceAddress is null",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(destinationAddress, "destinationAddress is null", NgosStatus::ASSERTION);
-
-
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1
-        "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mEncodeKey to XMM2
-                                        "\n\t"    //
-        "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1
-                                        "\n\t"    //
-                AES_ENCODE_ROUND(1)               // Round 1
-                AES_ENCODE_ROUND(2)               // Round 2
-                AES_ENCODE_ROUND(3)               // Round 3
-                AES_ENCODE_ROUND(4)               // Round 4
-                AES_ENCODE_ROUND(5)               // Round 5
-                AES_ENCODE_ROUND(6)               // Round 6
-                AES_ENCODE_ROUND(7)               // Round 7
-                AES_ENCODE_ROUND(8)               // Round 8
-                AES_ENCODE_ROUND(9)               // Round 9
-                AES_ENCODE_ROUND(10)              // Round 10
-                AES_ENCODE_ROUND(11)              // Round 11
-                AES_ENCODE_ROUND(12)              // Round 12
-                AES_ENCODE_ROUND(13)              // Round 13
-                AES_ENCODE_ROUND_LAST(14)         // Round 14
-                                        "\n\t"    //
-        "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
-            :                                     // Output parameters
-            :                                     // Input parameters
-                "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier
-                "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier
-                "a" (mEncodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus AES::decodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
-{
-    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(sourceAddress,      "sourceAddress is null",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(destinationAddress, "destinationAddress is null", NgosStatus::ASSERTION);
-
-
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1
-        "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mDecodeKey to XMM2
-                                        "\n\t"    //
-        "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1
-                                        "\n\t"    //
-                AES_DECODE_ROUND(1)               // Round 1
-                AES_DECODE_ROUND(2)               // Round 2
-                AES_DECODE_ROUND(3)               // Round 3
-                AES_DECODE_ROUND(4)               // Round 4
-                AES_DECODE_ROUND(5)               // Round 5
-                AES_DECODE_ROUND(6)               // Round 6
-                AES_DECODE_ROUND(7)               // Round 7
-                AES_DECODE_ROUND(8)               // Round 8
-                AES_DECODE_ROUND(9)               // Round 9
-                AES_DECODE_ROUND_LAST(10)         // Round 10
-                                        "\n\t"    //
-        "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
-            :                                     // Output parameters
-            :                                     // Input parameters
-                "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier
-                "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier
-                "a" (mDecodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus AES::decodeBlock192(u8 *sourceAddress, u8 *destinationAddress)
-{
-    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(sourceAddress,      "sourceAddress is null",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(destinationAddress, "destinationAddress is null", NgosStatus::ASSERTION);
-
-
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1
-        "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mDecodeKey to XMM2
-                                        "\n\t"    //
-        "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1
-                                        "\n\t"    //
-                AES_DECODE_ROUND(1)               // Round 1
-                AES_DECODE_ROUND(2)               // Round 2
-                AES_DECODE_ROUND(3)               // Round 3
-                AES_DECODE_ROUND(4)               // Round 4
-                AES_DECODE_ROUND(5)               // Round 5
-                AES_DECODE_ROUND(6)               // Round 6
-                AES_DECODE_ROUND(7)               // Round 7
-                AES_DECODE_ROUND(8)               // Round 8
-                AES_DECODE_ROUND(9)               // Round 9
-                AES_DECODE_ROUND(10)              // Round 10
-                AES_DECODE_ROUND(11)              // Round 11
-                AES_DECODE_ROUND_LAST(12)         // Round 12
-                                        "\n\t"    //
-        "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
-            :                                     // Output parameters
-            :                                     // Input parameters
-                "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier
-                "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier
-                "a" (mDecodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus AES::decodeBlock256(u8 *sourceAddress, u8 *destinationAddress)
-{
-    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
-
-    COMMON_ASSERT(sourceAddress,      "sourceAddress is null",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(destinationAddress, "destinationAddress is null", NgosStatus::ASSERTION);
-
-
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    asm volatile(
-        "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1
-        "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mDecodeKey to XMM2
-                                        "\n\t"    //
-        "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1
-                                        "\n\t"    //
-                AES_DECODE_ROUND(1)               // Round 1
-                AES_DECODE_ROUND(2)               // Round 2
-                AES_DECODE_ROUND(3)               // Round 3
-                AES_DECODE_ROUND(4)               // Round 4
-                AES_DECODE_ROUND(5)               // Round 5
-                AES_DECODE_ROUND(6)               // Round 6
-                AES_DECODE_ROUND(7)               // Round 7
-                AES_DECODE_ROUND(8)               // Round 8
-                AES_DECODE_ROUND(9)               // Round 9
-                AES_DECODE_ROUND(10)              // Round 10
-                AES_DECODE_ROUND(11)              // Round 11
-                AES_DECODE_ROUND(12)              // Round 12
-                AES_DECODE_ROUND(13)              // Round 13
-                AES_DECODE_ROUND_LAST(14)         // Round 14
-                                        "\n\t"    //
-        "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block
-            :                                     // Output parameters
-            :                                     // Input parameters
-                "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier
-                "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier
-                "a" (mDecodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier
-    );
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    return NgosStatus::OK;
-}
+    "aesdeclast     %%xmm2, %%xmm1"     "\n\t"    /* aesdeclast     %xmm2, %xmm1    # Perform the last round of an AES decryption flow, using the Equivalent Inverse Cipher, operating on a 128-bit data (state) from XMM1 with a 128-bit round key from XMM2 */ // Colorize: green
+// Ignore CppAlignmentVerifier [END]                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+AES::AES()                                                                                                                                                                                               // Colorize: green
+    : mEncodeBlockFunction(nullptr)                                                                                                                                                                      // Colorize: green
+    , mDecodeBlockFunction(nullptr)                                                                                                                                                                      // Colorize: green
+    , mEncodeKeyAllocated(nullptr)                                                                                                                                                                       // Colorize: green
+    , mDecodeKeyAllocated(nullptr)                                                                                                                                                                       // Colorize: green
+    , mEncodeKey(nullptr)                                                                                                                                                                                // Colorize: green
+    , mDecodeKey(nullptr)                                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid bad looking logs                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_TEST_ASSERT(CPU::hasFeature(X86Feature::AESNI));                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+AES::~AES()                                                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid bad looking logs                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Release keys                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mEncodeKeyAllocated != nullptr)                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_ASSERT_EXECUTION(free(mEncodeKeyAllocated));                                                                                                                                          // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (mDecodeKeyAllocated != nullptr)                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_ASSERT_EXECUTION(free(mDecodeKeyAllocated));                                                                                                                                          // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus AES::setKey(const good_U8 *key, good_U8 size)                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | key = 0x%p, size = %u", key, size)); // Commented to avoid bad looking logs                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(key != nullptr, "key is null",     NgosStatus::ASSERTION);                                                                                                                                // Colorize: green
+    COMMON_ASSERT(size > 0,       "size is invalid", NgosStatus::ASSERTION);                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT_EXECUTION(releaseKey(), NgosStatus::ASSERTION);                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (size * 8)                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case 128:                                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mEncodeBlockFunction = &AES::encodeBlock128;                                                                                                                                                 // Colorize: green
+            mDecodeBlockFunction = &AES::decodeBlock128;                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            mEncodeKeyAllocated = reinterpret_cast<good_U8 *>(malloc(12 * 16)); // Key should contains of 11 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier // Colorize: green
+            mDecodeKeyAllocated = reinterpret_cast<good_U8 *>(malloc(12 * 16)); // Key should contains of 11 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(mEncodeKeyAllocated != nullptr, NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+            COMMON_TEST_ASSERT(mDecodeKeyAllocated != nullptr, NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            mEncodeKey = reinterpret_cast<good_U8 *>(ALIGN_16(reinterpret_cast<address_t>(mEncodeKeyAllocated))); // Align mEncodeKey to make AES work faster                                        // Colorize: green
+            mDecodeKey = reinterpret_cast<good_U8 *>(ALIGN_16(reinterpret_cast<address_t>(mDecodeKeyAllocated))); // Align mDecodeKey to make AES work faster                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_ASSERT_EXECUTION(expandKey128(key), NgosStatus::ASSERTION);                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        case 192:                                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mEncodeBlockFunction = &AES::encodeBlock192;                                                                                                                                                 // Colorize: green
+            mDecodeBlockFunction = &AES::decodeBlock192;                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            mEncodeKeyAllocated = reinterpret_cast<good_U8 *>(malloc(14 * 16)); // Key should contains of 13 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier // Colorize: green
+            mDecodeKeyAllocated = reinterpret_cast<good_U8 *>(malloc(14 * 16)); // Key should contains of 13 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(mEncodeKeyAllocated != nullptr, NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+            COMMON_TEST_ASSERT(mDecodeKeyAllocated != nullptr, NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            mEncodeKey = reinterpret_cast<good_U8 *>(ALIGN_16(reinterpret_cast<address_t>(mEncodeKeyAllocated))); // Align mEncodeKey to make AES work faster                                        // Colorize: green
+            mDecodeKey = reinterpret_cast<good_U8 *>(ALIGN_16(reinterpret_cast<address_t>(mDecodeKeyAllocated))); // Align mDecodeKey to make AES work faster                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_ASSERT_EXECUTION(expandKey192(key), NgosStatus::ASSERTION);                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        case 256:                                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mEncodeBlockFunction = &AES::encodeBlock256;                                                                                                                                                 // Colorize: green
+            mDecodeBlockFunction = &AES::decodeBlock256;                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            mEncodeKeyAllocated = reinterpret_cast<good_U8 *>(malloc(16 * 16)); // Key should contains of 15 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier // Colorize: green
+            mDecodeKeyAllocated = reinterpret_cast<good_U8 *>(malloc(16 * 16)); // Key should contains of 15 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(mEncodeKeyAllocated != nullptr, NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+            COMMON_TEST_ASSERT(mDecodeKeyAllocated != nullptr, NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            mEncodeKey = reinterpret_cast<good_U8 *>(ALIGN_16(reinterpret_cast<address_t>(mEncodeKeyAllocated))); // Align mEncodeKey to make AES work faster                                        // Colorize: green
+            mDecodeKey = reinterpret_cast<good_U8 *>(ALIGN_16(reinterpret_cast<address_t>(mDecodeKeyAllocated))); // Align mDecodeKey to make AES work faster                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_ASSERT_EXECUTION(expandKey256(key), NgosStatus::ASSERTION);                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default:                                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LF(("Unexpected key size: %u, %s:%u", size, __FILE__, __LINE__));                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return NgosStatus::INVALID_DATA;                                                                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_TEST_ASSERT(mEncodeBlockFunction != nullptr, NgosStatus::ASSERTION);                                                                                                                          // Colorize: green
+    COMMON_TEST_ASSERT(mDecodeBlockFunction != nullptr, NgosStatus::ASSERTION);                                                                                                                          // Colorize: green
+    COMMON_TEST_ASSERT(mEncodeKeyAllocated  != nullptr, NgosStatus::ASSERTION);                                                                                                                          // Colorize: green
+    COMMON_TEST_ASSERT(mDecodeKeyAllocated  != nullptr, NgosStatus::ASSERTION);                                                                                                                          // Colorize: green
+    COMMON_TEST_ASSERT(mEncodeKey           != nullptr, NgosStatus::ASSERTION);                                                                                                                          // Colorize: green
+    COMMON_TEST_ASSERT(mDecodeKey           != nullptr, NgosStatus::ASSERTION);                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus AES::releaseKey()                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid bad looking logs                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (mEncodeKeyAllocated != nullptr)                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_ASSERT_EXECUTION(free(mEncodeKeyAllocated), NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mEncodeKeyAllocated = nullptr;                                                                                                                                                                   // Colorize: green
+        mEncodeKey          = nullptr;                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (mDecodeKeyAllocated != nullptr)                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_ASSERT_EXECUTION(free(mDecodeKeyAllocated), NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mDecodeKeyAllocated = nullptr;                                                                                                                                                                   // Colorize: green
+        mDecodeKey          = nullptr;                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus AES::encode(const good_U8 *in, good_I64 inSize, good_U8 *out, good_I64 outSize, good_I64 *resultSize)                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | in = 0x%p, inSize = %u, out = 0x%p, outSize = %u, resultSize = 0x%p", in, inSize, out, outSize, resultSize)); // Commented to avoid bad looking logs                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(in != nullptr,         "in is null",         NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+    COMMON_ASSERT(IS_ALIGNED(in, 16),    "in is invalid",      NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+    COMMON_ASSERT(inSize >= 0,           "inSize is invalid",  NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+    COMMON_ASSERT(out != nullptr,        "out is null",        NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+    COMMON_ASSERT(IS_ALIGNED(out, 16),   "out is invalid",     NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+    COMMON_ASSERT(outSize > 0,           "outSize is invalid", NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+    COMMON_ASSERT(resultSize != nullptr, "resultSize is null", NgosStatus::ASSERTION);                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_TEST_ASSERT(mEncodeKey != nullptr, NgosStatus::ASSERTION);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    good_U8  padding;                                                                                                                                                                    // Colorize: green
+    good_I64 size;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Extend size with padding                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        padding = inSize & 0x0F;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (padding > 0)                                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            padding = 16 - padding;                                                                                                                                                                      // Colorize: green
+            size    = inSize + padding;                                                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            size = inSize;                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Validation                                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("inSize  = %d", inSize));                                                                                                                                                       // Colorize: green
+            COMMON_LVVV(("padding = %u", padding));                                                                                                                                                      // Colorize: green
+            COMMON_LVVV(("size    = %d", size));                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(IS_ALIGNED(inSize, 16) ? (padding == 0) : (padding != 0), NgosStatus::ASSERTION);                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(IS_ALIGNED(size,   16),                                   NgosStatus::ASSERTION);                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    *resultSize = size;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check size                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (outSize < size)                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return NgosStatus::BUFFER_TOO_SMALL;                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Split data in blocks and encode each block                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_I64 blocksCount = inSize / 16;                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_LVVV(("blocksCount = %d", blocksCount));                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < blocksCount; ++i)                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_ASSERT_EXECUTION((this->*mEncodeBlockFunction)(in, out), NgosStatus::ASSERTION);                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            in  += 16;                                                                                                                                                                                   // Colorize: green
+            out += 16;                                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Encode last block padded with zeros                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (padding > 0)                                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_U8 paddingBlock[16] __attribute__((aligned(16)));                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            memcpy(paddingBlock, in, 16 - padding);                                                                                                                                                      // Colorize: green
+            memzero(&paddingBlock[16 - padding], padding);                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_ASSERT_EXECUTION((this->*mEncodeBlockFunction)(paddingBlock, out), NgosStatus::ASSERTION);                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus AES::decode(const good_U8 *in, good_I64 inSize, good_U8 *out, good_I64 outSize)                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | in = 0x%p, inSize = %u, out = 0x%p, outSize = %u", in, inSize, out, outSize)); // Commented to avoid bad looking logs                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(in != nullptr,          "in is null",         NgosStatus::ASSERTION);                                                                                                                  // Colorize: green
+    COMMON_ASSERT(IS_ALIGNED(in, 16),     "in is invalid",      NgosStatus::ASSERTION);                                                                                                                  // Colorize: green
+    COMMON_ASSERT(inSize > 0,             "inSize is invalid",  NgosStatus::ASSERTION);                                                                                                                  // Colorize: green
+    COMMON_ASSERT(IS_ALIGNED(inSize, 16), "inSize is invalid",  NgosStatus::ASSERTION);                                                                                                                  // Colorize: green
+    COMMON_ASSERT(out != nullptr,         "out is null",        NgosStatus::ASSERTION);                                                                                                                  // Colorize: green
+    COMMON_ASSERT(IS_ALIGNED(out, 16),    "out is invalid",     NgosStatus::ASSERTION);                                                                                                                  // Colorize: green
+    COMMON_ASSERT(outSize > 0,            "outSize is invalid", NgosStatus::ASSERTION);                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_TEST_ASSERT(mDecodeKey != nullptr, NgosStatus::ASSERTION);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check size                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (outSize < inSize)                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return NgosStatus::BUFFER_TOO_SMALL;                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Split data in blocks and encode each block                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        good_I64 blocksCount = inSize / 16;                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_LVVV(("blocksCount = %d", blocksCount));                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (good_I64 i = 0; i < blocksCount; ++i)                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_ASSERT_EXECUTION((this->*mDecodeBlockFunction)(in, out), NgosStatus::ASSERTION);                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            in  += 16;                                                                                                                                                                                   // Colorize: green
+            out += 16;                                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus AES::expandKey128(const good_U8 *key)                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | key = 0x%p", key)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(key != nullptr, "key is null", NgosStatus::ASSERTION);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Perform key expansion                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        asm volatile(                                                                                                                                                                                    // Colorize: green
+            "movups     %0, %%xmm1"                     "\n\t"    // movups     (%rsi), %xmm1       # Put 16 bytes from key to XMM1                                                                      // Colorize: green
+                                                        "\n\t"    //                                                                                                                                     // Colorize: green
+            "movaps     %%xmm1, (%%rax)"                "\n\t"    // movaps     %xmm1, (%rax)       # Put content of XMM1 to 16 bytes of mEncodeKey                                                      // Colorize: green
+            "movaps     %%xmm1, 0xA0(%%rbx)"            "\n\t"    // movaps     %xmm1, 0xA0(%rbx)   # Put content of XMM1 to 16 bytes of mDecodeKey                                                      // Colorize: green
+                                                        "\n\t"    //                                                                                                                                     // Colorize: green
+            "pxor       %%xmm3, %%xmm3"                 "\n\t"    // pxor       %xmm3, %xmm3        # Fill XMM3 with zeros                                                                               // Colorize: green
+                                                        "\n\t"    //                                                                                                                                     // Colorize: green
+                    AES_KEY_EXPANSION_128(0x01, 1)                // Round 1                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_128(0x02, 2)                // Round 2                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_128(0x04, 3)                // Round 3                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_128(0x08, 4)                // Round 4                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_128(0x10, 5)                // Round 5                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_128(0x20, 6)                // Round 6                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_128(0x40, 7)                // Round 7                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_128(0x80, 8)                // Round 8                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_128(0x1B, 9)                // Round 9                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_128_LAST(0x36)              // Round 10                                                                                                                            // Colorize: green
+                :                                                 // Output parameters                                                                                                                   // Colorize: green
+                :                                                 // Input parameters                                                                                                                    // Colorize: green
+                    "m" (key[0]),                                 // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                    // Colorize: green
+                    "a" (mEncodeKey),                             // 'a' - RAX // Ignore CppSingleCharVerifier                                                                                           // Colorize: green
+                    "b" (mDecodeKey)                              // 'b' - RBX // Ignore CppSingleCharVerifier                                                                                           // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus AES::expandKey192(const good_U8 *key)                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | key = 0x%p", key)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(key != nullptr, "key is null", NgosStatus::ASSERTION);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Perform key expansion                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        asm volatile(                                                                                                                                                                                    // Colorize: green
+            "movq       %0, %%xmm7"                     "\n\t"    // movq       0x10(%rsi), %xmm7       # Put 8 bytes from key to XMM7                                                                   // Colorize: green
+            "movq       %%xmm7, 0x10(%%rax)"            "\n\t"    // movq       %xmm7, 0x10(%%rax)      # Put 8 bytes of XMM7 to mEncodeKey                                                              // Colorize: green
+                                                        "\n\t"    //                                                                                                                                     // Colorize: green
+            "pshufd     $0x4F, %%xmm7, %%xmm4"          "\n\t"    // pshufd     $0x4F, %xmm7, %xmm4     # Shuffle the doublewords in XMM7 based on the encoding in first argument and store the result in XMM4  # XMM4[0] = XMM7[3], XMM4[1] = XMM7[3], XMM4[2] = XMM7[0], XMM4[3] = XMM7[1] // Colorize: green
+            "movups     %1, %%xmm1"                     "\n\t"    // movups     (%rsi), %xmm1           # Put 16 bytes from key to XMM1                                                                  // Colorize: green
+                                                        "\n\t"    //                                                                                                                                     // Colorize: green
+            "movaps     %%xmm1, (%%rax)"                "\n\t"    // movaps     %xmm1, (%rax)           # Put content of XMM1 to 16 bytes of mEncodeKey                                                  // Colorize: green
+            "movaps     %%xmm1, 0xC0(%%rbx)"            "\n\t"    // movaps     %xmm1, 0xC0(%rbx)       # Put content of XMM1 to 16 bytes of mDecodeKey                                                  // Colorize: green
+                                                        "\n\t"    //                                                                                                                                     // Colorize: green
+            "pxor       %%xmm3, %%xmm3"                 "\n\t"    // pxor       %xmm3, %xmm3            # Fill XMM3 with zeros                                                                           // Colorize: green
+            "pxor       %%xmm6, %%xmm6"                 "\n\t"    // pxor       %xmm6, %xmm6            # Fill XMM6 with zeros                                                                           // Colorize: green
+                                                        "\n\t"    //                                                                                                                                     // Colorize: green
+                    AES_ENCODE_KEY_EXPANSION_192_ODD(0x01,  1)    // Round 1                                                                                                                             // Colorize: green
+                    AES_ENCODE_KEY_EXPANSION_192_EVEN(0x02, 2)    // Round 2                                                                                                                             // Colorize: green
+                    AES_ENCODE_KEY_EXPANSION_192_ODD(0x04,  3)    // Round 3                                                                                                                             // Colorize: green
+                    AES_ENCODE_KEY_EXPANSION_192_EVEN(0x08, 4)    // Round 4                                                                                                                             // Colorize: green
+                    AES_ENCODE_KEY_EXPANSION_192_ODD(0x10,  5)    // Round 5                                                                                                                             // Colorize: green
+                    AES_ENCODE_KEY_EXPANSION_192_EVEN(0x20, 6)    // Round 6                                                                                                                             // Colorize: green
+                    AES_ENCODE_KEY_EXPANSION_192_ODD(0x40,  7)    // Round 7                                                                                                                             // Colorize: green
+                    AES_ENCODE_KEY_EXPANSION_192_LAST(0x80)       // Round 8                                                                                                                             // Colorize: green
+                                                        "\n\t"    //                                                                                                                                     // Colorize: green
+            "movaps     %%xmm1, (%%rbx)"                "\n\t"    // movaps     %xmm1, (%rbx)           # Put content of XMM1 to 16 bytes of mDecodeKey                                                  // Colorize: green
+                                                        "\n\t"    //                                                                                                                                     // Colorize: green
+                    AES_DECODE_KEY_EXPANSION_192(1)               // Round 1                                                                                                                             // Colorize: green
+                    AES_DECODE_KEY_EXPANSION_192(2)               // Round 2                                                                                                                             // Colorize: green
+                    AES_DECODE_KEY_EXPANSION_192(3)               // Round 3                                                                                                                             // Colorize: green
+                    AES_DECODE_KEY_EXPANSION_192(4)               // Round 4                                                                                                                             // Colorize: green
+                    AES_DECODE_KEY_EXPANSION_192(5)               // Round 5                                                                                                                             // Colorize: green
+                    AES_DECODE_KEY_EXPANSION_192(6)               // Round 6                                                                                                                             // Colorize: green
+                    AES_DECODE_KEY_EXPANSION_192(7)               // Round 7                                                                                                                             // Colorize: green
+                    AES_DECODE_KEY_EXPANSION_192(8)               // Round 8                                                                                                                             // Colorize: green
+                    AES_DECODE_KEY_EXPANSION_192(9)               // Round 9                                                                                                                             // Colorize: green
+                    AES_DECODE_KEY_EXPANSION_192(10)              // Round 10                                                                                                                            // Colorize: green
+                    AES_DECODE_KEY_EXPANSION_192(11)              // Round 11                                                                                                                            // Colorize: green
+                :                                                 // Output parameters                                                                                                                   // Colorize: green
+                :                                                 // Input parameters                                                                                                                    // Colorize: green
+                    "m" (key[16]),                                // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                    // Colorize: green
+                    "m" (key[0]),                                 // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                    // Colorize: green
+                    "a" (mEncodeKey),                             // 'a' - RAX // Ignore CppSingleCharVerifier                                                                                           // Colorize: green
+                    "b" (mDecodeKey)                              // 'b' - RBX // Ignore CppSingleCharVerifier                                                                                           // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus AES::expandKey256(const good_U8 *key)                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | key = 0x%p", key)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(key != nullptr, "key is null", NgosStatus::ASSERTION);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Perform key expansion                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        asm volatile(                                                                                                                                                                                    // Colorize: green
+            "movups     %0, %%xmm1"                     "\n\t"    // movups     (%rsi), %xmm1           # Put 16 bytes from key to XMM1                                                                  // Colorize: green
+                                                        "\n\t"    //                                                                                                                                     // Colorize: green
+            "movaps     %%xmm1, (%%rax)"                "\n\t"    // movaps     %xmm1, (%rax)           # Put content of XMM1 to 16 bytes of mEncodeKey                                                  // Colorize: green
+            "movaps     %%xmm1, 0xE0(%%rbx)"            "\n\t"    // movaps     %xmm1, 0xE0(%rbx)       # Put content of XMM1 to 16 bytes of mDecodeKey                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            "movups     %1, %%xmm4"                     "\n\t"    // movups     0x10(%rsi), %xmm4       # Put 16 bytes from key to XMM4                                                                  // Colorize: green
+            "aesimc     %%xmm4, %%xmm0"                 "\n\t"    // aesimc     %xmm4, %xmm0            # Perform the InvMixColumn transformation on a 128-bit round key from XMM4 and store the result in XMM0 // Colorize: green
+                                                        "\n\t"    //                                                                                                                                     // Colorize: green
+            "movaps     %%xmm4, 0x10(%%rax)"            "\n\t"    // movaps     %xmm4, 0x10(%rax)       # Put content of XMM4 to 16 bytes of mEncodeKey                                                  // Colorize: green
+            "movaps     %%xmm0, 0xD0(%%rbx)"            "\n\t"    // movaps     %xmm0, 0xD0(%rbx)       # Put content of XMM0 to 16 bytes of mDecodeKey                                                  // Colorize: green
+                                                        "\n\t"    //                                                                                                                                     // Colorize: green
+            "pxor       %%xmm3, %%xmm3"                 "\n\t"    // pxor       %xmm3, %xmm3            # Fill XMM3 with zeros                                                                           // Colorize: green
+                                                        "\n\t"    //                                                                                                                                     // Colorize: green
+                    AES_KEY_EXPANSION_256(0x01, 1)                // Round 1                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_256(0x02, 2)                // Round 2                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_256(0x04, 3)                // Round 3                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_256(0x08, 4)                // Round 4                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_256(0x10, 5)                // Round 5                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_256(0x20, 6)                // Round 6                                                                                                                             // Colorize: green
+                    AES_KEY_EXPANSION_256_LAST(0x40)              // Round 7                                                                                                                             // Colorize: green
+                :                                                 // Output parameters                                                                                                                   // Colorize: green
+                :                                                 // Input parameters                                                                                                                    // Colorize: green
+                    "m" (key[0]),                                 // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                    // Colorize: green
+                    "m" (key[16]),                                // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                    // Colorize: green
+                    "a" (mEncodeKey),                             // 'a' - RAX // Ignore CppSingleCharVerifier                                                                                           // Colorize: green
+                    "b" (mDecodeKey)                              // 'b' - RBX // Ignore CppSingleCharVerifier                                                                                           // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus AES::encodeBlock128(const good_U8 *sourceAddress, good_U8 *destinationAddress)                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(sourceAddress != nullptr,      "sourceAddress is null",      NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+    COMMON_ASSERT(destinationAddress != nullptr, "destinationAddress is null", NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Encode block                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        asm volatile(                                                                                                                                                                                    // Colorize: green
+            "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1                                                                               // Colorize: green
+            "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mEncodeKey to XMM2                                                                                 // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+            "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1                                                  // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+                    AES_ENCODE_ROUND(1)               // Round 1                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(2)               // Round 2                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(3)               // Round 3                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(4)               // Round 4                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(5)               // Round 5                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(6)               // Round 6                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(7)               // Round 7                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(8)               // Round 8                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(9)               // Round 9                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND_LAST(10)         // Round 10                                                                                                                                        // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+            "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block                                                               // Colorize: green
+                :                                     // Output parameters                                                                                                                               // Colorize: green
+                :                                     // Input parameters                                                                                                                                // Colorize: green
+                    "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                                // Colorize: green
+                    "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                                // Colorize: green
+                    "a" (mEncodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier                                                                                                       // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus AES::encodeBlock192(const good_U8 *sourceAddress, good_U8 *destinationAddress)                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(sourceAddress != nullptr,      "sourceAddress is null",      NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+    COMMON_ASSERT(destinationAddress != nullptr, "destinationAddress is null", NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Encode block                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        asm volatile(                                                                                                                                                                                    // Colorize: green
+            "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1                                                                               // Colorize: green
+            "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mEncodeKey to XMM2                                                                                 // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+            "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1                                                  // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+                    AES_ENCODE_ROUND(1)               // Round 1                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(2)               // Round 2                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(3)               // Round 3                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(4)               // Round 4                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(5)               // Round 5                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(6)               // Round 6                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(7)               // Round 7                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(8)               // Round 8                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(9)               // Round 9                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(10)              // Round 10                                                                                                                                        // Colorize: green
+                    AES_ENCODE_ROUND(11)              // Round 11                                                                                                                                        // Colorize: green
+                    AES_ENCODE_ROUND_LAST(12)         // Round 12                                                                                                                                        // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+            "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block                                                               // Colorize: green
+                :                                     // Output parameters                                                                                                                               // Colorize: green
+                :                                     // Input parameters                                                                                                                                // Colorize: green
+                    "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                                // Colorize: green
+                    "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                                // Colorize: green
+                    "a" (mEncodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier                                                                                                       // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus AES::encodeBlock256(const good_U8 *sourceAddress, good_U8 *destinationAddress)                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(sourceAddress != nullptr,      "sourceAddress is null",      NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+    COMMON_ASSERT(destinationAddress != nullptr, "destinationAddress is null", NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Encode block                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        asm volatile(                                                                                                                                                                                    // Colorize: green
+            "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1                                                                               // Colorize: green
+            "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mEncodeKey to XMM2                                                                                 // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+            "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1                                                  // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+                    AES_ENCODE_ROUND(1)               // Round 1                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(2)               // Round 2                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(3)               // Round 3                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(4)               // Round 4                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(5)               // Round 5                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(6)               // Round 6                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(7)               // Round 7                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(8)               // Round 8                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(9)               // Round 9                                                                                                                                         // Colorize: green
+                    AES_ENCODE_ROUND(10)              // Round 10                                                                                                                                        // Colorize: green
+                    AES_ENCODE_ROUND(11)              // Round 11                                                                                                                                        // Colorize: green
+                    AES_ENCODE_ROUND(12)              // Round 12                                                                                                                                        // Colorize: green
+                    AES_ENCODE_ROUND(13)              // Round 13                                                                                                                                        // Colorize: green
+                    AES_ENCODE_ROUND_LAST(14)         // Round 14                                                                                                                                        // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+            "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block                                                               // Colorize: green
+                :                                     // Output parameters                                                                                                                               // Colorize: green
+                :                                     // Input parameters                                                                                                                                // Colorize: green
+                    "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                                // Colorize: green
+                    "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                                // Colorize: green
+                    "a" (mEncodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier                                                                                                       // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus AES::decodeBlock128(const good_U8 *sourceAddress, good_U8 *destinationAddress)                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(sourceAddress != nullptr,      "sourceAddress is null",      NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+    COMMON_ASSERT(destinationAddress != nullptr, "destinationAddress is null", NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Decode block                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        asm volatile(                                                                                                                                                                                    // Colorize: green
+            "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1                                                                               // Colorize: green
+            "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mDecodeKey to XMM2                                                                                 // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+            "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1                                                  // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+                    AES_DECODE_ROUND(1)               // Round 1                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(2)               // Round 2                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(3)               // Round 3                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(4)               // Round 4                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(5)               // Round 5                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(6)               // Round 6                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(7)               // Round 7                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(8)               // Round 8                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(9)               // Round 9                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND_LAST(10)         // Round 10                                                                                                                                        // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+            "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block                                                               // Colorize: green
+                :                                     // Output parameters                                                                                                                               // Colorize: green
+                :                                     // Input parameters                                                                                                                                // Colorize: green
+                    "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                                // Colorize: green
+                    "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                                // Colorize: green
+                    "a" (mDecodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier                                                                                                       // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus AES::decodeBlock192(const good_U8 *sourceAddress, good_U8 *destinationAddress)                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(sourceAddress != nullptr,      "sourceAddress is null",      NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+    COMMON_ASSERT(destinationAddress != nullptr, "destinationAddress is null", NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Decode block                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        asm volatile(                                                                                                                                                                                    // Colorize: green
+            "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1                                                                               // Colorize: green
+            "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mDecodeKey to XMM2                                                                                 // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+            "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1                                                  // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+                    AES_DECODE_ROUND(1)               // Round 1                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(2)               // Round 2                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(3)               // Round 3                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(4)               // Round 4                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(5)               // Round 5                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(6)               // Round 6                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(7)               // Round 7                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(8)               // Round 8                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(9)               // Round 9                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(10)              // Round 10                                                                                                                                        // Colorize: green
+                    AES_DECODE_ROUND(11)              // Round 11                                                                                                                                        // Colorize: green
+                    AES_DECODE_ROUND_LAST(12)         // Round 12                                                                                                                                        // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+            "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block                                                               // Colorize: green
+                :                                     // Output parameters                                                                                                                               // Colorize: green
+                :                                     // Input parameters                                                                                                                                // Colorize: green
+                    "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                                // Colorize: green
+                    "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                                // Colorize: green
+                    "a" (mDecodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier                                                                                                       // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus AES::decodeBlock256(const good_U8 *sourceAddress, good_U8 *destinationAddress)                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(sourceAddress != nullptr,      "sourceAddress is null",      NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+    COMMON_ASSERT(destinationAddress != nullptr, "destinationAddress is null", NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Decode block                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        asm volatile(                                                                                                                                                                                    // Colorize: green
+            "movaps     %0, %%xmm1"         "\n\t"    // movaps     (%rsi), %xmm1   # Put 16 bytes of source block to XMM1                                                                               // Colorize: green
+            "movaps     (%%rax), %%xmm2"    "\n\t"    // movaps     (%rax), %xmm2   # Put 16 bytes of mDecodeKey to XMM2                                                                                 // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+            "pxor       %%xmm2, %%xmm1"     "\n\t"    // pxor       %xmm2, %xmm1    # Perform bitwise XOR of XMM2 and XMM1 and store the result in XMM1                                                  // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+                    AES_DECODE_ROUND(1)               // Round 1                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(2)               // Round 2                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(3)               // Round 3                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(4)               // Round 4                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(5)               // Round 5                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(6)               // Round 6                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(7)               // Round 7                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(8)               // Round 8                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(9)               // Round 9                                                                                                                                         // Colorize: green
+                    AES_DECODE_ROUND(10)              // Round 10                                                                                                                                        // Colorize: green
+                    AES_DECODE_ROUND(11)              // Round 11                                                                                                                                        // Colorize: green
+                    AES_DECODE_ROUND(12)              // Round 12                                                                                                                                        // Colorize: green
+                    AES_DECODE_ROUND(13)              // Round 13                                                                                                                                        // Colorize: green
+                    AES_DECODE_ROUND_LAST(14)         // Round 14                                                                                                                                        // Colorize: green
+                                            "\n\t"    //                                                                                                                                                 // Colorize: green
+            "movaps     %%xmm1, %1"         "\n\t"    // movaps     %xmm1, (%rdx)   # Put content of XMM1 to 16 bytes of destination block                                                               // Colorize: green
+                :                                     // Output parameters                                                                                                                               // Colorize: green
+                :                                     // Input parameters                                                                                                                                // Colorize: green
+                    "m" (*sourceAddress),             // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                                // Colorize: green
+                    "m" (*destinationAddress),        // 'm' - use memory // Ignore CppSingleCharVerifier                                                                                                // Colorize: green
+                    "a" (mDecodeKey)                  // 'a' - RAX // Ignore CppSingleCharVerifier                                                                                                       // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

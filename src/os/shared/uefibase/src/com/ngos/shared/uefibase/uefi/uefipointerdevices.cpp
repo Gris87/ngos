@@ -181,7 +181,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, u64 si
     UEFI_LT((" | protocol = 0x%p, size = %u", protocol, size));
 
     UEFI_ASSERT(protocol, "protocol is null", NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0, "size is zero",     NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0, "size is invalid",  NgosStatus::ASSERTION);
 
 
 
@@ -234,7 +234,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, u64 si
     UEFI_LT((" | protocol = 0x%p, size = %u, pointersHandles = 0x%p", protocol, size, pointersHandles));
 
     UEFI_ASSERT(protocol,        "protocol is null",        NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0,        "size is zero",            NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0,        "size is invalid",         NgosStatus::ASSERTION);
     UEFI_ASSERT(pointersHandles, "pointersHandles is null", NgosStatus::ASSERTION);
 
 
@@ -383,7 +383,7 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices(Guid *protocol, u64 size
     UEFI_LT((" | protocol = 0x%p, size = %u", protocol, size));
 
     UEFI_ASSERT(protocol, "protocol is null", NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0, "size is zero",     NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0, "size is invalid",  NgosStatus::ASSERTION);
 
 
 
@@ -436,7 +436,7 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices(Guid *protocol, u64 size
     UEFI_LT((" | protocol = 0x%p, size = %u, pointersHandles = 0x%p", protocol, size, pointersHandles));
 
     UEFI_ASSERT(protocol,        "protocol is null",        NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0,        "size is zero",            NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0,        "size is invalid",         NgosStatus::ASSERTION);
     UEFI_ASSERT(pointersHandles, "pointersHandles is null", NgosStatus::ASSERTION);
 
 

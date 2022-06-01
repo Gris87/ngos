@@ -117,7 +117,7 @@ NgosStatus IORemap::addFixedMapping(address_t address, u64 size, void **res)
     COMMON_LT((" | address = 0x%016llX, size = %u, res = 0x%p", address, size, res));
 
     COMMON_ASSERT(address,                                   "address is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0,                                  "size is zero",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,                                  "size is invalid", NgosStatus::ASSERTION);
     COMMON_ASSERT(size <= NUMBER_OF_FIX_BITMAPS * PAGE_SIZE, "size is too big", NgosStatus::ASSERTION);
     COMMON_ASSERT(res,                                       "res is null",     NgosStatus::ASSERTION);
     COMMON_ASSERT(address + size > address,                  "size is invalid", NgosStatus::ASSERTION);
@@ -197,7 +197,7 @@ NgosStatus IORemap::removeFixedMapping(address_t address, u64 size)
 
     COMMON_ASSERT(address,                                                                "address is null",    NgosStatus::ASSERTION);
     COMMON_ASSERT(address >= FIX_ADDRESS_BOTTOM && address < FIX_ADDRESS_TOP + PAGE_SIZE, "address is invalid", NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0,                                                               "size is zero",       NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,                                                               "size is invalid",    NgosStatus::ASSERTION);
     COMMON_ASSERT(address + size > address,                                               "size is invalid",    NgosStatus::ASSERTION);
 
 

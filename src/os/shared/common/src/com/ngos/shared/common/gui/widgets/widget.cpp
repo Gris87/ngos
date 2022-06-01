@@ -60,8 +60,8 @@ NgosStatus Widget::update(i64 positionX, i64 positionY, u64 width, u64 height)
 {
     // COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(width > 0,  "width is zero",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(width > 0,  "width is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -182,7 +182,7 @@ NgosStatus Widget::onMouseScrollEvent(i32 delta)
 {
     COMMON_LT((" | delta = %d", delta));
 
-    COMMON_ASSERT(delta != 0, "delta is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(delta != 0, "delta is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -316,8 +316,8 @@ bool Widget::hasIntersection(i64 positionX, i64 positionY, u64 width, u64 height
 {
     // COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(width > 0,  "width is zero",  false);
-    COMMON_ASSERT(height > 0, "height is zero", false);
+    COMMON_ASSERT(width > 0,  "width is invalid",  false);
+    COMMON_ASSERT(height > 0, "height is invalid", false);
 
 
 
@@ -631,8 +631,8 @@ NgosStatus Widget::setSize(u64 width, u64 height)
 {
     COMMON_LT((" | width = %u, height = %u", width, height));
 
-    COMMON_ASSERT(width  > 0, "width is zero",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(width  > 0, "width is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is invalid", NgosStatus::ASSERTION);
 
 
 

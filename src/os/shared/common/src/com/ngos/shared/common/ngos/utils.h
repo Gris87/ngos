@@ -13,6 +13,22 @@
 #define ROUND_UP(x, y) ((((x) - 1) | __ROUND_MASK(x, y)) + 1)
 #define ROUND_DOWN(x, y) ((x) & ~__ROUND_MASK(x, y))
 
+#define ALIGN_2(a)    ROUND_UP(a, 2)
+#define ALIGN_4(a)    ROUND_UP(a, 4)
+#define ALIGN_8(a)    ROUND_UP(a, 8)
+#define ALIGN_16(a)   ROUND_UP(a, 16)
+#define ALIGN_32(a)   ROUND_UP(a, 32)
+#define ALIGN_64(a)   ROUND_UP(a, 64)
+#define ALIGN_128(a)  ROUND_UP(a, 128)
+#define ALIGN_256(a)  ROUND_UP(a, 256)
+#define ALIGN_512(a)  ROUND_UP(a, 512)
+#define ALIGN_1024(a) ROUND_UP(a, 1024)
+#define ALIGN_2048(a) ROUND_UP(a, 2048)
+#define ALIGN_4096(a) ROUND_UP(a, 4096)
+
+#define IS_ALIGNED(a, b) (((u64)(a) & ((u64)(b) - 1)) == 0)
+#define IS_POWER_OF_2(a) IS_ALIGNED(a, a)
+
 
 
 #define DIV_UP(x, y) (((x) + (y) - 1) / (y))
@@ -24,11 +40,6 @@
 
 
 #define OFFSET_OF(type, field) ((u64)&(((type *)nullptr)->field))
-
-
-
-#define IS_ALIGNED(a, b) (((u64)(a) & ((u64)(b) - 1)) == 0)
-#define IS_POWER_OF_2(a) IS_ALIGNED(a, a)
 
 
 

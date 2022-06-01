@@ -14,7 +14,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
 
     UEFI_ASSERT(params,          "params is null",          NgosStatus::ASSERTION);
     UEFI_ASSERT(protocol,        "protocol is null",        NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0,        "size is zero",            NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0,        "size is invalid",         NgosStatus::ASSERTION);
     UEFI_ASSERT(graphicsHandles, "graphicsHandles is null", NgosStatus::ASSERTION);
 
 
@@ -226,7 +226,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
 
     UEFI_ASSERT(params,   "params is null",   NgosStatus::ASSERTION);
     UEFI_ASSERT(protocol, "protocol is null", NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0, "size is zero",     NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0, "size is invalid",  NgosStatus::ASSERTION);
 
 
 

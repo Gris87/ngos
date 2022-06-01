@@ -43,9 +43,9 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 {
     COMMON_LT((" | data = 0x%p, size = %u, image = 0x%p", data, size, image));
 
-    COMMON_ASSERT(data,     "data is null",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0, "size is zero",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(image,    "image is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(data,     "data is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0, "size is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(image,    "image is null",   NgosStatus::ASSERTION);
 
     COMMON_ASSERT(*(u16 *)&data[0]        == JPEG_START_OF_IMAGE_SIGNATURE, "data is invalid", NgosStatus::ASSERTION);
     COMMON_ASSERT(*(u16 *)&data[size - 2] == JPEG_END_OF_IMAGE_SIGNATURE,   "data is invalid", NgosStatus::ASSERTION);
@@ -122,7 +122,7 @@ NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **i
 
     COMMON_ASSERT(decoder,  "decoder is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(data,     "data is null",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0, "size is zero",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0, "size is invalid", NgosStatus::ASSERTION);
     COMMON_ASSERT(image,    "image is null",   NgosStatus::ASSERTION);
 
 
@@ -188,8 +188,8 @@ NgosStatus Jpeg::skip(JpegDecoder *decoder, u64 count)
 {
     COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count));
 
-    COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,   "decoder is null",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(count > 0, "count is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -1490,7 +1490,7 @@ NgosStatus Jpeg::handleColIDCT(i64 *block, u8 *sampleDataBuffer, u64 stride)
 
     COMMON_ASSERT(block,            "block is null",            NgosStatus::ASSERTION);
     COMMON_ASSERT(sampleDataBuffer, "sampleDataBuffer is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(stride > 0,       "stride is zero",           NgosStatus::ASSERTION);
+    COMMON_ASSERT(stride > 0,       "stride is invalid",        NgosStatus::ASSERTION);
 
 
 
@@ -1835,8 +1835,8 @@ NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, u8 count)
 {
     // COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,   "decoder is null",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(count > 0, "count is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -1915,9 +1915,9 @@ NgosStatus Jpeg::getBits(JpegDecoder *decoder, u8 count, u64 *res)
 {
     // COMMON_LT((" | decoder = 0x%p, count = %u, res = 0x%p", decoder, count, res)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(res,       "res is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,   "decoder is null",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(count > 0, "count is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(res,       "res is null",      NgosStatus::ASSERTION);
 
 
 
@@ -1941,9 +1941,9 @@ NgosStatus Jpeg::readBits(JpegDecoder *decoder, u8 count, u64 *res)
 {
     // COMMON_LT((" | decoder = 0x%p, count = %u, res = 0x%p", decoder, count, res)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(res,       "res is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,   "decoder is null",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(count > 0, "count is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(res,       "res is null",      NgosStatus::ASSERTION);
 
 
 
@@ -1967,8 +1967,8 @@ NgosStatus Jpeg::skipBits(JpegDecoder *decoder, u8 count)
 {
     // COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,   "decoder is null",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(count > 0, "count is invalid", NgosStatus::ASSERTION);
 
 
 

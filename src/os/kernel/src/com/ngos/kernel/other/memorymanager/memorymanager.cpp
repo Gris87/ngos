@@ -53,7 +53,7 @@ NgosStatus MemoryManager::add(address_t start, u64 size)
 {
     COMMON_LT((" | start = 0x%016llX, size = 0x%016llX", start, size));
 
-    COMMON_ASSERT(size > 0, "size is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0, "size is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -64,7 +64,7 @@ NgosStatus MemoryManager::reserve(address_t start, u64 size)
 {
     COMMON_LT((" | start = 0x%016llX, size = 0x%016llX", start, size));
 
-    COMMON_ASSERT(size > 0, "size is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0, "size is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -78,7 +78,7 @@ NgosStatus MemoryManager::insertRegion(MemoryBlockType *type, u64 index, u64 sta
     COMMON_ASSERT(type,                    "type is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(type->count < type->max, "type is full",      NgosStatus::ASSERTION);
     COMMON_ASSERT(index <= type->count,    "index is invalid",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0,                "size is zero",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,                "size is invalid",   NgosStatus::ASSERTION);
     COMMON_ASSERT(start + size > start,    "size is invalid",   NgosStatus::ASSERTION);
     COMMON_ASSERT(nodeId <= MAX_NUMNODES,  "nodeId is invalid", NgosStatus::ASSERTION);
 
@@ -206,7 +206,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, c
     COMMON_LT((" | type = 0x%p, start = 0x%016llX, size = 0x%016llX, flags = ..., nodeId = 0x%04X", type, start, size, nodeId));
 
     COMMON_ASSERT(type,                   "type is null",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0,               "size is zero",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,               "size is invalid",   NgosStatus::ASSERTION);
     COMMON_ASSERT(start + size > start,   "size is invalid",   NgosStatus::ASSERTION);
     COMMON_ASSERT(nodeId <= MAX_NUMNODES, "nodeId is invalid", NgosStatus::ASSERTION);
 

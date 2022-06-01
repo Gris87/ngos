@@ -207,7 +207,7 @@ NgosStatus TableWidget::onMouseScrollEvent(i32 delta)
 {
     COMMON_LT((" | delta = %d", delta));
 
-    COMMON_ASSERT(delta != 0, "delta is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(delta != 0, "delta is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -614,7 +614,7 @@ NgosStatus TableWidget::setRowHeight(i64 height)
 {
     COMMON_LT((" | height = %u", height));
 
-    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -650,7 +650,7 @@ NgosStatus TableWidget::setColumnCount(i64 columns)
 {
     COMMON_LT((" | columns = %u", columns));
 
-    COMMON_ASSERT(columns > 0, "columns is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(columns > 0, "columns is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -682,7 +682,7 @@ NgosStatus TableWidget::setColumnWidth(i64 column, i64 width)
 {
     COMMON_LT((" | column = %u, width = %u", column, width));
 
-    COMMON_ASSERT(width > 0, "width is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(width > 0, "width is invalid", NgosStatus::ASSERTION);
 
 
 

@@ -5047,7 +5047,7 @@ NgosStatus DMI::storeIdentity(DmiIdentity id, const char8 *address, u64 size)
     COMMON_LT((" | id = %u, address = 0x%p, size = %u", id, address, size));
 
     COMMON_ASSERT(address,  "address is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0, "size is zero",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0, "size is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -5093,7 +5093,7 @@ NgosStatus DMI::storeString(const char8 *address, u64 size, const char8 **destin
     COMMON_LT((" | address = 0x%p, size = %u, destination = 0x%p", address, size, destination));
 
     COMMON_ASSERT(address,     "address is null",     NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0,    "size is zero",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,    "size is invalid",     NgosStatus::ASSERTION);
     COMMON_ASSERT(destination, "destination is null", NgosStatus::ASSERTION);
 
 

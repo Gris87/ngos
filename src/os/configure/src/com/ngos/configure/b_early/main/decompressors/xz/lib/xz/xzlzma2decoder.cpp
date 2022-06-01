@@ -44,7 +44,7 @@ NgosStatus dictionaryLimit(LzmaDictionary *dictionary, u64 outMax)
     // EARLY_LT((" | dictionary = 0x%p, outMax = %u", dictionary, outMax)); // Commented to avoid too frequent logs
 
     EARLY_ASSERT(dictionary, "dictionary is null", NgosStatus::ASSERTION);
-    EARLY_ASSERT(outMax > 0, "outMax is zero",     NgosStatus::ASSERTION);
+    EARLY_ASSERT(outMax > 0, "outMax is invalid",  NgosStatus::ASSERTION);
 
 
 

@@ -361,7 +361,7 @@ NgosStatus TreeNodeWidget::setRowHeight(u64 height)
 {
     COMMON_LT((" | height = %u", height));
 
-    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is invalid", NgosStatus::ASSERTION);
 
 
 

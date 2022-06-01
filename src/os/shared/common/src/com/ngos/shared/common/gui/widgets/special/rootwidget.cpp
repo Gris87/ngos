@@ -68,8 +68,8 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
 {
     // COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height)); // Commented to avoid infinite loop
 
-    COMMON_ASSERT(width > 0,  "width is zero",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(width > 0,  "width is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is invalid", NgosStatus::ASSERTION);
 
 
 

@@ -52,8 +52,8 @@ NgosStatus ScreenWidget::updateRegion(i64 positionX, i64 positionY, u64 width, u
 {
     // COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height)); // Commented to avoid infinite loop
 
-    COMMON_ASSERT(width > 0,  "width is zero",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(width > 0,  "width is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -191,8 +191,8 @@ NgosStatus ScreenWidget::update(i64 positionX, i64 positionY, u64 width, u64 hei
 {
     // COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height)); // Commented to avoid infinite loop
 
-    COMMON_ASSERT(width > 0,  "width is zero",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(width > 0,  "width is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is invalid", NgosStatus::ASSERTION);
 
 
 

@@ -33,10 +33,10 @@ void UEFI_API testAesProcedure(void *buffer)
 
     if (CPU::hasFeature(X86Feature::AESNI))
     {
-        u8 in[1024]  __attribute__((aligned(16)));
-        u8 out[1024] __attribute__((aligned(16)));
+        good_U8 in[1024]  __attribute__((aligned(16)));
+        good_U8 out[1024] __attribute__((aligned(16)));
 
-        u64 outSize;
+        good_I64 outSize;
 
 
 
@@ -49,7 +49,7 @@ void UEFI_API testAesProcedure(void *buffer)
         for (good_I64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
         {
             UEFI_ASSERT_EXECUTION(aes.encode(in, sizeof(in), out, sizeof(out), &outSize));
-            UEFI_ASSERT_EXECUTION(aes.decode(out, sizeof(out), in, sizeof(in), &outSize));
+            UEFI_ASSERT_EXECUTION(aes.decode(out, sizeof(out), in, sizeof(in)));
         }
 
         u64 endTime = AsmUtils::rdtsc();

@@ -161,7 +161,7 @@ inline NgosStatus addUnavailableMemoryArea(MemoryArea *areas, UnavailableMemoryA
 
     EARLY_ASSERT(areas,                                             "areas is null",     NgosStatus::ASSERTION);
     EARLY_ASSERT((u64)areaId < (u64)UnavailableMemoryArea::MAXIMUM, "areaId is invalid", NgosStatus::ASSERTION);
-    EARLY_ASSERT(size > 0,                                          "size is zero",      NgosStatus::ASSERTION);
+    EARLY_ASSERT(size > 0,                                          "size is invalid",   NgosStatus::ASSERTION);
 
 
 
@@ -299,7 +299,7 @@ NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEn
     EARLY_ASSERT(memoryMapEntry,         "memoryMapEntry is null",         NgosStatus::ASSERTION);
     EARLY_ASSERT(params,                 "params is null",                 NgosStatus::ASSERTION);
     EARLY_ASSERT(unavailableMemoryAreas, "unavailableMemoryAreas is null", NgosStatus::ASSERTION);
-    EARLY_ASSERT(imageSize > 0,          "imageSize is zero",              NgosStatus::ASSERTION);
+    EARLY_ASSERT(imageSize > 0,          "imageSize is invalid",           NgosStatus::ASSERTION);
     EARLY_ASSERT(address,                "address is null",                NgosStatus::ASSERTION);
 
 
@@ -455,7 +455,7 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
 
     EARLY_ASSERT(params,                            "params is null",                           NgosStatus::ASSERTION);
     EARLY_ASSERT(unavailableMemoryAreas,            "unavailableMemoryAreas is null",           NgosStatus::ASSERTION);
-    EARLY_ASSERT(imageSize > 0,                     "imageSize is zero",                        NgosStatus::ASSERTION);
+    EARLY_ASSERT(imageSize > 0,                     "imageSize is invalid",                     NgosStatus::ASSERTION);
     EARLY_ASSERT(address,                           "address is null",                          NgosStatus::ASSERTION);
     EARLY_ASSERT(params->memoryMapEntriesCount > 0, "params->memoryMapEntriesCount is invalid", NgosStatus::ASSERTION);
     EARLY_ASSERT(params->memoryMapEntries,          "params->memoryMapEntries is null",         NgosStatus::ASSERTION);
@@ -534,7 +534,7 @@ NgosStatus findRandomVirtualAddress(BootParams *params, MemoryArea *unavailableM
 
     EARLY_ASSERT(params,                            "params is null",                           NgosStatus::ASSERTION);
     EARLY_ASSERT(unavailableMemoryAreas,            "unavailableMemoryAreas is null",           NgosStatus::ASSERTION);
-    EARLY_ASSERT(imageSize > 0,                     "imageSize is zero",                        NgosStatus::ASSERTION);
+    EARLY_ASSERT(imageSize > 0,                     "imageSize is invalid",                     NgosStatus::ASSERTION);
     EARLY_ASSERT(address,                           "address is null",                          NgosStatus::ASSERTION);
     EARLY_ASSERT(params->memoryMapEntriesCount > 0, "params->memoryMapEntriesCount is invalid", NgosStatus::ASSERTION);
     EARLY_ASSERT(params->memoryMapEntries,          "params->memoryMapEntries is null",         NgosStatus::ASSERTION);
@@ -587,7 +587,7 @@ NgosStatus getRandomLocation(BootParams *params, u8 *pageTable, u64 imageSize, u
 
     EARLY_ASSERT(params,          "params is null",          NgosStatus::ASSERTION);
     EARLY_ASSERT(pageTable,       "pageTable is null",       NgosStatus::ASSERTION);
-    EARLY_ASSERT(imageSize > 0,   "imageSize is zero",       NgosStatus::ASSERTION);
+    EARLY_ASSERT(imageSize > 0,   "imageSize is invalid",    NgosStatus::ASSERTION);
     EARLY_ASSERT(physicalAddress, "physicalAddress is null", NgosStatus::ASSERTION);
     EARLY_ASSERT(virtualAddress,  "virtualAddress is null",  NgosStatus::ASSERTION);
 

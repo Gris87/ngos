@@ -348,7 +348,7 @@ NgosStatus TreeWidget::onMouseScrollEvent(i32 delta)
 {
     COMMON_LT((" | delta = %d", delta));
 
-    COMMON_ASSERT(delta != 0, "delta is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(delta != 0, "delta is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -884,7 +884,7 @@ NgosStatus TreeWidget::setRowHeight(u64 height)
 {
     COMMON_LT((" | height = %u", height));
 
-    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is invalid", NgosStatus::ASSERTION);
 
 
 

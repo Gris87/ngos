@@ -17,10 +17,10 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
 {
     COMMON_LT((" | compressedAddress = 0x%p, decompressedAddress = 0x%p, expectedCompressedSize = %u, expectedDecompressedSize = %u", compressedAddress, decompressedAddress, expectedCompressedSize, expectedDecompressedSize));
 
-    COMMON_ASSERT(compressedAddress,            "compressedAddress is null",        NgosStatus::ASSERTION);
-    COMMON_ASSERT(decompressedAddress,          "decompressedAddress is null",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(expectedCompressedSize > 0,   "expectedCompressedSize is zero",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(expectedDecompressedSize > 0, "expectedDecompressedSize is zero", NgosStatus::ASSERTION);
+    COMMON_ASSERT(compressedAddress,            "compressedAddress is null",           NgosStatus::ASSERTION);
+    COMMON_ASSERT(decompressedAddress,          "decompressedAddress is null",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(expectedCompressedSize > 0,   "expectedCompressedSize is invalid",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(expectedDecompressedSize > 0, "expectedDecompressedSize is invalid", NgosStatus::ASSERTION);
 
 
 

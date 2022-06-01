@@ -20,9 +20,9 @@ NgosStatus Png::loadImage(u8 *data, u64 size, bool withNinePatch, Image **image)
 {
     COMMON_LT((" | data = 0x%p, size = %u, withNinePatch = %u, image = 0x%p", data, size, withNinePatch, image));
 
-    COMMON_ASSERT(data,     "data is null",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0, "size is zero",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(image,    "image is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(data,     "data is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0, "size is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(image,    "image is null",   NgosStatus::ASSERTION);
 
     COMMON_ASSERT(*(u64 *)&data[0] == PNG_HEADER_SIGNATURE, "data is invalid", NgosStatus::ASSERTION);
 
@@ -1354,11 +1354,11 @@ NgosStatus Png::unfilter(PngDecoder *decoder, u8 *in, u8 *out, u16 width, u16 he
 {
     COMMON_LT((" | decoder = 0x%p, in = 0x%p, out = 0x%p, width = %u, height = %u", decoder, in, out, width, height));
 
-    COMMON_ASSERT(decoder,    "decoder is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(in,         "in is null",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(out,        "out is null",     NgosStatus::ASSERTION);
-    COMMON_ASSERT(width > 0,  "width is zero",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(height > 0, "height is zero",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,    "decoder is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(in,         "in is null",        NgosStatus::ASSERTION);
+    COMMON_ASSERT(out,        "out is null",       NgosStatus::ASSERTION);
+    COMMON_ASSERT(width > 0,  "width is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -1515,11 +1515,11 @@ NgosStatus Png::removePaddingBits(u8 *in, u8 *out, i64 inLineBits, i64 outLineBi
 {
     COMMON_LT((" | in = 0x%p, out = 0x%p, inLineBits = %d, outLineBits = %d, height = %u", in, out, inLineBits, outLineBits, height));
 
-    COMMON_ASSERT(in,              "in is null",          NgosStatus::ASSERTION);
-    COMMON_ASSERT(out,             "out is null",         NgosStatus::ASSERTION);
-    COMMON_ASSERT(inLineBits > 0,  "inLineBits is zero",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(outLineBits > 0, "outLineBits is zero", NgosStatus::ASSERTION);
-    COMMON_ASSERT(height > 0,      "height is zero",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(in,              "in is null",             NgosStatus::ASSERTION);
+    COMMON_ASSERT(out,             "out is null",            NgosStatus::ASSERTION);
+    COMMON_ASSERT(inLineBits > 0,  "inLineBits is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(outLineBits > 0, "outLineBits is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0,      "height is invalid",      NgosStatus::ASSERTION);
 
 
 
@@ -1617,9 +1617,9 @@ NgosStatus Png::addImageDataToBuffer(PngDecoder *decoder, u8 *data, u64 count)
 {
     COMMON_LT((" | decoder = 0x%p, data = 0x%p, count = %u", decoder, data, count));
 
-    COMMON_ASSERT(decoder,   "decoder is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(data,      "data is null",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(count > 0, "count is zero",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,   "decoder is null",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(data,      "data is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(count > 0, "count is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -1750,10 +1750,10 @@ NgosStatus Png::getImageDataDecompressedSizeForBlock(PngDecoder *decoder, u16 wi
 {
     COMMON_LT((" | decoder = 0x%p, width = %u, height = %u, size = 0x%p", decoder, width, height, size));
 
-    COMMON_ASSERT(decoder,    "decoder is null", NgosStatus::ASSERTION);
-    COMMON_ASSERT(width > 0,  "width is zero",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(height > 0, "height is zero",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(size,       "size is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(decoder,    "decoder is null",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(width > 0,  "width is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(size,       "size is null",      NgosStatus::ASSERTION);
 
 
 

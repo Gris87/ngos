@@ -934,8 +934,8 @@ NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 posX, u64 posY, u64 
 {
     UEFI_LT((" | flag = %u, posX = %u, posY = %u, width = %u, height = %u, featurePanelImage = 0x%p, featurePanelResizedImage = 0x%p, tabPageWidget = 0x%p", flag, posX, posY, width, height, featurePanelImage, featurePanelResizedImage, tabPageWidget));
 
-    UEFI_ASSERT(width > 0,                "width is zero",                    NgosStatus::ASSERTION);
-    UEFI_ASSERT(height > 0,               "height is zero",                   NgosStatus::ASSERTION);
+    UEFI_ASSERT(width > 0,                "width is invalid",                 NgosStatus::ASSERTION);
+    UEFI_ASSERT(height > 0,               "height is invalid",                NgosStatus::ASSERTION);
     UEFI_ASSERT(featurePanelImage,        "featurePanelImage is null",        NgosStatus::ASSERTION);
     UEFI_ASSERT(featurePanelResizedImage, "featurePanelResizedImage is null", NgosStatus::ASSERTION);
     UEFI_ASSERT(tabPageWidget,            "tabPageWidget is null",            NgosStatus::ASSERTION);

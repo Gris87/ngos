@@ -18,10 +18,10 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 {
     EARLY_LT((" | compressedAddress = 0x%p, decompressedAddress = 0x%p, expectedCompressedSize = %u, expectedDecompressedSize = %u", compressedAddress, decompressedAddress, expectedCompressedSize, expectedDecompressedSize));
 
-    EARLY_ASSERT(compressedAddress,            "compressedAddress is null",        NgosStatus::ASSERTION);
-    EARLY_ASSERT(decompressedAddress,          "decompressedAddress is null",      NgosStatus::ASSERTION);
-    EARLY_ASSERT(expectedCompressedSize > 0,   "expectedCompressedSize is zero",   NgosStatus::ASSERTION);
-    EARLY_ASSERT(expectedDecompressedSize > 0, "expectedDecompressedSize is zero", NgosStatus::ASSERTION);
+    EARLY_ASSERT(compressedAddress,            "compressedAddress is null",           NgosStatus::ASSERTION);
+    EARLY_ASSERT(decompressedAddress,          "decompressedAddress is null",         NgosStatus::ASSERTION);
+    EARLY_ASSERT(expectedCompressedSize > 0,   "expectedCompressedSize is invalid",   NgosStatus::ASSERTION);
+    EARLY_ASSERT(expectedDecompressedSize > 0, "expectedDecompressedSize is invalid", NgosStatus::ASSERTION);
 
 
 

@@ -27,9 +27,9 @@ NgosStatus Graphics::loadImage(u8 *data, u64 size, bool withNinePatch, Image **i
 {
     COMMON_LT((" | data = 0x%p, size = %u, withNinePatch = %u, image = 0x%p", data, size, withNinePatch, image));
 
-    COMMON_ASSERT(data,     "data is null",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0, "size is zero",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(image,    "image is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(data,     "data is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0, "size is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(image,    "image is null",   NgosStatus::ASSERTION);
 
 
 
@@ -228,10 +228,10 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
 
     COMMON_ASSERT(sourceData,                                                                                    "sourceData is null",                  NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationData,                                                                               "destinationData is null",             NgosStatus::ASSERTION);
-    COMMON_ASSERT(sourceWidth > 0,                                                                               "sourceWidth is zero",                 NgosStatus::ASSERTION);
-    COMMON_ASSERT(sourceHeight > 0,                                                                              "sourceHeight is zero",                NgosStatus::ASSERTION);
-    COMMON_ASSERT(destinationWidth > 0,                                                                          "destinationWidth is zero",            NgosStatus::ASSERTION);
-    COMMON_ASSERT(destinationHeight > 0,                                                                         "destinationHeight is zero",           NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceWidth > 0,                                                                               "sourceWidth is invalid",              NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceHeight > 0,                                                                              "sourceHeight is invalid",             NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationWidth > 0,                                                                          "destinationWidth is invalid",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationHeight > 0,                                                                         "destinationHeight is invalid",        NgosStatus::ASSERTION);
     COMMON_ASSERT(sourceBytesPerPixel == sizeof(RgbPixel) || sourceBytesPerPixel == sizeof(RgbaPixel),           "sourceBytesPerPixel is invalid",      NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationBytesPerPixel == sizeof(RgbPixel) || destinationBytesPerPixel == sizeof(RgbaPixel), "destinationBytesPerPixel is invalid", NgosStatus::ASSERTION);
 
@@ -259,10 +259,10 @@ NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
 
     COMMON_ASSERT(sourceData,                                                                                    "sourceData is null",                  NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationData,                                                                               "destinationData is null",             NgosStatus::ASSERTION);
-    COMMON_ASSERT(sourceWidth > 0,                                                                               "sourceWidth is zero",                 NgosStatus::ASSERTION);
-    COMMON_ASSERT(sourceHeight > 0,                                                                              "sourceHeight is zero",                NgosStatus::ASSERTION);
-    COMMON_ASSERT(destinationWidth > 0,                                                                          "destinationWidth is zero",            NgosStatus::ASSERTION);
-    COMMON_ASSERT(destinationHeight > 0,                                                                         "destinationHeight is zero",           NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceWidth > 0,                                                                               "sourceWidth is invalid",              NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceHeight > 0,                                                                              "sourceHeight is invalid",             NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationWidth > 0,                                                                          "destinationWidth is invalid",         NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationHeight > 0,                                                                         "destinationHeight is invalid",        NgosStatus::ASSERTION);
     COMMON_ASSERT(sourceBytesPerPixel == sizeof(RgbPixel) || sourceBytesPerPixel == sizeof(RgbaPixel),           "sourceBytesPerPixel is invalid",      NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationBytesPerPixel == sizeof(RgbPixel) || destinationBytesPerPixel == sizeof(RgbaPixel), "destinationBytesPerPixel is invalid", NgosStatus::ASSERTION);
 
@@ -1109,10 +1109,10 @@ NgosStatus Graphics::resizeImageProportional(Image *image, u16 width, u16 height
 {
     COMMON_LT((" | image = 0x%p, width = %u, height = %u, res = 0x%p", image, width, height, res));
 
-    COMMON_ASSERT(image,      "image is null",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(width > 0,  "width is zero",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(height > 0, "height is zero", NgosStatus::ASSERTION);
-    COMMON_ASSERT(res,        "res is null",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(image,      "image is null",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(width > 0,  "width is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(height > 0, "height is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(res,        "res is null",       NgosStatus::ASSERTION);
 
 
 
@@ -1135,12 +1135,12 @@ NgosStatus Graphics::resizeImageRaw(u8 *sourceData, u8 *destinationData, u16 sou
 
     COMMON_ASSERT(sourceData,                                                              "sourceData is null",           NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationData,                                                         "destinationData is null",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(sourceWidth > 0,                                                         "sourceWidth is zero",          NgosStatus::ASSERTION);
-    COMMON_ASSERT(sourceHeight > 0,                                                        "sourceHeight is zero",         NgosStatus::ASSERTION);
-    COMMON_ASSERT(destinationWidth > 0,                                                    "destinationWidth is zero",     NgosStatus::ASSERTION);
-    COMMON_ASSERT(destinationHeight > 0,                                                   "destinationHeight is zero",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(sourceStride > 0,                                                        "sourceStride is zero",         NgosStatus::ASSERTION);
-    COMMON_ASSERT(destinationStride > 0,                                                   "destinationStride is zero",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceWidth > 0,                                                         "sourceWidth is invalid",       NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceHeight > 0,                                                        "sourceHeight is invalid",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationWidth > 0,                                                    "destinationWidth is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationHeight > 0,                                                   "destinationHeight is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(sourceStride > 0,                                                        "sourceStride is invalid",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(destinationStride > 0,                                                   "destinationStride is invalid", NgosStatus::ASSERTION);
     COMMON_ASSERT(bytesPerPixel == sizeof(RgbPixel) || bytesPerPixel == sizeof(RgbaPixel), "bytesPerPixel is invalid",     NgosStatus::ASSERTION);
     COMMON_ASSERT(sourceStride % bytesPerPixel == 0,                                       "sourceStride is invalid",      NgosStatus::ASSERTION);
     COMMON_ASSERT(destinationStride % bytesPerPixel == 0,                                  "destinationStride is invalid", NgosStatus::ASSERTION);

@@ -801,7 +801,7 @@ NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size)
     UEFI_LT((" | protocol = 0x%p, size = %u", protocol, size));
 
     UEFI_ASSERT(protocol, "protocol is null", NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0, "size is zero",     NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0, "size is invalid",  NgosStatus::ASSERTION);
 
 
 
@@ -854,7 +854,7 @@ NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size, uefi_handle
     UEFI_LT((" | protocol = 0x%p, size = %u, blockIoHandles = 0x%p", protocol, size, blockIoHandles));
 
     UEFI_ASSERT(protocol,       "protocol is null",       NgosStatus::ASSERTION);
-    UEFI_ASSERT(size > 0,       "size is zero",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(size > 0,       "size is invalid",        NgosStatus::ASSERTION);
     UEFI_ASSERT(blockIoHandles, "blockIoHandles is null", NgosStatus::ASSERTION);
 
 

@@ -194,7 +194,7 @@ NgosStatus E820::updateRange(u64 start, u64 size, MemoryMapEntryType oldType, Me
 {
     COMMON_LT((" | start = 0x%016llX, size = 0x%016llX, oldType = %u, newType = %u", start, size, oldType, newType));
 
-    COMMON_ASSERT(size > 0,             "size is zero",       NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,             "size is invalid",    NgosStatus::ASSERTION);
     COMMON_ASSERT(start + size > start, "size is invalid",    NgosStatus::ASSERTION);
     COMMON_ASSERT(oldType != newType,   "types are the same", NgosStatus::ASSERTION);
 
@@ -207,7 +207,7 @@ NgosStatus E820::updateRangeKExec(u64 start, u64 size, MemoryMapEntryType oldTyp
 {
     COMMON_LT((" | start = 0x%016llX, size = 0x%016llX, oldType = %u, newType = %u", start, size, oldType, newType));
 
-    COMMON_ASSERT(size > 0,             "size is zero",       NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,             "size is invalid",    NgosStatus::ASSERTION);
     COMMON_ASSERT(start + size > start, "size is invalid",    NgosStatus::ASSERTION);
     COMMON_ASSERT(oldType != newType,   "types are the same", NgosStatus::ASSERTION);
 
@@ -223,7 +223,7 @@ NgosStatus E820::insertRangeInTable(E820Table *table, u64 index, u64 start, u64 
     COMMON_ASSERT(table,                          "table is null",    NgosStatus::ASSERTION);
     COMMON_ASSERT(table->count < E820_TABLE_SIZE, "table is full",    NgosStatus::ASSERTION);
     COMMON_ASSERT(index <= table->count,          "index is invalid", NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0,                       "size is zero",     NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,                       "size is invalid",  NgosStatus::ASSERTION);
     COMMON_ASSERT(start + size > start,           "size is invalid",  NgosStatus::ASSERTION);
 
 
@@ -269,7 +269,7 @@ NgosStatus E820::updateRangeInTable(E820Table *table, u64 start, u64 size, Memor
     COMMON_LT((" | table = 0x%p, start = 0x%016llX, size = 0x%016llX, oldType = %u, newType = %u", table, start, size, oldType, newType));
 
     COMMON_ASSERT(table,                "table is null",      NgosStatus::ASSERTION);
-    COMMON_ASSERT(size > 0,             "size is zero",       NgosStatus::ASSERTION);
+    COMMON_ASSERT(size > 0,             "size is invalid",    NgosStatus::ASSERTION);
     COMMON_ASSERT(start + size > start, "size is invalid",    NgosStatus::ASSERTION);
     COMMON_ASSERT(oldType != newType,   "types are the same", NgosStatus::ASSERTION);
 

@@ -418,14 +418,14 @@ NgosStatus CpuTest::initCpuCachesAmd()
 
 
 
-    if (CPU::isCpuIdLevelSupported(CpuidLeaf::L1_CACHE_IDENTIFIERS)) // TODO: Unify with CPUID structures
+    if (CPU::isCpuIdLevelSupported(CpuidLeaf::L1_CACHE_AND_TLB_INFORMATION)) // TODO: Unify with CPUID structures
     {
         u32 ignored;
         u32 ecx;
         u32 edx;
 
         UEFI_ASSERT_EXECUTION(CPU::cpuid(
-                                        CpuidLeaf::L1_CACHE_IDENTIFIERS,
+                                        CpuidLeaf::L1_CACHE_AND_TLB_INFORMATION,
                                         CpuidSubLeaf::NONE,
                                         &ignored,
                                         &ignored,
@@ -458,12 +458,12 @@ NgosStatus CpuTest::initCpuCachesAmd()
     }
     else
     {
-        UEFI_LW(("L1_CACHE_IDENTIFIERS not supported"));
+        UEFI_LW(("L1_CACHE_AND_TLB_INFORMATION not supported"));
     }
 
 
 
-    if (CPU::isCpuIdLevelSupported(CpuidLeaf::EXTENDED_L2_CACHE_FEATURES))
+    if (CPU::isCpuIdLevelSupported(CpuidLeaf::L2_CACHE_AND_TLB_AND_L3_CACHE_INFORMATION))
     {
         const u8 numberOfWaysTable[16] =
         {
@@ -477,7 +477,7 @@ NgosStatus CpuTest::initCpuCachesAmd()
         u32 edx;
 
         UEFI_ASSERT_EXECUTION(CPU::cpuid(
-                                        CpuidLeaf::EXTENDED_L2_CACHE_FEATURES,
+                                        CpuidLeaf::L2_CACHE_AND_TLB_AND_L3_CACHE_INFORMATION,
                                         CpuidSubLeaf::NONE,
                                         &ignored,
                                         &ignored,
@@ -510,7 +510,7 @@ NgosStatus CpuTest::initCpuCachesAmd()
     }
     else
     {
-        UEFI_LW(("EXTENDED_L2_CACHE_FEATURES not supported"));
+        UEFI_LW(("L2_CACHE_AND_TLB_AND_L3_CACHE_INFORMATION not supported"));
     }
 
 
@@ -522,9 +522,9 @@ NgosStatus CpuTest::initCpuCache(CacheInfo *cache, u32 size, u8 numberOfWays)
 {
     UEFI_LT((" | cache = 0x%p, size = %u, numberOfWays = %u", cache, size, numberOfWays));
 
-    UEFI_ASSERT(cache,        "cache is null",        NgosStatus::ASSERTION);
-    UEFI_ASSERT(size,         "size is zero",         NgosStatus::ASSERTION);
-    UEFI_ASSERT(numberOfWays, "numberOfWays is zero", NgosStatus::ASSERTION);
+    UEFI_ASSERT(cache,        "cache is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(size,         "size is invalid",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(numberOfWays, "numberOfWays is invalid", NgosStatus::ASSERTION);
 
 
 
