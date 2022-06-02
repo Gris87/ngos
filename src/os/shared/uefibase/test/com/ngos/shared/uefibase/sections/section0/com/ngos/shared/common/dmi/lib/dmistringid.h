@@ -13,7 +13,7 @@
 
 
 
-TEST_CASES(section0, com_ngos_shared_common_dmi_dmistringid);
+TEST_CASES(section0, com_ngos_shared_common_dmi_lib_dmistringid);
 {
     TEST_CASE("DmiStringId()");
     {

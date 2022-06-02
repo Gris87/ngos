@@ -19,19 +19,19 @@
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/cpu/cpu.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/cryptography/aes.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/dmi.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/dmistringid.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/dmichassisentry.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmibiosextendedromsize.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmibiosromsize.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmicacheconfiguration.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmicachesize.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmicachesize2.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmimemoryarraymappedaddressrange.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmimemorydeviceextendedsize.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicemappedaddressrange.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicesize.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/entry/lib/dmiportablebatterymanufacturedate.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/dmistringid.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/dmichassisentry.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmibiosextendedromsize.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmibiosromsize.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmicacheconfiguration.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmicachesize.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmicachesize2.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmimemoryarraymappedaddressrange.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydeviceextendedsize.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydevicemappedaddressrange.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydevicesize.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmiportablebatterymanufacturedate.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx/avx.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx2/avx2.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/fpu/avx512bw/avx512bw.h>
@@ -115,19 +115,19 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, com_ngos_shared_common_cpu_cpu);
     CALL_TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
     CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_dmi);
-    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_dmistringid);
-    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_entry_dmichassisentry);
-    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmibiosextendedromsize);
-    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmibiosromsize);
-    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmicacheconfiguration);
-    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmicachesize);
-    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmicachesize2);
-    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmimemoryarraymappedaddressrange);
-    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmimemorydeviceextendedsize);
-    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmimemorydevicemappedaddressrange);
-    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmimemorydevicesize);
-    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmiphysicalmemoryarraymaximumcapacity);
-    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmiportablebatterymanufacturedate);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_dmistringid);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_dmichassisentry);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmibiosextendedromsize);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmibiosromsize);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmicacheconfiguration);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmicachesize);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmicachesize2);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmimemoryarraymappedaddressrange);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmimemorydeviceextendedsize);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmimemorydevicemappedaddressrange);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmimemorydevicesize);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmiphysicalmemoryarraymaximumcapacity);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmiportablebatterymanufacturedate);
     CALL_TEST_CASES(section0, com_ngos_shared_common_fpu_avx2_avx2);
     CALL_TEST_CASES(section0, com_ngos_shared_common_fpu_avx512bw_avx512bw);
     CALL_TEST_CASES(section0, com_ngos_shared_common_fpu_avx512cd_avx512cd);

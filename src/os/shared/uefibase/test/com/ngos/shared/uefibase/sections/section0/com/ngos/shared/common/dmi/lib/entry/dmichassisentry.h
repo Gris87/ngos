@@ -13,7 +13,7 @@
 
 
 
-TEST_CASES(section0, com_ngos_shared_common_dmi_entry_dmichassisentry);
+TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_dmichassisentry);
 {
     TEST_CASE("DMI_CHASSIS_CONTAINED_ELEMENT()");
     {

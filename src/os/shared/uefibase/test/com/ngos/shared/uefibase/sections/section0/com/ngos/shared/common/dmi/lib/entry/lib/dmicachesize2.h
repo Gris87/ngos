@@ -13,7 +13,7 @@
 
 
 
-TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmicachesize2);
+TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmicachesize2);
 {
     TEST_CASE("size()");
     {
