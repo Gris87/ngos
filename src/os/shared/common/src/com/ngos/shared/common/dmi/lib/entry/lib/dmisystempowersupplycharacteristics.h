@@ -3,9 +3,9 @@
 
 
 
-#include <com/ngos/shared/common/dmi/entry/lib/dmisystempowersupplyinputvoltagerangeswitch.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmisystempowersupplystatus.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmisystempowersupplytype.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystempowersupplyinputvoltagerangeswitch.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystempowersupplystatus.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystempowersupplytype.h>
 
 
 

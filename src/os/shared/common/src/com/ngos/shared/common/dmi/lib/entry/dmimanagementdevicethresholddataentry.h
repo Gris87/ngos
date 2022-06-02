@@ -3,7 +3,7 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
 
 
 

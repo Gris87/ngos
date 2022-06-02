@@ -3,16 +3,16 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/dmistringid.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmimemorydeviceattributes.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmimemorydeviceextendedsize.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmimemorydeviceformfactor.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmimemorydeviceoperatingmodecapabilityflags.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmimemorydevicesize.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmimemorydevicetechnology.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmimemorydevicetype.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmimemorydevicetypedetailflags.h>
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydeviceattributes.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydeviceextendedsize.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydeviceformfactor.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydeviceoperatingmodecapabilityflags.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydevicesize.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydevicetechnology.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydevicetype.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydevicetypedetailflags.h>
 
 
 

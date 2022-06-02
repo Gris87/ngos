@@ -3,7 +3,7 @@
 
 
 
-#include <com/ngos/shared/common/dmi/entry/lib/dmionboarddevicesdevicetype.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmionboarddevicesdevicetype.h>
 
 
 

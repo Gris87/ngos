@@ -3,7 +3,7 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmistringid.h>
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
 #include <com/ngos/shared/common/ngos/types.h>
 
 

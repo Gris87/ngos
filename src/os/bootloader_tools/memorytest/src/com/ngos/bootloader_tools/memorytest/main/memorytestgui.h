@@ -7,7 +7,7 @@
 #include <com/ngos/bootloader_tools/memorytest/other/testtype.h>
 #include <com/ngos/shared/common/bootparams/bootparams.h>
 #include <com/ngos/shared/common/containers/arraylist.h>
-#include <com/ngos/shared/common/dmi/dmimemorydevice.h>
+#include <com/ngos/shared/common/dmi/lib/dmimemorydevice.h>
 #include <com/ngos/shared/common/gui/widgets/controls/button.h>
 #include <com/ngos/shared/common/gui/widgets/controls/tablewidget.h>
 #include <com/ngos/shared/common/gui/widgets/controls/tabwidget.h>

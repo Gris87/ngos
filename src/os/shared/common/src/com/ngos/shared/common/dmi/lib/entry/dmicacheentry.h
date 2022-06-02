@@ -3,15 +3,15 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/dmistringid.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmicacheassociativity.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmicacheconfiguration.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmicacheerrorcorrectiontype.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmicachesize.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmicachesize2.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmicachesramtypeflags.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmicachetype.h>
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicacheassociativity.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicacheconfiguration.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicacheerrorcorrectiontype.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachesize.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachesize2.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachesramtypeflags.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachetype.h>
 
 
 

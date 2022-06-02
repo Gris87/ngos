@@ -3,11 +3,11 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarraylocation.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarrayuse.h>
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiphysicalmemoryarraylocation.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiphysicalmemoryarrayuse.h>
 #include <com/ngos/shared/common/macro/constants.h>
 
 

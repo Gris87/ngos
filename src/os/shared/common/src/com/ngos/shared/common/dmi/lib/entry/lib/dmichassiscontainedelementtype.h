@@ -3,9 +3,9 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmientrytype.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmibaseboardtype.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmichassiscontainedelementtypeselect.h>
+#include <com/ngos/shared/common/dmi/lib/dmientrytype.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibaseboardtype.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassiscontainedelementtypeselect.h>
 
 
 

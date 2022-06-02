@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmimemorydevicesize.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydevicesize.h>
 #include <com/ngos/shared/uefibase/testengine.h>
 
 

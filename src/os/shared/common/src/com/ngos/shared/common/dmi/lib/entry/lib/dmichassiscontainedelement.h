@@ -3,7 +3,7 @@
 
 
 
-#include <com/ngos/shared/common/dmi/entry/lib/dmichassiscontainedelementtype.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassiscontainedelementtype.h>
 
 
 

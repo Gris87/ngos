@@ -3,12 +3,12 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/dmistringid.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmichassiscontainedelement.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmichassissecuritystatus.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmichassisstate.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmichassistypeandlocked.h>
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassiscontainedelement.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassissecuritystatus.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassisstate.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassistypeandlocked.h>
 
 
 

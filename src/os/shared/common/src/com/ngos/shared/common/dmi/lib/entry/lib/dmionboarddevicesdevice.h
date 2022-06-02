@@ -3,8 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmistringid.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmionboarddevicesdevicetypeandenabled.h>
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmionboarddevicesdevicetypeandenabled.h>
 
 
 

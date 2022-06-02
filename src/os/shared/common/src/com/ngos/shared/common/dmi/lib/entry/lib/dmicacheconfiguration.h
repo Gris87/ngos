@@ -3,8 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/dmi/entry/lib/dmicachelocation.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmicacheoperationalmode.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachelocation.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicacheoperationalmode.h>
 
 
 

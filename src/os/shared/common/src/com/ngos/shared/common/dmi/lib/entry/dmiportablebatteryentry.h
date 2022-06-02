@@ -3,10 +3,10 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/dmistringid.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiportablebatterydevicechemistry.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiportablebatterymanufacturedate.h>
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiportablebatterydevicechemistry.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiportablebatterymanufacturedate.h>
 
 
 

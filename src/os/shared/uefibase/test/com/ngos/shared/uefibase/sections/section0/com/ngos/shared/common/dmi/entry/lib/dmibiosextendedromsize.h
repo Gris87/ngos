@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmibiosextendedromsize.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibiosextendedromsize.h>
 #include <com/ngos/shared/uefibase/testengine.h>
 
 

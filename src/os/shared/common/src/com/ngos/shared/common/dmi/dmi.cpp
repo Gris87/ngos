@@ -1,6 +1,6 @@
 #include "dmi.h"
 
-#include <com/ngos/shared/common/dmi/entry/dmimemorydeviceentry.h>
+#include <com/ngos/shared/common/dmi/lib/entry/dmimemorydeviceentry.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/memory/memory.h>

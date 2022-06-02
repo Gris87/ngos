@@ -3,7 +3,7 @@
 
 
 
-#include <com/ngos/shared/common/dmi/entry/lib/dmibiosextendedromsizeunit.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibiosextendedromsizeunit.h>
 #include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/macro/constants.h>
 

@@ -3,7 +3,7 @@
 
 
 
-#include <com/ngos/shared/common/dmi/entry/lib/dmimemorydevicetype.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydevicetype.h>
 #include <com/ngos/shared/common/ngos/types.h>
 
 

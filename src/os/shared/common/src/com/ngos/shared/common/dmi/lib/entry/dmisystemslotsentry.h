@@ -3,15 +3,15 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/dmistringid.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmifunctionnumberanddevicenumber.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmisystemslotscharacteristicsflags.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmisystemslotsdatabuswidth.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmisystemslotslength.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmisystemslotspeergroup.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmisystemslotstype.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmisystemslotsusage.h>
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmifunctionnumberanddevicenumber.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystemslotscharacteristicsflags.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystemslotsdatabuswidth.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystemslotslength.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystemslotspeergroup.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystemslotstype.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystemslotsusage.h>
 
 
 

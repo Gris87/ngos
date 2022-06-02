@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmimemorydevicemappedaddressrange.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydevicemappedaddressrange.h>
 #include <com/ngos/shared/uefibase/testengine.h>
 
 

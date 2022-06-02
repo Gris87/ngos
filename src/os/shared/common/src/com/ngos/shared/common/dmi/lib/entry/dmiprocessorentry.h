@@ -3,16 +3,16 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/dmistringid.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorcharacteristicsflags.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorfamily.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorfamily2.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorid.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorstatusandsocketpopulated.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiprocessortype.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorupgrade.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorvoltage.h>
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorcharacteristicsflags.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorfamily.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorfamily2.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorid.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorstatusandsocketpopulated.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessortype.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorupgrade.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorvoltage.h>
 
 
 

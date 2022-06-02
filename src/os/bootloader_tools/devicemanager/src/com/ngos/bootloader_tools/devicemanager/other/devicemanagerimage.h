@@ -3,11 +3,11 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmientrytype.h>
-#include <com/ngos/shared/common/dmi/entry/dmionboarddevicesextendedentry.h>
-#include <com/ngos/shared/common/dmi/entry/dmiportconnectorentry.h>
-#include <com/ngos/shared/common/dmi/entry/dmisystemslotsentry.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmionboarddevicesdevice.h>
+#include <com/ngos/shared/common/dmi/lib/dmientrytype.h>
+#include <com/ngos/shared/common/dmi/lib/entry/dmionboarddevicesextendedentry.h>
+#include <com/ngos/shared/common/dmi/lib/entry/dmiportconnectorentry.h>
+#include <com/ngos/shared/common/dmi/lib/entry/dmisystemslotsentry.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmionboarddevicesdevice.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>

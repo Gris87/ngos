@@ -3,8 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/dmi/entry/lib/dmitemperatureprobelocation.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmitemperatureprobestatus.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmitemperatureprobelocation.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmitemperatureprobestatus.h>
 
 
 

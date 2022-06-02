@@ -3,8 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmihardwaresecuritysettings.h>
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmihardwaresecuritysettings.h>
 
 
 

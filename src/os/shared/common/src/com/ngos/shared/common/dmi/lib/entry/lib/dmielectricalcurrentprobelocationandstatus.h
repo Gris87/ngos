@@ -3,8 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/dmi/entry/lib/dmielectricalcurrentprobelocation.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmielectricalcurrentprobestatus.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmielectricalcurrentprobelocation.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmielectricalcurrentprobestatus.h>
 
 
 

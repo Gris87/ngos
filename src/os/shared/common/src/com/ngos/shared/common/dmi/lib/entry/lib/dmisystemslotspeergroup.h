@@ -3,8 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/dmi/entry/lib/dmifunctionnumberanddevicenumber.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmisystemslotsdatabuswidth.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmifunctionnumberanddevicenumber.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystemslotsdatabuswidth.h>
 
 
 

@@ -3,8 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmimemoryarraymappedaddressrange.h>
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemoryarraymappedaddressrange.h>
 
 
 

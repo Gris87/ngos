@@ -3,8 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/dmi/entry/lib/dmicoolingdevicestatus.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmicoolingdevicetype.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicoolingdevicestatus.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicoolingdevicetype.h>
 
 
 

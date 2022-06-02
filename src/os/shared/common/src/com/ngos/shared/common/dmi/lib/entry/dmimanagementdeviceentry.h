@@ -3,10 +3,10 @@
 
 
 
-#include <com/ngos/shared/common/dmi/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/dmistringid.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmimanagementdeviceaddresstype.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmimanagementdevicetype.h>
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimanagementdeviceaddresstype.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimanagementdevicetype.h>
 
 
 
