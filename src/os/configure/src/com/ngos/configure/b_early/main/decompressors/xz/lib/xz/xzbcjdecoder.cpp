@@ -36,7 +36,7 @@ u64 bcjX86(XzBcjDecoder *decoder, u8 *buffer, u64 size)
 
     EARLY_ASSERT(decoder,  "decoder is null", 0);
     EARLY_ASSERT(buffer,   "buffer is null",  0);
-    EARLY_ASSERT(size > 0, "size is zero",    0);
+    EARLY_ASSERT(size > 0, "size is invalid", 0);
 
 
 

@@ -1,581 +1,641 @@
-#include "dmi.h"
-
-#include <com/ngos/shared/common/dmi/lib/entry/dmimemorydeviceentry.h>
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/memory/memory.h>
-#include <com/ngos/shared/common/string/utils.h>
-#include <com/ngos/shared/common/uuid/utils.h>
-
-#ifdef UEFI_APPLICATION // Defined in pro file
-#include <com/ngos/shared/uefibase/uefi/uefi.h>
-#else
-#include <com/ngos/kernel/other/brk/brk.h>
-#include <com/ngos/kernel/other/ioremap/ioremap.h>
-#include <com/ngos/kernel/other/uefi/uefi.h>
-#endif
-
-
-
-u32                                            DMI::sVersion;
-u16                                            DMI::sNumberOfSmbiosStructures;
-u64                                            DMI::sStructureTableAddress;
-u32                                            DMI::sStructureTableLength;
-u16                                            DMI::sSystemPhysicalMemoryArrayHandle;
-u64                                            DMI::sSystemPhysicalMemoryArrayCapacity;
-u64                                            DMI::sTotalAmountOfMemory;
-u64                                            DMI::sNumberOfInstalledMemoryDevices;
-ArrayList<DmiMemoryDeviceEntry *>              DMI::sMemoryDeviceEntries;
-ArrayList<DmiMemoryDeviceMappedAddressEntry *> DMI::sMemoryDeviceMappedAddressEntries;
-ArrayList<DmiMemoryDevice>                     DMI::sMemoryDevices;
-const char8*                                   DMI::sIdentities[(u64)DmiIdentity::MAXIMUM];
-Uuid*                                          DMI::sUuids[(u64)DmiStoredUuid::MAXIMUM];
-
-
-
-NgosStatus DMI::init()
-{
-    COMMON_LT((""));
-
-
-
-    UefiSmbios3ConfigurationTable *smbios3 = UEFI::getSmbios3Config();
-
-    if (smbios3)
-    {
-#ifdef UEFI_APPLICATION // Defined in pro file
-        COMMON_ASSERT_EXECUTION(initFromSmbios3(smbios3), NgosStatus::ASSERTION);
-#else
-        UefiSmbios3ConfigurationTable *smbios3Mapped;
-
-        COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)smbios3, sizeof(UefiSmbios3ConfigurationTable), (void **)&smbios3Mapped), NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(initFromSmbios3(smbios3Mapped),                                                                         NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)smbios3Mapped, sizeof(UefiSmbios3ConfigurationTable)),                 NgosStatus::ASSERTION);
-#endif
-    }
-    else
-    {
-        UefiSmbiosConfigurationTable *smbios = UEFI::getSmbiosConfig();
-
-        if (smbios)
-        {
-#ifdef UEFI_APPLICATION // Defined in pro file
-            COMMON_ASSERT_EXECUTION(initFromSmbios(smbios), NgosStatus::ASSERTION);
-#else
-            UefiSmbiosConfigurationTable *smbiosMapped;
-
-            COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)smbios, sizeof(UefiSmbiosConfigurationTable), (void **)&smbiosMapped), NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(initFromSmbios(smbiosMapped),                                                                        NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)smbiosMapped, sizeof(UefiSmbiosConfigurationTable)),                NgosStatus::ASSERTION);
-#endif
-        }
-        else
-        {
-            COMMON_LF(("DMI not present"));
-
-            return NgosStatus::NOT_FOUND;
-        }
-    }
-
-
-
-#ifdef UEFI_APPLICATION // Defined in pro file
-    COMMON_ASSERT_EXECUTION(iterateDmiEntries((u8 *)sStructureTableAddress, decodeDmiEntry), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(storeDmiMemoryDevices(),                                         NgosStatus::ASSERTION);
-#else
-    u8 *buf;
-
-    COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping(sStructureTableAddress, sStructureTableLength, (void **)&buf), NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(iterateDmiEntries(buf, decodeDmiEntry),                                                 NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(storeDmiMemoryDevices(),                                                                NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)buf, sStructureTableLength),                           NgosStatus::ASSERTION);
-#endif
-
-
-
-    COMMON_LV(("SMBIOS version is %u.%u", sVersion >> 16, (sVersion >> 8) & 0xFF));
-    COMMON_LV(("DMI: %s %s, BIOS %s %s %s", sIdentities[(u64)DmiIdentity::SYSTEM_MANUFACTURER], sIdentities[(u64)DmiIdentity::SYSTEM_PRODUCT_NAME], sIdentities[(u64)DmiIdentity::BIOS_VENDOR], sIdentities[(u64)DmiIdentity::BIOS_VERSION], sIdentities[(u64)DmiIdentity::BIOS_RELEASE_DATE]));
-
-
-
-    // Validation
-    {
-        COMMON_LVVV(("sVersion                           = 0x%08X", sVersion));
-        COMMON_LVVV(("sNumberOfSmbiosStructures          = %u",     sNumberOfSmbiosStructures));
-        COMMON_LVVV(("sStructureTableAddress             = 0x%p",   sStructureTableAddress));
-        COMMON_LVVV(("sStructureTableLength              = %u",     sStructureTableLength));
-        COMMON_LVVV(("sSystemPhysicalMemoryArrayHandle   = 0x%04X", sSystemPhysicalMemoryArrayHandle));
-        COMMON_LVVV(("sSystemPhysicalMemoryArrayCapacity = %s",     bytesToString(sSystemPhysicalMemoryArrayCapacity)));
-        COMMON_LVVV(("sTotalAmountOfMemory               = %s",     bytesToString(sTotalAmountOfMemory)));
-        COMMON_LVVV(("sNumberOfInstalledMemoryDevices    = %u",     sNumberOfInstalledMemoryDevices));
-
-
-
-        // sMemoryDeviceEntries:
-        {
-#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
-            COMMON_LVVV(("sMemoryDeviceEntries:"));
-            COMMON_LVVV(("-------------------------------------"));
-
-            for (good_I64 i = 0; i < (i64)sMemoryDeviceEntries.getSize(); ++i)
-            {
-                DmiMemoryDeviceEntry *device = sMemoryDeviceEntries.at(i);
-
-                COMMON_LVVV(("#%-3d: 0x%p | 0x%04X | 0x%04X", i, device, device->header.handle, device->memoryArrayHandle));
-            }
-
-            COMMON_LVVV(("-------------------------------------"));
-#endif
-        }
-
-
-
-        // sMemoryDeviceMappedAddressEntries:
-        {
-#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
-            COMMON_LVVV(("sMemoryDeviceMappedAddressEntries:"));
-            COMMON_LVVV(("-------------------------------------"));
-
-            for (good_I64 i = 0; i < (i64)sMemoryDeviceMappedAddressEntries.getSize(); ++i)
-            {
-                DmiMemoryDeviceMappedAddressEntry *device = sMemoryDeviceMappedAddressEntries.at(i);
-
-                COMMON_LVVV(("#%-3d: 0x%p | 0x%04X | 0x%04X", i, device, device->header.handle, device->memoryDeviceHandle));
-            }
-
-            COMMON_LVVV(("-------------------------------------"));
-#endif
-        }
-
-
-
-        // sMemoryDevices:
-        {
-#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
-            COMMON_LVVV(("sMemoryDevices:"));
-            COMMON_LVVV(("-------------------------------------"));
-
-            for (good_I64 i = 0; i < (i64)sMemoryDevices.getSize(); ++i)
-            {
-                const DmiMemoryDevice &device = sMemoryDevices.at(i);
-
-
-
-                char8 startBuffer[11];
-                char8 endBuffer[11];
-
-                COMMON_ASSERT_EXECUTION(bytesToString(device.start, startBuffer, sizeof(startBuffer)), NgosStatus::ASSERTION);
-                COMMON_ASSERT_EXECUTION(bytesToString(device.end,   endBuffer,   sizeof(endBuffer)),   NgosStatus::ASSERTION);
-
-
-
-                COMMON_LVVV(("#%-3d: %s | %u MHz | %-5s | %5s - %-5s | %s | %s | %s | %s", i, enumToFullString(device.memoryType), device.speed, bytesToString(device.size), startBuffer, endBuffer, stringToString(device.deviceLocator), stringToString(device.manufacturer), stringToString(device.serialNumber), stringToString(device.partNumber)));
-            }
-
-            COMMON_LVVV(("-------------------------------------"));
-#endif
-        }
-
-
-
-        // sIdentities:
-        {
-#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
-            COMMON_LVVV(("sIdentities:"));
-            COMMON_LVVV(("-------------------------------------"));
-
-            for (good_I64 i = 0; i < (i64)DmiIdentity::MAXIMUM; ++i)
-            {
-                if (sIdentities[i])
-                {
-                    COMMON_LVVV(("%-36s: 0x%p | %s", enumToFullString((DmiIdentity)i), sIdentities[i], sIdentities[i]));
-                }
-                else
-                {
-                    COMMON_LVVV(("%-36s: 0x%p", enumToFullString((DmiIdentity)i), sIdentities[i]));
-                }
-            }
-
-            COMMON_LVVV(("-------------------------------------"));
-#endif
-        }
-
-
-
-        // sUuids:
-        {
-#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
-            COMMON_LVVV(("sUuids:"));
-            COMMON_LVVV(("-------------------------------------"));
-
-            for (good_I64 i = 0; i < (i64)DmiStoredUuid::MAXIMUM; ++i)
-            {
-                COMMON_LVVV(("%-11s: %s", enumToFullString((DmiStoredUuid)i), uuidToString(sUuids[i])));
-            }
-
-            COMMON_LVVV(("-------------------------------------"));
-#endif
-        }
-
-
-
-        // COMMON_TEST_ASSERT(sVersion                                    == 0x00020800, NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sNumberOfSmbiosStructures                   == 9,          NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(sStructureTableAddress                         != 0,          NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sStructureTableLength                       == 395,        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayHandle            == 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayCapacity          == GB,         NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sTotalAmountOfMemory                        == GB,         NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sNumberOfInstalledMemoryDevices             == 1,          NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.getSize()              == 1,          NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.at(0)                  != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDeviceMappedAddressEntries.getSize() == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDevices.getSize()                    == 1,          NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).size                   == GB,         NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).deviceLocator          != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).manufacturer           != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).serialNumber           != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).partNumber             != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT((u64)DmiIdentity::MAXIMUM                      == 7,          NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[0]                                 != nullptr,    NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[1]                                 != nullptr,    NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[2]                                 != nullptr,    NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[3]                                 != nullptr,    NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sIdentities[4]                                 != nullptr,    NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sIdentities[5]                              != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sIdentities[6]                              != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT((u64)DmiStoredUuid::MAXIMUM                    == 1,          NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sUuids[0]                                      != nullptr,    NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(sUuids[0]->data1                            == 0x9FAE0773, NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data2                            == 0xF53F,     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data3                            == 0x4A15,     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data4                            == 0x8A,       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data5                            == 0x11,       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[0]                         == 0xED,       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[1]                         == 0x76,       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[2]                         == 0xA1,       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[3]                         == 0x0F,       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[4]                         == 0x4E,       NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[5]                         == 0x5B,       NgosStatus::ASSERTION); // Commented due to value variation
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
-{
-    COMMON_LT((" | buf = 0x%p, processDmiEntry = 0x%p", buf, processDmiEntry));
-
-    COMMON_ASSERT(buf,             "buf is null",             NgosStatus::ASSERTION);
-    COMMON_ASSERT(processDmiEntry, "processDmiEntry is null", NgosStatus::ASSERTION);
-
-
-
-    i64  i   = 0;
-    u8  *cur = buf;
-
-    while (
-           sNumberOfSmbiosStructures == 0
-           ||
-           i < sNumberOfSmbiosStructures
-          )
-    {
-        DmiEntryHeader *dmiEntryHeader = (DmiEntryHeader *)cur;
-
-
-
-        COMMON_LVV(("Processing DMI header at address 0x%p", dmiEntryHeader));
-
-        COMMON_LVVV(("dmiEntryHeader->type   = %s",     enumToFullString(dmiEntryHeader->type)));
-        COMMON_LVVV(("dmiEntryHeader->length = %u",     dmiEntryHeader->length));
-        COMMON_LVVV(("dmiEntryHeader->handle = 0x%04X", dmiEntryHeader->handle));
-
-
-
-        cur += dmiEntryHeader->length;
-
-        // We are getting total DMI entry size until we met 2 zeros in buffer that let us avoid issues on decoding
-        do
-        {
-            if (
-                cur[0] == 0
-                &&
-                cur[1] == 0
-               )
-            {
-                break;
-            }
-
-            ++cur;
-        } while(true);
-
-        cur += 2;
-        ++i;
-
-
-
-        if (dmiEntryHeader->type == DmiEntryType::END_OF_TABLE)
-        {
-            break;
-        }
-
-
-
-        COMMON_ASSERT_EXECUTION(processDmiEntry(dmiEntryHeader), NgosStatus::ASSERTION);
-    }
-
-    COMMON_TEST_ASSERT(sNumberOfSmbiosStructures == 0 || cur == buf + sStructureTableLength, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(sNumberOfSmbiosStructures == 0 || i   == sNumberOfSmbiosStructures,   NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-u32 DMI::getVersion()
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return sVersion;
-}
-
-u64 DMI::getStructureTableAddress()
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return sStructureTableAddress;
-}
-
-u64 DMI::getSystemPhysicalMemoryArrayCapacity()
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return sSystemPhysicalMemoryArrayCapacity;
-}
-
-u64 DMI::getTotalAmountOfMemory()
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return sTotalAmountOfMemory;
-}
-
-u64 DMI::getNumberOfInstalledMemoryDevices()
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return sNumberOfInstalledMemoryDevices;
-}
-
-const ArrayList<DmiMemoryDevice>& DMI::getMemoryDevices()
-{
-    // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-    return sMemoryDevices;
-}
-
-const char8* DMI::getIdentity(DmiIdentity id)
-{
-    // COMMON_LT((" | id = %u", id)); // Commented to avoid too frequent logs
-
-
-
-    return sIdentities[(u64)id];
-}
-
-Uuid* DMI::getUuid(DmiStoredUuid id)
-{
-    // COMMON_LT((" | id = %u", id)); // Commented to avoid too frequent logs
-
-
-
-    return sUuids[(u64)id];
-}
-
-NgosStatus DMI::initFromSmbios3(UefiSmbios3ConfigurationTable *smbios3)
-{
-    COMMON_LT((" | smbios3 = 0x%p", smbios3));
-
-    COMMON_ASSERT(smbios3, "smbios3 is null", NgosStatus::ASSERTION);
-
-
-
-    // Validation
-    {
-        COMMON_LVVV(("smbios3->anchor                      = %.5s", smbios3->anchor));
-        COMMON_LVVV(("smbios3->entryPointStructureChecksum = %u",   smbios3->entryPointStructureChecksum));
-        COMMON_LVVV(("smbios3->entryPointLength            = %u",   smbios3->entryPointLength));
-        COMMON_LVVV(("smbios3->majorVersion                = %u",   smbios3->majorVersion));
-        COMMON_LVVV(("smbios3->minorVersion                = %u",   smbios3->minorVersion));
-        COMMON_LVVV(("smbios3->docRevision                 = %u",   smbios3->docRevision));
-        COMMON_LVVV(("smbios3->entryPointRevision          = %u",   smbios3->entryPointRevision));
-        COMMON_LVVV(("smbios3->structureTableMaximumSize   = %u",   smbios3->structureTableMaximumSize));
-        COMMON_LVVV(("smbios3->structureTableAddress       = 0x%p", smbios3->structureTableAddress));
-
-
-
-        COMMON_TEST_ASSERT((*(u64 *)smbios3->anchor & 0x000000FFFFFFFFFF) == SMBIOS_3_ANCHOR,                                                                          NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios3->entryPointStructureChecksum           == checksum((u8 *)smbios3, smbios3->entryPointLength, smbios3->entryPointStructureChecksum), NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios3->entryPointLength                      == 24,                                                                                       NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios3->majorVersion                          == 3,                                                                                        NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(smbios3->minorVersion                       == 3,                                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(smbios3->docRevision                        == 0,                                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(smbios3->entryPointRevision                    == 1,                                                                                        NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(smbios3->structureTableMaximumSize          == 4070,                                                                                     NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(smbios3->structureTableAddress                 != 0,                                                                                        NgosStatus::ASSERTION);
-    }
-
-
-
-    sVersion               = DMI_VERSION_3(smbios3->majorVersion, smbios3->minorVersion, smbios3->docRevision);
-    sStructureTableAddress = smbios3->structureTableAddress;
-    sStructureTableLength  = smbios3->structureTableMaximumSize;
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::initFromSmbios(UefiSmbiosConfigurationTable *smbios)
-{
-    COMMON_LT((" | smbios = 0x%p", smbios));
-
-    COMMON_ASSERT(smbios, "smbios is null", NgosStatus::ASSERTION);
-
-
-
-    // Validation
-    {
-        COMMON_LVVV(("smbios->anchor                      = %.4s",   &smbios->anchor));
-        COMMON_LVVV(("smbios->entryPointStructureChecksum = %u",      smbios->entryPointStructureChecksum));
-        COMMON_LVVV(("smbios->entryPointLength            = %u",      smbios->entryPointLength));
-        COMMON_LVVV(("smbios->majorVersion                = %u",      smbios->majorVersion));
-        COMMON_LVVV(("smbios->minorVersion                = %u",      smbios->minorVersion));
-        COMMON_LVVV(("smbios->maximumStructureSize        = %u",      smbios->maximumStructureSize));
-        COMMON_LVVV(("smbios->entryPointRevision          = %u",      smbios->entryPointRevision));
-        COMMON_LVVV(("smbios->formattedArea[0]            = %u",      smbios->formattedArea[0]));
-        COMMON_LVVV(("smbios->formattedArea[1]            = %u",      smbios->formattedArea[1]));
-        COMMON_LVVV(("smbios->formattedArea[2]            = %u",      smbios->formattedArea[2]));
-        COMMON_LVVV(("smbios->formattedArea[3]            = %u",      smbios->formattedArea[3]));
-        COMMON_LVVV(("smbios->formattedArea[4]            = %u",      smbios->formattedArea[4]));
-        COMMON_LVVV(("smbios->intermediateAnchor          = %.5s",    smbios->intermediateAnchor));
-        COMMON_LVVV(("smbios->intermediateChecksum        = %u",      smbios->intermediateChecksum));
-        COMMON_LVVV(("smbios->structureTableLength        = %u",      smbios->structureTableLength));
-        COMMON_LVVV(("smbios->structureTableAddress       = 0x%p",    smbios->structureTableAddress));
-        COMMON_LVVV(("smbios->numberOfSmbiosStructures    = %u",      smbios->numberOfSmbiosStructures));
-        COMMON_LVVV(("smbios->bcdRevision                 = 0x%02X",  smbios->bcdRevision));
-
-
-
-        COMMON_TEST_ASSERT(smbios->anchor                                            == SMBIOS_ANCHOR,                                                                         NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios->entryPointStructureChecksum                       == checksum((u8 *)smbios, smbios->entryPointLength, smbios->entryPointStructureChecksum), NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios->entryPointLength                                  == 31,                                                                                    NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios->majorVersion                                      == 2,                                                                                     NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(smbios->minorVersion                                   == 8,                                                                                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(smbios->maximumStructureSize                           == 81,                                                                                    NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(smbios->entryPointRevision                                == 0,                                                                                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios->formattedArea[0]                                  == 0,                                                                                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios->formattedArea[1]                                  == 0,                                                                                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios->formattedArea[2]                                  == 0,                                                                                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios->formattedArea[3]                                  == 0,                                                                                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios->formattedArea[4]                                  == 0,                                                                                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT((*(u64 *)smbios->intermediateAnchor & 0x000000FFFFFFFFFF) == SMBIOS_INTERMEDIATE_ANCHOR,                                                            NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios->intermediateChecksum                              == checksum((u8 *)&smbios->intermediateAnchor, 15, smbios->intermediateChecksum),         NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(smbios->structureTableLength                           == 395,                                                                                   NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT(smbios->structureTableAddress                             != 0,                                                                                     NgosStatus::ASSERTION);
-        // COMMON_TEST_ASSERT(smbios->numberOfSmbiosStructures                       == 9,                                                                                     NgosStatus::ASSERTION); // Commented due to value variation
-        // COMMON_TEST_ASSERT(smbios->bcdRevision                                    == 0x28,                                                                                  NgosStatus::ASSERTION); // Commented due to value variation
-    }
-
-
-
-    sVersion                  = DMI_VERSION(smbios->majorVersion, smbios->minorVersion);
-    sNumberOfSmbiosStructures = smbios->numberOfSmbiosStructures;
-    sStructureTableAddress    = smbios->structureTableAddress;
-    sStructureTableLength     = smbios->structureTableLength;
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::decodeDmiEntry(DmiEntryHeader *header)
-{
-    COMMON_LT((" | header = 0x%p", header));
-
-    COMMON_ASSERT(header, "header is null", NgosStatus::ASSERTION);
-
-
-
-    switch (header->type)
-    {
-        case DmiEntryType::BIOS:                             COMMON_ASSERT_EXECUTION(saveDmiBiosEntry((DmiBiosEntry *)header),                                                   NgosStatus::ASSERTION); break;
-        case DmiEntryType::SYSTEM:                           COMMON_ASSERT_EXECUTION(saveDmiSystemEntry((DmiSystemEntry *)header),                                               NgosStatus::ASSERTION); break;
-        case DmiEntryType::BASEBOARD:                        COMMON_ASSERT_EXECUTION(saveDmiBaseboardEntry((DmiBaseboardEntry *)header),                                         NgosStatus::ASSERTION); break;
-        case DmiEntryType::CHASSIS:                          COMMON_ASSERT_EXECUTION(saveDmiChassisEntry((DmiChassisEntry *)header),                                             NgosStatus::ASSERTION); break;
-        case DmiEntryType::PROCESSOR:                        COMMON_ASSERT_EXECUTION(saveDmiProcessorEntry((DmiProcessorEntry *)header),                                         NgosStatus::ASSERTION); break;
-        case DmiEntryType::CACHE:                            COMMON_ASSERT_EXECUTION(saveDmiCacheEntry((DmiCacheEntry *)header),                                                 NgosStatus::ASSERTION); break;
-        case DmiEntryType::PORT_CONNECTOR:                   COMMON_ASSERT_EXECUTION(saveDmiPortConnectorEntry((DmiPortConnectorEntry *)header),                                 NgosStatus::ASSERTION); break;
-        case DmiEntryType::SYSTEM_SLOTS:                     COMMON_ASSERT_EXECUTION(saveDmiSystemSlotsEntry((DmiSystemSlotsEntry *)header),                                     NgosStatus::ASSERTION); break;
-        case DmiEntryType::ONBOARD_DEVICES:                  COMMON_ASSERT_EXECUTION(saveDmiOnboardDevicesEntry((DmiOnboardDevicesEntry *)header),                               NgosStatus::ASSERTION); break;
-        case DmiEntryType::OEM_STRINGS:                      COMMON_ASSERT_EXECUTION(saveDmiOemStringsEntry((DmiOemStringsEntry *)header),                                       NgosStatus::ASSERTION); break;
-        case DmiEntryType::SYSTEM_CONFIGURATION:             COMMON_ASSERT_EXECUTION(saveDmiSystemConfigurationEntry((DmiSystemConfigurationEntry *)header),                     NgosStatus::ASSERTION); break;
-        case DmiEntryType::BIOS_LANGUAGE:                    COMMON_ASSERT_EXECUTION(saveDmiBiosLanguageEntry((DmiBiosLanguageEntry *)header),                                   NgosStatus::ASSERTION); break;
-        case DmiEntryType::GROUP_ASSOCIATIONS:               COMMON_ASSERT_EXECUTION(saveDmiGroupAssociationsEntry((DmiGroupAssociationsEntry *)header),                         NgosStatus::ASSERTION); break;
-        case DmiEntryType::PHYSICAL_MEMORY_ARRAY:            COMMON_ASSERT_EXECUTION(saveDmiPhysicalMemoryArrayEntry((DmiPhysicalMemoryArrayEntry *)header),                     NgosStatus::ASSERTION); break;
-        case DmiEntryType::MEMORY_DEVICE:                    COMMON_ASSERT_EXECUTION(saveDmiMemoryDeviceEntry((DmiMemoryDeviceEntry *)header),                                   NgosStatus::ASSERTION); break;
-        case DmiEntryType::BITS32_MEMORY_ERROR:              COMMON_ASSERT_EXECUTION(saveDmiBits32MemoryErrorInformationEntry((DmiBits32MemoryErrorInformationEntry *)header),   NgosStatus::ASSERTION); break;
-        case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS:      COMMON_ASSERT_EXECUTION(saveDmiMemoryArrayMappedAddressEntry((DmiMemoryArrayMappedAddressEntry *)header),           NgosStatus::ASSERTION); break;
-        case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:     COMMON_ASSERT_EXECUTION(saveDmiMemoryDeviceMappedAddressEntry((DmiMemoryDeviceMappedAddressEntry *)header),         NgosStatus::ASSERTION); break;
-        case DmiEntryType::PORTABLE_BATTERY:                 COMMON_ASSERT_EXECUTION(saveDmiPortableBatteryEntry((DmiPortableBatteryEntry *)header),                             NgosStatus::ASSERTION); break;
-        case DmiEntryType::SYSTEM_RESET:                     COMMON_ASSERT_EXECUTION(saveDmiSystemResetEntry((DmiSystemResetEntry *)header),                                     NgosStatus::ASSERTION); break;
-        case DmiEntryType::HARDWARE_SECURITY:                COMMON_ASSERT_EXECUTION(saveDmiHardwareSecurityEntry((DmiHardwareSecurityEntry *)header),                           NgosStatus::ASSERTION); break;
-        case DmiEntryType::VOLTAGE_PROBE:                    COMMON_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break;
-        case DmiEntryType::COOLING_DEVICE:                   COMMON_ASSERT_EXECUTION(saveDmiCoolingDeviceEntry((DmiCoolingDeviceEntry *)header),                                 NgosStatus::ASSERTION); break;
-        case DmiEntryType::TEMPERATURE_PROBE:                COMMON_ASSERT_EXECUTION(saveDmiTemperatureProbeEntry((DmiTemperatureProbeEntry *)header),                           NgosStatus::ASSERTION); break;
-        case DmiEntryType::ELECTRICAL_CURRENT_PROBE:         COMMON_ASSERT_EXECUTION(saveDmiElectricalCurrentProbeEntry((DmiElectricalCurrentProbeEntry *)header),               NgosStatus::ASSERTION); break;
-        case DmiEntryType::OUT_OF_BAND_REMOTE_ACCESS:        COMMON_ASSERT_EXECUTION(saveDmiOutOfBandRemoteAccessEntry((DmiOutOfBandRemoteAccessEntry *)header),                 NgosStatus::ASSERTION); break;
-        case DmiEntryType::SYSTEM_BOOT:                      COMMON_ASSERT_EXECUTION(saveDmiSystemBootEntry((DmiSystemBootEntry *)header),                                       NgosStatus::ASSERTION); break;
-        case DmiEntryType::BITS64_MEMORY_ERROR:              COMMON_ASSERT_EXECUTION(saveDmiBits64MemoryErrorInformationEntry((DmiBits64MemoryErrorInformationEntry *)header),   NgosStatus::ASSERTION); break;
-        case DmiEntryType::MANAGEMENT_DEVICE:                COMMON_ASSERT_EXECUTION(saveDmiManagementDeviceEntry((DmiManagementDeviceEntry *)header),                           NgosStatus::ASSERTION); break;
-        case DmiEntryType::MANAGEMENT_DEVICE_COMPONENT:      COMMON_ASSERT_EXECUTION(saveDmiManagementDeviceComponentEntry((DmiManagementDeviceComponentEntry *)header),         NgosStatus::ASSERTION); break;
-        case DmiEntryType::MANAGEMENT_DEVICE_THRESHOLD_DATA: COMMON_ASSERT_EXECUTION(saveDmiManagementDeviceThresholdDataEntry((DmiManagementDeviceThresholdDataEntry *)header), NgosStatus::ASSERTION); break;
-        case DmiEntryType::SYSTEM_POWER_SUPPLY:              COMMON_ASSERT_EXECUTION(saveDmiSystemPowerSupplyEntry((DmiSystemPowerSupplyEntry *)header),                         NgosStatus::ASSERTION); break;
-        case DmiEntryType::ADDITIONAL:                       COMMON_ASSERT_EXECUTION(saveDmiAdditionalInformationEntry((DmiAdditionalInformationEntry *)header),                 NgosStatus::ASSERTION); break;
-        case DmiEntryType::ONBOARD_DEVICES_EXTENDED:         COMMON_ASSERT_EXECUTION(saveDmiOnboardDevicesExtendedEntry((DmiOnboardDevicesExtendedEntry *)header),               NgosStatus::ASSERTION); break;
-        case DmiEntryType::INACTIVE:                         COMMON_ASSERT_EXECUTION(saveDmiInactiveEntry((DmiInactiveEntry *)header),                                           NgosStatus::ASSERTION); break;
-
-        default:
-        {
-            COMMON_LVV(("Ignoring DMI entry at address 0x%p with type %s", header, enumToFullString(header->type)));
-        }
-        break;
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
+#include "dmi.h"                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmimemorydeviceentry.h>                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/utils.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/memory/memory.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/string/utils.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/uuid/utils.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#ifdef UEFI_APPLICATION // Defined in pro file                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/uefibase/uefi/uefi.h>                                                                                                                                                          // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
+#include <com/ngos/kernel/other/brk/brk.h>                                                                                                                                                               // Colorize: green
+#include <com/ngos/kernel/other/ioremap/ioremap.h>                                                                                                                                                       // Colorize: green
+#include <com/ngos/kernel/other/uefi/uefi.h>                                                                                                                                                             // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+DmiVersion                                      DMI::sVersion;                                                                                                                                            // Colorize: green
+good_U16                                        DMI::sNumberOfSmbiosStructures;                                                                                                                          // Colorize: green
+good_U8                                        *DMI::sStructureTableAddress;                                                                                                                              // Colorize: green
+good_U32                                        DMI::sStructureTableLength;                                                                                                                              // Colorize: green
+good_U16                                        DMI::sSystemPhysicalMemoryArrayHandle;                                                                                                                   // Colorize: green
+good_I64                                        DMI::sSystemPhysicalMemoryArrayCapacity;                                                                                                                 // Colorize: green
+good_I64                                        DMI::sTotalAmountOfMemory;                                                                                                                                // Colorize: green
+good_I64                                        DMI::sNumberOfInstalledMemoryDevices;                                                                                                                     // Colorize: green
+ArrayList<DmiMemoryDeviceEntry *>               DMI::sMemoryDeviceEntries;                                                                                                                               // Colorize: green
+ArrayList<DmiMemoryDeviceMappedAddressEntry *>  DMI::sMemoryDeviceMappedAddressEntries;                                                                                                                  // Colorize: green
+ArrayList<DmiMemoryDevice>                      DMI::sMemoryDevices;                                                                                                                                     // Colorize: green
+const good_Char8*                               DMI::sIdentities[(u64)DmiIdentity::MAXIMUM];                                                                                                             // Colorize: green
+Uuid*                                           DMI::sUuids[(u64)DmiStoredUuid::MAXIMUM];                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::init()                                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((""));                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Init from SMBIOS config                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        UefiSmbios3ConfigurationTable *smbios3 = UEFI::getSmbios3Config();                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (smbios3 != nullptr)                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+#ifdef UEFI_APPLICATION // Defined in pro file                                                                                                                                                           // Colorize: green
+            COMMON_ASSERT_EXECUTION(initFromSmbios3(smbios3), NgosStatus::ASSERTION);                                                                                                                    // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
+            UefiSmbios3ConfigurationTable *smbios3Mapped;                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping(reinterpret_cast<address_t>(smbios3), sizeof(UefiSmbios3ConfigurationTable), reinterpret_cast<void **>(&smbios3Mapped)), NgosStatus::ASSERTION); // Colorize: green
+            COMMON_ASSERT_EXECUTION(initFromSmbios3(smbios3Mapped),                                                                                                                   NgosStatus::ASSERTION); // Colorize: green
+            COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping(reinterpret_cast<address_t>(smbios3Mapped), sizeof(UefiSmbios3ConfigurationTable)),                                   NgosStatus::ASSERTION); // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            UefiSmbiosConfigurationTable *smbios = UEFI::getSmbiosConfig();                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (smbios != nullptr)                                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+#ifdef UEFI_APPLICATION // Defined in pro file                                                                                                                                                           // Colorize: green
+                COMMON_ASSERT_EXECUTION(initFromSmbios(smbios), NgosStatus::ASSERTION);                                                                                                                  // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
+                UefiSmbiosConfigurationTable *smbiosMapped;                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping(reinterpret_cast<address_t>(smbios), sizeof(UefiSmbiosConfigurationTable), reinterpret_cast<void **>(&smbiosMapped)), NgosStatus::ASSERTION); // Colorize: green
+                COMMON_ASSERT_EXECUTION(initFromSmbios(smbiosMapped),                                                                                                                  NgosStatus::ASSERTION); // Colorize: green
+                COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping(reinterpret_cast<address_t>(smbiosMapped), sizeof(UefiSmbiosConfigurationTable)),                                  NgosStatus::ASSERTION); // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_LF(("DMI not present"));                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return NgosStatus::NOT_FOUND;                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate DMI entries and store memory devices                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+#ifdef UEFI_APPLICATION // Defined in pro file                                                                                                                                                           // Colorize: green
+        COMMON_ASSERT_EXECUTION(iterateDmiEntries(sStructureTableAddress, decodeDmiEntry), NgosStatus::ASSERTION);                                                          // Colorize: green
+        COMMON_ASSERT_EXECUTION(storeDmiMemoryDevices(),                                   NgosStatus::ASSERTION);                                                          // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
+        good_U8 *buf;                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping(reinterpret_cast<address_t>(sStructureTableAddress), sStructureTableLength, reinterpret_cast<void **>(&buf)), NgosStatus::ASSERTION);                                        // Colorize: green
+        COMMON_ASSERT_EXECUTION(iterateDmiEntries(buf, decodeDmiEntry),                                                                   NgosStatus::ASSERTION);                                        // Colorize: green
+        COMMON_ASSERT_EXECUTION(storeDmiMemoryDevices(),                                                                                  NgosStatus::ASSERTION);                                        // Colorize: green
+        COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping(reinterpret_cast<address_t>(buf), sStructureTableLength),                     NgosStatus::ASSERTION);                                        // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Display DMI info                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LV(("SMBIOS version is %u.%u",                                                                                                                                                            // Colorize: green
+                    sVersion.major,                                                                                                                                                                      // Colorize: green
+                    sVersion.minor                                                                                                                                                               // Colorize: green
+        ));                                                                                                                                                                                              // Colorize: green
+        COMMON_LV(("DMI: %s %s, BIOS %s %s %s",                                                                                                                                                          // Colorize: green
+                    sIdentities[static_cast<enum_t>(DmiIdentity::SYSTEM_MANUFACTURER)],                                                                                                                  // Colorize: green
+                    sIdentities[static_cast<enum_t>(DmiIdentity::SYSTEM_PRODUCT_NAME)],                                                                                                                  // Colorize: green
+                    sIdentities[static_cast<enum_t>(DmiIdentity::BIOS_VENDOR)],                                                                                                                          // Colorize: green
+                    sIdentities[static_cast<enum_t>(DmiIdentity::BIOS_VERSION)],                                                                                                                         // Colorize: green
+                    sIdentities[static_cast<enum_t>(DmiIdentity::BIOS_RELEASE_DATE)]                                                                                                                     // Colorize: green
+        ));                                                                                                                                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LVVV(("sVersion.major                     = %u",     sVersion.major));                                                                                                                    // Colorize: green
+        COMMON_LVVV(("sVersion.minor                     = %u",     sVersion.minor));                                                                                                                    // Colorize: green
+        COMMON_LVVV(("sVersion.doc                       = %u",     sVersion.doc));                                                                                                                      // Colorize: green
+        COMMON_LVVV(("sVersion.value32                   = 0x%08X", sVersion.value32));                                                                                                                  // Colorize: green
+        COMMON_LVVV(("sNumberOfSmbiosStructures          = %u",     sNumberOfSmbiosStructures));                                                                                                         // Colorize: green
+        COMMON_LVVV(("sStructureTableAddress             = 0x%p",   sStructureTableAddress));                                                                                                            // Colorize: green
+        COMMON_LVVV(("sStructureTableLength              = %u",     sStructureTableLength));                                                                                                             // Colorize: green
+        COMMON_LVVV(("sSystemPhysicalMemoryArrayHandle   = 0x%04X", sSystemPhysicalMemoryArrayHandle));                                                                                                  // Colorize: green
+        COMMON_LVVV(("sSystemPhysicalMemoryArrayCapacity = %s",     bytesToString(sSystemPhysicalMemoryArrayCapacity)));                                                                                 // Colorize: green
+        COMMON_LVVV(("sTotalAmountOfMemory               = %s",     bytesToString(sTotalAmountOfMemory)));                                                                                               // Colorize: green
+        COMMON_LVVV(("sNumberOfInstalledMemoryDevices    = %d",     sNumberOfInstalledMemoryDevices));                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // sMemoryDeviceEntries:                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE           // Colorize: green
+            COMMON_LVVV(("sMemoryDeviceEntries:"));                                                                                                                                                      // Colorize: green
+            COMMON_LVVV(("-------------------------------------"));                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            for (good_I64 i = 0; i < sMemoryDeviceEntries.getSize(); ++i)                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                DmiMemoryDeviceEntry *device = sMemoryDeviceEntries.at(i);                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                COMMON_LVVV(("#%-3d: 0x%p | 0x%04X | 0x%04X", i, device, device->header.handle, device->memoryArrayHandle));                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_LVVV(("-------------------------------------"));                                                                                                                                      // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // sMemoryDeviceMappedAddressEntries:                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE           // Colorize: green
+            COMMON_LVVV(("sMemoryDeviceMappedAddressEntries:"));                                                                                                                                         // Colorize: green
+            COMMON_LVVV(("-------------------------------------"));                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            for (good_I64 i = 0; i < sMemoryDeviceMappedAddressEntries.getSize(); ++i)                                                                                                                   // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                DmiMemoryDeviceMappedAddressEntry *device = sMemoryDeviceMappedAddressEntries.at(i);                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                COMMON_LVVV(("#%-3d: 0x%p | 0x%04X | 0x%04X", i, device, device->header.handle, device->memoryDeviceHandle));                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_LVVV(("-------------------------------------"));                                                                                                                                      // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // sMemoryDevices:                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE           // Colorize: green
+            COMMON_LVVV(("sMemoryDevices:"));                                                                                                                                                            // Colorize: green
+            COMMON_LVVV(("-------------------------------------"));                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            for (good_I64 i = 0; i < sMemoryDevices.getSize(); ++i)                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                const DmiMemoryDevice &device = sMemoryDevices.at(i);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                char8 startBuffer[11];                                                                                                                                                                   // Colorize: green
+                char8 endBuffer[11];                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                COMMON_ASSERT_EXECUTION(bytesToString(device.start, startBuffer, sizeof(startBuffer)), NgosStatus::ASSERTION);                                                                           // Colorize: green
+                COMMON_ASSERT_EXECUTION(bytesToString(device.end,   endBuffer,   sizeof(endBuffer)),   NgosStatus::ASSERTION);                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                COMMON_LVVV(("#%-3d: %s | %u MHz | %-5s | %5s - %-5s | %s | %s | %s | %s",                                                                                                               // Colorize: green
+                                i,                                                                                                                                                                       // Colorize: green
+                                enumToFullString(device.memoryType),                                                                                                                                     // Colorize: green
+                                device.speed,                                                                                                                                                            // Colorize: green
+                                bytesToString(device.size),                                                                                                                                              // Colorize: green
+                                startBuffer,                                                                                                                                                             // Colorize: green
+                                endBuffer,                                                                                                                                                               // Colorize: green
+                                stringToString(device.deviceLocator),                                                                                                                                    // Colorize: green
+                                stringToString(device.manufacturer),                                                                                                                                     // Colorize: green
+                                stringToString(device.serialNumber),                                                                                                                                     // Colorize: green
+                                stringToString(device.partNumber)                                                                                                                                        // Colorize: green
+                ));                                                                                                                                                                                      // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_LVVV(("-------------------------------------"));                                                                                                                                      // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // sIdentities:                                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE           // Colorize: green
+            COMMON_LVVV(("sIdentities:"));                                                                                                                                                               // Colorize: green
+            COMMON_LVVV(("-------------------------------------"));                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            for (good_I64 i = 0; i < static_cast<good_I64>(DmiIdentity::MAXIMUM); ++i)                                                                                                                   // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (sIdentities[i] != nullptr)                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    COMMON_LVVV(("%-36s: 0x%p | %s", enumToFullString(static_cast<DmiIdentity>(i)), sIdentities[i], sIdentities[i]));                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    COMMON_LVVV(("%-36s: 0x%p", enumToFullString(static_cast<DmiIdentity>(i)), sIdentities[i]));                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_LVVV(("-------------------------------------"));                                                                                                                                      // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // sUuids:                                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+#if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE           // Colorize: green
+            COMMON_LVVV(("sUuids:"));                                                                                                                                                                    // Colorize: green
+            COMMON_LVVV(("-------------------------------------"));                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            for (good_I64 i = 0; i < static_cast<good_I64>(DmiStoredUuid::MAXIMUM); ++i)                                                                                                                 // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_LVVV(("%-11s: %s", enumToFullString(static_cast<DmiStoredUuid>(i)), uuidToString(sUuids[i])));                                                                                    // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_LVVV(("-------------------------------------"));                                                                                                                                      // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // COMMON_TEST_ASSERT(sVersion.major                              == 2,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sVersion.minor                              == 8,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sVersion.doc                                == 0,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sVersion.value32                            == 0x00020800, NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sNumberOfSmbiosStructures                   == 9,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        COMMON_TEST_ASSERT(sStructureTableAddress                         != nullptr,    NgosStatus::ASSERTION);                                                                                         // Colorize: green
+        // COMMON_TEST_ASSERT(sStructureTableLength                       == 395,        NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayHandle            == 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayCapacity          == GB,         NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sTotalAmountOfMemory                        == GB,         NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sNumberOfInstalledMemoryDevices             == 1,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.getSize()              == 1,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.at(0)                     != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.at(0)->header.handle      != 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.at(0)->memoryArrayHandle  != 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDeviceMappedAddressEntries.getSize() == 0,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDevices.getSize()                    == 1,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).size                   == GB,         NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).deviceLocator          != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).manufacturer           != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).serialNumber           != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).partNumber             != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        COMMON_TEST_ASSERT(static_cast<enum_t>(DmiIdentity::MAXIMUM)      == 7,          NgosStatus::ASSERTION);                                                                                         // Colorize: green
+        COMMON_TEST_ASSERT(sIdentities[0]                                 != nullptr,    NgosStatus::ASSERTION);                                                                                         // Colorize: green
+        COMMON_TEST_ASSERT(sIdentities[1]                                 != nullptr,    NgosStatus::ASSERTION);                                                                                         // Colorize: green
+        COMMON_TEST_ASSERT(sIdentities[2]                                 != nullptr,    NgosStatus::ASSERTION);                                                                                         // Colorize: green
+        COMMON_TEST_ASSERT(sIdentities[3]                                 != nullptr,    NgosStatus::ASSERTION);                                                                                         // Colorize: green
+        COMMON_TEST_ASSERT(sIdentities[4]                                 != nullptr,    NgosStatus::ASSERTION);                                                                                         // Colorize: green
+        // COMMON_TEST_ASSERT(sIdentities[5]                              != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sIdentities[6]                              != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        COMMON_TEST_ASSERT(static_cast<enum_t>(DmiStoredUuid::MAXIMUM)    == 1,          NgosStatus::ASSERTION);                                                                                         // Colorize: green
+        COMMON_TEST_ASSERT(sUuids[0]                                      != nullptr,    NgosStatus::ASSERTION);                                                                                         // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data1                            == 0x9FAE0773, NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data2                            == 0xF53F,     NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data3                            == 0x4A15,     NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data4                            == 0x8A,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data5                            == 0x11,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[0]                         == 0xED,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[1]                         == 0x76,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[2]                         == 0xA1,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[3]                         == 0x0F,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[4]                         == 0x4E,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[5]                         == 0x5B,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::iterateDmiEntries(good_U8 *buf, process_dmi_entry processDmiEntry)                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | buf = 0x%p, processDmiEntry = 0x%p", buf, processDmiEntry));                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(buf             != nullptr, "buf is null",             NgosStatus::ASSERTION);                                                                                                         // Colorize: green
+    COMMON_ASSERT(processDmiEntry != nullptr, "processDmiEntry is null", NgosStatus::ASSERTION);                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    good_I64  i   = 0;                                                                                                                                                                                   // Colorize: green
+    good_U8  *cur = buf;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate over DMI entries and process them                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        while (                                                                                                                                                                                          // Colorize: green
+               sNumberOfSmbiosStructures == 0                                                                                                                                                            // Colorize: green
+               ||                                                                                                                                                                                        // Colorize: green
+               i < sNumberOfSmbiosStructures                                                                                                                                                             // Colorize: green
+              )                                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            DmiEntryHeader *dmiEntryHeader = reinterpret_cast<DmiEntryHeader *>(cur);                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Display DMI entry info                                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_LVV(("Processing DMI header at address 0x%p", dmiEntryHeader));                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                COMMON_LVVV(("dmiEntryHeader->type   = %s",     enumToFullString(dmiEntryHeader->type)));                                                                                                // Colorize: green
+                COMMON_LVVV(("dmiEntryHeader->length = %u",     dmiEntryHeader->length));                                                                                                                // Colorize: green
+                COMMON_LVVV(("dmiEntryHeader->handle = 0x%04X", dmiEntryHeader->handle));                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Jump to next entry                                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                cur += dmiEntryHeader->length;                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // We are getting total DMI entry size until we met 2 zeros in buffer that let us avoid issues on decoding                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    do                                                                                                                                                                                   // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (                                                                                                                                                                             // Colorize: green
+                            cur[0] == 0                                                                                                                                                                  // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            cur[1] == 0                                                                                                                                                                  // Colorize: green
+                           )                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            break;                                                                                                                                                                       // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        ++cur;                                                                                                                                                                           // Colorize: green
+                    } while(true);                                                                                                                                                                       // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                cur += 2;                                                                                                                                                                                // Colorize: green
+                ++i;                                                                                                                                                                                     // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (dmiEntryHeader->type == DmiEntryType::END_OF_TABLE)                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                break;                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_ASSERT_EXECUTION(processDmiEntry(dmiEntryHeader), NgosStatus::ASSERTION);                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Validation                                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("sNumberOfSmbiosStructures = %d",   sNumberOfSmbiosStructures));                                                                                                                // Colorize: green
+            COMMON_LVVV(("i                         = %d",   i));                                                                                                                                        // Colorize: green
+            COMMON_LVVV(("buf                       = 0x%p", buf));                                                                                                                                      // Colorize: green
+            COMMON_LVVV(("cur                       = 0x%p", cur));                                                                                                                                      // Colorize: green
+            COMMON_LVVV(("sStructureTableLength     = %u",   sStructureTableLength));                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(sNumberOfSmbiosStructures == 0 || cur == buf + sStructureTableLength, NgosStatus::ASSERTION);                                                                             // Colorize: green
+            COMMON_TEST_ASSERT(sNumberOfSmbiosStructures == 0 || i   == sNumberOfSmbiosStructures,   NgosStatus::ASSERTION);                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const DmiVersion& DMI::getVersion()                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return sVersion;                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+good_U8* DMI::getStructureTableAddress()                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return sStructureTableAddress;                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+good_I64 DMI::getSystemPhysicalMemoryArrayCapacity()                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return sSystemPhysicalMemoryArrayCapacity;                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+good_I64 DMI::getTotalAmountOfMemory()                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return sTotalAmountOfMemory;                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+good_I64 DMI::getNumberOfInstalledMemoryDevices()                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return sNumberOfInstalledMemoryDevices;                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const ArrayList<DmiMemoryDevice>& DMI::getMemoryDevices()                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return sMemoryDevices;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const good_Char8* DMI::getIdentity(DmiIdentity id)                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | id = %u", id)); // Commented to avoid too frequent logs                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return sIdentities[static_cast<enum_t>(id)];                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Uuid* DMI::getUuid(DmiStoredUuid id)                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | id = %u", id)); // Commented to avoid too frequent logs                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return sUuids[static_cast<enum_t>(id)];                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::initFromSmbios3(UefiSmbios3ConfigurationTable *smbios3)                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | smbios3 = 0x%p", smbios3));                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(smbios3 != nullptr, "smbios3 is null", NgosStatus::ASSERTION);                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LVVV(("smbios3->anchor                      = %.5s", smbios3->anchor));                                                                                                                   // Colorize: green
+        COMMON_LVVV(("smbios3->entryPointStructureChecksum = %u",   smbios3->entryPointStructureChecksum));                                                                                              // Colorize: green
+        COMMON_LVVV(("smbios3->entryPointLength            = %u",   smbios3->entryPointLength));                                                                                                         // Colorize: green
+        COMMON_LVVV(("smbios3->majorVersion                = %u",   smbios3->majorVersion));                                                                                                             // Colorize: green
+        COMMON_LVVV(("smbios3->minorVersion                = %u",   smbios3->minorVersion));                                                                                                             // Colorize: green
+        COMMON_LVVV(("smbios3->docRevision                 = %u",   smbios3->docRevision));                                                                                                              // Colorize: green
+        COMMON_LVVV(("smbios3->entryPointRevision          = %u",   smbios3->entryPointRevision));                                                                                                       // Colorize: green
+        COMMON_LVVV(("smbios3->structureTableMaximumSize   = %u",   smbios3->structureTableMaximumSize));                                                                                                // Colorize: green
+        COMMON_LVVV(("smbios3->structureTableAddress       = 0x%p", smbios3->structureTableAddress));                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_TEST_ASSERT((*reinterpret_cast<good_U64 *>(smbios3->anchor) & 0x000000FFFFFFFFFF) == SMBIOS_3_ANCHOR,                                                                    NgosStatus::ASSERTION);                 // Colorize: green
+        COMMON_TEST_ASSERT(smbios3->entryPointStructureChecksum                                  == checksum(smbios3, smbios3->entryPointLength, smbios3->entryPointStructureChecksum), NgosStatus::ASSERTION);                 // Colorize: green
+        COMMON_TEST_ASSERT(smbios3->entryPointLength                                             == 24,                                                                                 NgosStatus::ASSERTION);                 // Colorize: green
+        COMMON_TEST_ASSERT(smbios3->majorVersion                                                 == 3,                                                                                  NgosStatus::ASSERTION);                 // Colorize: green
+        COMMON_TEST_ASSERT(smbios3->minorVersion                                                 == 3,                                                                                  NgosStatus::ASSERTION);                 // Colorize: green
+        COMMON_TEST_ASSERT(smbios3->docRevision                                                  == 0,                                                                                  NgosStatus::ASSERTION);                 // Colorize: green
+        COMMON_TEST_ASSERT(smbios3->entryPointRevision                                           == 1,                                                                                  NgosStatus::ASSERTION);                 // Colorize: green
+        COMMON_TEST_ASSERT(smbios3->structureTableMaximumSize                                    == 4070,                                                                               NgosStatus::ASSERTION);                 // Colorize: green
+        COMMON_TEST_ASSERT(smbios3->structureTableAddress                                        != 0,                                                                                  NgosStatus::ASSERTION);                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sVersion.value32       = DMI_VERSION_3(smbios3->majorVersion, smbios3->minorVersion, smbios3->docRevision);                                                                                          // Colorize: green
+    sStructureTableAddress = reinterpret_cast<good_U8 *>(smbios3->structureTableAddress);                                                                                                                // Colorize: green
+    sStructureTableLength  = smbios3->structureTableMaximumSize;                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::initFromSmbios(UefiSmbiosConfigurationTable *smbios)                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | smbios = 0x%p", smbios));                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(smbios != nullptr, "smbios is null", NgosStatus::ASSERTION);                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_LVVV(("smbios->anchor                      = %.4s",   &smbios->anchor));                                                                                                                  // Colorize: green
+        COMMON_LVVV(("smbios->entryPointStructureChecksum = %u",      smbios->entryPointStructureChecksum));                                                                                             // Colorize: green
+        COMMON_LVVV(("smbios->entryPointLength            = %u",      smbios->entryPointLength));                                                                                                        // Colorize: green
+        COMMON_LVVV(("smbios->majorVersion                = %u",      smbios->majorVersion));                                                                                                            // Colorize: green
+        COMMON_LVVV(("smbios->minorVersion                = %u",      smbios->minorVersion));                                                                                                            // Colorize: green
+        COMMON_LVVV(("smbios->maximumStructureSize        = %u",      smbios->maximumStructureSize));                                                                                                    // Colorize: green
+        COMMON_LVVV(("smbios->entryPointRevision          = %u",      smbios->entryPointRevision));                                                                                                      // Colorize: green
+        COMMON_LVVV(("smbios->formattedArea[0]            = %u",      smbios->formattedArea[0]));                                                                                                        // Colorize: green
+        COMMON_LVVV(("smbios->formattedArea[1]            = %u",      smbios->formattedArea[1]));                                                                                                        // Colorize: green
+        COMMON_LVVV(("smbios->formattedArea[2]            = %u",      smbios->formattedArea[2]));                                                                                                        // Colorize: green
+        COMMON_LVVV(("smbios->formattedArea[3]            = %u",      smbios->formattedArea[3]));                                                                                                        // Colorize: green
+        COMMON_LVVV(("smbios->formattedArea[4]            = %u",      smbios->formattedArea[4]));                                                                                                        // Colorize: green
+        COMMON_LVVV(("smbios->intermediateAnchor          = %.5s",    smbios->intermediateAnchor));                                                                                                      // Colorize: green
+        COMMON_LVVV(("smbios->intermediateChecksum        = %u",      smbios->intermediateChecksum));                                                                                                    // Colorize: green
+        COMMON_LVVV(("smbios->structureTableLength        = %u",      smbios->structureTableLength));                                                                                                    // Colorize: green
+        COMMON_LVVV(("smbios->structureTableAddress       = 0x%p",    smbios->structureTableAddress));                                                                                                   // Colorize: green
+        COMMON_LVVV(("smbios->numberOfSmbiosStructures    = %u",      smbios->numberOfSmbiosStructures));                                                                                                // Colorize: green
+        COMMON_LVVV(("smbios->bcdRevision                 = 0x%02X",  smbios->bcdRevision));                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        COMMON_TEST_ASSERT(smbios->anchor                                                                   == SMBIOS_ANCHOR,                                                                                                                                                           NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->entryPointStructureChecksum                                              == checksum(smbios, smbios->entryPointLength, smbios->entryPointStructureChecksum),                                                                                         NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->entryPointLength                                                         == 31,                                                                                                                                                                      NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->majorVersion                                                             == 2,                                                                                                                                                                       NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->minorVersion                                                             == 8,                                                                                                                                                                       NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->maximumStructureSize                                                     == 84,                                                                                                                                                                      NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->entryPointRevision                                                       == 0,                                                                                                                                                                       NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->formattedArea[0]                                                         == 0,                                                                                                                                                                       NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->formattedArea[1]                                                         == 0,                                                                                                                                                                       NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->formattedArea[2]                                                         == 0,                                                                                                                                                                       NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->formattedArea[3]                                                         == 0,                                                                                                                                                                       NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->formattedArea[4]                                                         == 0,                                                                                                                                                                       NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT((*reinterpret_cast<good_U64 *>(smbios->intermediateAnchor) & 0x000000FFFFFFFFFF) == SMBIOS_INTERMEDIATE_ANCHOR,                                                                                                                                              NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->intermediateChecksum                                                     == checksum(&smbios->intermediateAnchor, sizeof(UefiSmbiosConfigurationTable) - OFFSET_OF(UefiSmbiosConfigurationTable, intermediateAnchor), smbios->intermediateChecksum), NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->structureTableLength                                                     == 404,                                                                                                                                                                     NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->structureTableAddress                                                    != 0,                                                                                                                                                                       NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->numberOfSmbiosStructures                                                 == 9,                                                                                                                                                                       NgosStatus::ASSERTION); // Colorize: green
+        COMMON_TEST_ASSERT(smbios->bcdRevision                                                              == 0x28,                                                                                                                                                                    NgosStatus::ASSERTION); // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sVersion.value32          = DMI_VERSION(smbios->majorVersion, smbios->minorVersion);                                                                                                                 // Colorize: green
+    sNumberOfSmbiosStructures = smbios->numberOfSmbiosStructures;                                                                                                                                        // Colorize: green
+    sStructureTableAddress    = reinterpret_cast<good_U8 *>(smbios->structureTableAddress);                                                                                                              // Colorize: green
+    sStructureTableLength     = smbios->structureTableLength;                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::decodeDmiEntry(DmiEntryHeader *header)                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | header = 0x%p", header));                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(header != nullptr, "header is null", NgosStatus::ASSERTION);                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (header->type)                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiEntryType::BIOS:                             COMMON_ASSERT_EXECUTION(saveDmiBiosEntry((DmiBiosEntry *)header),                                                   NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::SYSTEM:                           COMMON_ASSERT_EXECUTION(saveDmiSystemEntry((DmiSystemEntry *)header),                                               NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::BASEBOARD:                        COMMON_ASSERT_EXECUTION(saveDmiBaseboardEntry((DmiBaseboardEntry *)header),                                         NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::CHASSIS:                          COMMON_ASSERT_EXECUTION(saveDmiChassisEntry((DmiChassisEntry *)header),                                             NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::PROCESSOR:                        COMMON_ASSERT_EXECUTION(saveDmiProcessorEntry((DmiProcessorEntry *)header),                                         NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::CACHE:                            COMMON_ASSERT_EXECUTION(saveDmiCacheEntry((DmiCacheEntry *)header),                                                 NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::PORT_CONNECTOR:                   COMMON_ASSERT_EXECUTION(saveDmiPortConnectorEntry((DmiPortConnectorEntry *)header),                                 NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::SYSTEM_SLOTS:                     COMMON_ASSERT_EXECUTION(saveDmiSystemSlotsEntry((DmiSystemSlotsEntry *)header),                                     NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::ONBOARD_DEVICES:                  COMMON_ASSERT_EXECUTION(saveDmiOnboardDevicesEntry((DmiOnboardDevicesEntry *)header),                               NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::OEM_STRINGS:                      COMMON_ASSERT_EXECUTION(saveDmiOemStringsEntry((DmiOemStringsEntry *)header),                                       NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::SYSTEM_CONFIGURATION:             COMMON_ASSERT_EXECUTION(saveDmiSystemConfigurationEntry((DmiSystemConfigurationEntry *)header),                     NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::BIOS_LANGUAGE:                    COMMON_ASSERT_EXECUTION(saveDmiBiosLanguageEntry((DmiBiosLanguageEntry *)header),                                   NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::GROUP_ASSOCIATIONS:               COMMON_ASSERT_EXECUTION(saveDmiGroupAssociationsEntry((DmiGroupAssociationsEntry *)header),                         NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::PHYSICAL_MEMORY_ARRAY:            COMMON_ASSERT_EXECUTION(saveDmiPhysicalMemoryArrayEntry((DmiPhysicalMemoryArrayEntry *)header),                     NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::MEMORY_DEVICE:                    COMMON_ASSERT_EXECUTION(saveDmiMemoryDeviceEntry((DmiMemoryDeviceEntry *)header),                                   NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::BITS32_MEMORY_ERROR:              COMMON_ASSERT_EXECUTION(saveDmiBits32MemoryErrorInformationEntry((DmiBits32MemoryErrorInformationEntry *)header),   NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::MEMORY_ARRAY_MAPPED_ADDRESS:      COMMON_ASSERT_EXECUTION(saveDmiMemoryArrayMappedAddressEntry((DmiMemoryArrayMappedAddressEntry *)header),           NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::MEMORY_DEVICE_MAPPED_ADDRESS:     COMMON_ASSERT_EXECUTION(saveDmiMemoryDeviceMappedAddressEntry((DmiMemoryDeviceMappedAddressEntry *)header),         NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::PORTABLE_BATTERY:                 COMMON_ASSERT_EXECUTION(saveDmiPortableBatteryEntry((DmiPortableBatteryEntry *)header),                             NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::SYSTEM_RESET:                     COMMON_ASSERT_EXECUTION(saveDmiSystemResetEntry((DmiSystemResetEntry *)header),                                     NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::HARDWARE_SECURITY:                COMMON_ASSERT_EXECUTION(saveDmiHardwareSecurityEntry((DmiHardwareSecurityEntry *)header),                           NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::VOLTAGE_PROBE:                    COMMON_ASSERT_EXECUTION(saveDmiVoltageProbeEntry((DmiVoltageProbeEntry *)header),                                   NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::COOLING_DEVICE:                   COMMON_ASSERT_EXECUTION(saveDmiCoolingDeviceEntry((DmiCoolingDeviceEntry *)header),                                 NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::TEMPERATURE_PROBE:                COMMON_ASSERT_EXECUTION(saveDmiTemperatureProbeEntry((DmiTemperatureProbeEntry *)header),                           NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::ELECTRICAL_CURRENT_PROBE:         COMMON_ASSERT_EXECUTION(saveDmiElectricalCurrentProbeEntry((DmiElectricalCurrentProbeEntry *)header),               NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::OUT_OF_BAND_REMOTE_ACCESS:        COMMON_ASSERT_EXECUTION(saveDmiOutOfBandRemoteAccessEntry((DmiOutOfBandRemoteAccessEntry *)header),                 NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::SYSTEM_BOOT:                      COMMON_ASSERT_EXECUTION(saveDmiSystemBootEntry((DmiSystemBootEntry *)header),                                       NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::BITS64_MEMORY_ERROR:              COMMON_ASSERT_EXECUTION(saveDmiBits64MemoryErrorInformationEntry((DmiBits64MemoryErrorInformationEntry *)header),   NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::MANAGEMENT_DEVICE:                COMMON_ASSERT_EXECUTION(saveDmiManagementDeviceEntry((DmiManagementDeviceEntry *)header),                           NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::MANAGEMENT_DEVICE_COMPONENT:      COMMON_ASSERT_EXECUTION(saveDmiManagementDeviceComponentEntry((DmiManagementDeviceComponentEntry *)header),         NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::MANAGEMENT_DEVICE_THRESHOLD_DATA: COMMON_ASSERT_EXECUTION(saveDmiManagementDeviceThresholdDataEntry((DmiManagementDeviceThresholdDataEntry *)header), NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::SYSTEM_POWER_SUPPLY:              COMMON_ASSERT_EXECUTION(saveDmiSystemPowerSupplyEntry((DmiSystemPowerSupplyEntry *)header),                         NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::ADDITIONAL:                       COMMON_ASSERT_EXECUTION(saveDmiAdditionalInformationEntry((DmiAdditionalInformationEntry *)header),                 NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::ONBOARD_DEVICES_EXTENDED:         COMMON_ASSERT_EXECUTION(saveDmiOnboardDevicesExtendedEntry((DmiOnboardDevicesExtendedEntry *)header),               NgosStatus::ASSERTION); break; // Colorize: green
+        case DmiEntryType::INACTIVE:                         COMMON_ASSERT_EXECUTION(saveDmiInactiveEntry((DmiInactiveEntry *)header),                                           NgosStatus::ASSERTION); break; // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default:                                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVV(("Ignoring DMI entry at address 0x%p with type %s", header, enumToFullString(header->type)));                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -762,7 +822,7 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -955,7 +1015,7 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -1113,7 +1173,7 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -1353,7 +1413,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -1667,7 +1727,7 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -1831,7 +1891,7 @@ NgosStatus DMI::saveDmiPortConnectorEntry(DmiPortConnectorEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -1931,7 +1991,7 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -2097,7 +2157,7 @@ NgosStatus DMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -2201,7 +2261,7 @@ NgosStatus DMI::saveDmiOemStringsEntry(DmiOemStringsEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -2281,7 +2341,7 @@ NgosStatus DMI::saveDmiSystemConfigurationEntry(DmiSystemConfigurationEntry *ent
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -2361,7 +2421,7 @@ NgosStatus DMI::saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -2445,7 +2505,7 @@ NgosStatus DMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -2551,7 +2611,7 @@ NgosStatus DMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *ent
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -2648,7 +2708,7 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -2959,7 +3019,7 @@ NgosStatus DMI::saveDmiBits32MemoryErrorInformationEntry(DmiBits32MemoryErrorInf
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -3010,7 +3070,7 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -3073,7 +3133,7 @@ NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddre
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -3146,7 +3206,7 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -3333,7 +3393,7 @@ NgosStatus DMI::saveDmiSystemResetEntry(DmiSystemResetEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -3388,7 +3448,7 @@ NgosStatus DMI::saveDmiHardwareSecurityEntry(DmiHardwareSecurityEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -3435,7 +3495,7 @@ NgosStatus DMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -3538,7 +3598,7 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -3660,7 +3720,7 @@ NgosStatus DMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -3763,7 +3823,7 @@ NgosStatus DMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntr
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -3866,7 +3926,7 @@ NgosStatus DMI::saveDmiOutOfBandRemoteAccessEntry(DmiOutOfBandRemoteAccessEntry 
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -3951,7 +4011,7 @@ NgosStatus DMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -3990,7 +4050,7 @@ NgosStatus DMI::saveDmiBits64MemoryErrorInformationEntry(DmiBits64MemoryErrorInf
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -4041,7 +4101,7 @@ NgosStatus DMI::saveDmiManagementDeviceEntry(DmiManagementDeviceEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -4130,7 +4190,7 @@ NgosStatus DMI::saveDmiManagementDeviceComponentEntry(DmiManagementDeviceCompone
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -4219,7 +4279,7 @@ NgosStatus DMI::saveDmiManagementDeviceThresholdDataEntry(DmiManagementDeviceThr
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -4268,7 +4328,7 @@ NgosStatus DMI::saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -4431,7 +4491,7 @@ NgosStatus DMI::saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry 
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -4537,7 +4597,7 @@ NgosStatus DMI::saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntr
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -4638,7 +4698,7 @@ NgosStatus DMI::saveDmiInactiveEntry(DmiInactiveEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));
 
-    COMMON_ASSERT(entry, "entry is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
 
 
 
@@ -4721,7 +4781,7 @@ NgosStatus DMI::storeDmiMemoryDevices()
 
 
 
-    for (good_I64 i = 0; i < (i64)sMemoryDeviceEntries.getSize(); ++i)
+    for (good_I64 i = 0; i < sMemoryDeviceEntries.getSize(); ++i)
     {
         DmiMemoryDeviceEntry *entry = sMemoryDeviceEntries.at(i);
 
@@ -4818,7 +4878,7 @@ NgosStatus DMI::storeDmiMemoryDevices()
                     u64 start = 0xFFFFFFFFFFFFFFFF;
                     u64 end   = 0;
 
-                    for (good_I64 j = 0; j < (i64)sMemoryDeviceMappedAddressEntries.getSize(); ++j)
+                    for (good_I64 j = 0; j < sMemoryDeviceMappedAddressEntries.getSize(); ++j)
                     {
                         DmiMemoryDeviceMappedAddressEntry *deviceMappedAddress = sMemoryDeviceMappedAddressEntries.at(j);
 
@@ -5015,7 +5075,7 @@ NgosStatus DMI::storeDmiMemoryDevices()
 
 
 
-            if (device.size != 0)
+            if (device.size > 0)
             {
                 COMMON_ASSERT_EXECUTION(sMemoryDevices.insert(sNumberOfInstalledMemoryDevices, device), NgosStatus::ASSERTION);
 
@@ -5112,26 +5172,27 @@ NgosStatus DMI::storeString(const char8 *address, u64 size, const char8 **destin
     return NgosStatus::OK;
 }
 
-u8 DMI::checksum(u8 *address, u64 size, u8 checksumValue)
-{
-    COMMON_LT((" | address = 0x%p, size = %u, checksumValue = %u", address, size, checksumValue));
-
-    COMMON_ASSERT(address,  "address is null", 0);
-    COMMON_ASSERT(size > 0, "size is zero",    0);
-
-
-
-    u8 res = checksumValue;
-
-    while (size > 0)
-    {
-        res -= *address;
-
-        ++address;
-        --size;
-    }
-
-
-
-    return res;
-}
+good_U8 DMI::checksum(void *address, good_I64 size, good_U8 checksumValue)                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | address = 0x%p, size = %d, checksumValue = %u", address, size, checksumValue));                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(address != nullptr, "address is null", 0);                                                                                                                                             // Colorize: green
+    COMMON_ASSERT(size > 0,           "size is invalid", 0);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    good_U8 *cur = reinterpret_cast<good_U8 *>(address);                                                                                                                                                 // Colorize: green
+    good_U8  res = checksumValue;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (size > 0)                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        res -= *cur;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ++cur;                                                                                                                                                                                           // Colorize: green
+        --size;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

@@ -20,6 +20,7 @@
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/cryptography/aes.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/dmi.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/dmistringid.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/dmiversion.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/dmichassisentry.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmibiosextendedromsize.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmibiosromsize.h>
@@ -116,6 +117,7 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
     CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_dmi);
     CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_dmistringid);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_dmiversion);
     CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_dmichassisentry);
     CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmibiosextendedromsize);
     CALL_TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmibiosromsize);

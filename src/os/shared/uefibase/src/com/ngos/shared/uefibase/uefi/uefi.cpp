@@ -300,7 +300,7 @@ UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, u64 d
 
     UEFI_ASSERT(variableName, "variableName is null", UefiStatus::ABORTED);
     UEFI_ASSERT(vendorGuid,   "vendorGuid is null",   UefiStatus::ABORTED);
-    UEFI_ASSERT(dataSize > 0, "dataSize is zero",     UefiStatus::ABORTED);
+    UEFI_ASSERT(dataSize > 0, "dataSize is invalid",  UefiStatus::ABORTED);
     UEFI_ASSERT(data,         "data is null",         UefiStatus::ABORTED);
 
 
@@ -318,7 +318,7 @@ UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, const
 
     UEFI_ASSERT(variableName,                           "variableName is null", UefiStatus::ABORTED);
     UEFI_ASSERT(vendorGuid,                             "vendorGuid is null",   UefiStatus::ABORTED);
-    UEFI_ASSERT(dataSize > 0,                           "dataSize is zero",     UefiStatus::ABORTED);
+    UEFI_ASSERT(dataSize > 0,                           "dataSize is invalid",  UefiStatus::ABORTED);
     UEFI_ASSERT(dataSize <= UEFI_MAXIMUM_VARIABLE_SIZE, "dataSize is invalid",  UefiStatus::ABORTED);
     UEFI_ASSERT(data,                                   "data is null",         UefiStatus::ABORTED);
 
@@ -674,9 +674,9 @@ UefiStatus UEFI::waitForEvent(u64 numberOfEvents, uefi_event *event, u64 *index)
 {
     UEFI_LT((" | numberOfEvents = %u, event = 0x%p, index = 0x%p", numberOfEvents, event, index));
 
-    UEFI_ASSERT(numberOfEvents > 0, "numberOfEvents is zero", UefiStatus::ABORTED);
-    UEFI_ASSERT(event,              "event is null",          UefiStatus::ABORTED);
-    UEFI_ASSERT(index,              "index is null",          UefiStatus::ABORTED);
+    UEFI_ASSERT(numberOfEvents > 0, "numberOfEvents is invalid", UefiStatus::ABORTED);
+    UEFI_ASSERT(event,              "event is null",             UefiStatus::ABORTED);
+    UEFI_ASSERT(index,              "index is null",             UefiStatus::ABORTED);
 
 
 
@@ -698,7 +698,7 @@ UefiStatus UEFI::stall(u64 microseconds)
 {
     UEFI_LT((" | microseconds = %u", microseconds));
 
-    UEFI_ASSERT(microseconds > 0, "microseconds is zero", UefiStatus::ABORTED);
+    UEFI_ASSERT(microseconds > 0, "microseconds is invalid", UefiStatus::ABORTED);
 
 
 
@@ -774,8 +774,8 @@ UefiStatus UEFI::allocatePool(UefiMemoryType poolType, u64 size, void **buffer)
 {
     // UEFI_LT((" | poolType = %d, size = %u, buffer = 0x%p", poolType, size, buffer)); // Commented to avoid too frequent logs
 
-    UEFI_ASSERT(size > 0, "size is zero",   UefiStatus::ABORTED);
-    UEFI_ASSERT(buffer,   "buffer is null", UefiStatus::ABORTED);
+    UEFI_ASSERT(size > 0, "size is invalid", UefiStatus::ABORTED);
+    UEFI_ASSERT(buffer,   "buffer is null",  UefiStatus::ABORTED);
 
 
 
@@ -797,9 +797,9 @@ bool UEFI::memoryMapHasHeadroom(u64 bufferSize, u64 memoryMapSize, u64 descripto
 {
     UEFI_LT((" | bufferSize = %u, memoryMapSize = %u, descriptorSize = %u", bufferSize, memoryMapSize, descriptorSize));
 
-    UEFI_ASSERT(bufferSize > 0,     "bufferSize is zero",     false);
-    UEFI_ASSERT(memoryMapSize > 0,  "memoryMapSize is zero",  false);
-    UEFI_ASSERT(descriptorSize > 0, "descriptorSize is zero", false);
+    UEFI_ASSERT(bufferSize > 0,     "bufferSize is invalid",     false);
+    UEFI_ASSERT(memoryMapSize > 0,  "memoryMapSize is invalid",  false);
+    UEFI_ASSERT(descriptorSize > 0, "descriptorSize is invalid", false);
 
 
 
@@ -812,8 +812,8 @@ UefiStatus UEFI::allocatePages(UefiAllocateType type, UefiMemoryType memoryType,
 {
     UEFI_LT((" | type = %d, memoryType = %d, noPages = %u, memory = 0x%p", type, memoryType, noPages, memory));
 
-    UEFI_ASSERT(noPages >  0,       "noPages is zero", UefiStatus::ABORTED);
-    UEFI_ASSERT(memory  != nullptr, "memory is null",  UefiStatus::ABORTED);
+    UEFI_ASSERT(noPages >  0,       "noPages is invalid", UefiStatus::ABORTED);
+    UEFI_ASSERT(memory  != nullptr, "memory is null",     UefiStatus::ABORTED);
 
 
 
@@ -952,8 +952,8 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 {
     UEFI_LT((" | size = %u, align = %u, address = 0x%p", size, align, address));
 
-    UEFI_ASSERT(size > 0,             "size is zero",            UefiStatus::ABORTED);
-    UEFI_ASSERT(align > 0,            "align is zero",           UefiStatus::ABORTED);
+    UEFI_ASSERT(size > 0,             "size is invalid",         UefiStatus::ABORTED);
+    UEFI_ASSERT(align > 0,            "align is invalid",        UefiStatus::ABORTED);
     UEFI_ASSERT(IS_POWER_OF_2(align), "align is not power of 2", UefiStatus::ABORTED);
     UEFI_ASSERT(address != nullptr,   "address is null",         UefiStatus::ABORTED);
 

@@ -23,8 +23,8 @@ inline u64 readBits(InflateDecoder *decoder, u8 count)
 {
     // COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(decoder,   "decoder is null", 0);
-    COMMON_ASSERT(count > 0, "count is zero",   0);
+    COMMON_ASSERT(decoder,   "decoder is null",  0);
+    COMMON_ASSERT(count > 0, "count is invalid", 0);
 
 
 

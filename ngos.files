@@ -884,6 +884,7 @@ src/os/shared/common/src/com/ngos/shared/common/dmi/lib/dmiidentity.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/dmimemorydevice.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/dmistoreduuid.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/dmistringid.h
+src/os/shared/common/src/com/ngos/shared/common/dmi/lib/dmiversion.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/dmiadditionalinformationentry.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/dmibaseboardentry.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/dmibiosentry.h
@@ -5579,6 +5580,7 @@ src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/cryptography/aes.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/dmi.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/dmistringid.h
+src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/dmiversion.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/dmichassisentry.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmibiosextendedromsize.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/dmi/lib/entry/lib/dmibiosromsize.h

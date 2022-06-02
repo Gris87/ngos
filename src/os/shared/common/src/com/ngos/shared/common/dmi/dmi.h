@@ -1,87 +1,83 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_DMI_H
-#define COM_NGOS_SHARED_COMMON_DMI_DMI_H
-
-
-
-#include <com/ngos/shared/common/containers/arraylist.h>
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/lib/dmiidentity.h>
-#include <com/ngos/shared/common/dmi/lib/dmimemorydevice.h>
-#include <com/ngos/shared/common/dmi/lib/dmistoreduuid.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmiadditionalinformationentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmibaseboardentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmibiosentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmibioslanguageentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmibits32memoryerrorinformationentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmibits64memoryerrorinformationentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmicacheentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmichassisentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmicoolingdeviceentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmielectricalcurrentprobeentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmigroupassociationsentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmihardwaresecurityentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmiinactiveentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmimanagementdevicecomponententry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmimanagementdeviceentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmimanagementdevicethresholddataentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmimemoryarraymappedaddressentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmimemorydeviceentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmimemorydevicemappedaddressentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmioemstringsentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmionboarddevicesentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmionboarddevicesextendedentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmioutofbandremoteaccessentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmiphysicalmemoryarrayentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmiportablebatteryentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmiportconnectorentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmiprocessorentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmisystembootentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmisystemconfigurationentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmisystementry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmisystempowersupplyentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmisystemresetentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmisystemslotsentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmitemperatureprobeentry.h>
-#include <com/ngos/shared/common/dmi/lib/entry/dmivoltageprobeentry.h>
-#include <com/ngos/shared/common/ngos/status.h>
-#include <com/ngos/shared/common/uefi/config/uefismbios3configurationtable.h>
-#include <com/ngos/shared/common/uefi/config/uefismbiosconfigurationtable.h>
-
-
-
-#define DMI_VERSION(major, minor)        (((major) << 16) + ((minor & 0xFF) << 8))
-#define DMI_VERSION_3(major, minor, doc) (((major) << 16) + ((minor & 0xFF) << 8) + (doc & 0xFF))
-
-
-
-typedef NgosStatus (*process_dmi_entry) (DmiEntryHeader *header);
-
-
-
-class DMI
-{
-public:
-    static NgosStatus init(); // TEST: NO
-
-    static NgosStatus iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry);
-
-    static u32 getVersion(); // TEST: NO
-    static u64 getStructureTableAddress(); // TEST: NO
-    static u64 getSystemPhysicalMemoryArrayCapacity(); // TEST: NO
-    static u64 getTotalAmountOfMemory(); // TEST: NO
-    static u64 getNumberOfInstalledMemoryDevices(); // TEST: NO
-    static const ArrayList<DmiMemoryDevice>& getMemoryDevices(); // TEST: NO
-    static const char8* getIdentity(DmiIdentity id); // TEST: NO
-    static Uuid* getUuid(DmiStoredUuid id); // TEST: NO
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-public:
-#else
-private:
-#endif
-    static NgosStatus initFromSmbios3(UefiSmbios3ConfigurationTable *smbios3); // TEST: NO
-    static NgosStatus initFromSmbios(UefiSmbiosConfigurationTable *smbios); // TEST: NO
-    static NgosStatus decodeDmiEntry(DmiEntryHeader *header); // TEST: NO
+#ifndef COM_NGOS_SHARED_COMMON_DMI_DMI_H                                                                                                                                                                 // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_DMI_H                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/containers/arraylist.h>                                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmiidentity.h>                                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmimemorydevice.h>                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmistoreduuid.h>                                                                                                                                                // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmiversion.h>                                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmiadditionalinformationentry.h>                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmibaseboardentry.h>                                                                                                                                      // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmibiosentry.h>                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmibioslanguageentry.h>                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmibits32memoryerrorinformationentry.h>                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmibits64memoryerrorinformationentry.h>                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmicacheentry.h>                                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmichassisentry.h>                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmicoolingdeviceentry.h>                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmielectricalcurrentprobeentry.h>                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmigroupassociationsentry.h>                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmihardwaresecurityentry.h>                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmiinactiveentry.h>                                                                                                                                       // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmimanagementdevicecomponententry.h>                                                                                                                      // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmimanagementdeviceentry.h>                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmimanagementdevicethresholddataentry.h>                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmimemoryarraymappedaddressentry.h>                                                                                                                       // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmimemorydeviceentry.h>                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmimemorydevicemappedaddressentry.h>                                                                                                                      // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmioemstringsentry.h>                                                                                                                                     // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmionboarddevicesentry.h>                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmionboarddevicesextendedentry.h>                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmioutofbandremoteaccessentry.h>                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmiphysicalmemoryarrayentry.h>                                                                                                                            // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmiportablebatteryentry.h>                                                                                                                                // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmiportconnectorentry.h>                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmiprocessorentry.h>                                                                                                                                      // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmisystembootentry.h>                                                                                                                                     // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmisystemconfigurationentry.h>                                                                                                                            // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmisystementry.h>                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmisystempowersupplyentry.h>                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmisystemresetentry.h>                                                                                                                                    // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmisystemslotsentry.h>                                                                                                                                    // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmitemperatureprobeentry.h>                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/dmivoltageprobeentry.h>                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/ngos/status.h>                                                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/uefi/config/uefismbios3configurationtable.h>                                                                                                                            // Colorize: green
+#include <com/ngos/shared/common/uefi/config/uefismbiosconfigurationtable.h>                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+typedef NgosStatus (*process_dmi_entry) (DmiEntryHeader *header);                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class DMI                                                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    static NgosStatus init(); // TEST: NO                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static NgosStatus iterateDmiEntries(good_U8 *buf, process_dmi_entry processDmiEntry);                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static const DmiVersion& getVersion(); // TEST: NO                                                                                                                                                   // Colorize: green
+    static good_U8* getStructureTableAddress(); // TEST: NO                                                                                                                                        // Colorize: green
+    static good_I64 getSystemPhysicalMemoryArrayCapacity(); // TEST: NO                                                                                                                                  // Colorize: green
+    static good_I64 getTotalAmountOfMemory(); // TEST: NO                                                                                                                                                // Colorize: green
+    static good_I64 getNumberOfInstalledMemoryDevices(); // TEST: NO                                                                                                                                     // Colorize: green
+    static const ArrayList<DmiMemoryDevice>& getMemoryDevices(); // TEST: NO                                                                                                                             // Colorize: green
+    static const good_Char8* getIdentity(DmiIdentity id); // TEST: NO                                                                                                                                    // Colorize: green
+    static Uuid* getUuid(DmiStoredUuid id); // TEST: NO                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+    static NgosStatus initFromSmbios3(UefiSmbios3ConfigurationTable *smbios3); // TEST: NO                                                                                                               // Colorize: green
+    static NgosStatus initFromSmbios(UefiSmbiosConfigurationTable *smbios); // TEST: NO                                                                                                                  // Colorize: green
+    static NgosStatus decodeDmiEntry(DmiEntryHeader *header); // TEST: NO                                                                                                                                // Colorize: green
     static NgosStatus saveDmiBiosEntry(DmiBiosEntry *entry); // TEST: NO
     static NgosStatus saveDmiSystemEntry(DmiSystemEntry *entry); // TEST: NO
     static NgosStatus saveDmiBaseboardEntry(DmiBaseboardEntry *entry); // TEST: NO
@@ -121,23 +117,23 @@ private:
     static NgosStatus storeIdentity(DmiIdentity id, const char8 *address, u64 size); // TEST: NO
     static NgosStatus storeUuid(DmiStoredUuid id, Uuid *uuid); // TEST: NO
     static NgosStatus storeString(const char8 *address, u64 size, const char8 **destination); // TEST: NO
-    static u8 checksum(u8 *address, u64 size, u8 checksumValue);
-
-    static u32                                            sVersion;
-    static u16                                            sNumberOfSmbiosStructures;
-    static u64                                            sStructureTableAddress;
-    static u32                                            sStructureTableLength;
-    static u16                                            sSystemPhysicalMemoryArrayHandle;
-    static u64                                            sSystemPhysicalMemoryArrayCapacity;
-    static u64                                            sTotalAmountOfMemory;
-    static u64                                            sNumberOfInstalledMemoryDevices;
-    static ArrayList<DmiMemoryDeviceEntry *>              sMemoryDeviceEntries;
-    static ArrayList<DmiMemoryDeviceMappedAddressEntry *> sMemoryDeviceMappedAddressEntries;
-    static ArrayList<DmiMemoryDevice>                     sMemoryDevices;
-    static const char8*                                   sIdentities[(u64)DmiIdentity::MAXIMUM];
-    static Uuid*                                          sUuids[(u64)DmiStoredUuid::MAXIMUM];
-};
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_DMI_H
+    static good_U8 checksum(void *address, good_I64 size, good_U8 checksumValue);                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static DmiVersion                                      sVersion;                                                                                                                                     // Colorize: green
+    static good_U16                                        sNumberOfSmbiosStructures;                                                                                                                    // Colorize: green
+    static good_U8                                        *sStructureTableAddress;                                                                                                                        // Colorize: green
+    static good_U32                                        sStructureTableLength;                                                                                                                        // Colorize: green
+    static good_U16                                        sSystemPhysicalMemoryArrayHandle;                                                                                                             // Colorize: green
+    static good_I64                                        sSystemPhysicalMemoryArrayCapacity;                                                                                                           // Colorize: green
+    static good_I64                                        sTotalAmountOfMemory;                                                                                                                          // Colorize: green
+    static good_I64                                        sNumberOfInstalledMemoryDevices;                                                                                                               // Colorize: green
+    static ArrayList<DmiMemoryDeviceEntry *>               sMemoryDeviceEntries;                                                                                                                         // Colorize: green
+    static ArrayList<DmiMemoryDeviceMappedAddressEntry *>  sMemoryDeviceMappedAddressEntries;                                                                                                            // Colorize: green
+    static ArrayList<DmiMemoryDevice>                      sMemoryDevices;                                                                                                                               // Colorize: green
+    static const good_Char8*                               sIdentities[(u64)DmiIdentity::MAXIMUM];                                                                                                       // Colorize: green
+    static Uuid*                                           sUuids[(u64)DmiStoredUuid::MAXIMUM];                                                                                                          // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_DMI_H                                                                                                                                                               // Colorize: green
