@@ -5702,32 +5702,32 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         // | 0 | 1101010 |
         temp.value8 = 0x6A;
 
-        TEST_ASSERT_EQUALS(temp.typeSelect,    0);
-        TEST_ASSERT_EQUALS(temp.baseboardType, 106);
-        TEST_ASSERT_EQUALS(temp.dmiEntryType,  106);
+        TEST_ASSERT_EQUALS(temp.typeSelect,    static_cast<DmiChassisContainedElementTypeSelect>(0));
+        TEST_ASSERT_EQUALS(temp.baseboardType, static_cast<DmiBaseboardType>(106));
+        TEST_ASSERT_EQUALS(temp.dmiEntryType,  static_cast<DmiEntryType>(106));
 
 
 
         // | 1 | 1101010 |
-        temp.typeSelect = 1;
+        temp.typeSelect = static_cast<DmiChassisContainedElementTypeSelect>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xEA);
 
 
 
         // | 1 | 0000101 |
-        temp.baseboardType = 5;
+        temp.baseboardType = static_cast<DmiBaseboardType>(5);
 
         TEST_ASSERT_EQUALS(temp.value8,       0x85);
-        TEST_ASSERT_EQUALS(temp.dmiEntryType, 5);
+        TEST_ASSERT_EQUALS(temp.dmiEntryType, static_cast<DmiEntryType>(5));
 
 
 
         // | 1 | 0000010 |
-        temp.dmiEntryType = 2;
+        temp.dmiEntryType = static_cast<DmiEntryType>(2);
 
         TEST_ASSERT_EQUALS(temp.value8,        0x82);
-        TEST_ASSERT_EQUALS(temp.baseboardType, 2);
+        TEST_ASSERT_EQUALS(temp.baseboardType, static_cast<DmiBaseboardType>(2));
     }
     TEST_CASE_END();
 

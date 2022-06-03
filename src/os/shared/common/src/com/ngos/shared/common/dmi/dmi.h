@@ -79,9 +79,9 @@ private:                                                                        
     static NgosStatus initFromSmbios(UefiSmbiosConfigurationTable *smbios); // TEST: NO                                                                                                                  // Colorize: green
     static NgosStatus decodeDmiEntry(DmiEntryHeader *header); // TEST: NO                                                                                                                                // Colorize: green
     static NgosStatus saveDmiBiosEntry(DmiBiosEntry *entry); // TEST: NO                                                                                                                                 // Colorize: green
-    static NgosStatus saveDmiSystemEntry(DmiSystemEntry *entry); // TEST: NO
-    static NgosStatus saveDmiBaseboardEntry(DmiBaseboardEntry *entry); // TEST: NO
-    static NgosStatus saveDmiChassisEntry(DmiChassisEntry *entry); // TEST: NO
+    static NgosStatus saveDmiSystemEntry(DmiSystemEntry *entry); // TEST: NO                                                                                                                             // Colorize: green
+    static NgosStatus saveDmiBaseboardEntry(DmiBaseboardEntry *entry); // TEST: NO                                                                                                                       // Colorize: green
+    static NgosStatus saveDmiChassisEntry(DmiChassisEntry *entry); // TEST: NO                                                                                                                           // Colorize: green
     static NgosStatus saveDmiProcessorEntry(DmiProcessorEntry *entry); // TEST: NO
     static NgosStatus saveDmiCacheEntry(DmiCacheEntry *entry); // TEST: NO
     static NgosStatus saveDmiPortConnectorEntry(DmiPortConnectorEntry *entry); // TEST: NO

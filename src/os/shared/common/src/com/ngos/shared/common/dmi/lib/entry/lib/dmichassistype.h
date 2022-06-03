@@ -1,123 +1,123 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISTYPE_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISTYPE_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiChassisType: u8
-{
-    NONE                  = 0,
-    OTHER                 = 1,
-    UNKNOWN               = 2,
-    DESKTOP               = 3,
-    LOW_PROFILE_DESKTOP   = 4,
-    PIZZA_BOX             = 5,
-    MINI_TOWER            = 6,
-    TOWER                 = 7,
-    PORTABLE              = 8,
-    LAPTOP                = 9,
-    NOTEBOOK              = 10,
-    HAND_HELD             = 11,
-    DOCKING_STATION       = 12,
-    ALL_IN_ONE            = 13,
-    SUB_NOTEBOOK          = 14,
-    SPACE_SAVING          = 15,
-    LUNCH_BOX             = 16,
-    MAIN_SERVER_CHASSIS   = 17,
-    EXPANSION_CHASSIS     = 18,
-    SUB_CHASSIS           = 19,
-    BUS_EXPANSION_CHASSIS = 20,
-    PERIPHERAL_CHASSIS    = 21,
-    RAID_CHASSIS          = 22,
-    RACK_MOUNT_CHASSIS    = 23,
-    SEALED_CASE_PC        = 24,
-    MULTI_SYSTEM_CHASSIS  = 25,
-    COMPACT_PCI           = 26,
-    ADVANCED_TCA          = 27,
-    BLADE                 = 28,
-    BLADE_ENCLOSURE       = 29,
-    TABLET                = 30,
-    CONVERTIBLE           = 31,
-    DETACHABLE            = 32,
-    IOT_GATEWAY           = 33,
-    EMBEDDED_PC           = 34,
-    MINI_PC               = 35,
-    STICK_PC              = 36
-};
-
-
-
-inline const char8* enumToString(DmiChassisType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    switch (type)
-    {
-        case DmiChassisType::NONE:                  return "NONE";
-        case DmiChassisType::OTHER:                 return "OTHER";
-        case DmiChassisType::UNKNOWN:               return "UNKNOWN";
-        case DmiChassisType::DESKTOP:               return "DESKTOP";
-        case DmiChassisType::LOW_PROFILE_DESKTOP:   return "LOW_PROFILE_DESKTOP";
-        case DmiChassisType::PIZZA_BOX:             return "PIZZA_BOX";
-        case DmiChassisType::MINI_TOWER:            return "MINI_TOWER";
-        case DmiChassisType::TOWER:                 return "TOWER";
-        case DmiChassisType::PORTABLE:              return "PORTABLE";
-        case DmiChassisType::LAPTOP:                return "LAPTOP";
-        case DmiChassisType::NOTEBOOK:              return "NOTEBOOK";
-        case DmiChassisType::HAND_HELD:             return "HAND_HELD";
-        case DmiChassisType::DOCKING_STATION:       return "DOCKING_STATION";
-        case DmiChassisType::ALL_IN_ONE:            return "ALL_IN_ONE";
-        case DmiChassisType::SUB_NOTEBOOK:          return "SUB_NOTEBOOK";
-        case DmiChassisType::SPACE_SAVING:          return "SPACE_SAVING";
-        case DmiChassisType::LUNCH_BOX:             return "LUNCH_BOX";
-        case DmiChassisType::MAIN_SERVER_CHASSIS:   return "MAIN_SERVER_CHASSIS";
-        case DmiChassisType::EXPANSION_CHASSIS:     return "EXPANSION_CHASSIS";
-        case DmiChassisType::SUB_CHASSIS:           return "SUB_CHASSIS";
-        case DmiChassisType::BUS_EXPANSION_CHASSIS: return "BUS_EXPANSION_CHASSIS";
-        case DmiChassisType::PERIPHERAL_CHASSIS:    return "PERIPHERAL_CHASSIS";
-        case DmiChassisType::RAID_CHASSIS:          return "RAID_CHASSIS";
-        case DmiChassisType::RACK_MOUNT_CHASSIS:    return "RACK_MOUNT_CHASSIS";
-        case DmiChassisType::SEALED_CASE_PC:        return "SEALED_CASE_PC";
-        case DmiChassisType::MULTI_SYSTEM_CHASSIS:  return "MULTI_SYSTEM_CHASSIS";
-        case DmiChassisType::COMPACT_PCI:           return "COMPACT_PCI";
-        case DmiChassisType::ADVANCED_TCA:          return "ADVANCED_TCA";
-        case DmiChassisType::BLADE:                 return "BLADE";
-        case DmiChassisType::BLADE_ENCLOSURE:       return "BLADE_ENCLOSURE";
-        case DmiChassisType::TABLET:                return "TABLET";
-        case DmiChassisType::CONVERTIBLE:           return "CONVERTIBLE";
-        case DmiChassisType::DETACHABLE:            return "DETACHABLE";
-        case DmiChassisType::IOT_GATEWAY:           return "IOT_GATEWAY";
-        case DmiChassisType::EMBEDDED_PC:           return "EMBEDDED_PC";
-        case DmiChassisType::MINI_PC:               return "MINI_PC";
-        case DmiChassisType::STICK_PC:              return "STICK_PC";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiChassisType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[29];
-
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISTYPE_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISTYPE_H                                                                                                                                            // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISTYPE_H                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiChassisType: u8                                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE                  = 0,                                                                                                                                                                           // Colorize: green
+    OTHER                 = 1,                                                                                                                                                                           // Colorize: green
+    UNKNOWN               = 2,                                                                                                                                                                           // Colorize: green
+    DESKTOP               = 3,                                                                                                                                                                           // Colorize: green
+    LOW_PROFILE_DESKTOP   = 4,                                                                                                                                                                           // Colorize: green
+    PIZZA_BOX             = 5,                                                                                                                                                                           // Colorize: green
+    MINI_TOWER            = 6,                                                                                                                                                                           // Colorize: green
+    TOWER                 = 7,                                                                                                                                                                           // Colorize: green
+    PORTABLE              = 8,                                                                                                                                                                           // Colorize: green
+    LAPTOP                = 9,                                                                                                                                                                           // Colorize: green
+    NOTEBOOK              = 10,                                                                                                                                                                          // Colorize: green
+    HAND_HELD             = 11,                                                                                                                                                                          // Colorize: green
+    DOCKING_STATION       = 12,                                                                                                                                                                          // Colorize: green
+    ALL_IN_ONE            = 13,                                                                                                                                                                          // Colorize: green
+    SUB_NOTEBOOK          = 14,                                                                                                                                                                          // Colorize: green
+    SPACE_SAVING          = 15,                                                                                                                                                                          // Colorize: green
+    LUNCH_BOX             = 16,                                                                                                                                                                          // Colorize: green
+    MAIN_SERVER_CHASSIS   = 17,                                                                                                                                                                          // Colorize: green
+    EXPANSION_CHASSIS     = 18,                                                                                                                                                                          // Colorize: green
+    SUB_CHASSIS           = 19,                                                                                                                                                                          // Colorize: green
+    BUS_EXPANSION_CHASSIS = 20,                                                                                                                                                                          // Colorize: green
+    PERIPHERAL_CHASSIS    = 21,                                                                                                                                                                          // Colorize: green
+    RAID_CHASSIS          = 22,                                                                                                                                                                          // Colorize: green
+    RACK_MOUNT_CHASSIS    = 23,                                                                                                                                                                          // Colorize: green
+    SEALED_CASE_PC        = 24,                                                                                                                                                                          // Colorize: green
+    MULTI_SYSTEM_CHASSIS  = 25,                                                                                                                                                                          // Colorize: green
+    COMPACT_PCI           = 26,                                                                                                                                                                          // Colorize: green
+    ADVANCED_TCA          = 27,                                                                                                                                                                          // Colorize: green
+    BLADE                 = 28,                                                                                                                                                                          // Colorize: green
+    BLADE_ENCLOSURE       = 29,                                                                                                                                                                          // Colorize: green
+    TABLET                = 30,                                                                                                                                                                          // Colorize: green
+    CONVERTIBLE           = 31,                                                                                                                                                                          // Colorize: green
+    DETACHABLE            = 32,                                                                                                                                                                          // Colorize: green
+    IOT_GATEWAY           = 33,                                                                                                                                                                          // Colorize: green
+    EMBEDDED_PC           = 34,                                                                                                                                                                          // Colorize: green
+    MINI_PC               = 35,                                                                                                                                                                          // Colorize: green
+    STICK_PC              = 36                                                                                                                                                                           // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiChassisType type) // TEST: NO                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (type)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiChassisType::NONE:                  return "NONE";                                                                                                                                       // Colorize: green
+        case DmiChassisType::OTHER:                 return "OTHER";                                                                                                                                      // Colorize: green
+        case DmiChassisType::UNKNOWN:               return "UNKNOWN";                                                                                                                                    // Colorize: green
+        case DmiChassisType::DESKTOP:               return "DESKTOP";                                                                                                                                    // Colorize: green
+        case DmiChassisType::LOW_PROFILE_DESKTOP:   return "LOW_PROFILE_DESKTOP";                                                                                                                        // Colorize: green
+        case DmiChassisType::PIZZA_BOX:             return "PIZZA_BOX";                                                                                                                                  // Colorize: green
+        case DmiChassisType::MINI_TOWER:            return "MINI_TOWER";                                                                                                                                 // Colorize: green
+        case DmiChassisType::TOWER:                 return "TOWER";                                                                                                                                      // Colorize: green
+        case DmiChassisType::PORTABLE:              return "PORTABLE";                                                                                                                                   // Colorize: green
+        case DmiChassisType::LAPTOP:                return "LAPTOP";                                                                                                                                     // Colorize: green
+        case DmiChassisType::NOTEBOOK:              return "NOTEBOOK";                                                                                                                                   // Colorize: green
+        case DmiChassisType::HAND_HELD:             return "HAND_HELD";                                                                                                                                  // Colorize: green
+        case DmiChassisType::DOCKING_STATION:       return "DOCKING_STATION";                                                                                                                            // Colorize: green
+        case DmiChassisType::ALL_IN_ONE:            return "ALL_IN_ONE";                                                                                                                                 // Colorize: green
+        case DmiChassisType::SUB_NOTEBOOK:          return "SUB_NOTEBOOK";                                                                                                                               // Colorize: green
+        case DmiChassisType::SPACE_SAVING:          return "SPACE_SAVING";                                                                                                                               // Colorize: green
+        case DmiChassisType::LUNCH_BOX:             return "LUNCH_BOX";                                                                                                                                  // Colorize: green
+        case DmiChassisType::MAIN_SERVER_CHASSIS:   return "MAIN_SERVER_CHASSIS";                                                                                                                        // Colorize: green
+        case DmiChassisType::EXPANSION_CHASSIS:     return "EXPANSION_CHASSIS";                                                                                                                          // Colorize: green
+        case DmiChassisType::SUB_CHASSIS:           return "SUB_CHASSIS";                                                                                                                                // Colorize: green
+        case DmiChassisType::BUS_EXPANSION_CHASSIS: return "BUS_EXPANSION_CHASSIS";                                                                                                                      // Colorize: green
+        case DmiChassisType::PERIPHERAL_CHASSIS:    return "PERIPHERAL_CHASSIS";                                                                                                                         // Colorize: green
+        case DmiChassisType::RAID_CHASSIS:          return "RAID_CHASSIS";                                                                                                                               // Colorize: green
+        case DmiChassisType::RACK_MOUNT_CHASSIS:    return "RACK_MOUNT_CHASSIS";                                                                                                                         // Colorize: green
+        case DmiChassisType::SEALED_CASE_PC:        return "SEALED_CASE_PC";                                                                                                                             // Colorize: green
+        case DmiChassisType::MULTI_SYSTEM_CHASSIS:  return "MULTI_SYSTEM_CHASSIS";                                                                                                                       // Colorize: green
+        case DmiChassisType::COMPACT_PCI:           return "COMPACT_PCI";                                                                                                                                // Colorize: green
+        case DmiChassisType::ADVANCED_TCA:          return "ADVANCED_TCA";                                                                                                                               // Colorize: green
+        case DmiChassisType::BLADE:                 return "BLADE";                                                                                                                                      // Colorize: green
+        case DmiChassisType::BLADE_ENCLOSURE:       return "BLADE_ENCLOSURE";                                                                                                                            // Colorize: green
+        case DmiChassisType::TABLET:                return "TABLET";                                                                                                                                     // Colorize: green
+        case DmiChassisType::CONVERTIBLE:           return "CONVERTIBLE";                                                                                                                                // Colorize: green
+        case DmiChassisType::DETACHABLE:            return "DETACHABLE";                                                                                                                                 // Colorize: green
+        case DmiChassisType::IOT_GATEWAY:           return "IOT_GATEWAY";                                                                                                                                // Colorize: green
+        case DmiChassisType::EMBEDDED_PC:           return "EMBEDDED_PC";                                                                                                                                // Colorize: green
+        case DmiChassisType::MINI_PC:               return "MINI_PC";                                                                                                                                    // Colorize: green
+        case DmiChassisType::STICK_PC:              return "STICK_PC";                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiChassisType type) // TEST: NO                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[29];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISTYPE_H                                                                                                                                          // Colorize: green

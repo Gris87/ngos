@@ -1,68 +1,68 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMICHASSISENTRY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMICHASSISENTRY_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassiscontainedelement.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassissecuritystatus.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassisstate.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassistypeandlocked.h>
-
-
-
-#define DMI_CHASSIS_CONTAINED_ELEMENT(entry, i) (DmiChassisContainedElement *)((u64)(entry)->containedElements + (i) * (entry)->containedElementRecordLength)
-
-
-
-#define DMI_CHASSIS_HEIGHT_NOT_AVAILABLE                          0x00
-#define DMI_CHASSIS_NUMBER_OF_POWER_CORDS_NOT_AVAILABLE           0x00
-#define DMI_CHASSIS_CONTAINED_ELEMENT_COUNT_NOT_AVAILABLE         0x00
-#define DMI_CHASSIS_CONTAINED_ELEMENT_RECORD_LENGTH_NOT_AVAILABLE 0x00
-
-
-
-struct DmiChassisEntry
-{
-    DmiEntryHeader          header;
-    DmiStringId             manufacturer;
-    DmiChassisTypeAndLocked typeAndLocked;
-    DmiStringId             version;
-    DmiStringId             serialNumber;
-    DmiStringId             assetTag;
-} __attribute__((packed));
-
-
-
-struct DmiChassisEntryV21: public DmiChassisEntry
-{
-    DmiChassisState          bootUpState;
-    DmiChassisState          powerSupplyState;
-    DmiChassisState          thermalState;
-    DmiChassisSecurityStatus securityStatus;
-} __attribute__((packed));
-
-
-
-struct DmiChassisEntryV23: public DmiChassisEntryV21
-{
-    u32                        oemDefined;
-    u8                         height;
-    u8                         numberOfPowerCords;
-    u8                         containedElementCount;
-    u8                         containedElementRecordLength;
-    DmiChassisContainedElement containedElements[0];
-} __attribute__((packed));
-
-
-
-// Since amount of containedElements may be different we will calculate location of DmiChassisEntryV27 as &containedElements[0] + containedElementCount * containedElementRecordLength
-struct DmiChassisEntryV27
-{
-    DmiStringId skuNumber;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMICHASSISENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMICHASSISENTRY_H                                                                                                                                               // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMICHASSISENTRY_H                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>                                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassiscontainedelement.h>                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassissecuritystatus.h>                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassisstate.h>                                                                                                                                    // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassistypeandlocked.h>                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define DMI_CHASSIS_CONTAINED_ELEMENT(entry, i) reinterpret_cast<DmiChassisContainedElement *>(reinterpret_cast<address_t>((entry)->containedElements) + (i) * (entry)->containedElementRecordLength)    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define DMI_CHASSIS_HEIGHT_NOT_AVAILABLE                          0x00                                                                                                                                   // Colorize: green
+#define DMI_CHASSIS_NUMBER_OF_POWER_CORDS_NOT_AVAILABLE           0x00                                                                                                                                   // Colorize: green
+#define DMI_CHASSIS_CONTAINED_ELEMENT_COUNT_NOT_AVAILABLE         0x00                                                                                                                                   // Colorize: green
+#define DMI_CHASSIS_CONTAINED_ELEMENT_RECORD_LENGTH_NOT_AVAILABLE 0x00                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiChassisEntry                                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryHeader          header;                                                                                                                                                                      // Colorize: green
+    DmiStringId             manufacturer;                                                                                                                                                                // Colorize: green
+    DmiChassisTypeAndLocked typeAndLocked;                                                                                                                                                               // Colorize: green
+    DmiStringId             version;                                                                                                                                                                     // Colorize: green
+    DmiStringId             serialNumber;                                                                                                                                                                // Colorize: green
+    DmiStringId             assetTag;                                                                                                                                                                    // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiChassisEntryV21: public DmiChassisEntry                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiChassisState          bootUpState;                                                                                                                                                                // Colorize: green
+    DmiChassisState          powerSupplyState;                                                                                                                                                           // Colorize: green
+    DmiChassisState          thermalState;                                                                                                                                                               // Colorize: green
+    DmiChassisSecurityStatus securityStatus;                                                                                                                                                             // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiChassisEntryV23: public DmiChassisEntryV21                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    u32                        oemDefined;                                                                                                                                                               // Colorize: green
+    u8                         height;                                                                                                                                                                   // Colorize: green
+    u8                         numberOfPowerCords;                                                                                                                                                       // Colorize: green
+    u8                         containedElementCount;                                                                                                                                                    // Colorize: green
+    u8                         containedElementRecordLength;                                                                                                                                             // Colorize: green
+    DmiChassisContainedElement containedElements[0];                                                                                                                                                     // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+// Since amount of containedElements may be different we will calculate location of DmiChassisEntryV27 as &containedElements[0] + containedElementCount * containedElementRecordLength                   // Colorize: green
+struct DmiChassisEntryV27                                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiStringId skuNumber;                                                                                                                                                                               // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMICHASSISENTRY_H                                                                                                                                             // Colorize: green

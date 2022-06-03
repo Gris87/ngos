@@ -1,26 +1,26 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISTYPEANDLOCKED_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISTYPEANDLOCKED_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassistype.h>
-
-
-
-struct DmiChassisTypeAndLocked
-{
-    union
-    {
-        struct
-        {
-            u8 type:   7; // TODO: Use enum DmiChassisType
-            u8 locked: 1;
-        };
-
-        u8 value8;
-    };
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISTYPEANDLOCKED_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISTYPEANDLOCKED_H                                                                                                                                   // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISTYPEANDLOCKED_H                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassistype.h>                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiChassisTypeAndLocked                                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    union                                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        struct                                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            DmiChassisType type:   7;                                                                                                                                                                    // Colorize: green
+            u8             locked: 1;                                                                                                                                                                    // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u8 value8;                                                                                                                                                                                       // Colorize: green
+    };                                                                                                                                                                                                   // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISTYPEANDLOCKED_H                                                                                                                                 // Colorize: green

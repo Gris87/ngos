@@ -1,36 +1,36 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISCONTAINEDELEMENTTYPE_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISCONTAINEDELEMENTTYPE_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientrytype.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibaseboardtype.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassiscontainedelementtypeselect.h>
-
-
-
-struct DmiChassisContainedElementType
-{
-    union
-    {
-        // DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE
-        struct
-        {
-            u8 baseboardType: 7; // TODO: Use enum DmiBaseboardType
-            u8 typeSelect:    1; // TODO: Use enum DmiChassisContainedElementTypeSelect
-        };
-
-        // DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE
-        struct
-        {
-            u8 dmiEntryType: 7; // TODO: Use enum DmiEntryType
-            u8 __pad:        1; // Ignore this field. The same as typeSelect
-        };
-
-        u8 value8;
-    };
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISCONTAINEDELEMENTTYPE_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISCONTAINEDELEMENTTYPE_H                                                                                                                            // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISCONTAINEDELEMENTTYPE_H                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientrytype.h>                                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibaseboardtype.h>                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassiscontainedelementtypeselect.h>                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiChassisContainedElementType                                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    union                                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE                                                                                                                                          // Colorize: green
+        struct                                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            DmiBaseboardType                     baseboardType: 7;                                                                                                                                       // Colorize: green
+            DmiChassisContainedElementTypeSelect typeSelect:    1;                                                                                                                                       // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE                                                                                                                                          // Colorize: green
+        struct                                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            DmiEntryType dmiEntryType: 7;                                                                                                                                                                // Colorize: green
+            u8           __pad:        1; // Ignore this field. The same as typeSelect                                                                                                                   // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u8 value8;                                                                                                                                                                                       // Colorize: green
+    };                                                                                                                                                                                                   // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISCONTAINEDELEMENTTYPE_H                                                                                                                          // Colorize: green

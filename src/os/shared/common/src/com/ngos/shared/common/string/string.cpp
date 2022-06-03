@@ -301,7 +301,7 @@ i64 strlen(const char8 *str)
 {
     COMMON_LT((" | str = 0x%p", str));
 
-    COMMON_ASSERT(str, "str is null", 0);
+    COMMON_ASSERT(str, "str is null", -1);
 
 
 
@@ -319,7 +319,7 @@ i64 strlen(const char16 *str)
 {
     COMMON_LT((" | str = 0x%p", str));
 
-    COMMON_ASSERT(str, "str is null", 0);
+    COMMON_ASSERT(str, "str is null", -1);
 
 
 
@@ -337,7 +337,7 @@ i64 strnlen(const char8 *str, i64 maxlen)
 {
     // COMMON_LT((" | str = 0x%p, maxlen = %d", str, maxlen)); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(str, "str is null", 0);
+    COMMON_ASSERT(str, "str is null", -1);
 
 
 
@@ -356,7 +356,7 @@ i64 strnlen(const char16 *str, i64 maxlen)
 {
     // COMMON_LT((" | str = 0x%p, maxlen = %d", str, maxlen)); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(str, "str is null", 0);
+    COMMON_ASSERT(str, "str is null", -1);
 
 
 
@@ -375,8 +375,8 @@ i8 strcmp(const char8 *str1, const char8 *str2)
 {
     // COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", -1);
+    COMMON_ASSERT(str2, "str2 is null", -1);
 
 
 
@@ -415,8 +415,8 @@ i8 strcmp(const char16 *str1, const char16 *str2)
 {
     // COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", -1);
+    COMMON_ASSERT(str2, "str2 is null", -1);
 
 
 
@@ -455,8 +455,8 @@ i8 strcmpi(const char8 *str1, const char8 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", -1);
+    COMMON_ASSERT(str2, "str2 is null", -1);
 
 
 
@@ -501,8 +501,8 @@ i8 strcmpi(const char16 *str1, const char16 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", -1);
+    COMMON_ASSERT(str2, "str2 is null", -1);
 
 
 
@@ -547,8 +547,8 @@ i8 strncmp(const char8 *str1, const char8 *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", -1);
+    COMMON_ASSERT(str2, "str2 is null", -1);
 
 
 
@@ -588,8 +588,8 @@ i8 strncmp(const char16 *str1, const char16 *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", -1);
+    COMMON_ASSERT(str2, "str2 is null", -1);
 
 
 
@@ -629,8 +629,8 @@ i8 strncmpi(const char8 *str1, const char8 *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", -1);
+    COMMON_ASSERT(str2, "str2 is null", -1);
 
 
 
@@ -676,8 +676,8 @@ i8 strncmpi(const char16 *str1, const char16 *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", -1);
+    COMMON_ASSERT(str2, "str2 is null", -1);
 
 
 

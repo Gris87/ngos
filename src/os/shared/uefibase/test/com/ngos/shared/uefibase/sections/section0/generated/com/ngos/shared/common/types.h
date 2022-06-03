@@ -1014,13 +1014,13 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 1000000 |
         temp.value8 = 0xC0;
 
-        TEST_ASSERT_EQUALS(temp.type,   static_cast<u8>(64));
+        TEST_ASSERT_EQUALS(temp.type,   static_cast<DmiChassisType>(64));
         TEST_ASSERT_EQUALS(temp.locked, static_cast<u8>(1));
 
 
 
         // | 1 | 0111111 |
-        temp.type = static_cast<u8>(63);
+        temp.type = static_cast<DmiChassisType>(63);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xBF);
 
