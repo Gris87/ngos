@@ -1,68 +1,68 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIBIOSENTRY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIBIOSENTRY_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibioscharacteristicsbiosreservedflags.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibioscharacteristicsflags.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibioscharacteristicssystemreservedflags.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibiosextendedromsize.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibiosromsize.h>
-
-
-
-#define DMI_BIOS_BIOS_ROM_SIZE_NEED_TO_EXTEND                             0xFF
-#define DMI_BIOS_SYSTEM_BIOS_MAJOR_RELEASE_NOT_AVAILABLE                  0xFF
-#define DMI_BIOS_SYSTEM_BIOS_MINOR_RELEASE_NOT_AVAILABLE                  0xFF
-#define DMI_BIOS_EMBEDDED_CONTROLLER_FIRMWARE_MAJOR_RELEASE_NOT_AVAILABLE 0xFF
-#define DMI_BIOS_EMBEDDED_CONTROLLER_FIRMWARE_MINOR_RELEASE_NOT_AVAILABLE 0xFF
-
-
-
-struct DmiBiosEntry
-{
-    DmiEntryHeader              header;
-    DmiStringId                 vendor;
-    DmiStringId                 biosVersion;
-    u16                         biosStartingAddressSegment;
-    DmiStringId                 biosReleaseDate;
-    DmiBiosRomSize              biosRomSize;
-    DmiBiosCharacteristicsFlags biosCharacteristics;
-} __attribute__((packed));
-
-
-
-struct DmiBiosEntryV21: public DmiBiosEntry
-{
-    DmiBiosCharacteristicsBiosReservedFlags biosCharacteristicsExtensionBiosReserved;
-} __attribute__((packed));
-
-
-
-struct DmiBiosEntryV23: public DmiBiosEntryV21
-{
-    DmiBiosCharacteristicsSystemReservedFlags biosCharacteristicsExtensionSystemReserved;
-} __attribute__((packed));
-
-
-
-struct DmiBiosEntryV24: public DmiBiosEntryV23
-{
-    u8 systemBiosMajorRelease;
-    u8 systemBiosMinorRelease;
-    u8 embeddedControllerFirmwareMajorRelease;
-    u8 embeddedControllerFirmwareMinorRelease;
-} __attribute__((packed));
-
-
-
-struct DmiBiosEntryV31: public DmiBiosEntryV24
-{
-    DmiBiosExtendedRomSize extendedBiosRomSize;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIBIOSENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIBIOSENTRY_H                                                                                                                                                  // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIBIOSENTRY_H                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>                                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibioscharacteristicsbiosreservedflags.h>                                                                                                            // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibioscharacteristicsflags.h>                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibioscharacteristicssystemreservedflags.h>                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibiosextendedromsize.h>                                                                                                                             // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibiosromsize.h>                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define DMI_BIOS_BIOS_ROM_SIZE_NEED_TO_EXTEND                             0xFF                                                                                                                           // Colorize: green
+#define DMI_BIOS_SYSTEM_BIOS_MAJOR_RELEASE_NOT_AVAILABLE                  0xFF                                                                                                                           // Colorize: green
+#define DMI_BIOS_SYSTEM_BIOS_MINOR_RELEASE_NOT_AVAILABLE                  0xFF                                                                                                                           // Colorize: green
+#define DMI_BIOS_EMBEDDED_CONTROLLER_FIRMWARE_MAJOR_RELEASE_NOT_AVAILABLE 0xFF                                                                                                                           // Colorize: green
+#define DMI_BIOS_EMBEDDED_CONTROLLER_FIRMWARE_MINOR_RELEASE_NOT_AVAILABLE 0xFF                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiBiosEntry                                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryHeader              header;                                                                                                                                                                  // Colorize: green
+    DmiStringId                 vendor;                                                                                                                                                                  // Colorize: green
+    DmiStringId                 biosVersion;                                                                                                                                                             // Colorize: green
+    u16                         biosStartingAddressSegment;                                                                                                                                              // Colorize: green
+    DmiStringId                 biosReleaseDate;                                                                                                                                                         // Colorize: green
+    DmiBiosRomSize              biosRomSize;                                                                                                                                                             // Colorize: green
+    DmiBiosCharacteristicsFlags biosCharacteristics;                                                                                                                                                     // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiBiosEntryV21: public DmiBiosEntry                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiBiosCharacteristicsBiosReservedFlags biosCharacteristicsExtensionBiosReserved;                                                                                                                    // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiBiosEntryV23: public DmiBiosEntryV21                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiBiosCharacteristicsSystemReservedFlags biosCharacteristicsExtensionSystemReserved;                                                                                                                // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiBiosEntryV24: public DmiBiosEntryV23                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    u8 systemBiosMajorRelease;                                                                                                                                                                           // Colorize: green
+    u8 systemBiosMinorRelease;                                                                                                                                                                           // Colorize: green
+    u8 embeddedControllerFirmwareMajorRelease;                                                                                                                                                           // Colorize: green
+    u8 embeddedControllerFirmwareMinorRelease;                                                                                                                                                           // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiBiosEntryV31: public DmiBiosEntryV24                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiBiosExtendedRomSize extendedBiosRomSize;                                                                                                                                                          // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIBIOSENTRY_H                                                                                                                                                // Colorize: green

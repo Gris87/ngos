@@ -252,49 +252,49 @@ NgosStatus DMI::init()                                                          
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-        // COMMON_TEST_ASSERT(sVersion.major                              == 2,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sVersion.minor                              == 8,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sVersion.doc                                == 0,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sVersion.value32                            == 0x00020800, NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sNumberOfSmbiosStructures                   == 9,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sVersion.major                              == 2,          NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sVersion.minor                              == 8,          NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sVersion.doc                                == 0,          NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sVersion.value32                            == 0x00020800, NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sNumberOfSmbiosStructures                   == 9,          NgosStatus::ASSERTION);                                                      // Colorize: green
         COMMON_TEST_ASSERT(sStructureTableAddress                         != nullptr,    NgosStatus::ASSERTION);                                                                                         // Colorize: green
-        // COMMON_TEST_ASSERT(sStructureTableLength                       == 395,        NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayHandle            == 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayCapacity          == GB,         NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sTotalAmountOfMemory                        == GB,         NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sNumberOfInstalledMemoryDevices             == 1,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.getSize()              == 1,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.at(0)                     != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.at(0)->header.handle      != 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.at(0)->memoryArrayHandle  != 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sMemoryDeviceMappedAddressEntries.getSize() == 0,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sMemoryDevices.getSize()                    == 1,          NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).size                   == GB,         NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).deviceLocator          != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).manufacturer           != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).serialNumber           != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).partNumber             != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sStructureTableLength                       == 395,        NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayHandle            == 0x1000,     NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sSystemPhysicalMemoryArrayCapacity          == GB,         NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sTotalAmountOfMemory                        == GB,         NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sNumberOfInstalledMemoryDevices             == 1,          NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.getSize()              == 1,          NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.at(0)                     != nullptr,    NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.at(0)->header.handle      != 0x1000,     NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDeviceEntries.at(0)->memoryArrayHandle  != 0x1000,     NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDeviceMappedAddressEntries.getSize() == 0,          NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDevices.getSize()                    == 1,          NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).size                   == GB,         NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).deviceLocator          != nullptr,    NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).manufacturer           != nullptr,    NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).serialNumber           != nullptr,    NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sMemoryDevices.at(0).partNumber             != nullptr,    NgosStatus::ASSERTION);                                                      // Colorize: green
         COMMON_TEST_ASSERT(static_cast<enum_t>(DmiIdentity::MAXIMUM)      == 7,          NgosStatus::ASSERTION);                                                                                         // Colorize: green
         COMMON_TEST_ASSERT(sIdentities[0]                                 != nullptr,    NgosStatus::ASSERTION);                                                                                         // Colorize: green
         COMMON_TEST_ASSERT(sIdentities[1]                                 != nullptr,    NgosStatus::ASSERTION);                                                                                         // Colorize: green
         COMMON_TEST_ASSERT(sIdentities[2]                                 != nullptr,    NgosStatus::ASSERTION);                                                                                         // Colorize: green
         COMMON_TEST_ASSERT(sIdentities[3]                                 != nullptr,    NgosStatus::ASSERTION);                                                                                         // Colorize: green
         COMMON_TEST_ASSERT(sIdentities[4]                                 != nullptr,    NgosStatus::ASSERTION);                                                                                         // Colorize: green
-        // COMMON_TEST_ASSERT(sIdentities[5]                              != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sIdentities[6]                              != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sIdentities[5]                              != nullptr,    NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sIdentities[6]                              != nullptr,    NgosStatus::ASSERTION);                                                      // Colorize: green
         COMMON_TEST_ASSERT(static_cast<enum_t>(DmiStoredUuid::MAXIMUM)    == 1,          NgosStatus::ASSERTION);                                                                                         // Colorize: green
         COMMON_TEST_ASSERT(sUuids[0]                                      != nullptr,    NgosStatus::ASSERTION);                                                                                         // Colorize: green
-        // COMMON_TEST_ASSERT(sUuids[0]->data1                            == 0x9FAE0773, NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sUuids[0]->data2                            == 0xF53F,     NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sUuids[0]->data3                            == 0x4A15,     NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sUuids[0]->data4                            == 0x8A,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sUuids[0]->data5                            == 0x11,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[0]                         == 0xED,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[1]                         == 0x76,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[2]                         == 0xA1,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[3]                         == 0x0F,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[4]                         == 0x4E,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
-        // COMMON_TEST_ASSERT(sUuids[0]->data6[5]                         == 0x5B,       NgosStatus::ASSERTION); // Commented due to value variation                                                     // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data1                            == 0x9FAE0773, NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data2                            == 0xF53F,     NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data3                            == 0x4A15,     NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data4                            == 0x8A,       NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data5                            == 0x11,       NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[0]                         == 0xED,       NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[1]                         == 0x76,       NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[2]                         == 0xA1,       NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[3]                         == 0x0F,       NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[4]                         == 0x4E,       NgosStatus::ASSERTION);                                                      // Colorize: green
+        // COMMON_TEST_ASSERT(sUuids[0]->data6[5]                         == 0x5B,       NgosStatus::ASSERTION);                                                      // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -631,385 +631,391 @@ NgosStatus DMI::decodeDmiEntry(DmiEntryHeader *header)                          
     return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    DmiBiosEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) && entry->header.length >= sizeof(DmiBiosEntryV21) ? (DmiBiosEntryV21 *)entry : nullptr;
-    DmiBiosEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) && entry->header.length >= sizeof(DmiBiosEntryV23) ? (DmiBiosEntryV23 *)entry : nullptr;
-    DmiBiosEntryV24 *entryV24 = DMI::getVersion() >= DMI_VERSION(2, 4) && entry->header.length >= sizeof(DmiBiosEntryV24) ? (DmiBiosEntryV24 *)entry : nullptr;
-    DmiBiosEntryV31 *entryV31 = DMI::getVersion() >= DMI_VERSION(3, 1) && entry->header.length >= sizeof(DmiBiosEntryV31) ? (DmiBiosEntryV31 *)entry : nullptr;
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->vendor.id                  = %u",     entry->vendor.id));
-            COMMON_LVVV(("entry->biosVersion.id             = %u",     entry->biosVersion.id));
-            COMMON_LVVV(("entry->biosStartingAddressSegment = 0x%04X", entry->biosStartingAddressSegment));
-            COMMON_LVVV(("entry->biosReleaseDate.id         = %u",     entry->biosReleaseDate.id));
-            COMMON_LVVV(("entry->biosRomSize.value          = 0x%02X", entry->biosRomSize.value));
-            COMMON_LVVV(("entry->biosRomSize                = %s",     bytesToString(entry->biosRomSize.size())));
-            COMMON_LVVV(("entry->biosCharacteristics        = %s",     flagsToFullString(entry->biosCharacteristics)));
-
-            if (entryV21)
-            {
-                COMMON_LVVV(("entryV21->biosCharacteristicsExtensionBiosReserved = %s", flagsToFullString(entryV21->biosCharacteristicsExtensionBiosReserved)));
-
-                if (entryV23)
-                {
-                    COMMON_LVVV(("entryV23->biosCharacteristicsExtensionSystemReserved = %s", flagsToFullString(entryV23->biosCharacteristicsExtensionSystemReserved)));
-
-                    if (entryV24)
-                    {
-                        COMMON_LVVV(("entryV24->systemBiosMajorRelease                 = %u", entryV24->systemBiosMajorRelease));
-                        COMMON_LVVV(("entryV24->systemBiosMinorRelease                 = %u", entryV24->systemBiosMinorRelease));
-                        COMMON_LVVV(("entryV24->embeddedControllerFirmwareMajorRelease = %u", entryV24->embeddedControllerFirmwareMajorRelease));
-                        COMMON_LVVV(("entryV24->embeddedControllerFirmwareMinorRelease = %u", entryV24->embeddedControllerFirmwareMinorRelease));
-
-                        if (entryV31)
-                        {
-                            COMMON_LVVV(("entryV31->extendedBiosRomSize.value   = %u",     entryV31->extendedBiosRomSize.value));
-                            COMMON_LVVV(("entryV31->extendedBiosRomSize.unit    = %s",     enumToFullString((DmiBiosExtendedRomSizeUnit)entryV31->extendedBiosRomSize.unit)));
-                            COMMON_LVVV(("entryV31->extendedBiosRomSize.value16 = 0x%04X", entryV31->extendedBiosRomSize.value16));
-                            COMMON_LVVV(("entryV31->extendedBiosRomSize         = %s",     bytesToString(entryV31->extendedBiosRomSize.size())));
-                        }
-                    }
-                }
-            }
-        }
-
-
-
-        // Check variables
-        {
-            COMMON_TEST_ASSERT(entry->vendor.id                     == 1,                                                                     NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->biosVersion.id                == 2,                                                                     NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->biosStartingAddressSegment == 0xE800,                                                                NgosStatus::ASSERTION); // Commented due to value variation
-            COMMON_TEST_ASSERT(entry->biosReleaseDate.id            == 3,                                                                     NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->biosRomSize.value          == 0xFF,                                                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->biosCharacteristics        == FLAGS(DmiBiosCharacteristicsFlag::BIOS_CHARACTERISTICS_NOT_SUPPORTED), NgosStatus::ASSERTION); // Commented due to value variation
-
-            if (entryV21)
-            {
-                // COMMON_TEST_ASSERT(entryV21->biosCharacteristicsExtensionBiosReserved == FLAGS(DmiBiosCharacteristicsBiosReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
-
-                if (entryV23)
-                {
-                    // COMMON_TEST_ASSERT(entryV23->biosCharacteristicsExtensionSystemReserved == FLAGS(DmiBiosCharacteristicsSystemReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
-
-                    if (entryV24)
-                    {
-                        // COMMON_TEST_ASSERT(entryV24->systemBiosMajorRelease                 == 15,  NgosStatus::ASSERTION); // Commented due to value variation
-                        // COMMON_TEST_ASSERT(entryV24->systemBiosMinorRelease                 == 103, NgosStatus::ASSERTION); // Commented due to value variation
-                        // COMMON_TEST_ASSERT(entryV24->embeddedControllerFirmwareMajorRelease == 151, NgosStatus::ASSERTION); // Commented due to value variation
-                        // COMMON_TEST_ASSERT(entryV24->embeddedControllerFirmwareMinorRelease == 78,  NgosStatus::ASSERTION); // Commented due to value variation
-
-                        if (entryV31)
-                        {
-                            // COMMON_TEST_ASSERT(entryV31->extendedBiosRomSize.value   == 0,                                     NgosStatus::ASSERTION); // Commented due to value variation
-                            // COMMON_TEST_ASSERT(entryV31->extendedBiosRomSize.unit    == DmiBiosExtendedRomSizeUnit::MEGABYTES, NgosStatus::ASSERTION); // Commented due to value variation
-                            // COMMON_TEST_ASSERT(entryV31->extendedBiosRomSize.value16 == 0x0000,                                NgosStatus::ASSERTION); // Commented due to value variation
-
-                            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV31), NgosStatus::ASSERTION);
-                        }
-                        else
-                        {
-                            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV24), NgosStatus::ASSERTION);
-                        }
-                    }
-                    else
-                    {
-                        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV23), NgosStatus::ASSERTION);
-                    }
-                }
-                else
-                {
-                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV21), NgosStatus::ASSERTION);
-                }
-            }
-            else
-            {
-                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntry), NgosStatus::ASSERTION);
-            }
-        }
-    }
-
-
-
-    // Get strings
-    {
-        if (
-            entry->vendor.id
-            ||
-            entry->biosVersion.id
-            ||
-            entry->biosReleaseDate.id
-           )
-        {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
-
-            AVOID_UNUSED(begin);
-
-            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
-
-
-
-            DmiStringId stringId;
-
-            do
-            {
-                if (cur[0] == 0)
-                {
-                    ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
-
-
-
-                    if (stringId == entry->vendor)
-                    {
-                        COMMON_LVVV(("vendor = %s", begin));
-                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::BIOS_VENDOR, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                    }
-                    else
-                    if (stringId == entry->biosVersion)
-                    {
-                        COMMON_LVVV(("biosVersion = %s", begin));
-                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::BIOS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                    }
-                    else
-                    if (stringId == entry->biosReleaseDate)
-                    {
-                        COMMON_LVVV(("biosReleaseDate = %s", begin));
-                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::BIOS_RELEASE_DATE, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                    }
-
-
-
-                    if (cur[1] == 0)
-                    {
-                        break;
-                    }
-
-                    begin = cur + 1;
-                }
-
-
-
-                ++cur;
-            } while(true);
-        }
-        else
-        {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    DmiSystemEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) && entry->header.length >= sizeof(DmiSystemEntryV21) ? (DmiSystemEntryV21 *)entry : nullptr;
-    DmiSystemEntryV24 *entryV24 = DMI::getVersion() >= DMI_VERSION(2, 4) && entry->header.length >= sizeof(DmiSystemEntryV24) ? (DmiSystemEntryV24 *)entry : nullptr;
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->manufacturer.id = %u", entry->manufacturer.id));
-            COMMON_LVVV(("entry->productName.id  = %u", entry->productName.id));
-            COMMON_LVVV(("entry->version.id      = %u", entry->version.id));
-            COMMON_LVVV(("entry->serialNumber.id = %u", entry->serialNumber.id));
-
-            if (entryV21)
-            {
-                COMMON_LVVV(("entryV21->uuid       = %s", uuidToString(entryV21->uuid)));
-                COMMON_LVVV(("entryV21->wakeUpType = %s", enumToFullString(entryV21->wakeUpType)));
-
-                if (entryV24)
-                {
-                    COMMON_LVVV(("entryV24->skuNumber.id = %u", entryV24->skuNumber.id));
-                    COMMON_LVVV(("entryV24->family.id    = %u", entryV24->family.id));
-                }
-            }
-        }
-
-
-
-        // Check variables
-        {
-            COMMON_TEST_ASSERT(entry->manufacturer.id    == 1, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->productName.id  == 2, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->version.id      == 3, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->serialNumber.id == 4, NgosStatus::ASSERTION); // Commented due to value variation
-
-            if (entryV21)
-            {
-                // COMMON_TEST_ASSERT(entryV21->uuid.data1    == 0x9FAE0773,                        NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->uuid.data2    == 0xF53F,                            NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->uuid.data3    == 0x4A15,                            NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->uuid.data4    == 0x8A,                              NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->uuid.data5    == 0x11,                              NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->uuid.data6[0] == 0xED,                              NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->uuid.data6[1] == 0x76,                              NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->uuid.data6[2] == 0xA1,                              NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->uuid.data6[3] == 0x0F,                              NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->uuid.data6[4] == 0x4E,                              NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->uuid.data6[5] == 0x5B,                              NgosStatus::ASSERTION); // Commented due to value variation
-                COMMON_TEST_ASSERT(entryV21->wakeUpType       == DmiSystemWakeUpType::POWER_SWITCH, NgosStatus::ASSERTION);
-
-                if (entryV24)
-                {
-                    // COMMON_TEST_ASSERT(entryV24->skuNumber.id == 5, NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV24->family.id    == 6, NgosStatus::ASSERTION); // Commented due to value variation
-
-                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntryV24), NgosStatus::ASSERTION);
-                }
-                else
-                {
-                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntryV21), NgosStatus::ASSERTION);
-                }
-            }
-            else
-            {
-                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntry), NgosStatus::ASSERTION);
-            }
-        }
-    }
-
-
-
-    // Get strings
-    {
-        DmiStringId skuNumberStringId;
-        DmiStringId familyStringId;
-
-        if (entryV24)
-        {
-            skuNumberStringId = entryV24->skuNumber;
-            familyStringId    = entryV24->family;
-        }
-
-
-
-        if (
-            entry->manufacturer.id
-            ||
-            entry->productName.id
-            ||
-            entry->version.id
-            ||
-            entry->serialNumber.id
-            ||
-            skuNumberStringId.id
-            ||
-            familyStringId.id
-           )
-        {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
-
-            AVOID_UNUSED(begin);
-
-            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
-
-
-
-            DmiStringId stringId;
-
-            do
-            {
-                if (cur[0] == 0)
-                {
-                    ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
-
-
-
-                    if (stringId == entry->manufacturer)
-                    {
-                        COMMON_LVVV(("manufacturer = %s", begin));
-                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::SYSTEM_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                    }
-                    else
-                    if (stringId == entry->productName)
-                    {
-                        COMMON_LVVV(("productName = %s", begin));
-                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::SYSTEM_PRODUCT_NAME, begin, cur - begin + 1), NgosStatus::ASSERTION);
-                    }
-                    else
-                    if (stringId == entry->version)
-                    {
-                        COMMON_LVVV(("version = %s", begin));
-                    }
-                    else
-                    if (stringId == entry->serialNumber)
-                    {
-                        COMMON_LVVV(("serialNumber = %s", begin));
-                    }
-                    else
-                    if (stringId == skuNumberStringId)
-                    {
-                        COMMON_LVVV(("skuNumber = %s", begin));
-                    }
-                    else
-                    if (stringId == familyStringId)
-                    {
-                        COMMON_LVVV(("family = %s", begin));
-                    }
-
-
-
-                    if (cur[1] == 0)
-                    {
-                        break;
-                    }
-
-                    begin = cur + 1;
-                }
-
-
-
-                ++cur;
-            } while(true);
-        }
-        else
-        {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    if (entryV21)
-    {
-        COMMON_ASSERT_EXECUTION(storeUuid(DmiStoredUuid::SYSTEM_UUID, &entryV21->uuid), NgosStatus::ASSERTION);
-    }
-
-
-
-    return NgosStatus::OK;
-}
+NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DmiBiosEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) && entry->header.length >= sizeof(DmiBiosEntryV21) ? (DmiBiosEntryV21 *)entry : nullptr;                                          // Colorize: green
+    DmiBiosEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) && entry->header.length >= sizeof(DmiBiosEntryV23) ? (DmiBiosEntryV23 *)entry : nullptr;                                          // Colorize: green
+    DmiBiosEntryV24 *entryV24 = DMI::getVersion() >= DMI_VERSION(2, 4) && entry->header.length >= sizeof(DmiBiosEntryV24) ? (DmiBiosEntryV24 *)entry : nullptr;                                          // Colorize: green
+    DmiBiosEntryV31 *entryV31 = DMI::getVersion() >= DMI_VERSION(3, 1) && entry->header.length >= sizeof(DmiBiosEntryV31) ? (DmiBiosEntryV31 *)entry : nullptr;                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->vendor.id                  = %u",     entry->vendor.id));                                                                                                               // Colorize: green
+            COMMON_LVVV(("entry->biosVersion.id             = %u",     entry->biosVersion.id));                                                                                                          // Colorize: green
+            COMMON_LVVV(("entry->biosStartingAddressSegment = 0x%04X", entry->biosStartingAddressSegment));                                                                                              // Colorize: green
+            COMMON_LVVV(("entry->biosReleaseDate.id         = %u",     entry->biosReleaseDate.id));                                                                                                      // Colorize: green
+            COMMON_LVVV(("entry->biosRomSize.value          = 0x%02X", entry->biosRomSize.value));                                                                                                       // Colorize: green
+            COMMON_LVVV(("entry->biosRomSize                = %s",     bytesToString(entry->biosRomSize.size())));                                                                                       // Colorize: green
+            COMMON_LVVV(("entry->biosCharacteristics        = %s",     flagsToFullString(entry->biosCharacteristics)));                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV21 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_LVVV(("entryV21->biosCharacteristicsExtensionBiosReserved = %s", flagsToFullString(entryV21->biosCharacteristicsExtensionBiosReserved)));                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (entryV23 != nullptr)                                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    COMMON_LVVV(("entryV23->biosCharacteristicsExtensionSystemReserved = %s", flagsToFullString(entryV23->biosCharacteristicsExtensionSystemReserved)));                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (entryV24 != nullptr)                                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("entryV24->systemBiosMajorRelease                 = %u", entryV24->systemBiosMajorRelease));                                                                        // Colorize: green
+                        COMMON_LVVV(("entryV24->systemBiosMinorRelease                 = %u", entryV24->systemBiosMinorRelease));                                                                        // Colorize: green
+                        COMMON_LVVV(("entryV24->embeddedControllerFirmwareMajorRelease = %u", entryV24->embeddedControllerFirmwareMajorRelease));                                                        // Colorize: green
+                        COMMON_LVVV(("entryV24->embeddedControllerFirmwareMinorRelease = %u", entryV24->embeddedControllerFirmwareMinorRelease));                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (entryV31 != nullptr)                                                                                                                                                         // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            COMMON_LVVV(("entryV31->extendedBiosRomSize.value   = %u",     entryV31->extendedBiosRomSize.value));                                                                        // Colorize: green
+                            COMMON_LVVV(("entryV31->extendedBiosRomSize.unit    = %s",     enumToFullString((DmiBiosExtendedRomSizeUnit)entryV31->extendedBiosRomSize.unit)));                           // Colorize: green
+                            COMMON_LVVV(("entryV31->extendedBiosRomSize.value16 = 0x%04X", entryV31->extendedBiosRomSize.value16));                                                                      // Colorize: green
+                            COMMON_LVVV(("entryV31->extendedBiosRomSize         = %s",     bytesToString(entryV31->extendedBiosRomSize.size())));                                                        // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->vendor.id                  == 1,                                                                     NgosStatus::ASSERTION);                                    // Colorize: green
+            COMMON_TEST_ASSERT(entry->biosVersion.id             == 2,                                                                     NgosStatus::ASSERTION);                                    // Colorize: green
+            COMMON_TEST_ASSERT(entry->biosStartingAddressSegment == 0xE800,                                                                NgosStatus::ASSERTION);  // Colorize: green
+            COMMON_TEST_ASSERT(entry->biosReleaseDate.id         == 3,                                                                     NgosStatus::ASSERTION);                                    // Colorize: green
+            COMMON_TEST_ASSERT(entry->biosRomSize.value          == 0,                                                                     NgosStatus::ASSERTION);  // Colorize: green
+            COMMON_TEST_ASSERT(entry->biosRomSize.size()         == 64 * KB,                                                               NgosStatus::ASSERTION);  // Colorize: green
+            COMMON_TEST_ASSERT(entry->biosCharacteristics        == FLAGS(DmiBiosCharacteristicsFlag::BIOS_CHARACTERISTICS_NOT_SUPPORTED), NgosStatus::ASSERTION);  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV21 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entryV21->biosCharacteristicsExtensionBiosReserved == FLAGS(DmiBiosCharacteristicsBiosReservedFlag::NONE), NgosStatus::ASSERTION);  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (entryV23 != nullptr)                                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    COMMON_TEST_ASSERT(entryV23->biosCharacteristicsExtensionSystemReserved == FLAGS(                                                                                                    // Colorize: green
+                                            DmiBiosCharacteristicsSystemReservedFlag::TARGET_CONTENT_DISTRIBUTION_ENABLED,                                                                               // Colorize: green
+                                            DmiBiosCharacteristicsSystemReservedFlag::UEFI_SPECIFICATION_SUPPORTED,                                                                                      // Colorize: green
+                                            DmiBiosCharacteristicsSystemReservedFlag::VIRTUAL_MACHINE_SUPPORTED                                                                                          // Colorize: green
+                                        ), NgosStatus::ASSERTION);                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (entryV24 != nullptr)                                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_TEST_ASSERT(entryV24->systemBiosMajorRelease                 == 0,                                                                 NgosStatus::ASSERTION);                // Colorize: green
+                        COMMON_TEST_ASSERT(entryV24->systemBiosMinorRelease                 == 0,                                                                 NgosStatus::ASSERTION);                // Colorize: green
+                        COMMON_TEST_ASSERT(entryV24->embeddedControllerFirmwareMajorRelease == DMI_BIOS_EMBEDDED_CONTROLLER_FIRMWARE_MAJOR_RELEASE_NOT_AVAILABLE, NgosStatus::ASSERTION);                // Colorize: green
+                        COMMON_TEST_ASSERT(entryV24->embeddedControllerFirmwareMinorRelease == DMI_BIOS_EMBEDDED_CONTROLLER_FIRMWARE_MINOR_RELEASE_NOT_AVAILABLE, NgosStatus::ASSERTION);                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (entryV31 != nullptr)                                                                                                                                                         // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            COMMON_TEST_ASSERT(entryV31->extendedBiosRomSize.value   == 0,                                     NgosStatus::ASSERTION);             // Colorize: green
+                            COMMON_TEST_ASSERT(entryV31->extendedBiosRomSize.unit    == DmiBiosExtendedRomSizeUnit::MEGABYTES, NgosStatus::ASSERTION);             // Colorize: green
+                            COMMON_TEST_ASSERT(entryV31->extendedBiosRomSize.value16 == 0x0000,                                NgosStatus::ASSERTION);             // Colorize: green
+                            COMMON_TEST_ASSERT(entryV31->extendedBiosRomSize.size()  == 0,                                     NgosStatus::ASSERTION);             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV31), NgosStatus::ASSERTION);                                                                                  // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV24), NgosStatus::ASSERTION);                                                                                  // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV23), NgosStatus::ASSERTION);                                                                                      // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntryV21), NgosStatus::ASSERTION);                                                                                          // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosEntry), NgosStatus::ASSERTION);                                                                                                 // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get strings                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            entry->vendor.id > 0                                                                                                                                                                         // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->biosVersion.id > 0                                                                                                                                                                    // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->biosReleaseDate.id > 0                                                                                                                                                                // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;                                                                                                            // Colorize: green
+            good_Char8 *begin = cur;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            AVOID_UNUSED(begin);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            DmiStringId stringId;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            do                                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (cur[0] == 0)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++stringId;                                                                                                                                                                          // Colorize: green
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (stringId == entry->vendor)                                                                                                                                                       // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("vendor = %s", begin));                                                                                                                                             // Colorize: green
+                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::BIOS_VENDOR, begin, cur - begin + 1), NgosStatus::ASSERTION);                                                                 // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->biosVersion)                                                                                                                                                  // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("biosVersion = %s", begin));                                                                                                                                        // Colorize: green
+                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::BIOS_VERSION, begin, cur - begin + 1), NgosStatus::ASSERTION);                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->biosReleaseDate)                                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("biosReleaseDate = %s", begin));                                                                                                                                    // Colorize: green
+                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::BIOS_RELEASE_DATE, begin, cur - begin + 1), NgosStatus::ASSERTION);                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (cur[1] == 0)                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    begin = cur + 1;                                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++cur;                                                                                                                                                                                   // Colorize: green
+            } while(true);                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DmiSystemEntryV21 *entryV21 = DMI::getVersion() >= DMI_VERSION(2, 1) && entry->header.length >= sizeof(DmiSystemEntryV21) ? (DmiSystemEntryV21 *)entry : nullptr;                                    // Colorize: green
+    DmiSystemEntryV24 *entryV24 = DMI::getVersion() >= DMI_VERSION(2, 4) && entry->header.length >= sizeof(DmiSystemEntryV24) ? (DmiSystemEntryV24 *)entry : nullptr;                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->manufacturer.id = %u", entry->manufacturer.id));                                                                                                                        // Colorize: green
+            COMMON_LVVV(("entry->productName.id  = %u", entry->productName.id));                                                                                                                         // Colorize: green
+            COMMON_LVVV(("entry->version.id      = %u", entry->version.id));                                                                                                                             // Colorize: green
+            COMMON_LVVV(("entry->serialNumber.id = %u", entry->serialNumber.id));                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV21 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_LVVV(("entryV21->uuid       = %s", uuidToString(entryV21->uuid)));                                                                                                                // Colorize: green
+                COMMON_LVVV(("entryV21->wakeUpType = %s", enumToFullString(entryV21->wakeUpType)));                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (entryV24 != nullptr)                                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    COMMON_LVVV(("entryV24->skuNumber.id = %u", entryV24->skuNumber.id));                                                                                                                // Colorize: green
+                    COMMON_LVVV(("entryV24->family.id    = %u", entryV24->family.id));                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->manufacturer.id == 1, NgosStatus::ASSERTION);                                                                                                                      // Colorize: green
+            COMMON_TEST_ASSERT(entry->productName.id  == 2, NgosStatus::ASSERTION);                                                                                                                      // Colorize: green
+            COMMON_TEST_ASSERT(entry->version.id      == 3, NgosStatus::ASSERTION);                                                                                                                      // Colorize: green
+            COMMON_TEST_ASSERT(entry->serialNumber.id == 0, NgosStatus::ASSERTION);                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV21 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                // COMMON_TEST_ASSERT(entryV21->uuid.data1    == 0x9FAE0773,                        NgosStatus::ASSERTION); // Commented because different each time                                     // Colorize: green
+                // COMMON_TEST_ASSERT(entryV21->uuid.data2    == 0xF53F,                            NgosStatus::ASSERTION); // Commented because different each time                                     // Colorize: green
+                // COMMON_TEST_ASSERT(entryV21->uuid.data3    == 0x4A15,                            NgosStatus::ASSERTION); // Commented because different each time                                     // Colorize: green
+                // COMMON_TEST_ASSERT(entryV21->uuid.data4    == 0x8A,                              NgosStatus::ASSERTION); // Commented because different each time                                     // Colorize: green
+                // COMMON_TEST_ASSERT(entryV21->uuid.data5    == 0x11,                              NgosStatus::ASSERTION); // Commented because different each time                                     // Colorize: green
+                // COMMON_TEST_ASSERT(entryV21->uuid.data6[0] == 0xED,                              NgosStatus::ASSERTION); // Commented because different each time                                     // Colorize: green
+                // COMMON_TEST_ASSERT(entryV21->uuid.data6[1] == 0x76,                              NgosStatus::ASSERTION); // Commented because different each time                                     // Colorize: green
+                // COMMON_TEST_ASSERT(entryV21->uuid.data6[2] == 0xA1,                              NgosStatus::ASSERTION); // Commented because different each time                                     // Colorize: green
+                // COMMON_TEST_ASSERT(entryV21->uuid.data6[3] == 0x0F,                              NgosStatus::ASSERTION); // Commented because different each time                                     // Colorize: green
+                // COMMON_TEST_ASSERT(entryV21->uuid.data6[4] == 0x4E,                              NgosStatus::ASSERTION); // Commented because different each time                                     // Colorize: green
+                // COMMON_TEST_ASSERT(entryV21->uuid.data6[5] == 0x5B,                              NgosStatus::ASSERTION); // Commented because different each time                                     // Colorize: green
+                COMMON_TEST_ASSERT(entryV21->wakeUpType       == DmiSystemWakeUpType::POWER_SWITCH, NgosStatus::ASSERTION);                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (entryV24 != nullptr)                                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    COMMON_TEST_ASSERT(entryV24->skuNumber.id == 0, NgosStatus::ASSERTION);                                                                                                              // Colorize: green
+                    COMMON_TEST_ASSERT(entryV24->family.id    == 0, NgosStatus::ASSERTION);                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntryV24), NgosStatus::ASSERTION);                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntryV21), NgosStatus::ASSERTION);                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemEntry), NgosStatus::ASSERTION);                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get strings                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DmiStringId skuNumberStringId;                                                                                                                                                                   // Colorize: green
+        DmiStringId familyStringId;                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (entryV24 != nullptr)                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            skuNumberStringId = entryV24->skuNumber;                                                                                                                                                     // Colorize: green
+            familyStringId    = entryV24->family;                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            entry->manufacturer.id > 0                                                                                                                                                                   // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->productName.id > 0                                                                                                                                                                    // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->version.id > 0                                                                                                                                                                        // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->serialNumber.id > 0                                                                                                                                                                   // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            skuNumberStringId.id > 0                                                                                                                                                                     // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            familyStringId.id > 0                                                                                                                                                                        // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;                                                                                                            // Colorize: green
+            good_Char8 *begin = cur;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            AVOID_UNUSED(begin);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            DmiStringId stringId;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            do                                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (cur[0] == 0)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++stringId;                                                                                                                                                                          // Colorize: green
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (stringId == entry->manufacturer)                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("manufacturer = %s", begin));                                                                                                                                       // Colorize: green
+                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::SYSTEM_MANUFACTURER, begin, cur - begin + 1), NgosStatus::ASSERTION);                                                         // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->productName)                                                                                                                                                  // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("productName = %s", begin));                                                                                                                                        // Colorize: green
+                        COMMON_ASSERT_EXECUTION(storeIdentity(DmiIdentity::SYSTEM_PRODUCT_NAME, begin, cur - begin + 1), NgosStatus::ASSERTION);                                                         // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->version)                                                                                                                                                      // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("version = %s", begin));                                                                                                                                            // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->serialNumber)                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("serialNumber = %s", begin));                                                                                                                                       // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == skuNumberStringId)                                                                                                                                                   // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("skuNumber = %s", begin));                                                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == familyStringId)                                                                                                                                                      // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("family = %s", begin));                                                                                                                                             // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (cur[1] == 0)                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    begin = cur + 1;                                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++cur;                                                                                                                                                                                   // Colorize: green
+            } while(true);                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (entryV21 != nullptr)                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_ASSERT_EXECUTION(storeUuid(DmiStoredUuid::SYSTEM_UUID, &entryV21->uuid), NgosStatus::ASSERTION);                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
 
 NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
 {
@@ -1059,14 +1065,14 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
             COMMON_TEST_ASSERT(entry->manufacturer.id                == 1,                                           NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(entry->product.id                     == 2,                                           NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(entry->version.id                     == 3,                                           NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->serialNumber.id             == 4,                                           NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->assetTag.id                 == 5,                                           NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->featureFlags                == FLAGS(DmiBaseboardFeatureFlag::MOTHERBOARD), NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->locationInChassis.id        == 6,                                           NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->chassisHandle               == 0x0300,                                      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->boardType                   == DmiBaseboardType::MOTHERBOARD,               NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->serialNumber.id             == 4,                                           NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->assetTag.id                 == 5,                                           NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->featureFlags                == FLAGS(DmiBaseboardFeatureFlag::MOTHERBOARD), NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->locationInChassis.id        == 6,                                           NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->chassisHandle               == 0x0300,                                      NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->boardType                   == DmiBaseboardType::MOTHERBOARD,               NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(entry->numberOfContainedObjectHandles == 0,                                           NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->containedObjectHandles[0]   == 0,                                           NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->containedObjectHandles[0]   == 0,                                           NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBaseboardEntry) + entry->numberOfContainedObjectHandles * sizeof(entry->containedObjectHandles[0]), NgosStatus::ASSERTION);
         }
@@ -1090,8 +1096,8 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
             entry->locationInChassis.id
            )
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -1159,8 +1165,8 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -1195,14 +1201,14 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
             COMMON_LVVV(("entry->serialNumber.id      = %u",     entry->serialNumber.id));
             COMMON_LVVV(("entry->assetTag.id          = %u",     entry->assetTag.id));
 
-            if (entryV21)
+            if (entryV21 != nullptr)
             {
                 COMMON_LVVV(("entryV21->bootUpState      = %s", enumToFullString(entryV21->bootUpState)));
                 COMMON_LVVV(("entryV21->powerSupplyState = %s", enumToFullString(entryV21->powerSupplyState)));
                 COMMON_LVVV(("entryV21->thermalState     = %s", enumToFullString(entryV21->thermalState)));
                 COMMON_LVVV(("entryV21->securityStatus   = %s", enumToFullString(entryV21->securityStatus)));
 
-                if (entryV23)
+                if (entryV23 != nullptr)
                 {
                     COMMON_LVVV(("entryV23->oemDefined                   = 0x%08X", entryV23->oemDefined));
                     COMMON_LVVV(("entryV23->height                       = %u",     entryV23->height));
@@ -1249,7 +1255,7 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
 
 
 
-                    if (entryV27)
+                    if (entryV27 != nullptr)
                     {
                         COMMON_LVVV(("entryV27->skuNumber.id = %u", entryV27->skuNumber.id));
                     }
@@ -1262,36 +1268,36 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
         // Check variables
         {
             COMMON_TEST_ASSERT(entry->manufacturer.id    == 1,                       NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->type            == DmiChassisType::DESKTOP, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->locked          == 0,                       NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->typeAndLocked   == 0x03,                    NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->version.id      == 2,                       NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->serialNumber.id == 3,                       NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->assetTag.id     == 4,                       NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->type            == DmiChassisType::DESKTOP, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->locked          == 0,                       NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->typeAndLocked   == 0x03,                    NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->version.id      == 2,                       NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->serialNumber.id == 3,                       NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->assetTag.id     == 4,                       NgosStatus::ASSERTION);
 
-            if (entryV21)
+            if (entryV21 != nullptr)
             {
                 COMMON_TEST_ASSERT(entryV21->bootUpState       == DmiChassisState::SAFE,             NgosStatus::ASSERTION);
                 COMMON_TEST_ASSERT(entryV21->powerSupplyState  == DmiChassisState::SAFE,             NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entryV21->thermalState   == DmiChassisState::SAFE,             NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->securityStatus == DmiChassisSecurityStatus::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entryV21->thermalState   == DmiChassisState::SAFE,             NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV21->securityStatus == DmiChassisSecurityStatus::UNKNOWN, NgosStatus::ASSERTION);
 
-                if (entryV23)
+                if (entryV23 != nullptr)
                 {
                     COMMON_TEST_ASSERT(entryV23->oemDefined                                             == 0x00000000,                                           NgosStatus::ASSERTION);
-                    // COMMON_TEST_ASSERT(entryV23->height                                              == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV23->numberOfPowerCords                                  == 1,                                                    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV23->containedElementCount                               == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV23->containedElementRecordLength                        == 3,                                                    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->type.typeSelect   == DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE, NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->type.dmiEntryType == DmiEntryType::SYSTEM_POWER_SUPPLY,                    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->type.value8       == 0xA7,                                                 NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->minimum           == 0,                                                    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->maximum           == 1,                                                    NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entryV23->height                                              == 0,                                                    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV23->numberOfPowerCords                                  == 1,                                                    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV23->containedElementCount                               == 0,                                                    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV23->containedElementRecordLength                        == 3,                                                    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->type.typeSelect   == DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE, NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->type.dmiEntryType == DmiEntryType::SYSTEM_POWER_SUPPLY,                    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->type.value8       == 0xA7,                                                 NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->minimum           == 0,                                                    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, 0)->maximum           == 1,                                                    NgosStatus::ASSERTION);
 
-                    if (entryV27)
+                    if (entryV27 != nullptr)
                     {
-                        // COMMON_TEST_ASSERT(entryV27->skuNumber.id == 5, NgosStatus::ASSERTION); // Commented due to value variation
+                        // COMMON_TEST_ASSERT(entryV27->skuNumber.id == 5, NgosStatus::ASSERTION);
 
                         COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiChassisEntryV23) + entryV23->containedElementCount * entryV23->containedElementRecordLength + sizeof(DmiChassisEntryV27), NgosStatus::ASSERTION);
                     }
@@ -1318,7 +1324,7 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
     {
         DmiStringId skuNumberStringId;
 
-        if (entryV27)
+        if (entryV27 != nullptr)
         {
             skuNumberStringId = entryV27->skuNumber;
         }
@@ -1337,8 +1343,8 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
             skuNumberStringId.id
            )
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -1399,8 +1405,8 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -1470,30 +1476,30 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
             COMMON_LVVV(("entry->processorStatusAndSocketPopulated.value8           = 0x%02X", entry->processorStatusAndSocketPopulated.value8));
             COMMON_LVVV(("entry->processorUpgrade                                   = %s",     enumToFullString(entry->processorUpgrade)));
 
-            if (entryV21)
+            if (entryV21 != nullptr)
             {
                 COMMON_LVVV(("entryV21->l1CacheHandle = 0x%04X", entryV21->l1CacheHandle));
                 COMMON_LVVV(("entryV21->l2CacheHandle = 0x%04X", entryV21->l2CacheHandle));
                 COMMON_LVVV(("entryV21->l3CacheHandle = 0x%04X", entryV21->l3CacheHandle));
 
-                if (entryV23)
+                if (entryV23 != nullptr)
                 {
                     COMMON_LVVV(("entryV23->serialNumber.id = %u", entryV23->serialNumber.id));
                     COMMON_LVVV(("entryV23->assetTag.id     = %u", entryV23->assetTag.id));
                     COMMON_LVVV(("entryV23->partNumber.id   = %u", entryV23->partNumber.id));
 
-                    if (entryV25)
+                    if (entryV25 != nullptr)
                     {
                         COMMON_LVVV(("entryV25->coreCount                = 0x%02X", entryV25->coreCount));
                         COMMON_LVVV(("entryV25->enabledCoreCount         = 0x%02X", entryV25->enabledCoreCount));
                         COMMON_LVVV(("entryV25->threadCount              = 0x%02X", entryV25->threadCount));
                         COMMON_LVVV(("entryV25->processorCharacteristics = %s",     flagsToFullString(entryV25->processorCharacteristics)));
 
-                        if (entryV26)
+                        if (entryV26 != nullptr)
                         {
                             COMMON_LVVV(("entryV26->processorFamily2 = %s", enumToFullString(entryV26->processorFamily2)));
 
-                            if (entryV30)
+                            if (entryV30 != nullptr)
                             {
                                 COMMON_LVVV(("entryV30->coreCount2        = 0x%04X", entryV30->coreCount2));
                                 COMMON_LVVV(("entryV30->enabledCoreCount2 = 0x%04X", entryV30->enabledCoreCount2));
@@ -1510,81 +1516,81 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         // Check variables
         {
             // Ignore CppAlignmentVerifier [BEGIN]
-            // COMMON_TEST_ASSERT(entry->socketDesignation.id                              == 1,                                                 NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->socketDesignation.id                              == 1,                                                 NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(entry->processorType                                        == DmiProcessorType::CENTRAL_PROCESSOR,               NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->processorFamily                                   == DmiProcessorFamily::OTHER,                         NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->processorFamily                                   == DmiProcessorFamily::OTHER,                         NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(entry->processorManufacturer.id                             == 2,                                                 NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->processorId.signature.stepping                    == 1,                                                 NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->processorId.signature.model                       == 12,                                                NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->processorId.signature.family                      == 6,                                                 NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->processorId.signature.stepping                    == 1,                                                 NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->processorId.signature.model                       == 12,                                                NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->processorId.signature.family                      == 6,                                                 NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(entry->processorId.signature.type                           == 0,                                                 NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->processorId.signature.extendedModel               == 3,                                                 NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->processorId.signature.extendedFamily              == 0,                                                 NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->processorId.signature.value32                     == 0x00000000,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->processorId.featureFlags                          == FLAGS(DmiProcessorFeatureFlag::FPU                                         // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::VME                                       // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::DE                                        // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::PSE                                       // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::TSC                                       // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::MSR                                       // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::PAE                                       // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::MCE                                       // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::CX8                                       // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::APIC                                      // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::SEP                                       // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::MTRR                                      // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::PGE                                       // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::MCA                                       // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::CMOV                                      // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::PAT                                       // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::PSE36                                     // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::CLFSH                                     // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::MMX                                       // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::FXSR                                      // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::SSE                                       // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::SSE2                                      // Commented due to value variation
-            //                                                                                      , DmiProcessorFeatureFlag::SS),              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->processorVersion.id                               == 3,                                                 NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->voltage.modeType                                  == DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->voltage.value                                     == 18,                                                NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->voltage.value8                                    == 0x92,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->externalClock                                     == 100,                                               NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->maxSpeed                                          == 2000,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->currentSpeed                                      == 2000,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->processorStatusAndSocketPopulated.status          == DmiProcessorStatus::ENABLED,                       NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->processorStatusAndSocketPopulated.socketPopulated == 1,                                                 NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->processorStatusAndSocketPopulated.value8          == 0x41,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->processorUpgrade                                  == DmiProcessorUpgrade::OTHER,                        NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->processorId.signature.extendedModel               == 3,                                                 NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->processorId.signature.extendedFamily              == 0,                                                 NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->processorId.signature.value32                     == 0x00000000,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->processorId.featureFlags                          == FLAGS(DmiProcessorFeatureFlag::FPU
+            //                                                                                      , DmiProcessorFeatureFlag::VME
+            //                                                                                      , DmiProcessorFeatureFlag::DE
+            //                                                                                      , DmiProcessorFeatureFlag::PSE
+            //                                                                                      , DmiProcessorFeatureFlag::TSC
+            //                                                                                      , DmiProcessorFeatureFlag::MSR
+            //                                                                                      , DmiProcessorFeatureFlag::PAE
+            //                                                                                      , DmiProcessorFeatureFlag::MCE
+            //                                                                                      , DmiProcessorFeatureFlag::CX8
+            //                                                                                      , DmiProcessorFeatureFlag::APIC
+            //                                                                                      , DmiProcessorFeatureFlag::SEP
+            //                                                                                      , DmiProcessorFeatureFlag::MTRR
+            //                                                                                      , DmiProcessorFeatureFlag::PGE
+            //                                                                                      , DmiProcessorFeatureFlag::MCA
+            //                                                                                      , DmiProcessorFeatureFlag::CMOV
+            //                                                                                      , DmiProcessorFeatureFlag::PAT
+            //                                                                                      , DmiProcessorFeatureFlag::PSE36
+            //                                                                                      , DmiProcessorFeatureFlag::CLFSH
+            //                                                                                      , DmiProcessorFeatureFlag::MMX
+            //                                                                                      , DmiProcessorFeatureFlag::FXSR
+            //                                                                                      , DmiProcessorFeatureFlag::SSE
+            //                                                                                      , DmiProcessorFeatureFlag::SSE2
+            //                                                                                      , DmiProcessorFeatureFlag::SS),              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->processorVersion.id                               == 3,                                                 NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->voltage.modeType                                  == DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->voltage.value                                     == 18,                                                NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->voltage.value8                                    == 0x92,                                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->externalClock                                     == 100,                                               NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->maxSpeed                                          == 2000,                                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->currentSpeed                                      == 2000,                                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->processorStatusAndSocketPopulated.status          == DmiProcessorStatus::ENABLED,                       NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->processorStatusAndSocketPopulated.socketPopulated == 1,                                                 NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->processorStatusAndSocketPopulated.value8          == 0x41,                                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->processorUpgrade                                  == DmiProcessorUpgrade::OTHER,                        NgosStatus::ASSERTION);
             // Ignore CppAlignmentVerifier [END]
 
-            if (entryV21)
+            if (entryV21 != nullptr)
             {
-                // COMMON_TEST_ASSERT(entryV21->l1CacheHandle == 0xFFFF, NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->l2CacheHandle == 0xFFFF, NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->l3CacheHandle == 0xFFFF, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entryV21->l1CacheHandle == 0xFFFF, NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV21->l2CacheHandle == 0xFFFF, NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV21->l3CacheHandle == 0xFFFF, NgosStatus::ASSERTION);
 
-                if (entryV23)
+                if (entryV23 != nullptr)
                 {
-                    // COMMON_TEST_ASSERT(entryV23->serialNumber.id == 4, NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV23->assetTag.id     == 5, NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV23->partNumber.id   == 6, NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entryV23->serialNumber.id == 4, NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV23->assetTag.id     == 5, NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV23->partNumber.id   == 6, NgosStatus::ASSERTION);
 
-                    if (entryV25)
+                    if (entryV25 != nullptr)
                     {
-                        // COMMON_TEST_ASSERT(entryV25->coreCount                == 0x02,                                                   NgosStatus::ASSERTION); // Commented due to value variation
-                        // COMMON_TEST_ASSERT(entryV25->enabledCoreCount         == 0x02,                                                   NgosStatus::ASSERTION); // Commented due to value variation
-                        // COMMON_TEST_ASSERT(entryV25->threadCount              == 0x02,                                                   NgosStatus::ASSERTION); // Commented due to value variation
-                        // COMMON_TEST_ASSERT(entryV25->processorCharacteristics == FLAGS(DmiProcessorCharacteristicsFlag::SUPPORT_64_BIT), NgosStatus::ASSERTION); // Commented due to value variation
+                        // COMMON_TEST_ASSERT(entryV25->coreCount                == 0x02,                                                   NgosStatus::ASSERTION);
+                        // COMMON_TEST_ASSERT(entryV25->enabledCoreCount         == 0x02,                                                   NgosStatus::ASSERTION);
+                        // COMMON_TEST_ASSERT(entryV25->threadCount              == 0x02,                                                   NgosStatus::ASSERTION);
+                        // COMMON_TEST_ASSERT(entryV25->processorCharacteristics == FLAGS(DmiProcessorCharacteristicsFlag::SUPPORT_64_BIT), NgosStatus::ASSERTION);
 
-                        if (entryV26)
+                        if (entryV26 != nullptr)
                         {
-                            // COMMON_TEST_ASSERT(entryV26->processorFamily2 == DmiProcessorFamily2::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+                            // COMMON_TEST_ASSERT(entryV26->processorFamily2 == DmiProcessorFamily2::OTHER, NgosStatus::ASSERTION);
 
-                            if (entryV30)
+                            if (entryV30 != nullptr)
                             {
-                                // COMMON_TEST_ASSERT(entryV30->coreCount2        == 0x0002, NgosStatus::ASSERTION); // Commented due to value variation
-                                // COMMON_TEST_ASSERT(entryV30->enabledCoreCount2 == 0x0002, NgosStatus::ASSERTION); // Commented due to value variation
-                                // COMMON_TEST_ASSERT(entryV30->threadCount2      == 0x0002, NgosStatus::ASSERTION); // Commented due to value variation
+                                // COMMON_TEST_ASSERT(entryV30->coreCount2        == 0x0002, NgosStatus::ASSERTION);
+                                // COMMON_TEST_ASSERT(entryV30->enabledCoreCount2 == 0x0002, NgosStatus::ASSERTION);
+                                // COMMON_TEST_ASSERT(entryV30->threadCount2      == 0x0002, NgosStatus::ASSERTION);
 
                                 COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiProcessorEntryV30), NgosStatus::ASSERTION);
                             }
@@ -1623,7 +1629,7 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         DmiStringId assetTagStringId;
         DmiStringId partNumberStringId;
 
-        if (entryV23)
+        if (entryV23 != nullptr)
         {
             serialNumberStringId = entryV23->serialNumber;
             assetTagStringId     = entryV23->assetTag;
@@ -1646,8 +1652,8 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
             partNumberStringId.id
            )
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -1713,8 +1719,8 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -1758,14 +1764,14 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
             COMMON_LVVV(("entry->supportedSramType                  = %s",     flagsToFullString(entry->supportedSramType)));
             COMMON_LVVV(("entry->currentSramType                    = %s",     flagsToFullString(entry->currentSramType)));
 
-            if (entryV21)
+            if (entryV21 != nullptr)
             {
                 COMMON_LVVV(("entryV21->cacheSpeed          = %u", entryV21->cacheSpeed));
                 COMMON_LVVV(("entryV21->errorCorrectionType = %s", enumToFullString(entryV21->errorCorrectionType)));
                 COMMON_LVVV(("entryV21->systemCacheType     = %s", enumToFullString(entryV21->systemCacheType)));
                 COMMON_LVVV(("entryV21->associativity       = %s", enumToFullString(entryV21->associativity)));
 
-                if (entryV31)
+                if (entryV31 != nullptr)
                 {
                     COMMON_LVVV(("entryV31->maximumCacheSize2.value       = %u",     entryV31->maximumCacheSize2.value));
                     COMMON_LVVV(("entryV31->maximumCacheSize2.granularity = %s",     enumToFullString((DmiCacheSizeGranularity)entryV31->maximumCacheSize2.granularity)));
@@ -1783,37 +1789,37 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->socketDesignation.id               == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->cacheConfiguration.level           == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->cacheConfiguration.socketed        == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->cacheConfiguration.location        == DmiCacheLocation::UNKNOWN,                      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->cacheConfiguration.enabled         == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->cacheConfiguration.operationalMode == DmiCacheOperationalMode::UNKNOWN,               NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->cacheConfiguration.value16         == 0x0000,                                         NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->maximumCacheSize.value             == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->maximumCacheSize.granularity       == DmiCacheSizeGranularity::_1_KILOBYTE,           NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->maximumCacheSize.value16           == 0x0000,                                         NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->installedSize.value                == 0,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->installedSize.granularity          == DmiCacheSizeGranularity::_1_KILOBYTE,           NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->installedSize.value16              == 0x0000,                                         NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->supportedSramType                  == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->currentSramType                    == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->socketDesignation.id               == 0,                                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->cacheConfiguration.level           == 0,                                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->cacheConfiguration.socketed        == 0,                                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->cacheConfiguration.location        == DmiCacheLocation::UNKNOWN,                      NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->cacheConfiguration.enabled         == 0,                                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->cacheConfiguration.operationalMode == DmiCacheOperationalMode::UNKNOWN,               NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->cacheConfiguration.value16         == 0x0000,                                         NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->maximumCacheSize.value             == 0,                                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->maximumCacheSize.granularity       == DmiCacheSizeGranularity::_1_KILOBYTE,           NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->maximumCacheSize.value16           == 0x0000,                                         NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->installedSize.value                == 0,                                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->installedSize.granularity          == DmiCacheSizeGranularity::_1_KILOBYTE,           NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->installedSize.value16              == 0x0000,                                         NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->supportedSramType                  == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->currentSramType                    == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION);
 
-            if (entryV21)
+            if (entryV21 != nullptr)
             {
-                // COMMON_TEST_ASSERT(entryV21->cacheSpeed          == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->errorCorrectionType == DmiCacheErrorCorrectionType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->systemCacheType     == DmiCacheType::OTHER,                NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV21->associativity       == DmiCacheAssociativity::OTHER,       NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entryV21->cacheSpeed          == 0,                                  NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV21->errorCorrectionType == DmiCacheErrorCorrectionType::OTHER, NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV21->systemCacheType     == DmiCacheType::OTHER,                NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV21->associativity       == DmiCacheAssociativity::OTHER,       NgosStatus::ASSERTION);
 
-                if (entryV31)
+                if (entryV31 != nullptr)
                 {
-                    // COMMON_TEST_ASSERT(entryV31->maximumCacheSize2.value       == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV31->maximumCacheSize2.granularity == DmiCacheSizeGranularity::_1_KILOBYTE, NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV31->maximumCacheSize2.value32     == 0x00000000,                           NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV31->installedSize2.value          == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV31->installedSize2.granularity    == DmiCacheSizeGranularity::_1_KILOBYTE, NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV31->installedSize2.value32        == 0x00000000,                           NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entryV31->maximumCacheSize2.value       == 1,                                    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV31->maximumCacheSize2.granularity == DmiCacheSizeGranularity::_1_KILOBYTE, NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV31->maximumCacheSize2.value32     == 0x00000000,                           NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV31->installedSize2.value          == 1,                                    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV31->installedSize2.granularity    == DmiCacheSizeGranularity::_1_KILOBYTE, NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV31->installedSize2.value32        == 0x00000000,                           NgosStatus::ASSERTION);
 
                     COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCacheEntryV31), NgosStatus::ASSERTION);
                 }
@@ -1835,8 +1841,8 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
     {
         if (entry->socketDesignation.id)
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -1877,8 +1883,8 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -1910,11 +1916,11 @@ NgosStatus DMI::saveDmiPortConnectorEntry(DmiPortConnectorEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->internalReferenceDesignator.id == 1,                               NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->internalConnectorType          == DmiPortConnectorType::OTHER,     NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->externalReferenceDesignator.id == 2,                               NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->externalConnectorType          == DmiPortConnectorType::OTHER,     NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->portType                       == DmiPortConnectorPortType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->internalReferenceDesignator.id == 1,                               NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->internalConnectorType          == DmiPortConnectorType::OTHER,     NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->externalReferenceDesignator.id == 2,                               NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->externalConnectorType          == DmiPortConnectorType::OTHER,     NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->portType                       == DmiPortConnectorPortType::OTHER, NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPortConnectorEntry), NgosStatus::ASSERTION);
         }
@@ -1930,8 +1936,8 @@ NgosStatus DMI::saveDmiPortConnectorEntry(DmiPortConnectorEntry *entry)
             entry->externalReferenceDesignator.id
            )
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -1977,8 +1983,8 @@ NgosStatus DMI::saveDmiPortConnectorEntry(DmiPortConnectorEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -2012,7 +2018,7 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
             COMMON_LVVV(("entry->slotID              = 0x%04X", entry->slotID));
             COMMON_LVVV(("entry->slotCharacteristics = %s",     flagsToFullString(entry->slotCharacteristics)));
 
-            if (entryV26)
+            if (entryV26 != nullptr)
             {
                 COMMON_LVVV(("entryV26->segmentGroupNumber                           = %u",     entryV26->segmentGroupNumber));
                 COMMON_LVVV(("entryV26->busNumber                                    = %u",     entryV26->busNumber));
@@ -2020,7 +2026,7 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
                 COMMON_LVVV(("entryV26->functionNumberAndDeviceNumber.deviceNumber   = %u",     entryV26->functionNumberAndDeviceNumber.deviceNumber));
                 COMMON_LVVV(("entryV26->functionNumberAndDeviceNumber.value8         = 0x%02X", entryV26->functionNumberAndDeviceNumber.value8));
 
-                if (entryV32)
+                if (entryV32 != nullptr)
                 {
                     COMMON_LVVV(("entryV32->dataBusWidth      = %u", entryV32->dataBusWidth));
                     COMMON_LVVV(("entryV32->peerGroupingCount = %u", entryV32->peerGroupingCount));
@@ -2054,32 +2060,32 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->slotDesignation.id  == 1,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->slotType            == DmiSystemSlotsType::UNKNOWN,                    NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->slotDataBusWidth    == DmiSystemSlotsDataBusWidth::UNKNOWN,            NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->currentUsage        == DmiSystemSlotsUsage::AVAILABLE,                 NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->slotLength          == DmiSystemSlotsLength::UNKNOWN,                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->slotID              == 0x0001,                                         NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->slotCharacteristics == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->slotDesignation.id  == 1,                                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->slotType            == DmiSystemSlotsType::UNKNOWN,                    NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->slotDataBusWidth    == DmiSystemSlotsDataBusWidth::UNKNOWN,            NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->currentUsage        == DmiSystemSlotsUsage::AVAILABLE,                 NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->slotLength          == DmiSystemSlotsLength::UNKNOWN,                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->slotID              == 0x0001,                                         NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->slotCharacteristics == FLAGS(DmiSystemSlotsCharacteristicsFlag::NONE), NgosStatus::ASSERTION);
 
-            if (entryV26)
+            if (entryV26 != nullptr)
             {
-                // COMMON_TEST_ASSERT(entryV26->segmentGroupNumber                           == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV26->busNumber                                    == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV26->functionNumberAndDeviceNumber.functionNumber == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV26->functionNumberAndDeviceNumber.deviceNumber   == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV26->functionNumberAndDeviceNumber.value8         == 0x00, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entryV26->segmentGroupNumber                           == 1,    NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV26->busNumber                                    == 1,    NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV26->functionNumberAndDeviceNumber.functionNumber == 1,    NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV26->functionNumberAndDeviceNumber.deviceNumber   == 1,    NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV26->functionNumberAndDeviceNumber.value8         == 0x00, NgosStatus::ASSERTION);
 
-                if (entryV32)
+                if (entryV32 != nullptr)
                 {
-                    // COMMON_TEST_ASSERT(entryV32->dataBusWidth                                               == 0,    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV32->peerGroupingCount                                          == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV32->peerGroups[0].segmentGroupNumber                           == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV32->peerGroups[0].busNumber                                    == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV32->peerGroups[0].functionNumberAndDeviceNumber.functionNumber == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV32->peerGroups[0].functionNumberAndDeviceNumber.deviceNumber   == 1,    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV32->peerGroups[0].functionNumberAndDeviceNumber.value8         == 0x00, NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV32->peerGroups[0].dataBusWidth                                 == 0,    NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entryV32->dataBusWidth                                               == 0,    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV32->peerGroupingCount                                          == 1,    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV32->peerGroups[0].segmentGroupNumber                           == 1,    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV32->peerGroups[0].busNumber                                    == 1,    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV32->peerGroups[0].functionNumberAndDeviceNumber.functionNumber == 1,    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV32->peerGroups[0].functionNumberAndDeviceNumber.deviceNumber   == 1,    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV32->peerGroups[0].functionNumberAndDeviceNumber.value8         == 0x00, NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV32->peerGroups[0].dataBusWidth                                 == 0,    NgosStatus::ASSERTION);
 
                     COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemSlotsEntryV32) + entryV32->peerGroupingCount * sizeof(DmiSystemSlotsPeerGroup), NgosStatus::ASSERTION);
                 }
@@ -2101,8 +2107,8 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
     {
         if (entry->slotDesignation.id)
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -2143,8 +2149,8 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -2192,11 +2198,11 @@ NgosStatus DMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry)
 
         // Check variables
         {
-            COMMON_TEST_ASSERT(count                                                                             >  0,                                    NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT((DmiOnboardDevicesDeviceType)entry->devices[0].deviceTypeAndEnabled.deviceType == DmiOnboardDevicesDeviceType::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->devices[0].deviceTypeAndEnabled.enabled                                 == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->devices[0].deviceTypeAndEnabled.value8                                  == 0x00,                                 NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->devices[0].description.id                                               == 1,                                    NgosStatus::ASSERTION); // Commented due to value variation
+            COMMON_TEST_ASSERT(count                                                                             >  0,                                    NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT((DmiOnboardDevicesDeviceType)entry->devices[0].deviceTypeAndEnabled.deviceType == DmiOnboardDevicesDeviceType::UNKNOWN, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->devices[0].deviceTypeAndEnabled.enabled                                 == 1,                                    NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->devices[0].deviceTypeAndEnabled.value8                                  == 0x00,                                 NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->devices[0].description.id                                               == 1,                                    NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiOnboardDevicesEntry) + sizeof(DmiOnboardDevicesDevice), NgosStatus::ASSERTION);
         }
@@ -2212,8 +2218,8 @@ NgosStatus DMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry)
             entry->devices[0].description.id
            )
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -2247,8 +2253,8 @@ NgosStatus DMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -2276,7 +2282,7 @@ NgosStatus DMI::saveDmiOemStringsEntry(DmiOemStringsEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->stringCount == 1, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->stringCount == 1, NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiOemStringsEntry), NgosStatus::ASSERTION);
         }
@@ -2288,8 +2294,8 @@ NgosStatus DMI::saveDmiOemStringsEntry(DmiOemStringsEntry *entry)
     {
         if (entry->stringCount > 0)
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -2327,8 +2333,8 @@ NgosStatus DMI::saveDmiOemStringsEntry(DmiOemStringsEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -2356,7 +2362,7 @@ NgosStatus DMI::saveDmiSystemConfigurationEntry(DmiSystemConfigurationEntry *ent
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->stringCount == 1, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->stringCount == 1, NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemConfigurationEntry), NgosStatus::ASSERTION);
         }
@@ -2368,8 +2374,8 @@ NgosStatus DMI::saveDmiSystemConfigurationEntry(DmiSystemConfigurationEntry *ent
     {
         if (entry->stringCount > 0)
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -2407,8 +2413,8 @@ NgosStatus DMI::saveDmiSystemConfigurationEntry(DmiSystemConfigurationEntry *ent
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -2438,9 +2444,9 @@ NgosStatus DMI::saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->installableLanguages == 1,                                 NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->flags                == FLAGS(DmiBiosLanguageFlags::NONE), NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->currentLanguage.id   == 1,                                 NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->installableLanguages == 1,                                 NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->flags                == FLAGS(DmiBiosLanguageFlags::NONE), NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->currentLanguage.id   == 1,                                 NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBiosLanguageEntry), NgosStatus::ASSERTION);
         }
@@ -2456,8 +2462,8 @@ NgosStatus DMI::saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entry)
             entry->currentLanguage.id
            )
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -2491,8 +2497,8 @@ NgosStatus DMI::saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -2540,10 +2546,10 @@ NgosStatus DMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->groupName.id    == 1,                  NgosStatus::ASSERTION); // Commented due to value variation
-            COMMON_TEST_ASSERT(count                     >  0,                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->items[0].type   == DmiEntryType::BIOS, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->items[0].handle == 0x0000,             NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->groupName.id    == 1,                  NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(count                     >  0,                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->items[0].type   == DmiEntryType::BIOS, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->items[0].handle == 0x0000,             NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiGroupAssociationsEntry) + sizeof(DmiGroupAssociationsItem), NgosStatus::ASSERTION);
         }
@@ -2555,8 +2561,8 @@ NgosStatus DMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry)
     {
         if (entry->groupName.id)
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -2597,8 +2603,8 @@ NgosStatus DMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -2631,7 +2637,7 @@ NgosStatus DMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *ent
             COMMON_LVVV(("entry->memoryErrorInformationHandle = 0x%04X", entry->memoryErrorInformationHandle));
             COMMON_LVVV(("entry->numberOfMemoryDevices        = %u",     entry->numberOfMemoryDevices));
 
-            if (entryV27)
+            if (entryV27 != nullptr)
             {
                 COMMON_LVVV(("entryV27->extendedMaximumCapacity = 0x%016llX", entryV27->extendedMaximumCapacity));
             }
@@ -2641,16 +2647,16 @@ NgosStatus DMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *ent
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->location                     == DmiPhysicalMemoryArrayLocation::OTHER,                NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->use                          == DmiPhysicalMemoryArrayUse::SYSTEM_MEMORY,             NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->memoryErrorCorrection        == DmiPhysicalMemoryArrayErrorCorrection::MULTI_BIT_ECC, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->maximumCapacity.value        == 0x00100000,                                           NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                                               NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->numberOfMemoryDevices        == 1,                                                    NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->location                     == DmiPhysicalMemoryArrayLocation::OTHER,                NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->use                          == DmiPhysicalMemoryArrayUse::SYSTEM_MEMORY,             NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->memoryErrorCorrection        == DmiPhysicalMemoryArrayErrorCorrection::MULTI_BIT_ECC, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->maximumCapacity.value        == 0x00100000,                                           NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                                               NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->numberOfMemoryDevices        == 1,                                                    NgosStatus::ASSERTION);
 
-            if (entryV27)
+            if (entryV27 != nullptr)
             {
-                // COMMON_TEST_ASSERT(entryV27->extendedMaximumCapacity == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entryV27->extendedMaximumCapacity == 0x0000000000000000, NgosStatus::ASSERTION);
 
                 COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntryV27), NgosStatus::ASSERTION);
             }
@@ -2663,8 +2669,8 @@ NgosStatus DMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *ent
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -2740,7 +2746,7 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry)
             COMMON_LVVV(("entry->memoryType                   = %s",     enumToFullString(entry->memoryType)));
             COMMON_LVVV(("entry->typeDetail                   = %s",     flagsToFullString(entry->typeDetail)));
 
-            if (entryV23)
+            if (entryV23 != nullptr)
             {
                 COMMON_LVVV(("entryV23->speed           = %u", entryV23->speed));
                 COMMON_LVVV(("entryV23->manufacturer.id = %u", entryV23->manufacturer.id));
@@ -2748,25 +2754,25 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry)
                 COMMON_LVVV(("entryV23->assetTag.id     = %u", entryV23->assetTag.id));
                 COMMON_LVVV(("entryV23->partNumber.id   = %u", entryV23->partNumber.id));
 
-                if (entryV26)
+                if (entryV26 != nullptr)
                 {
                     COMMON_LVVV(("entryV26->attributes.rank   = %u",     entryV26->attributes.rank));
                     COMMON_LVVV(("entryV26->attributes.value8 = 0x%02X", entryV26->attributes.value8));
 
-                    if (entryV27)
+                    if (entryV27 != nullptr)
                     {
                         COMMON_LVVV(("entryV27->extendedSize.value    = %u",     entryV27->extendedSize.value));
                         COMMON_LVVV(("entryV27->extendedSize.value32  = 0x%08X", entryV27->extendedSize.value32));
                         COMMON_LVVV(("entryV27->extendedSize          = %s",     bytesToString(entryV27->extendedSize.size())));
                         COMMON_LVVV(("entryV27->configuredMemorySpeed = %u",     entryV27->configuredMemorySpeed));
 
-                        if (entryV28)
+                        if (entryV28 != nullptr)
                         {
                             COMMON_LVVV(("entryV28->minimumVoltage    = %u", entryV28->minimumVoltage));
                             COMMON_LVVV(("entryV28->maximumVoltage    = %u", entryV28->maximumVoltage));
                             COMMON_LVVV(("entryV28->configuredVoltage = %u", entryV28->configuredVoltage));
 
-                            if (entryV32)
+                            if (entryV32 != nullptr)
                             {
                                 COMMON_LVVV(("entryV32->memoryTechnology                        = %s", enumToFullString(entryV32->memoryTechnology)));
                                 COMMON_LVVV(("entryV32->memoryOperatingModeCapability           = %s", flagsToFullString(entryV32->memoryOperatingModeCapability)));
@@ -2780,7 +2786,7 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry)
                                 COMMON_LVVV(("entryV32->cacheSize                               = %u", entryV32->cacheSize));
                                 COMMON_LVVV(("entryV32->logicalSize                             = %u", entryV32->logicalSize));
 
-                                if (entryV33)
+                                if (entryV33 != nullptr)
                                 {
                                     COMMON_LVVV(("entryV33->extendedSpeed                 = %u", entryV33->extendedSpeed));
                                     COMMON_LVVV(("entryV33->extendedConfiguredMemorySpeed = %u", entryV33->extendedConfiguredMemorySpeed));
@@ -2796,46 +2802,46 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->memoryArrayHandle            == 0x1000,                                      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                                      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->totalWidth                   == 64,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->dataWidth                    == 64,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->size.value                   == 1024,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->size.granularity             == DmiMemoryDeviceSizeGranularity::_1_MEGABYTE, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->size.value16                 == 0x0400,                                      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->formFactor                   == DmiMemoryDeviceFormFactor::DIMM,             NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->memoryArrayHandle            == 0x1000,                                      NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                                      NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->totalWidth                   == 64,                                          NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->dataWidth                    == 64,                                          NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->size.value                   == 1024,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->size.granularity             == DmiMemoryDeviceSizeGranularity::_1_MEGABYTE, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->size.value16                 == 0x0400,                                      NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->formFactor                   == DmiMemoryDeviceFormFactor::DIMM,             NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(entry->deviceSet                       == 0,                                           NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->deviceLocator.id             == 1,                                           NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->bankLocator.id               == 2,                                           NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->memoryType                   == DmiMemoryDeviceType::RAM,                    NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->typeDetail                   == FLAGS(DmiMemoryDeviceTypeDetailFlag::OTHER), NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->deviceLocator.id             == 1,                                           NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->bankLocator.id               == 2,                                           NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->memoryType                   == DmiMemoryDeviceType::RAM,                    NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->typeDetail                   == FLAGS(DmiMemoryDeviceTypeDetailFlag::OTHER), NgosStatus::ASSERTION);
 
-            if (entryV23)
+            if (entryV23 != nullptr)
             {
-                // COMMON_TEST_ASSERT(entryV23->speed           == 2133, NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV23->manufacturer.id == 3,    NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV23->serialNumber.id == 4,    NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV23->assetTag.id     == 5,    NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV23->partNumber.id   == 6,    NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entryV23->speed           == 2133, NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV23->manufacturer.id == 3,    NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV23->serialNumber.id == 4,    NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV23->assetTag.id     == 5,    NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV23->partNumber.id   == 6,    NgosStatus::ASSERTION);
 
-                if (entryV26)
+                if (entryV26 != nullptr)
                 {
-                    // COMMON_TEST_ASSERT(entryV26->attributes.rank   == 2,    NgosStatus::ASSERTION); // Commented due to value variation
-                    // COMMON_TEST_ASSERT(entryV26->attributes.value8 == 0x02, NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entryV26->attributes.rank   == 2,    NgosStatus::ASSERTION);
+                    // COMMON_TEST_ASSERT(entryV26->attributes.value8 == 0x02, NgosStatus::ASSERTION);
 
-                    if (entryV27)
+                    if (entryV27 != nullptr)
                     {
-                        // COMMON_TEST_ASSERT(entryV27->extendedSize.value    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-                        // COMMON_TEST_ASSERT(entryV27->extendedSize.value32  == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
-                        // COMMON_TEST_ASSERT(entryV27->configuredMemorySpeed == 2133,       NgosStatus::ASSERTION); // Commented due to value variation
+                        // COMMON_TEST_ASSERT(entryV27->extendedSize.value    == 0,          NgosStatus::ASSERTION);
+                        // COMMON_TEST_ASSERT(entryV27->extendedSize.value32  == 0x00000000, NgosStatus::ASSERTION);
+                        // COMMON_TEST_ASSERT(entryV27->configuredMemorySpeed == 2133,       NgosStatus::ASSERTION);
 
-                        if (entryV28)
+                        if (entryV28 != nullptr)
                         {
-                            // COMMON_TEST_ASSERT(entryV28->minimumVoltage    == 1200, NgosStatus::ASSERTION); // Commented due to value variation
-                            // COMMON_TEST_ASSERT(entryV28->maximumVoltage    == 1200, NgosStatus::ASSERTION); // Commented due to value variation
-                            // COMMON_TEST_ASSERT(entryV28->configuredVoltage == 1200, NgosStatus::ASSERTION); // Commented due to value variation
+                            // COMMON_TEST_ASSERT(entryV28->minimumVoltage    == 1200, NgosStatus::ASSERTION);
+                            // COMMON_TEST_ASSERT(entryV28->maximumVoltage    == 1200, NgosStatus::ASSERTION);
+                            // COMMON_TEST_ASSERT(entryV28->configuredVoltage == 1200, NgosStatus::ASSERTION);
 
-                            if (entryV32)
+                            if (entryV32 != nullptr)
                             {
                                 COMMON_TEST_ASSERT(entryV32->memoryTechnology                        == DmiMemoryDeviceTechnology::NONE,                         NgosStatus::ASSERTION);
                                 COMMON_TEST_ASSERT(entryV32->memoryOperatingModeCapability           == FLAGS(DmiMemoryDeviceOperatingModeCapabilityFlag::NONE), NgosStatus::ASSERTION);
@@ -2849,10 +2855,10 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry)
                                 COMMON_TEST_ASSERT(entryV32->cacheSize                               == 0,                                                       NgosStatus::ASSERTION);
                                 COMMON_TEST_ASSERT(entryV32->logicalSize                             == 0,                                                       NgosStatus::ASSERTION);
 
-                                if (entryV33)
+                                if (entryV33 != nullptr)
                                 {
-                                    // COMMON_TEST_ASSERT(entryV33->extendedSpeed                 == 0, NgosStatus::ASSERTION); // Commented due to value variation
-                                    // COMMON_TEST_ASSERT(entryV33->extendedConfiguredMemorySpeed == 0, NgosStatus::ASSERTION); // Commented due to value variation
+                                    // COMMON_TEST_ASSERT(entryV33->extendedSpeed                 == 0, NgosStatus::ASSERTION);
+                                    // COMMON_TEST_ASSERT(entryV33->extendedConfiguredMemorySpeed == 0, NgosStatus::ASSERTION);
 
                                     COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntryV33), NgosStatus::ASSERTION);
                                 }
@@ -2898,14 +2904,14 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry)
         DmiStringId partNumberStringId;
         DmiStringId firmwareVersionStringId;
 
-        if (entryV23)
+        if (entryV23 != nullptr)
         {
             manufacturerStringId = entryV23->manufacturer;
             serialNumberStringId = entryV23->serialNumber;
             assetTagStringId     = entryV23->assetTag;
             partNumberStringId   = entryV23->partNumber;
 
-            if (entryV32)
+            if (entryV32 != nullptr)
             {
                 firmwareVersionStringId = entryV32->firmwareVersion;
             }
@@ -2929,8 +2935,8 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry)
             firmwareVersionStringId.id
            )
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -3001,8 +3007,8 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -3044,13 +3050,13 @@ NgosStatus DMI::saveDmiBits32MemoryErrorInformationEntry(DmiBits32MemoryErrorInf
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->errorType               == DmiBits32MemoryErrorInformationErrorType::OK,             NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->errorGranularity        == DmiBits32MemoryErrorInformationErrorGranularity::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->errorOperation          == DmiBits32MemoryErrorInformationErrorOperation::UNKNOWN,   NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->vendorSyndrome          == 0x80000000,                                               NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->memoryArrayErrorAddress == 0x80000000,                                               NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->deviceErrorAddress      == 0x80000000,                                               NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->errorResolution         == 0x80000000,                                               NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->errorType               == DmiBits32MemoryErrorInformationErrorType::OK,             NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->errorGranularity        == DmiBits32MemoryErrorInformationErrorGranularity::UNKNOWN, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->errorOperation          == DmiBits32MemoryErrorInformationErrorOperation::UNKNOWN,   NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->vendorSyndrome          == 0x80000000,                                               NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->memoryArrayErrorAddress == 0x80000000,                                               NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->deviceErrorAddress      == 0x80000000,                                               NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->errorResolution         == 0x80000000,                                               NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBits32MemoryErrorInformationEntry), NgosStatus::ASSERTION);
         }
@@ -3058,8 +3064,8 @@ NgosStatus DMI::saveDmiBits32MemoryErrorInformationEntry(DmiBits32MemoryErrorInf
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -3089,7 +3095,7 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
             COMMON_LVVV(("entry->memoryArrayHandle     = 0x%04X", entry->memoryArrayHandle));
             COMMON_LVVV(("entry->partitionWidth        = %u",     entry->partitionWidth));
 
-            if (entryV27)
+            if (entryV27 != nullptr)
             {
                 COMMON_LVVV(("entryV27->extendedStartingAddress = 0x%016llX", entryV27->extendedStartingAddress));
                 COMMON_LVVV(("entryV27->extendedEndingAddress   = 0x%016llX", entryV27->extendedEndingAddress));
@@ -3100,15 +3106,15 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->startingAddress.value == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->endingAddress.value   == 0x000FFFFF, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->memoryArrayHandle     == 0x1000,     NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->partitionWidth        == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->startingAddress.value == 0x00000000, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->endingAddress.value   == 0x000FFFFF, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->memoryArrayHandle     == 0x1000,     NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->partitionWidth        == 1,          NgosStatus::ASSERTION);
 
-            if (entryV27)
+            if (entryV27 != nullptr)
             {
-                // COMMON_TEST_ASSERT(entryV27->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV27->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entryV27->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV27->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION);
 
                 COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntryV27), NgosStatus::ASSERTION);
             }
@@ -3121,8 +3127,8 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -3155,7 +3161,7 @@ NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddre
             COMMON_LVVV(("entry->interleavePosition             = %u",     entry->interleavePosition));
             COMMON_LVVV(("entry->interleavedDataDepth           = %u",     entry->interleavedDataDepth));
 
-            if (entryV27)
+            if (entryV27 != nullptr)
             {
                 COMMON_LVVV(("entryV27->extendedStartingAddress = 0x%016llX", entryV27->extendedStartingAddress));
                 COMMON_LVVV(("entryV27->extendedEndingAddress   = 0x%016llX", entryV27->extendedEndingAddress));
@@ -3166,18 +3172,18 @@ NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddre
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->startingAddress.value          == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->endingAddress.value            == 0x000FFFFF, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->memoryDeviceHandle             == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->memoryArrayMappedAddressHandle == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->partitionRowPosition           == 1,          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->interleavePosition             == 1,          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->interleavedDataDepth           == 1,          NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->startingAddress.value          == 0x00000000, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->endingAddress.value            == 0x000FFFFF, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->memoryDeviceHandle             == 0x0000,     NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->memoryArrayMappedAddressHandle == 0x0000,     NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->partitionRowPosition           == 1,          NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->interleavePosition             == 1,          NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->interleavedDataDepth           == 1,          NgosStatus::ASSERTION);
 
-            if (entryV27)
+            if (entryV27 != nullptr)
             {
-                // COMMON_TEST_ASSERT(entryV27->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV27->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entryV27->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV27->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION);
 
                 COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntryV27), NgosStatus::ASSERTION);
             }
@@ -3190,8 +3196,8 @@ NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddre
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -3229,7 +3235,7 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
             COMMON_LVVV(("entry->sbdsVersionNumber.id      = %u", entry->sbdsVersionNumber.id));
             COMMON_LVVV(("entry->maximumErrorInBatteryData = %u", entry->maximumErrorInBatteryData));
 
-            if (entryV22)
+            if (entryV22 != nullptr)
             {
                 COMMON_LVVV(("entryV22->sbdsSerialNumber            = %u",             entryV22->sbdsSerialNumber));
                 COMMON_LVVV(("entryV22->sbdsManufactureDate.date    = %u",             entryV22->sbdsManufactureDate.date));
@@ -3247,27 +3253,27 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->location.id               == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->manufacturer.id           == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->manufactureDate.id        == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->serialNumber.id           == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->deviceName.id             == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->deviceChemistry           == DmiPortableBatteryDeviceChemistry::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->designCapacity            == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->designVoltage             == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->sbdsVersionNumber.id      == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->maximumErrorInBatteryData == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->location.id               == 0,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->manufacturer.id           == 0,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->manufactureDate.id        == 0,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->serialNumber.id           == 0,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->deviceName.id             == 0,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->deviceChemistry           == DmiPortableBatteryDeviceChemistry::OTHER, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->designCapacity            == 0,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->designVoltage             == 0,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->sbdsVersionNumber.id      == 0,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->maximumErrorInBatteryData == 0,                                        NgosStatus::ASSERTION);
 
-            if (entryV22)
+            if (entryV22 != nullptr)
             {
-                // COMMON_TEST_ASSERT(entryV22->sbdsSerialNumber            == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.date    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.month   == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.year    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.value16 == 0x0000,     NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV22->sbdsDeviceChemistry.id      == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV22->designCapacityMultiplier    == 0,          NgosStatus::ASSERTION); // Commented due to value variation
-                // COMMON_TEST_ASSERT(entryV22->oemSpecific                 == 0x00000000, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entryV22->sbdsSerialNumber            == 0,          NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.date    == 0,          NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.month   == 0,          NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.year    == 0,          NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.value16 == 0x0000,     NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV22->sbdsDeviceChemistry.id      == 0,          NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV22->designCapacityMultiplier    == 0,          NgosStatus::ASSERTION);
+                // COMMON_TEST_ASSERT(entryV22->oemSpecific                 == 0x00000000, NgosStatus::ASSERTION);
 
                 COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntryV22), NgosStatus::ASSERTION);
             }
@@ -3284,7 +3290,7 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
     {
         DmiStringId sbdsDeviceChemistryStringId;
 
-        if (entryV22)
+        if (entryV22 != nullptr)
         {
             sbdsDeviceChemistryStringId = entryV22->sbdsDeviceChemistry;
         }
@@ -3307,8 +3313,8 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
             sbdsDeviceChemistryStringId.id
            )
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -3379,8 +3385,8 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -3420,15 +3426,15 @@ NgosStatus DMI::saveDmiSystemResetEntry(DmiSystemResetEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->capabilities.enabled           == 1,                                       NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->capabilities.bootOption        == DmiSystemResetBootOption::DO_NOT_REBOOT, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->capabilities.bootOptionOnLimit == DmiSystemResetBootOption::DO_NOT_REBOOT, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->capabilities.watchdogEnabled   == 1,                                       NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->capabilities.value8            == 0x3F,                                    NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->resetCount                     == 0xFFFF,                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->resetLimit                     == 0xFFFF,                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->timerInterval                  == 0xFFFF,                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->timeout                        == 0xFFFF,                                  NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->capabilities.enabled           == 1,                                       NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->capabilities.bootOption        == DmiSystemResetBootOption::DO_NOT_REBOOT, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->capabilities.bootOptionOnLimit == DmiSystemResetBootOption::DO_NOT_REBOOT, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->capabilities.watchdogEnabled   == 1,                                       NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->capabilities.value8            == 0x3F,                                    NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->resetCount                     == 0xFFFF,                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->resetLimit                     == 0xFFFF,                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->timerInterval                  == 0xFFFF,                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->timeout                        == 0xFFFF,                                  NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemResetEntry), NgosStatus::ASSERTION);
         }
@@ -3436,8 +3442,8 @@ NgosStatus DMI::saveDmiSystemResetEntry(DmiSystemResetEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -3471,11 +3477,11 @@ NgosStatus DMI::saveDmiHardwareSecurityEntry(DmiHardwareSecurityEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->settings.frontPanelResetStatus       == DmiHardwareSecurityStatus::UNKNOWN,  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->settings.administratorPasswordStatus == DmiHardwareSecurityStatus::ENABLED,  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->settings.keyboardPasswordStatus      == DmiHardwareSecurityStatus::UNKNOWN,  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->settings.powerOnPasswordStatus       == DmiHardwareSecurityStatus::DISABLED, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->settings.value8                      == 0x37,                                NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->settings.frontPanelResetStatus       == DmiHardwareSecurityStatus::UNKNOWN,  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->settings.administratorPasswordStatus == DmiHardwareSecurityStatus::ENABLED,  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->settings.keyboardPasswordStatus      == DmiHardwareSecurityStatus::UNKNOWN,  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->settings.powerOnPasswordStatus       == DmiHardwareSecurityStatus::DISABLED, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->settings.value8                      == 0x37,                                NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiHardwareSecurityEntry), NgosStatus::ASSERTION);
         }
@@ -3483,8 +3489,8 @@ NgosStatus DMI::saveDmiHardwareSecurityEntry(DmiHardwareSecurityEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -3520,17 +3526,17 @@ NgosStatus DMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->description.id             == 1,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiVoltageProbeLocation::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiVoltageProbeStatus::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.value8   == 0x00,                           NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->maximumValue               == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->minimumValue               == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->resolution                 == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->tolerance                  == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->accuracy                   == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->oemDefined                 == 0x00000000,                     NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->nominalValue               == 0,                              NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->description.id             == 1,                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiVoltageProbeLocation::OTHER, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiVoltageProbeStatus::OTHER,   NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->locationAndStatus.value8   == 0x00,                           NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->maximumValue               == 0,                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->minimumValue               == 0,                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->resolution                 == 0,                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->tolerance                  == 0,                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->accuracy                   == 0,                              NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->oemDefined                 == 0x00000000,                     NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->nominalValue               == 0,                              NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiVoltageProbeEntry), NgosStatus::ASSERTION);
         }
@@ -3542,8 +3548,8 @@ NgosStatus DMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry)
     {
         if (entry->description.id)
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -3584,8 +3590,8 @@ NgosStatus DMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -3618,7 +3624,7 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
             COMMON_LVVV(("entry->oemDefined                     = 0x%08X", entry->oemDefined));
             COMMON_LVVV(("entry->nominalSpeed                   = %u",     entry->nominalSpeed));
 
-            if (entryV27)
+            if (entryV27 != nullptr)
             {
                 COMMON_LVVV(("entryV27->description.id = %u", entryV27->description.id));
             }
@@ -3628,17 +3634,17 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->temperatureProbeHandle         == 0x0000,                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->deviceTypeAndStatus.deviceType == DmiCoolingDeviceType::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->deviceTypeAndStatus.status     == DmiCoolingDeviceStatus::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->deviceTypeAndStatus.value8     == 0x00,                          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->coolingUnitGroup               == 0,                             NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->oemDefined                     == 0x00000000,                    NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->nominalSpeed                   == 0,                             NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->temperatureProbeHandle         == 0x0000,                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->deviceTypeAndStatus.deviceType == DmiCoolingDeviceType::OTHER,   NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->deviceTypeAndStatus.status     == DmiCoolingDeviceStatus::OTHER, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->deviceTypeAndStatus.value8     == 0x00,                          NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->coolingUnitGroup               == 0,                             NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->oemDefined                     == 0x00000000,                    NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->nominalSpeed                   == 0,                             NgosStatus::ASSERTION);
 
-            if (entryV27)
+            if (entryV27 != nullptr)
             {
-                // COMMON_TEST_ASSERT(entryV27->description.id == 1, NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entryV27->description.id == 1, NgosStatus::ASSERTION);
 
                 COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntryV27), NgosStatus::ASSERTION);
             }
@@ -3655,7 +3661,7 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
     {
         DmiStringId descriptionStringId;
 
-        if (entryV27)
+        if (entryV27 != nullptr)
         {
             descriptionStringId = entryV27->description;
         }
@@ -3664,8 +3670,8 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
 
         if (descriptionStringId.id)
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -3706,8 +3712,8 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -3745,17 +3751,17 @@ NgosStatus DMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->description.id             == 1,                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiTemperatureProbeLocation::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiTemperatureProbeStatus::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.value8   == 0x00,                               NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->maximumValue               == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->minimumValue               == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->resolution                 == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->tolerance                  == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->accuracy                   == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->oemDefined                 == 0x00000000,                         NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->nominalValue               == 0,                                  NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->description.id             == 1,                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiTemperatureProbeLocation::OTHER, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiTemperatureProbeStatus::OTHER,   NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->locationAndStatus.value8   == 0x00,                               NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->maximumValue               == 0,                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->minimumValue               == 0,                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->resolution                 == 0,                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->tolerance                  == 0,                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->accuracy                   == 0,                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->oemDefined                 == 0x00000000,                         NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->nominalValue               == 0,                                  NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiTemperatureProbeEntry), NgosStatus::ASSERTION);
         }
@@ -3767,8 +3773,8 @@ NgosStatus DMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry)
     {
         if (entry->description.id)
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -3809,8 +3815,8 @@ NgosStatus DMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -3848,17 +3854,17 @@ NgosStatus DMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntr
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->description.id             == 1,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiElectricalCurrentProbeLocation::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiElectricalCurrentProbeStatus::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.value8   == 0x00,                                     NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->maximumValue               == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->minimumValue               == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->resolution                 == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->tolerance                  == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->accuracy                   == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->oemDefined                 == 0x00000000,                               NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->nominalValue               == 0,                                        NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->description.id             == 1,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiElectricalCurrentProbeLocation::OTHER, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiElectricalCurrentProbeStatus::OTHER,   NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->locationAndStatus.value8   == 0x00,                                     NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->maximumValue               == 0,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->minimumValue               == 0,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->resolution                 == 0,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->tolerance                  == 0,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->accuracy                   == 0,                                        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->oemDefined                 == 0x00000000,                               NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->nominalValue               == 0,                                        NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiElectricalCurrentProbeEntry), NgosStatus::ASSERTION);
         }
@@ -3870,8 +3876,8 @@ NgosStatus DMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntr
     {
         if (entry->description.id)
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -3912,8 +3918,8 @@ NgosStatus DMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntr
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -3955,8 +3961,8 @@ NgosStatus DMI::saveDmiOutOfBandRemoteAccessEntry(DmiOutOfBandRemoteAccessEntry 
     {
         if (entry->manufacturerName.id)
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -3997,8 +4003,8 @@ NgosStatus DMI::saveDmiOutOfBandRemoteAccessEntry(DmiOutOfBandRemoteAccessEntry 
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -4030,7 +4036,7 @@ NgosStatus DMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->bootStatus == DmiSystemBootStatus::NO_ERROR, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->bootStatus == DmiSystemBootStatus::NO_ERROR, NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemBootEntry), NgosStatus::ASSERTION);
         }
@@ -4038,8 +4044,8 @@ NgosStatus DMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -4075,13 +4081,13 @@ NgosStatus DMI::saveDmiBits64MemoryErrorInformationEntry(DmiBits64MemoryErrorInf
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->errorType               == DmiBits64MemoryErrorInformationErrorType::OK,             NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->errorGranularity        == DmiBits64MemoryErrorInformationErrorGranularity::UNKNOWN, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->errorOperation          == DmiBits64MemoryErrorInformationErrorOperation::UNKNOWN,   NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->vendorSyndrome          == 0x80000000,                                               NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->memoryArrayErrorAddress == 0x8000000000000000,                                       NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->deviceErrorAddress      == 0x8000000000000000,                                       NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->errorResolution         == 0x80000000,                                               NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->errorType               == DmiBits64MemoryErrorInformationErrorType::OK,             NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->errorGranularity        == DmiBits64MemoryErrorInformationErrorGranularity::UNKNOWN, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->errorOperation          == DmiBits64MemoryErrorInformationErrorOperation::UNKNOWN,   NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->vendorSyndrome          == 0x80000000,                                               NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->memoryArrayErrorAddress == 0x8000000000000000,                                       NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->deviceErrorAddress      == 0x8000000000000000,                                       NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->errorResolution         == 0x80000000,                                               NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBits64MemoryErrorInformationEntry), NgosStatus::ASSERTION);
         }
@@ -4089,8 +4095,8 @@ NgosStatus DMI::saveDmiBits64MemoryErrorInformationEntry(DmiBits64MemoryErrorInf
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -4119,10 +4125,10 @@ NgosStatus DMI::saveDmiManagementDeviceEntry(DmiManagementDeviceEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->description.id == 1,                                     NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->type           == DmiManagementDeviceType::OTHER,        NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->address        == 0x00000000,                            NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->addressType    == DmiManagementDeviceAddressType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->description.id == 1,                                     NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->type           == DmiManagementDeviceType::OTHER,        NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->address        == 0x00000000,                            NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->addressType    == DmiManagementDeviceAddressType::OTHER, NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceEntry), NgosStatus::ASSERTION);
         }
@@ -4134,8 +4140,8 @@ NgosStatus DMI::saveDmiManagementDeviceEntry(DmiManagementDeviceEntry *entry)
     {
         if (entry->description.id)
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -4176,8 +4182,8 @@ NgosStatus DMI::saveDmiManagementDeviceEntry(DmiManagementDeviceEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -4208,10 +4214,10 @@ NgosStatus DMI::saveDmiManagementDeviceComponentEntry(DmiManagementDeviceCompone
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->description.id         == 1,      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->managementDeviceHandle == 0x0000, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->componentHandle        == 0x0000, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->thresholdHandle        == 0x0000, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->description.id         == 1,      NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->managementDeviceHandle == 0x0000, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->componentHandle        == 0x0000, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->thresholdHandle        == 0x0000, NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceComponentEntry), NgosStatus::ASSERTION);
         }
@@ -4223,8 +4229,8 @@ NgosStatus DMI::saveDmiManagementDeviceComponentEntry(DmiManagementDeviceCompone
     {
         if (entry->description.id)
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -4265,8 +4271,8 @@ NgosStatus DMI::saveDmiManagementDeviceComponentEntry(DmiManagementDeviceCompone
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -4303,12 +4309,12 @@ NgosStatus DMI::saveDmiManagementDeviceThresholdDataEntry(DmiManagementDeviceThr
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->lowerThresholdNonCritical    == 0, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->upperThresholdNonCritical    == 0, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->lowerThresholdCritical       == 0, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->upperThresholdCritical       == 0, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->lowerThresholdNonRecoverable == 0, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->upperThresholdNonRecoverable == 0, NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->lowerThresholdNonCritical    == 0, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->upperThresholdNonCritical    == 0, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->lowerThresholdCritical       == 0, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->upperThresholdCritical       == 0, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->lowerThresholdNonRecoverable == 0, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->upperThresholdNonRecoverable == 0, NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceThresholdDataEntry), NgosStatus::ASSERTION);
         }
@@ -4316,8 +4322,8 @@ NgosStatus DMI::saveDmiManagementDeviceThresholdDataEntry(DmiManagementDeviceThr
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -4361,25 +4367,25 @@ NgosStatus DMI::saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry)
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->powerUnitGroup                                     == 0,                                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->location.id                                        == 1,                                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->deviceName.id                                      == 2,                                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->manufacturer.id                                    == 3,                                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->serialNumber.id                                    == 4,                                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->assetTagNumber.id                                  == 5,                                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->modelPartNumber.id                                 == 6,                                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->revisionLevel.id                                   == 7,                                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->maxPowerCapacity                                   == 0,                                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.hotReplaceable          == 0,                                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.present                 == 0,                                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.unplugged               == 0,                                                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.inputVoltageRangeSwitch == DmiSystemPowerSupplyInputVoltageRangeSwitch::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.status                  == DmiSystemPowerSupplyStatus::OTHER,                  NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.type                    == DmiSystemPowerSupplyType::OTHER,                    NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.value16                 == 0x0000,                                             NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->inputVoltageProbeHandle                            == 0x0000,                                             NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->coolingDeviceHandle                                == 0x0000,                                             NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->inputCurrentProbeHandle                            == 0x0000,                                             NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->powerUnitGroup                                     == 0,                                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->location.id                                        == 1,                                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->deviceName.id                                      == 2,                                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->manufacturer.id                                    == 3,                                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->serialNumber.id                                    == 4,                                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->assetTagNumber.id                                  == 5,                                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->modelPartNumber.id                                 == 6,                                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->revisionLevel.id                                   == 7,                                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->maxPowerCapacity                                   == 0,                                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.hotReplaceable          == 0,                                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.present                 == 0,                                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.unplugged               == 0,                                                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.inputVoltageRangeSwitch == DmiSystemPowerSupplyInputVoltageRangeSwitch::OTHER, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.status                  == DmiSystemPowerSupplyStatus::OTHER,                  NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.type                    == DmiSystemPowerSupplyType::OTHER,                    NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.value16                 == 0x0000,                                             NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->inputVoltageProbeHandle                            == 0x0000,                                             NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->coolingDeviceHandle                                == 0x0000,                                             NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->inputCurrentProbeHandle                            == 0x0000,                                             NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemPowerSupplyEntry), NgosStatus::ASSERTION);
         }
@@ -4405,8 +4411,8 @@ NgosStatus DMI::saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry)
             entry->revisionLevel.id
            )
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -4477,8 +4483,8 @@ NgosStatus DMI::saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -4531,12 +4537,12 @@ NgosStatus DMI::saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry 
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->numberOfAdditionalInformationEntries             == 1,      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->additionalInformationEntries[0].entryLength      == 6,      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->additionalInformationEntries[0].referencedHandle == 0x0000, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->additionalInformationEntries[0].referencedOffset == 1,      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->additionalInformationEntries[0].string.id        == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->additionalInformationEntries[0].value[0]         == 0x00,   NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->numberOfAdditionalInformationEntries             == 1,      NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->additionalInformationEntries[0].entryLength      == 6,      NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->additionalInformationEntries[0].referencedHandle == 0x0000, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->additionalInformationEntries[0].referencedOffset == 1,      NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->additionalInformationEntries[0].string.id        == 0,      NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->additionalInformationEntries[0].value[0]         == 0x00,   NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiAdditionalInformationEntry) + sizeof(DmiAdditionalInformation), NgosStatus::ASSERTION);
         }
@@ -4548,8 +4554,8 @@ NgosStatus DMI::saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry 
     {
         if (entry->numberOfAdditionalInformationEntries > 0)
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -4583,8 +4589,8 @@ NgosStatus DMI::saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry 
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -4621,16 +4627,16 @@ NgosStatus DMI::saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntr
 
         // Check variables
         {
-            // COMMON_TEST_ASSERT(entry->referenceDesignation.id                      == 1,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->deviceTypeAndEnabled.deviceType              == DmiOnboardDevicesExtendedDeviceType::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->deviceTypeAndEnabled.enabled                 == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->deviceTypeAndEnabled.value8                  == 0x00,                                       NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->deviceTypeInstance                           == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->segmentGroupNumber                           == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->busNumber                                    == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->functionNumberAndDeviceNumber.functionNumber == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->functionNumberAndDeviceNumber.deviceNumber   == 0,                                          NgosStatus::ASSERTION); // Commented due to value variation
-            // COMMON_TEST_ASSERT(entry->functionNumberAndDeviceNumber.value8         == 0x00,                                       NgosStatus::ASSERTION); // Commented due to value variation
+            // COMMON_TEST_ASSERT(entry->referenceDesignation.id                      == 1,                                          NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->deviceTypeAndEnabled.deviceType              == DmiOnboardDevicesExtendedDeviceType::OTHER, NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->deviceTypeAndEnabled.enabled                 == 0,                                          NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->deviceTypeAndEnabled.value8                  == 0x00,                                       NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->deviceTypeInstance                           == 0,                                          NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->segmentGroupNumber                           == 0,                                          NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->busNumber                                    == 0,                                          NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->functionNumberAndDeviceNumber.functionNumber == 0,                                          NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->functionNumberAndDeviceNumber.deviceNumber   == 0,                                          NgosStatus::ASSERTION);
+            // COMMON_TEST_ASSERT(entry->functionNumberAndDeviceNumber.value8         == 0x00,                                       NgosStatus::ASSERTION);
 
             COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiOnboardDevicesExtendedEntry), NgosStatus::ASSERTION);
         }
@@ -4642,8 +4648,8 @@ NgosStatus DMI::saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntr
     {
         if (entry->referenceDesignation.id)
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -4684,8 +4690,8 @@ NgosStatus DMI::saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntr
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -4731,8 +4737,8 @@ NgosStatus DMI::saveDmiInactiveEntry(DmiInactiveEntry *entry)
             ((u8 *)entry)[entry->header.length + 1] != 0
            )
         {
-            char8 *cur   = (char8 *)entry + entry->header.length;
-            char8 *begin = cur;
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+            good_Char8 *begin = cur;
 
             AVOID_UNUSED(begin);
 
@@ -4806,7 +4812,7 @@ NgosStatus DMI::storeDmiMemoryDevices()
 
                 // Set speed
                 {
-                    if (entryV23)
+                    if (entryV23 != nullptr)
                     {
                         if (entryV23->speed == DMI_MEMORY_DEVICE_SPEED_UNKNOWN)
                         {
@@ -4980,14 +4986,14 @@ NgosStatus DMI::storeDmiMemoryDevices()
                 DmiStringId partNumberStringId;
                 DmiStringId firmwareVersionStringId;
 
-                if (entryV23)
+                if (entryV23 != nullptr)
                 {
                     manufacturerStringId = entryV23->manufacturer;
                     serialNumberStringId = entryV23->serialNumber;
                     assetTagStringId     = entryV23->assetTag;
                     partNumberStringId   = entryV23->partNumber;
 
-                    if (entryV32)
+                    if (entryV32 != nullptr)
                     {
                         firmwareVersionStringId = entryV32->firmwareVersion;
                     }
@@ -5011,8 +5017,8 @@ NgosStatus DMI::storeDmiMemoryDevices()
                     firmwareVersionStringId.id
                    )
                 {
-                    char8 *cur   = (char8 *)entry + entry->header.length;
-                    char8 *begin = cur;
+                    good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
+                    good_Char8 *begin = cur;
 
                     AVOID_UNUSED(begin);
 
@@ -5068,8 +5074,8 @@ NgosStatus DMI::storeDmiMemoryDevices()
                 }
                 else
                 {
-                    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-                    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
                 }
             }
 

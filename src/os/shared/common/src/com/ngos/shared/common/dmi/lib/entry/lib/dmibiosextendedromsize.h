@@ -11,20 +11,20 @@
 
 struct DmiBiosExtendedRomSize
 {
-    u64 size()
+    good_U64 size()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
-        switch ((DmiBiosExtendedRomSizeUnit)unit)
+        switch (unit)
         {
-            case DmiBiosExtendedRomSizeUnit::MEGABYTES: return (u64)value * MB;
-            case DmiBiosExtendedRomSizeUnit::GIGABYTES: return (u64)value * GB;
+            case DmiBiosExtendedRomSizeUnit::MEGABYTES: return static_cast<good_U64>(value) * MB;
+            case DmiBiosExtendedRomSizeUnit::GIGABYTES: return static_cast<good_U64>(value) * GB;
 
             default:
             {
-                COMMON_LF(("Unknown BIOS extended rom size unit %s, %s:%u", enumToFullString((DmiBiosExtendedRomSizeUnit)unit), __FILE__, __LINE__));
+                COMMON_LF(("Unknown BIOS extended rom size unit %s, %s:%u", enumToFullString(unit), __FILE__, __LINE__));
 
                 return 0;
             }
@@ -42,11 +42,11 @@ struct DmiBiosExtendedRomSize
     {
         struct
         {
-            u16 value: 14;
-            u16 unit:  2;    // TODO: Use enum DmiBiosExtendedRomSizeUnit
+            good_U16                   value: 14;
+            DmiBiosExtendedRomSizeUnit unit:  2;
         };
 
-        u16 value16;
+        good_U16 value16;
     };
 } __attribute__((packed));
 

@@ -1,30 +1,30 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_DMIMEMORYDEVICE_H
-#define COM_NGOS_SHARED_COMMON_DMI_DMIMEMORYDEVICE_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydevicetype.h>
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-#define MEMORY_DEVICE_SIZE_UNKNOWN 0xFFFFFFFFFFFFFFFF
-
-
-
-struct DmiMemoryDevice
-{
-    DmiMemoryDeviceType  memoryType;
-    u32                  speed;
-    u64                  size;
-    u64                  start;
-    u64                  end;
-    const char8         *deviceLocator;
-    const char8         *manufacturer;
-    const char8         *serialNumber;
-    const char8         *partNumber;
-};
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_DMIMEMORYDEVICE_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_DMIMEMORYDEVICE_H                                                                                                                                                     // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_DMIMEMORYDEVICE_H                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemorydevicetype.h>                                                                                                                                // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define MEMORY_DEVICE_SIZE_UNKNOWN 0xFFFFFFFFFFFFFFFF                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiMemoryDevice                                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiMemoryDeviceType  memoryType;                                                                                                                                                                     // Colorize: green
+    good_U32             speed;                                                                                                                                                                          // Colorize: green
+    good_U64             size;                                                                                                                                                                           // Colorize: green
+    good_U64             start;                                                                                                                                                                          // Colorize: green
+    good_U64             end;                                                                                                                                                                            // Colorize: green
+    const good_Char8    *deviceLocator;                                                                                                                                                                  // Colorize: green
+    const good_Char8    *manufacturer;                                                                                                                                                                   // Colorize: green
+    const good_Char8    *serialNumber;                                                                                                                                                                   // Colorize: green
+    const good_Char8    *partNumber;                                                                                                                                                                     // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_DMIMEMORYDEVICE_H                                                                                                                                                   // Colorize: green

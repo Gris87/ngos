@@ -1,65 +1,65 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_DMIIDENTITY_H
-#define COM_NGOS_SHARED_COMMON_DMI_DMIIDENTITY_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiIdentity: u8
-{
-    BIOS_VENDOR,
-    BIOS_VERSION,
-    BIOS_RELEASE_DATE,
-    SYSTEM_MANUFACTURER,
-    SYSTEM_PRODUCT_NAME,
-    BASEBOARD_MANUFACTURER,
-    BASEBOARD_PRODUCT,
-    MAXIMUM
-};
-
-
-
-inline const char8* enumToString(DmiIdentity identity) // TEST: NO
-{
-    // COMMON_LT((" | identity = %u", identity)); // Commented to avoid bad looking logs
-
-
-
-    switch (identity)
-    {
-        case DmiIdentity::BIOS_VENDOR:            return "BIOS_VENDOR";
-        case DmiIdentity::BIOS_VERSION:           return "BIOS_VERSION";
-        case DmiIdentity::BIOS_RELEASE_DATE:      return "BIOS_RELEASE_DATE";
-        case DmiIdentity::SYSTEM_MANUFACTURER:    return "SYSTEM_MANUFACTURER";
-        case DmiIdentity::SYSTEM_PRODUCT_NAME:    return "SYSTEM_PRODUCT_NAME";
-        case DmiIdentity::BASEBOARD_MANUFACTURER: return "BASEBOARD_MANUFACTURER";
-        case DmiIdentity::BASEBOARD_PRODUCT:      return "BASEBOARD_PRODUCT";
-        case DmiIdentity::MAXIMUM:                return "MAXIMUM";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiIdentity identity) // TEST: NO
-{
-    // COMMON_LT((" | identity = %u", identity)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[30];
-
-    sprintf(res, "0x%02X (%s)", (u8)identity, enumToString(identity));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_DMIIDENTITY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_DMIIDENTITY_H                                                                                                                                                         // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_DMIIDENTITY_H                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiIdentity: u8                                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    BIOS_VENDOR,                                                                                                                                                                                         // Colorize: green
+    BIOS_VERSION,                                                                                                                                                                                        // Colorize: green
+    BIOS_RELEASE_DATE,                                                                                                                                                                                   // Colorize: green
+    SYSTEM_MANUFACTURER,                                                                                                                                                                                 // Colorize: green
+    SYSTEM_PRODUCT_NAME,                                                                                                                                                                                 // Colorize: green
+    BASEBOARD_MANUFACTURER,                                                                                                                                                                              // Colorize: green
+    BASEBOARD_PRODUCT,                                                                                                                                                                                   // Colorize: green
+    MAXIMUM                                                                                                                                                                                              // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiIdentity identity) // TEST: NO                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | identity = %u", identity)); // Commented to avoid bad looking logs                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (identity)                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiIdentity::BIOS_VENDOR:            return "BIOS_VENDOR";                                                                                                                                  // Colorize: green
+        case DmiIdentity::BIOS_VERSION:           return "BIOS_VERSION";                                                                                                                                 // Colorize: green
+        case DmiIdentity::BIOS_RELEASE_DATE:      return "BIOS_RELEASE_DATE";                                                                                                                            // Colorize: green
+        case DmiIdentity::SYSTEM_MANUFACTURER:    return "SYSTEM_MANUFACTURER";                                                                                                                          // Colorize: green
+        case DmiIdentity::SYSTEM_PRODUCT_NAME:    return "SYSTEM_PRODUCT_NAME";                                                                                                                          // Colorize: green
+        case DmiIdentity::BASEBOARD_MANUFACTURER: return "BASEBOARD_MANUFACTURER";                                                                                                                       // Colorize: green
+        case DmiIdentity::BASEBOARD_PRODUCT:      return "BASEBOARD_PRODUCT";                                                                                                                            // Colorize: green
+        case DmiIdentity::MAXIMUM:                return "MAXIMUM";                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiIdentity identity) // TEST: NO                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | identity = %u", identity)); // Commented to avoid bad looking logs                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[30];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)identity, enumToString(identity));                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_DMIIDENTITY_H                                                                                                                                                       // Colorize: green

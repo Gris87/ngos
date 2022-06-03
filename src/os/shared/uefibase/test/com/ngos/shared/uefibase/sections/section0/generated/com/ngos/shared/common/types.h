@@ -787,7 +787,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.value16 = 0x6567;
 
         TEST_ASSERT_EQUALS(temp.value, static_cast<u16>(9575));
-        TEST_ASSERT_EQUALS(temp.unit,  static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.unit,  static_cast<DmiBiosExtendedRomSizeUnit>(1));
 
 
 
@@ -801,7 +801,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  10   |        011010         |
         // |           10011000            |
-        temp.unit = static_cast<u16>(2);
+        temp.unit = static_cast<DmiBiosExtendedRomSizeUnit>(2);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x9A98);
     }
