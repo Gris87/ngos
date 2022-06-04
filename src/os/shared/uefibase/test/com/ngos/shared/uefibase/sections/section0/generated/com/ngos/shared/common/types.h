@@ -1053,20 +1053,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 110 | 01100 |
         temp.value8 = 0xCC;
 
-        TEST_ASSERT_EQUALS(temp.deviceType, static_cast<u8>(12));
-        TEST_ASSERT_EQUALS(temp.status,     static_cast<u8>(6));
+        TEST_ASSERT_EQUALS(temp.deviceType, static_cast<DmiCoolingDeviceType>(12));
+        TEST_ASSERT_EQUALS(temp.status,     static_cast<DmiCoolingDeviceStatus>(6));
 
 
 
         // | 110 | 10011 |
-        temp.deviceType = static_cast<u8>(19);
+        temp.deviceType = static_cast<DmiCoolingDeviceType>(19);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xD3);
 
 
 
         // | 001 | 10011 |
-        temp.status = static_cast<u8>(1);
+        temp.status = static_cast<DmiCoolingDeviceStatus>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x33);
     }
@@ -1092,20 +1092,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 101 | 01100 |
         temp.value8 = 0xAC;
 
-        TEST_ASSERT_EQUALS(temp.location, static_cast<u8>(12));
-        TEST_ASSERT_EQUALS(temp.status,   static_cast<u8>(5));
+        TEST_ASSERT_EQUALS(temp.location, static_cast<DmiElectricalCurrentProbeLocation>(12));
+        TEST_ASSERT_EQUALS(temp.status,   static_cast<DmiElectricalCurrentProbeStatus>(5));
 
 
 
         // | 101 | 10011 |
-        temp.location = static_cast<u8>(19);
+        temp.location = static_cast<DmiElectricalCurrentProbeLocation>(19);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xB3);
 
 
 
         // | 010 | 10011 |
-        temp.status = static_cast<u8>(2);
+        temp.status = static_cast<DmiElectricalCurrentProbeStatus>(2);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x53);
     }
@@ -1172,36 +1172,36 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 00 | 00 | 00 | 11 |
         temp.value8 = 0x03;
 
-        TEST_ASSERT_EQUALS(temp.frontPanelResetStatus,       static_cast<u8>(3));
-        TEST_ASSERT_EQUALS(temp.administratorPasswordStatus, static_cast<u8>(0));
-        TEST_ASSERT_EQUALS(temp.keyboardPasswordStatus,      static_cast<u8>(0));
-        TEST_ASSERT_EQUALS(temp.powerOnPasswordStatus,       static_cast<u8>(0));
+        TEST_ASSERT_EQUALS(temp.frontPanelResetStatus,       static_cast<DmiHardwareSecurityStatus>(3));
+        TEST_ASSERT_EQUALS(temp.administratorPasswordStatus, static_cast<DmiHardwareSecurityStatus>(0));
+        TEST_ASSERT_EQUALS(temp.keyboardPasswordStatus,      static_cast<DmiHardwareSecurityStatus>(0));
+        TEST_ASSERT_EQUALS(temp.powerOnPasswordStatus,       static_cast<DmiHardwareSecurityStatus>(0));
 
 
 
         // | 00 | 00 | 00 | 00 |
-        temp.frontPanelResetStatus = static_cast<u8>(0);
+        temp.frontPanelResetStatus = static_cast<DmiHardwareSecurityStatus>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x00);
 
 
 
         // | 00 | 00 | 11 | 00 |
-        temp.administratorPasswordStatus = static_cast<u8>(3);
+        temp.administratorPasswordStatus = static_cast<DmiHardwareSecurityStatus>(3);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x0C);
 
 
 
         // | 00 | 11 | 11 | 00 |
-        temp.keyboardPasswordStatus = static_cast<u8>(3);
+        temp.keyboardPasswordStatus = static_cast<DmiHardwareSecurityStatus>(3);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x3C);
 
 
 
         // | 11 | 11 | 11 | 00 |
-        temp.powerOnPasswordStatus = static_cast<u8>(3);
+        temp.powerOnPasswordStatus = static_cast<DmiHardwareSecurityStatus>(3);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xFC);
     }
@@ -1320,7 +1320,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.value16 = 0xF02D;
 
         TEST_ASSERT_EQUALS(temp.value,       static_cast<u16>(28717));
-        TEST_ASSERT_EQUALS(temp.granularity, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.granularity, static_cast<DmiMemoryDeviceSizeGranularity>(1));
 
 
 
@@ -1334,7 +1334,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |          0001111          |
         // |           11010010            |
-        temp.granularity = static_cast<u16>(0);
+        temp.granularity = static_cast<DmiMemoryDeviceSizeGranularity>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x0FD2);
     }
@@ -1399,13 +1399,13 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 0 | 0111111 |
         temp.value8 = 0x3F;
 
-        TEST_ASSERT_EQUALS(temp.deviceType, static_cast<u8>(63));
+        TEST_ASSERT_EQUALS(temp.deviceType, static_cast<DmiOnboardDevicesExtendedDeviceType>(63));
         TEST_ASSERT_EQUALS(temp.enabled,    static_cast<u8>(0));
 
 
 
         // | 0 | 1000000 |
-        temp.deviceType = static_cast<u8>(64);
+        temp.deviceType = static_cast<DmiOnboardDevicesExtendedDeviceType>(64);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x40);
 
@@ -1681,9 +1681,9 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(temp.hotReplaceable,          static_cast<u16>(0));
         TEST_ASSERT_EQUALS(temp.present,                 static_cast<u16>(0));
         TEST_ASSERT_EQUALS(temp.unplugged,               static_cast<u16>(1));
-        TEST_ASSERT_EQUALS(temp.inputVoltageRangeSwitch, static_cast<u16>(0));
-        TEST_ASSERT_EQUALS(temp.status,                  static_cast<u16>(4));
-        TEST_ASSERT_EQUALS(temp.type,                    static_cast<u16>(5));
+        TEST_ASSERT_EQUALS(temp.inputVoltageRangeSwitch, static_cast<DmiSystemPowerSupplyInputVoltageRangeSwitch>(0));
+        TEST_ASSERT_EQUALS(temp.status,                  static_cast<DmiSystemPowerSupplyStatus>(4));
+        TEST_ASSERT_EQUALS(temp.type,                    static_cast<DmiSystemPowerSupplyType>(5));
         TEST_ASSERT_EQUALS(temp.__reserved,              static_cast<u16>(1));
 
 
@@ -1714,7 +1714,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  01   |     0101      |  10   |
         // | 0 |     1111      | 0 | 1 | 1 |
-        temp.inputVoltageRangeSwitch = static_cast<u16>(15);
+        temp.inputVoltageRangeSwitch = static_cast<DmiSystemPowerSupplyInputVoltageRangeSwitch>(15);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x567B);
 
@@ -1722,7 +1722,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  01   |     0101      |  01   |
         // | 1 |     1111      | 0 | 1 | 1 |
-        temp.status = static_cast<u16>(3);
+        temp.status = static_cast<DmiSystemPowerSupplyStatus>(3);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x55FB);
 
@@ -1730,7 +1730,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |  01   |     1010      |  01   |
         // | 1 |     1111      | 0 | 1 | 1 |
-        temp.type = static_cast<u16>(10);
+        temp.type = static_cast<DmiSystemPowerSupplyType>(10);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x69FB);
 
@@ -1768,8 +1768,8 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.value8 = 0x9F;
 
         TEST_ASSERT_EQUALS(temp.enabled,           static_cast<u8>(1));
-        TEST_ASSERT_EQUALS(temp.bootOption,        static_cast<u8>(3));
-        TEST_ASSERT_EQUALS(temp.bootOptionOnLimit, static_cast<u8>(3));
+        TEST_ASSERT_EQUALS(temp.bootOption,        static_cast<DmiSystemResetBootOption>(3));
+        TEST_ASSERT_EQUALS(temp.bootOptionOnLimit, static_cast<DmiSystemResetBootOption>(3));
         TEST_ASSERT_EQUALS(temp.watchdogEnabled,   static_cast<u8>(0));
         TEST_ASSERT_EQUALS(temp.__reserved,        static_cast<u8>(2));
 
@@ -1783,14 +1783,14 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
 
         // | 10 | 0 | 11 | 00 | 0 |
-        temp.bootOption = static_cast<u8>(0);
+        temp.bootOption = static_cast<DmiSystemResetBootOption>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x98);
 
 
 
         // | 10 | 0 | 00 | 00 | 0 |
-        temp.bootOptionOnLimit = static_cast<u8>(0);
+        temp.bootOptionOnLimit = static_cast<DmiSystemResetBootOption>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x80);
 
@@ -1830,20 +1830,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 001 | 00100 |
         temp.value8 = 0x24;
 
-        TEST_ASSERT_EQUALS(temp.location, static_cast<u8>(4));
-        TEST_ASSERT_EQUALS(temp.status,   static_cast<u8>(1));
+        TEST_ASSERT_EQUALS(temp.location, static_cast<DmiTemperatureProbeLocation>(4));
+        TEST_ASSERT_EQUALS(temp.status,   static_cast<DmiTemperatureProbeStatus>(1));
 
 
 
         // | 001 | 11011 |
-        temp.location = static_cast<u8>(27);
+        temp.location = static_cast<DmiTemperatureProbeLocation>(27);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x3B);
 
 
 
         // | 110 | 11011 |
-        temp.status = static_cast<u8>(6);
+        temp.status = static_cast<DmiTemperatureProbeStatus>(6);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xDB);
     }
@@ -1869,20 +1869,20 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 000 | 10000 |
         temp.value8 = 0x10;
 
-        TEST_ASSERT_EQUALS(temp.location, static_cast<u8>(16));
-        TEST_ASSERT_EQUALS(temp.status,   static_cast<u8>(0));
+        TEST_ASSERT_EQUALS(temp.location, static_cast<DmiVoltageProbeLocation>(16));
+        TEST_ASSERT_EQUALS(temp.status,   static_cast<DmiVoltageProbeStatus>(0));
 
 
 
         // | 000 | 01111 |
-        temp.location = static_cast<u8>(15);
+        temp.location = static_cast<DmiVoltageProbeLocation>(15);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x0F);
 
 
 
         // | 111 | 01111 |
-        temp.status = static_cast<u8>(7);
+        temp.status = static_cast<DmiVoltageProbeStatus>(7);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xEF);
     }
