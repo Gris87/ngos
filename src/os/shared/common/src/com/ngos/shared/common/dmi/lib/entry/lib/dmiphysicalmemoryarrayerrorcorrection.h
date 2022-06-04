@@ -1,65 +1,65 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPHYSICALMEMORYARRAYERRORCORRECTION_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPHYSICALMEMORYARRAYERRORCORRECTION_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiPhysicalMemoryArrayErrorCorrection: u8
-{
-    NULL           = 0,
-    OTHER          = 1,
-    UNKNOWN        = 2,
-    NONE           = 3,
-    PARITY         = 4,
-    SINGLE_BIT_ECC = 5,
-    MULTI_BIT_ECC  = 6,
-    CRC            = 7
-};
-
-
-
-inline const char8* enumToString(DmiPhysicalMemoryArrayErrorCorrection correction) // TEST: NO
-{
-    // COMMON_LT((" | correction = %u", correction)); // Commented to avoid bad looking logs
-
-
-
-    switch (correction)
-    {
-        case DmiPhysicalMemoryArrayErrorCorrection::NULL:           return "NULL";
-        case DmiPhysicalMemoryArrayErrorCorrection::OTHER:          return "OTHER";
-        case DmiPhysicalMemoryArrayErrorCorrection::UNKNOWN:        return "UNKNOWN";
-        case DmiPhysicalMemoryArrayErrorCorrection::NONE:           return "NONE";
-        case DmiPhysicalMemoryArrayErrorCorrection::PARITY:         return "PARITY";
-        case DmiPhysicalMemoryArrayErrorCorrection::SINGLE_BIT_ECC: return "SINGLE_BIT_ECC";
-        case DmiPhysicalMemoryArrayErrorCorrection::MULTI_BIT_ECC:  return "MULTI_BIT_ECC";
-        case DmiPhysicalMemoryArrayErrorCorrection::CRC:            return "CRC";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiPhysicalMemoryArrayErrorCorrection correction) // TEST: NO
-{
-    // COMMON_LT((" | correction = %u", correction)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[22];
-
-    sprintf(res, "0x%02X (%s)", (u8)correction, enumToString(correction));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPHYSICALMEMORYARRAYERRORCORRECTION_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPHYSICALMEMORYARRAYERRORCORRECTION_H                                                                                                                     // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPHYSICALMEMORYARRAYERRORCORRECTION_H                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiPhysicalMemoryArrayErrorCorrection: u8                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NULL           = 0,                                                                                                                                                                                  // Colorize: green
+    OTHER          = 1,                                                                                                                                                                                  // Colorize: green
+    UNKNOWN        = 2,                                                                                                                                                                                  // Colorize: green
+    NONE           = 3,                                                                                                                                                                                  // Colorize: green
+    PARITY         = 4,                                                                                                                                                                                  // Colorize: green
+    SINGLE_BIT_ECC = 5,                                                                                                                                                                                  // Colorize: green
+    MULTI_BIT_ECC  = 6,                                                                                                                                                                                  // Colorize: green
+    CRC            = 7                                                                                                                                                                                   // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiPhysicalMemoryArrayErrorCorrection correction) // TEST: NO                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | correction = %u", correction)); // Commented to avoid bad looking logs                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (correction)                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiPhysicalMemoryArrayErrorCorrection::NULL:           return "NULL";                                                                                                                       // Colorize: green
+        case DmiPhysicalMemoryArrayErrorCorrection::OTHER:          return "OTHER";                                                                                                                      // Colorize: green
+        case DmiPhysicalMemoryArrayErrorCorrection::UNKNOWN:        return "UNKNOWN";                                                                                                                    // Colorize: green
+        case DmiPhysicalMemoryArrayErrorCorrection::NONE:           return "NONE";                                                                                                                       // Colorize: green
+        case DmiPhysicalMemoryArrayErrorCorrection::PARITY:         return "PARITY";                                                                                                                     // Colorize: green
+        case DmiPhysicalMemoryArrayErrorCorrection::SINGLE_BIT_ECC: return "SINGLE_BIT_ECC";                                                                                                             // Colorize: green
+        case DmiPhysicalMemoryArrayErrorCorrection::MULTI_BIT_ECC:  return "MULTI_BIT_ECC";                                                                                                              // Colorize: green
+        case DmiPhysicalMemoryArrayErrorCorrection::CRC:            return "CRC";                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiPhysicalMemoryArrayErrorCorrection correction) // TEST: NO                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | correction = %u", correction)); // Commented to avoid bad looking logs                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[22];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)correction, enumToString(correction));                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPHYSICALMEMORYARRAYERRORCORRECTION_H                                                                                                                   // Colorize: green

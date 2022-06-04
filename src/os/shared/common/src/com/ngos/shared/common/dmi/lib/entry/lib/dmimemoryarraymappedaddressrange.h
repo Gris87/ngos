@@ -1,29 +1,29 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYARRAYMAPPEDADDRESSRANGE_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYARRAYMAPPEDADDRESSRANGE_H
-
-
-
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/macro/constants.h>
-
-
-
-struct DmiMemoryArrayMappedAddressRange
-{
-    u64 address(u64 offset = 0)
-    {
-        // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-        return ((u64)value + offset) * KB;
-    }
-
-
-
-    u32 value;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYARRAYMAPPEDADDRESSRANGE_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYARRAYMAPPEDADDRESSRANGE_H                                                                                                                          // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYARRAYMAPPEDADDRESSRANGE_H                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/macro/constants.h>                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiMemoryArrayMappedAddressRange                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    inline good_U64 address(good_U64 offset = 0) const                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return (static_cast<good_U64>(value) + offset) * KB;                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    good_U32 value;                                                                                                                                                                                      // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYARRAYMAPPEDADDRESSRANGE_H                                                                                                                        // Colorize: green

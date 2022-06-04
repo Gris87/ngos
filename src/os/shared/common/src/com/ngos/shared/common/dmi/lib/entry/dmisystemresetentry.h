@@ -1,30 +1,30 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMISYSTEMRESETENTRY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMISYSTEMRESETENTRY_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystemresetcapabilities.h>
-
-
-
-#define DMI_SYSTEM_RESET_RESET_COUNT_UNKNOWN    0xFFFF
-#define DMI_SYSTEM_RESET_RESET_LIMIT_UNKNOWN    0xFFFF
-#define DMI_SYSTEM_RESET_TIMER_INTERVAL_UNKNOWN 0xFFFF
-#define DMI_SYSTEM_RESET_TIMEOUT_UNKNOWN        0xFFFF
-
-
-
-struct DmiSystemResetEntry
-{
-    DmiEntryHeader             header;
-    DmiSystemResetCapabilities capabilities;
-    u16                        resetCount;
-    u16                        resetLimit;
-    u16                        timerInterval;
-    u16                        timeout;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMISYSTEMRESETENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMISYSTEMRESETENTRY_H                                                                                                                                           // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMISYSTEMRESETENTRY_H                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystemresetcapabilities.h>                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define DMI_SYSTEM_RESET_RESET_COUNT_UNKNOWN    0xFFFF                                                                                                                                                   // Colorize: green
+#define DMI_SYSTEM_RESET_RESET_LIMIT_UNKNOWN    0xFFFF                                                                                                                                                   // Colorize: green
+#define DMI_SYSTEM_RESET_TIMER_INTERVAL_UNKNOWN 0xFFFF                                                                                                                                                   // Colorize: green
+#define DMI_SYSTEM_RESET_TIMEOUT_UNKNOWN        0xFFFF                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiSystemResetEntry                                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryHeader             header;                                                                                                                                                                   // Colorize: green
+    DmiSystemResetCapabilities capabilities;                                                                                                                                                             // Colorize: green
+    u16                        resetCount;                                                                                                                                                               // Colorize: green
+    u16                        resetLimit;                                                                                                                                                               // Colorize: green
+    u16                        timerInterval;                                                                                                                                                            // Colorize: green
+    u16                        timeout;                                                                                                                                                                  // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMISYSTEMRESETENTRY_H                                                                                                                                         // Colorize: green

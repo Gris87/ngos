@@ -1851,7 +1851,7 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)                         
                                                                                                                                                                                                          // Colorize: green
     // Get strings                                                                                                                                                                                       // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
-        if (entry->socketDesignation.id)                                                                                                                                                                 // Colorize: green
+        if (entry->socketDesignation.id > 0)                                                                                                                                                                 // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
             good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;                                                                                                            // Colorize: green
             good_Char8 *begin = cur;                                                                                                                                                                     // Colorize: green
@@ -2625,1886 +2625,1933 @@ NgosStatus DMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry) 
     return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-NgosStatus DMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    DmiPhysicalMemoryArrayEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntryV27) ? (DmiPhysicalMemoryArrayEntryV27 *)entry : nullptr;
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->location                     = %s",     enumToFullString(entry->location)));
-            COMMON_LVVV(("entry->use                          = %s",     enumToFullString(entry->use)));
-            COMMON_LVVV(("entry->memoryErrorCorrection        = %s",     enumToFullString(entry->memoryErrorCorrection)));
-            COMMON_LVVV(("entry->maximumCapacity.value        = 0x%08X", entry->maximumCapacity.value));
-            COMMON_LVVV(("entry->maximumCapacity              = %s",     bytesToString(entry->maximumCapacity.size())));
-            COMMON_LVVV(("entry->memoryErrorInformationHandle = 0x%04X", entry->memoryErrorInformationHandle));
-            COMMON_LVVV(("entry->numberOfMemoryDevices        = %u",     entry->numberOfMemoryDevices));
-
-            if (entryV27 != nullptr)
-            {
-                COMMON_LVVV(("entryV27->extendedMaximumCapacity = 0x%016llX", entryV27->extendedMaximumCapacity));
-            }
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->location                     == DmiPhysicalMemoryArrayLocation::OTHER,                NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->use                          == DmiPhysicalMemoryArrayUse::SYSTEM_MEMORY,             NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->memoryErrorCorrection        == DmiPhysicalMemoryArrayErrorCorrection::MULTI_BIT_ECC, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->maximumCapacity.value        == 0x00100000,                                           NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                                               NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->numberOfMemoryDevices        == 1,                                                    NgosStatus::ASSERTION);
-
-            if (entryV27 != nullptr)
-            {
-                // COMMON_TEST_ASSERT(entryV27->extendedMaximumCapacity == 0x0000000000000000, NgosStatus::ASSERTION);
-
-                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntryV27), NgosStatus::ASSERTION);
-            }
-            else
-            {
-                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntry), NgosStatus::ASSERTION);
-            }
-        }
-    }
-
-
-
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-
-
-
-    if (entry->use == DmiPhysicalMemoryArrayUse::SYSTEM_MEMORY)
-    {
-        // Set sSystemPhysicalMemoryArrayHandle
-        {
-            if (sSystemPhysicalMemoryArrayHandle != 0)
-            {
-                COMMON_LW(("Found 2 or more PHYSICAL_MEMORY_ARRAY entries with SYSTEM_MEMORY use"));
-            }
-
-            sSystemPhysicalMemoryArrayHandle = entry->header.handle;
-        }
-
-
-
-        // Set sSystemPhysicalMemoryArrayCapacity
-        {
-            if (
-                entry->maximumCapacity.value == DMI_PHYSICAL_MEMORY_ARRAY_MAXIMUM_CAPACITY_NEED_TO_EXTEND
-                &&
-                entryV27
-               )
-            {
-                sSystemPhysicalMemoryArrayCapacity = entryV27->extendedMaximumCapacity;
-            }
-            else
-            {
-                sSystemPhysicalMemoryArrayCapacity = entry->maximumCapacity.size();
-            }
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    DmiMemoryDeviceEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV23) ? (DmiMemoryDeviceEntryV23 *)entry : nullptr;
-    DmiMemoryDeviceEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV26) ? (DmiMemoryDeviceEntryV26 *)entry : nullptr;
-    DmiMemoryDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV27) ? (DmiMemoryDeviceEntryV27 *)entry : nullptr;
-    DmiMemoryDeviceEntryV28 *entryV28 = DMI::getVersion() >= DMI_VERSION(2, 8) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV28) ? (DmiMemoryDeviceEntryV28 *)entry : nullptr;
-    DmiMemoryDeviceEntryV32 *entryV32 = DMI::getVersion() >= DMI_VERSION(3, 2) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV32) ? (DmiMemoryDeviceEntryV32 *)entry : nullptr;
-    DmiMemoryDeviceEntryV33 *entryV33 = DMI::getVersion() >= DMI_VERSION(3, 3) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV33) ? (DmiMemoryDeviceEntryV33 *)entry : nullptr;
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->memoryArrayHandle            = 0x%04X", entry->memoryArrayHandle));
-            COMMON_LVVV(("entry->memoryErrorInformationHandle = 0x%04X", entry->memoryErrorInformationHandle));
-            COMMON_LVVV(("entry->totalWidth                   = %u",     entry->totalWidth));
-            COMMON_LVVV(("entry->dataWidth                    = %u",     entry->dataWidth));
-            COMMON_LVVV(("entry->size.value                   = %u",     entry->size.value));
-            COMMON_LVVV(("entry->size.granularity             = %s",     enumToFullString((DmiMemoryDeviceSizeGranularity)entry->size.granularity)));
-            COMMON_LVVV(("entry->size.value16                 = 0x%04X", entry->size.value16));
-            COMMON_LVVV(("entry->size                         = %s",     bytesToString(entry->size.size())));
-            COMMON_LVVV(("entry->formFactor                   = %s",     enumToFullString(entry->formFactor)));
-            COMMON_LVVV(("entry->deviceSet                    = %u",     entry->deviceSet));
-            COMMON_LVVV(("entry->deviceLocator.id             = %u",     entry->deviceLocator.id));
-            COMMON_LVVV(("entry->bankLocator.id               = %u",     entry->bankLocator.id));
-            COMMON_LVVV(("entry->memoryType                   = %s",     enumToFullString(entry->memoryType)));
-            COMMON_LVVV(("entry->typeDetail                   = %s",     flagsToFullString(entry->typeDetail)));
-
-            if (entryV23 != nullptr)
-            {
-                COMMON_LVVV(("entryV23->speed           = %u", entryV23->speed));
-                COMMON_LVVV(("entryV23->manufacturer.id = %u", entryV23->manufacturer.id));
-                COMMON_LVVV(("entryV23->serialNumber.id = %u", entryV23->serialNumber.id));
-                COMMON_LVVV(("entryV23->assetTag.id     = %u", entryV23->assetTag.id));
-                COMMON_LVVV(("entryV23->partNumber.id   = %u", entryV23->partNumber.id));
-
-                if (entryV26 != nullptr)
-                {
-                    COMMON_LVVV(("entryV26->attributes.rank   = %u",     entryV26->attributes.rank));
-                    COMMON_LVVV(("entryV26->attributes.value8 = 0x%02X", entryV26->attributes.value8));
-
-                    if (entryV27 != nullptr)
-                    {
-                        COMMON_LVVV(("entryV27->extendedSize.value    = %u",     entryV27->extendedSize.value));
-                        COMMON_LVVV(("entryV27->extendedSize.value32  = 0x%08X", entryV27->extendedSize.value32));
-                        COMMON_LVVV(("entryV27->extendedSize          = %s",     bytesToString(entryV27->extendedSize.size())));
-                        COMMON_LVVV(("entryV27->configuredMemorySpeed = %u",     entryV27->configuredMemorySpeed));
-
-                        if (entryV28 != nullptr)
-                        {
-                            COMMON_LVVV(("entryV28->minimumVoltage    = %u", entryV28->minimumVoltage));
-                            COMMON_LVVV(("entryV28->maximumVoltage    = %u", entryV28->maximumVoltage));
-                            COMMON_LVVV(("entryV28->configuredVoltage = %u", entryV28->configuredVoltage));
-
-                            if (entryV32 != nullptr)
-                            {
-                                COMMON_LVVV(("entryV32->memoryTechnology                        = %s", enumToFullString(entryV32->memoryTechnology)));
-                                COMMON_LVVV(("entryV32->memoryOperatingModeCapability           = %s", flagsToFullString(entryV32->memoryOperatingModeCapability)));
-                                COMMON_LVVV(("entryV32->firmwareVersion.id                      = %u", entryV32->firmwareVersion.id));
-                                COMMON_LVVV(("entryV32->moduleManufacturerID                    = %u", entryV32->moduleManufacturerID));
-                                COMMON_LVVV(("entryV32->moduleProductID                         = %u", entryV32->moduleProductID));
-                                COMMON_LVVV(("entryV32->memorySubsystemControllerManufacturerID = %u", entryV32->memorySubsystemControllerManufacturerID));
-                                COMMON_LVVV(("entryV32->memorySubsystemControllerProductID      = %u", entryV32->memorySubsystemControllerProductID));
-                                COMMON_LVVV(("entryV32->nonVolatileSize                         = %u", entryV32->nonVolatileSize));
-                                COMMON_LVVV(("entryV32->volatileSize                            = %u", entryV32->volatileSize));
-                                COMMON_LVVV(("entryV32->cacheSize                               = %u", entryV32->cacheSize));
-                                COMMON_LVVV(("entryV32->logicalSize                             = %u", entryV32->logicalSize));
-
-                                if (entryV33 != nullptr)
-                                {
-                                    COMMON_LVVV(("entryV33->extendedSpeed                 = %u", entryV33->extendedSpeed));
-                                    COMMON_LVVV(("entryV33->extendedConfiguredMemorySpeed = %u", entryV33->extendedConfiguredMemorySpeed));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->memoryArrayHandle            == 0x1000,                                      NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                                      NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->totalWidth                   == 64,                                          NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->dataWidth                    == 64,                                          NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->size.value                   == 1024,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->size.granularity             == DmiMemoryDeviceSizeGranularity::_1_MEGABYTE, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->size.value16                 == 0x0400,                                      NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->formFactor                   == DmiMemoryDeviceFormFactor::DIMM,             NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->deviceSet                       == 0,                                           NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->deviceLocator.id             == 1,                                           NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->bankLocator.id               == 2,                                           NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->memoryType                   == DmiMemoryDeviceType::RAM,                    NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->typeDetail                   == FLAGS(DmiMemoryDeviceTypeDetailFlag::OTHER), NgosStatus::ASSERTION);
-
-            if (entryV23 != nullptr)
-            {
-                // COMMON_TEST_ASSERT(entryV23->speed           == 2133, NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entryV23->manufacturer.id == 3,    NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entryV23->serialNumber.id == 4,    NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entryV23->assetTag.id     == 5,    NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entryV23->partNumber.id   == 6,    NgosStatus::ASSERTION);
-
-                if (entryV26 != nullptr)
-                {
-                    // COMMON_TEST_ASSERT(entryV26->attributes.rank   == 2,    NgosStatus::ASSERTION);
-                    // COMMON_TEST_ASSERT(entryV26->attributes.value8 == 0x02, NgosStatus::ASSERTION);
-
-                    if (entryV27 != nullptr)
-                    {
-                        // COMMON_TEST_ASSERT(entryV27->extendedSize.value    == 0,          NgosStatus::ASSERTION);
-                        // COMMON_TEST_ASSERT(entryV27->extendedSize.value32  == 0x00000000, NgosStatus::ASSERTION);
-                        // COMMON_TEST_ASSERT(entryV27->configuredMemorySpeed == 2133,       NgosStatus::ASSERTION);
-
-                        if (entryV28 != nullptr)
-                        {
-                            // COMMON_TEST_ASSERT(entryV28->minimumVoltage    == 1200, NgosStatus::ASSERTION);
-                            // COMMON_TEST_ASSERT(entryV28->maximumVoltage    == 1200, NgosStatus::ASSERTION);
-                            // COMMON_TEST_ASSERT(entryV28->configuredVoltage == 1200, NgosStatus::ASSERTION);
-
-                            if (entryV32 != nullptr)
-                            {
-                                COMMON_TEST_ASSERT(entryV32->memoryTechnology                        == DmiMemoryDeviceTechnology::NONE,                         NgosStatus::ASSERTION);
-                                COMMON_TEST_ASSERT(entryV32->memoryOperatingModeCapability           == FLAGS(DmiMemoryDeviceOperatingModeCapabilityFlag::NONE), NgosStatus::ASSERTION);
-                                COMMON_TEST_ASSERT(entryV32->firmwareVersion.id                      == 7,                                                       NgosStatus::ASSERTION);
-                                COMMON_TEST_ASSERT(entryV32->moduleManufacturerID                    == 0,                                                       NgosStatus::ASSERTION);
-                                COMMON_TEST_ASSERT(entryV32->moduleProductID                         == 0,                                                       NgosStatus::ASSERTION);
-                                COMMON_TEST_ASSERT(entryV32->memorySubsystemControllerManufacturerID == 0,                                                       NgosStatus::ASSERTION);
-                                COMMON_TEST_ASSERT(entryV32->memorySubsystemControllerProductID      == 0,                                                       NgosStatus::ASSERTION);
-                                COMMON_TEST_ASSERT(entryV32->nonVolatileSize                         == 0,                                                       NgosStatus::ASSERTION);
-                                COMMON_TEST_ASSERT(entryV32->volatileSize                            == 0,                                                       NgosStatus::ASSERTION);
-                                COMMON_TEST_ASSERT(entryV32->cacheSize                               == 0,                                                       NgosStatus::ASSERTION);
-                                COMMON_TEST_ASSERT(entryV32->logicalSize                             == 0,                                                       NgosStatus::ASSERTION);
-
-                                if (entryV33 != nullptr)
-                                {
-                                    // COMMON_TEST_ASSERT(entryV33->extendedSpeed                 == 0, NgosStatus::ASSERTION);
-                                    // COMMON_TEST_ASSERT(entryV33->extendedConfiguredMemorySpeed == 0, NgosStatus::ASSERTION);
-
-                                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntryV33), NgosStatus::ASSERTION);
-                                }
-                                else
-                                {
-                                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntryV32), NgosStatus::ASSERTION);
-                                }
-                            }
-                            else
-                            {
-                                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntryV28), NgosStatus::ASSERTION);
-                            }
-                        }
-                        else
-                        {
-                            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntryV27), NgosStatus::ASSERTION);
-                        }
-                    }
-                    else
-                    {
-                        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntryV26), NgosStatus::ASSERTION);
-                    }
-                }
-                else
-                {
-                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntryV23), NgosStatus::ASSERTION);
-                }
-            }
-            else
-            {
-                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntry), NgosStatus::ASSERTION);
-            }
-        }
-    }
-
-
-
-    // Get strings
-    {
-        DmiStringId manufacturerStringId;
-        DmiStringId serialNumberStringId;
-        DmiStringId assetTagStringId;
-        DmiStringId partNumberStringId;
-        DmiStringId firmwareVersionStringId;
-
-        if (entryV23 != nullptr)
-        {
-            manufacturerStringId = entryV23->manufacturer;
-            serialNumberStringId = entryV23->serialNumber;
-            assetTagStringId     = entryV23->assetTag;
-            partNumberStringId   = entryV23->partNumber;
-
-            if (entryV32 != nullptr)
-            {
-                firmwareVersionStringId = entryV32->firmwareVersion;
-            }
-        }
-
-
-
-        if (
-            entry->deviceLocator.id
-            ||
-            entry->bankLocator.id
-            ||
-            manufacturerStringId.id
-            ||
-            serialNumberStringId.id
-            ||
-            assetTagStringId.id
-            ||
-            partNumberStringId.id
-            ||
-            firmwareVersionStringId.id
-           )
-        {
-            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
-            good_Char8 *begin = cur;
-
-            AVOID_UNUSED(begin);
-
-            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
-
-
-
-            DmiStringId stringId;
-
-            do
-            {
-                if (cur[0] == 0)
-                {
-                    ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
-
-
-
-                    if (stringId == entry->deviceLocator)
-                    {
-                        COMMON_LVVV(("deviceLocator = %s", begin));
-                    }
-                    else
-                    if (stringId == entry->bankLocator)
-                    {
-                        COMMON_LVVV(("bankLocator = %s", begin));
-                    }
-                    else
-                    if (stringId == manufacturerStringId)
-                    {
-                        COMMON_LVVV(("manufacturer = %s", begin));
-                    }
-                    else
-                    if (stringId == serialNumberStringId)
-                    {
-                        COMMON_LVVV(("serialNumber = %s", begin));
-                    }
-                    else
-                    if (stringId == assetTagStringId)
-                    {
-                        COMMON_LVVV(("assetTag = %s", begin));
-                    }
-                    else
-                    if (stringId == partNumberStringId)
-                    {
-                        COMMON_LVVV(("partNumber = %s", begin));
-                    }
-                    else
-                    if (stringId == firmwareVersionStringId)
-                    {
-                        COMMON_LVVV(("firmwareVersion = %s", begin));
-                    }
-
-
-
-                    if (cur[1] == 0)
-                    {
-                        break;
-                    }
-
-                    begin = cur + 1;
-                }
-
-
-
-                ++cur;
-            } while(true);
-        }
-        else
-        {
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    COMMON_ASSERT_EXECUTION(sMemoryDeviceEntries.append(entry), NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiBits32MemoryErrorInformationEntry(DmiBits32MemoryErrorInformationEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    AVOID_UNUSED(entry);
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->errorType               = %s",     enumToFullString(entry->errorType)));
-            COMMON_LVVV(("entry->errorGranularity        = %s",     enumToFullString(entry->errorGranularity)));
-            COMMON_LVVV(("entry->errorOperation          = %s",     enumToFullString(entry->errorOperation)));
-            COMMON_LVVV(("entry->vendorSyndrome          = 0x%08X", entry->vendorSyndrome));
-            COMMON_LVVV(("entry->memoryArrayErrorAddress = 0x%08X", entry->memoryArrayErrorAddress));
-            COMMON_LVVV(("entry->deviceErrorAddress      = 0x%08X", entry->deviceErrorAddress));
-            COMMON_LVVV(("entry->errorResolution         = 0x%08X", entry->errorResolution));
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->errorType               == DmiBits32MemoryErrorInformationErrorType::OK,             NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->errorGranularity        == DmiBits32MemoryErrorInformationErrorGranularity::UNKNOWN, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->errorOperation          == DmiBits32MemoryErrorInformationErrorOperation::UNKNOWN,   NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->vendorSyndrome          == 0x80000000,                                               NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->memoryArrayErrorAddress == 0x80000000,                                               NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->deviceErrorAddress      == 0x80000000,                                               NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->errorResolution         == 0x80000000,                                               NgosStatus::ASSERTION);
-
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBits32MemoryErrorInformationEntry), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddressEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    DmiMemoryArrayMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntryV27) ? (DmiMemoryArrayMappedAddressEntryV27 *)entry : nullptr;
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->startingAddress.value = 0x%08X", entry->startingAddress.value));
-            COMMON_LVVV(("entry->startingAddress       = %s",     bytesToString(entry->startingAddress.address())));
-            COMMON_LVVV(("entry->endingAddress.value   = 0x%08X", entry->endingAddress.value));
-            COMMON_LVVV(("entry->endingAddress         = %s",     bytesToString(entry->endingAddress.address())));
-            COMMON_LVVV(("entry->memoryArrayHandle     = 0x%04X", entry->memoryArrayHandle));
-            COMMON_LVVV(("entry->partitionWidth        = %u",     entry->partitionWidth));
-
-            if (entryV27 != nullptr)
-            {
-                COMMON_LVVV(("entryV27->extendedStartingAddress = 0x%016llX", entryV27->extendedStartingAddress));
-                COMMON_LVVV(("entryV27->extendedEndingAddress   = 0x%016llX", entryV27->extendedEndingAddress));
-            }
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->startingAddress.value == 0x00000000, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->endingAddress.value   == 0x000FFFFF, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->memoryArrayHandle     == 0x1000,     NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->partitionWidth        == 1,          NgosStatus::ASSERTION);
-
-            if (entryV27 != nullptr)
-            {
-                // COMMON_TEST_ASSERT(entryV27->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entryV27->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION);
-
-                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntryV27), NgosStatus::ASSERTION);
-            }
-            else
-            {
-                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntry), NgosStatus::ASSERTION);
-            }
-        }
-    }
-
-
-
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddressEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    DmiMemoryDeviceMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntryV27) ? (DmiMemoryDeviceMappedAddressEntryV27 *)entry : nullptr;
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->startingAddress.value          = 0x%08X", entry->startingAddress.value));
-            COMMON_LVVV(("entry->startingAddress                = %s",     bytesToString(entry->startingAddress.address())));
-            COMMON_LVVV(("entry->endingAddress.value            = 0x%08X", entry->endingAddress.value));
-            COMMON_LVVV(("entry->endingAddress                  = %s",     bytesToString(entry->endingAddress.address())));
-            COMMON_LVVV(("entry->memoryDeviceHandle             = 0x%04X", entry->memoryDeviceHandle));
-            COMMON_LVVV(("entry->memoryArrayMappedAddressHandle = 0x%04X", entry->memoryArrayMappedAddressHandle));
-            COMMON_LVVV(("entry->partitionRowPosition           = %u",     entry->partitionRowPosition));
-            COMMON_LVVV(("entry->interleavePosition             = %u",     entry->interleavePosition));
-            COMMON_LVVV(("entry->interleavedDataDepth           = %u",     entry->interleavedDataDepth));
-
-            if (entryV27 != nullptr)
-            {
-                COMMON_LVVV(("entryV27->extendedStartingAddress = 0x%016llX", entryV27->extendedStartingAddress));
-                COMMON_LVVV(("entryV27->extendedEndingAddress   = 0x%016llX", entryV27->extendedEndingAddress));
-            }
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->startingAddress.value          == 0x00000000, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->endingAddress.value            == 0x000FFFFF, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->memoryDeviceHandle             == 0x0000,     NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->memoryArrayMappedAddressHandle == 0x0000,     NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->partitionRowPosition           == 1,          NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->interleavePosition             == 1,          NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->interleavedDataDepth           == 1,          NgosStatus::ASSERTION);
-
-            if (entryV27 != nullptr)
-            {
-                // COMMON_TEST_ASSERT(entryV27->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entryV27->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION);
-
-                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntryV27), NgosStatus::ASSERTION);
-            }
-            else
-            {
-                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntry), NgosStatus::ASSERTION);
-            }
-        }
-    }
-
-
-
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-
-
-
-    COMMON_ASSERT_EXECUTION(sMemoryDeviceMappedAddressEntries.append(entry), NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    DmiPortableBatteryEntryV22 *entryV22 = DMI::getVersion() >= DMI_VERSION(2, 2) && entry->header.length >= sizeof(DmiPortableBatteryEntryV22) ? (DmiPortableBatteryEntryV22 *)entry : nullptr;
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->location.id               = %u", entry->location.id));
-            COMMON_LVVV(("entry->manufacturer.id           = %u", entry->manufacturer.id));
-            COMMON_LVVV(("entry->manufactureDate.id        = %u", entry->manufactureDate.id));
-            COMMON_LVVV(("entry->serialNumber.id           = %u", entry->serialNumber.id));
-            COMMON_LVVV(("entry->deviceName.id             = %u", entry->deviceName.id));
-            COMMON_LVVV(("entry->deviceChemistry           = %s", enumToFullString(entry->deviceChemistry)));
-            COMMON_LVVV(("entry->designCapacity            = %u", entry->designCapacity));
-            COMMON_LVVV(("entry->designVoltage             = %u", entry->designVoltage));
-            COMMON_LVVV(("entry->sbdsVersionNumber.id      = %u", entry->sbdsVersionNumber.id));
-            COMMON_LVVV(("entry->maximumErrorInBatteryData = %u", entry->maximumErrorInBatteryData));
-
-            if (entryV22 != nullptr)
-            {
-                COMMON_LVVV(("entryV22->sbdsSerialNumber            = %u",             entryV22->sbdsSerialNumber));
-                COMMON_LVVV(("entryV22->sbdsManufactureDate.date    = %u",             entryV22->sbdsManufactureDate.date));
-                COMMON_LVVV(("entryV22->sbdsManufactureDate.month   = %u",             entryV22->sbdsManufactureDate.month));
-                COMMON_LVVV(("entryV22->sbdsManufactureDate.year    = %u",             entryV22->sbdsManufactureDate.year));
-                COMMON_LVVV(("entryV22->sbdsManufactureDate.value16 = 0x%04X",         entryV22->sbdsManufactureDate.value16));
-                COMMON_LVVV(("entryV22->sbdsManufactureDate         = %04u-%02u-%02u", entryV22->sbdsManufactureDate.yearReal(), entryV22->sbdsManufactureDate.month, entryV22->sbdsManufactureDate.date));
-                COMMON_LVVV(("entryV22->sbdsDeviceChemistry.id      = %u",             entryV22->sbdsDeviceChemistry.id));
-                COMMON_LVVV(("entryV22->designCapacityMultiplier    = %u",             entryV22->designCapacityMultiplier));
-                COMMON_LVVV(("entryV22->oemSpecific                 = 0x%08X",         entryV22->oemSpecific));
-            }
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->location.id               == 0,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->manufacturer.id           == 0,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->manufactureDate.id        == 0,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->serialNumber.id           == 0,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->deviceName.id             == 0,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->deviceChemistry           == DmiPortableBatteryDeviceChemistry::OTHER, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->designCapacity            == 0,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->designVoltage             == 0,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->sbdsVersionNumber.id      == 0,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->maximumErrorInBatteryData == 0,                                        NgosStatus::ASSERTION);
-
-            if (entryV22 != nullptr)
-            {
-                // COMMON_TEST_ASSERT(entryV22->sbdsSerialNumber            == 0,          NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.date    == 0,          NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.month   == 0,          NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.year    == 0,          NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.value16 == 0x0000,     NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entryV22->sbdsDeviceChemistry.id      == 0,          NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entryV22->designCapacityMultiplier    == 0,          NgosStatus::ASSERTION);
-                // COMMON_TEST_ASSERT(entryV22->oemSpecific                 == 0x00000000, NgosStatus::ASSERTION);
-
-                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntryV22), NgosStatus::ASSERTION);
-            }
-            else
-            {
-                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntry), NgosStatus::ASSERTION);
-            }
-        }
-    }
-
-
-
-    // Get strings
-    {
-        DmiStringId sbdsDeviceChemistryStringId;
-
-        if (entryV22 != nullptr)
-        {
-            sbdsDeviceChemistryStringId = entryV22->sbdsDeviceChemistry;
-        }
-
-
-
-        if (
-            entry->location.id
-            ||
-            entry->manufacturer.id
-            ||
-            entry->manufactureDate.id
-            ||
-            entry->serialNumber.id
-            ||
-            entry->deviceName.id
-            ||
-            entry->sbdsVersionNumber.id
-            ||
-            sbdsDeviceChemistryStringId.id
-           )
-        {
-            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
-            good_Char8 *begin = cur;
-
-            AVOID_UNUSED(begin);
-
-            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
-
-
-
-            DmiStringId stringId;
-
-            do
-            {
-                if (cur[0] == 0)
-                {
-                    ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
-
-
-
-                    if (stringId == entry->location)
-                    {
-                        COMMON_LVVV(("location = %s", begin));
-                    }
-                    else
-                    if (stringId == entry->manufacturer)
-                    {
-                        COMMON_LVVV(("manufacturer = %s", begin));
-                    }
-                    else
-                    if (stringId == entry->manufactureDate)
-                    {
-                        COMMON_LVVV(("manufactureDate = %s", begin));
-                    }
-                    else
-                    if (stringId == entry->serialNumber)
-                    {
-                        COMMON_LVVV(("serialNumber = %s", begin));
-                    }
-                    else
-                    if (stringId == entry->deviceName)
-                    {
-                        COMMON_LVVV(("deviceName = %s", begin));
-                    }
-                    else
-                    if (stringId == entry->sbdsVersionNumber)
-                    {
-                        COMMON_LVVV(("sbdsVersionNumber = %s", begin));
-                    }
-                    else
-                    if (stringId == sbdsDeviceChemistryStringId)
-                    {
-                        COMMON_LVVV(("sbdsDeviceChemistry = %s", begin));
-                    }
-
-
-
-                    if (cur[1] == 0)
-                    {
-                        break;
-                    }
-
-                    begin = cur + 1;
-                }
-
-
-
-                ++cur;
-            } while(true);
-        }
-        else
-        {
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiSystemResetEntry(DmiSystemResetEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    AVOID_UNUSED(entry);
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->capabilities.enabled           = %s",     boolToString(entry->capabilities.enabled)));
-            COMMON_LVVV(("entry->capabilities.bootOption        = %s",     enumToFullString((DmiSystemResetBootOption)entry->capabilities.bootOption)));
-            COMMON_LVVV(("entry->capabilities.bootOptionOnLimit = %s",     enumToFullString((DmiSystemResetBootOption)entry->capabilities.bootOptionOnLimit)));
-            COMMON_LVVV(("entry->capabilities.watchdogEnabled   = %s",     boolToString(entry->capabilities.watchdogEnabled)));
-            COMMON_LVVV(("entry->capabilities.value8            = 0x%02X", entry->capabilities.value8));
-            COMMON_LVVV(("entry->resetCount                     = %u",     entry->resetCount));
-            COMMON_LVVV(("entry->resetLimit                     = %u",     entry->resetLimit));
-            COMMON_LVVV(("entry->timerInterval                  = %u",     entry->timerInterval));
-            COMMON_LVVV(("entry->timeout                        = %u",     entry->timeout));
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->capabilities.enabled           == 1,                                       NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->capabilities.bootOption        == DmiSystemResetBootOption::DO_NOT_REBOOT, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->capabilities.bootOptionOnLimit == DmiSystemResetBootOption::DO_NOT_REBOOT, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->capabilities.watchdogEnabled   == 1,                                       NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->capabilities.value8            == 0x3F,                                    NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->resetCount                     == 0xFFFF,                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->resetLimit                     == 0xFFFF,                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->timerInterval                  == 0xFFFF,                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->timeout                        == 0xFFFF,                                  NgosStatus::ASSERTION);
-
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemResetEntry), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiHardwareSecurityEntry(DmiHardwareSecurityEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    AVOID_UNUSED(entry);
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->settings.frontPanelResetStatus       = %s",     enumToFullString((DmiHardwareSecurityStatus)entry->settings.frontPanelResetStatus)));
-            COMMON_LVVV(("entry->settings.administratorPasswordStatus = %s",     enumToFullString((DmiHardwareSecurityStatus)entry->settings.administratorPasswordStatus)));
-            COMMON_LVVV(("entry->settings.keyboardPasswordStatus      = %s",     enumToFullString((DmiHardwareSecurityStatus)entry->settings.keyboardPasswordStatus)));
-            COMMON_LVVV(("entry->settings.powerOnPasswordStatus       = %s",     enumToFullString((DmiHardwareSecurityStatus)entry->settings.powerOnPasswordStatus)));
-            COMMON_LVVV(("entry->settings.value8                      = 0x%02X", entry->settings.value8));
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->settings.frontPanelResetStatus       == DmiHardwareSecurityStatus::UNKNOWN,  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->settings.administratorPasswordStatus == DmiHardwareSecurityStatus::ENABLED,  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->settings.keyboardPasswordStatus      == DmiHardwareSecurityStatus::UNKNOWN,  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->settings.powerOnPasswordStatus       == DmiHardwareSecurityStatus::DISABLED, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->settings.value8                      == 0x37,                                NgosStatus::ASSERTION);
-
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiHardwareSecurityEntry), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->description.id             = %u",     entry->description.id));
-            COMMON_LVVV(("entry->locationAndStatus.location = %s",     enumToFullString((DmiVoltageProbeLocation)entry->locationAndStatus.location)));
-            COMMON_LVVV(("entry->locationAndStatus.status   = %s",     enumToFullString((DmiVoltageProbeStatus)entry->locationAndStatus.status)));
-            COMMON_LVVV(("entry->locationAndStatus.value8   = 0x%02X", entry->locationAndStatus.value8));
-            COMMON_LVVV(("entry->maximumValue               = %u",     entry->maximumValue));
-            COMMON_LVVV(("entry->minimumValue               = %u",     entry->minimumValue));
-            COMMON_LVVV(("entry->resolution                 = %u",     entry->resolution));
-            COMMON_LVVV(("entry->tolerance                  = %u",     entry->tolerance));
-            COMMON_LVVV(("entry->accuracy                   = %u",     entry->accuracy));
-            COMMON_LVVV(("entry->oemDefined                 = 0x%08X", entry->oemDefined));
-            COMMON_LVVV(("entry->nominalValue               = %u",     entry->nominalValue));
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->description.id             == 1,                              NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiVoltageProbeLocation::OTHER, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiVoltageProbeStatus::OTHER,   NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.value8   == 0x00,                           NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->maximumValue               == 0,                              NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->minimumValue               == 0,                              NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->resolution                 == 0,                              NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->tolerance                  == 0,                              NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->accuracy                   == 0,                              NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->oemDefined                 == 0x00000000,                     NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->nominalValue               == 0,                              NgosStatus::ASSERTION);
-
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiVoltageProbeEntry), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    // Get strings
-    {
-        if (entry->description.id)
-        {
-            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
-            good_Char8 *begin = cur;
-
-            AVOID_UNUSED(begin);
-
-            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
-
-
-
-            DmiStringId stringId;
-
-            do
-            {
-                if (cur[0] == 0)
-                {
-                    ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
-
-
-
-                    if (stringId == entry->description)
-                    {
-                        COMMON_LVVV(("description = %s", begin));
-                    }
-
-
-
-                    if (cur[1] == 0)
-                    {
-                        break;
-                    }
-
-                    begin = cur + 1;
-                }
-
-
-
-                ++cur;
-            } while(true);
-        }
-        else
-        {
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    DmiCoolingDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiCoolingDeviceEntryV27) ? (DmiCoolingDeviceEntryV27 *)entry : nullptr;
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->temperatureProbeHandle         = 0x%04X", entry->temperatureProbeHandle));
-            COMMON_LVVV(("entry->deviceTypeAndStatus.deviceType = %s",     enumToFullString((DmiCoolingDeviceType)entry->deviceTypeAndStatus.deviceType)));
-            COMMON_LVVV(("entry->deviceTypeAndStatus.status     = %s",     enumToFullString((DmiCoolingDeviceStatus)entry->deviceTypeAndStatus.status)));
-            COMMON_LVVV(("entry->deviceTypeAndStatus.value8     = 0x%02X", entry->deviceTypeAndStatus.value8));
-            COMMON_LVVV(("entry->coolingUnitGroup               = %u",     entry->coolingUnitGroup));
-            COMMON_LVVV(("entry->oemDefined                     = 0x%08X", entry->oemDefined));
-            COMMON_LVVV(("entry->nominalSpeed                   = %u",     entry->nominalSpeed));
-
-            if (entryV27 != nullptr)
-            {
-                COMMON_LVVV(("entryV27->description.id = %u", entryV27->description.id));
-            }
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->temperatureProbeHandle         == 0x0000,                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->deviceTypeAndStatus.deviceType == DmiCoolingDeviceType::OTHER,   NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->deviceTypeAndStatus.status     == DmiCoolingDeviceStatus::OTHER, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->deviceTypeAndStatus.value8     == 0x00,                          NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->coolingUnitGroup               == 0,                             NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->oemDefined                     == 0x00000000,                    NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->nominalSpeed                   == 0,                             NgosStatus::ASSERTION);
-
-            if (entryV27 != nullptr)
-            {
-                // COMMON_TEST_ASSERT(entryV27->description.id == 1, NgosStatus::ASSERTION);
-
-                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntryV27), NgosStatus::ASSERTION);
-            }
-            else
-            {
-                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntry), NgosStatus::ASSERTION);
-            }
-        }
-    }
-
-
-
-    // Get strings
-    {
-        DmiStringId descriptionStringId;
-
-        if (entryV27 != nullptr)
-        {
-            descriptionStringId = entryV27->description;
-        }
-
-
-
-        if (descriptionStringId.id)
-        {
-            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
-            good_Char8 *begin = cur;
-
-            AVOID_UNUSED(begin);
-
-            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
-
-
-
-            DmiStringId stringId;
-
-            do
-            {
-                if (cur[0] == 0)
-                {
-                    ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
-
-
-
-                    if (stringId == descriptionStringId)
-                    {
-                        COMMON_LVVV(("description = %s", begin));
-                    }
-
-
-
-                    if (cur[1] == 0)
-                    {
-                        break;
-                    }
-
-                    begin = cur + 1;
-                }
-
-
-
-                ++cur;
-            } while(true);
-        }
-        else
-        {
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->description.id             = %u",     entry->description.id));
-            COMMON_LVVV(("entry->locationAndStatus.location = %s",     enumToFullString((DmiTemperatureProbeLocation)entry->locationAndStatus.location)));
-            COMMON_LVVV(("entry->locationAndStatus.status   = %s",     enumToFullString((DmiTemperatureProbeStatus)entry->locationAndStatus.status)));
-            COMMON_LVVV(("entry->locationAndStatus.value8   = 0x%02X", entry->locationAndStatus.value8));
-            COMMON_LVVV(("entry->maximumValue               = %u",     entry->maximumValue));
-            COMMON_LVVV(("entry->minimumValue               = %u",     entry->minimumValue));
-            COMMON_LVVV(("entry->resolution                 = %u",     entry->resolution));
-            COMMON_LVVV(("entry->tolerance                  = %u",     entry->tolerance));
-            COMMON_LVVV(("entry->accuracy                   = %u",     entry->accuracy));
-            COMMON_LVVV(("entry->oemDefined                 = 0x%08X", entry->oemDefined));
-            COMMON_LVVV(("entry->nominalValue               = %u",     entry->nominalValue));
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->description.id             == 1,                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiTemperatureProbeLocation::OTHER, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiTemperatureProbeStatus::OTHER,   NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.value8   == 0x00,                               NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->maximumValue               == 0,                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->minimumValue               == 0,                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->resolution                 == 0,                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->tolerance                  == 0,                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->accuracy                   == 0,                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->oemDefined                 == 0x00000000,                         NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->nominalValue               == 0,                                  NgosStatus::ASSERTION);
-
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiTemperatureProbeEntry), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    // Get strings
-    {
-        if (entry->description.id)
-        {
-            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
-            good_Char8 *begin = cur;
-
-            AVOID_UNUSED(begin);
-
-            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
-
-
-
-            DmiStringId stringId;
-
-            do
-            {
-                if (cur[0] == 0)
-                {
-                    ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
-
-
-
-                    if (stringId == entry->description)
-                    {
-                        COMMON_LVVV(("description = %s", begin));
-                    }
-
-
-
-                    if (cur[1] == 0)
-                    {
-                        break;
-                    }
-
-                    begin = cur + 1;
-                }
-
-
-
-                ++cur;
-            } while(true);
-        }
-        else
-        {
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->description.id             = %u",     entry->description.id));
-            COMMON_LVVV(("entry->locationAndStatus.location = %s",     enumToFullString((DmiElectricalCurrentProbeLocation)entry->locationAndStatus.location)));
-            COMMON_LVVV(("entry->locationAndStatus.status   = %s",     enumToFullString((DmiElectricalCurrentProbeStatus)entry->locationAndStatus.status)));
-            COMMON_LVVV(("entry->locationAndStatus.value8   = 0x%02X", entry->locationAndStatus.value8));
-            COMMON_LVVV(("entry->maximumValue               = %u",     entry->maximumValue));
-            COMMON_LVVV(("entry->minimumValue               = %u",     entry->minimumValue));
-            COMMON_LVVV(("entry->resolution                 = %u",     entry->resolution));
-            COMMON_LVVV(("entry->tolerance                  = %u",     entry->tolerance));
-            COMMON_LVVV(("entry->accuracy                   = %u",     entry->accuracy));
-            COMMON_LVVV(("entry->oemDefined                 = 0x%08X", entry->oemDefined));
-            COMMON_LVVV(("entry->nominalValue               = %u",     entry->nominalValue));
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->description.id             == 1,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiElectricalCurrentProbeLocation::OTHER, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiElectricalCurrentProbeStatus::OTHER,   NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->locationAndStatus.value8   == 0x00,                                     NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->maximumValue               == 0,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->minimumValue               == 0,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->resolution                 == 0,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->tolerance                  == 0,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->accuracy                   == 0,                                        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->oemDefined                 == 0x00000000,                               NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->nominalValue               == 0,                                        NgosStatus::ASSERTION);
-
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiElectricalCurrentProbeEntry), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    // Get strings
-    {
-        if (entry->description.id)
-        {
-            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
-            good_Char8 *begin = cur;
-
-            AVOID_UNUSED(begin);
-
-            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
-
-
-
-            DmiStringId stringId;
-
-            do
-            {
-                if (cur[0] == 0)
-                {
-                    ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
-
-
-
-                    if (stringId == entry->description)
-                    {
-                        COMMON_LVVV(("description = %s", begin));
-                    }
-
-
-
-                    if (cur[1] == 0)
-                    {
-                        break;
-                    }
-
-                    begin = cur + 1;
-                }
-
-
-
-                ++cur;
-            } while(true);
-        }
-        else
-        {
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiOutOfBandRemoteAccessEntry(DmiOutOfBandRemoteAccessEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->manufacturerName.id = %u", entry->manufacturerName.id));
-            COMMON_LVVV(("entry->connections         = %s", flagsToFullString(entry->connections)));
-        }
-
-
-
-        // Check variables
-        {
-            COMMON_TEST_ASSERT(entry->manufacturerName.id == 1,                                                      NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(entry->connections         == FLAGS(DmiOutOfBandRemoteAccessConnectionFlag::INBOUND), NgosStatus::ASSERTION);
-
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiOutOfBandRemoteAccessEntry), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    // Get strings
-    {
-        if (entry->manufacturerName.id)
-        {
-            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
-            good_Char8 *begin = cur;
-
-            AVOID_UNUSED(begin);
-
-            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
-
-
-
-            DmiStringId stringId;
-
-            do
-            {
-                if (cur[0] == 0)
-                {
-                    ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
-
-
-
-                    if (stringId == entry->manufacturerName)
-                    {
-                        COMMON_LVVV(("manufacturerName = %s", begin));
-                    }
-
-
-
-                    if (cur[1] == 0)
-                    {
-                        break;
-                    }
-
-                    begin = cur + 1;
-                }
-
-
-
-                ++cur;
-            } while(true);
-        }
-        else
-        {
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    AVOID_UNUSED(entry);
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->bootStatus = %s", enumToFullString(entry->bootStatus)));
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->bootStatus == DmiSystemBootStatus::NO_ERROR, NgosStatus::ASSERTION);
-
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemBootEntry), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiBits64MemoryErrorInformationEntry(DmiBits64MemoryErrorInformationEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    AVOID_UNUSED(entry);
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->errorType               = %s",        enumToFullString(entry->errorType)));
-            COMMON_LVVV(("entry->errorGranularity        = %s",        enumToFullString(entry->errorGranularity)));
-            COMMON_LVVV(("entry->errorOperation          = %s",        enumToFullString(entry->errorOperation)));
-            COMMON_LVVV(("entry->vendorSyndrome          = 0x%08X",    entry->vendorSyndrome));
-            COMMON_LVVV(("entry->memoryArrayErrorAddress = 0x%016llX", entry->memoryArrayErrorAddress));
-            COMMON_LVVV(("entry->deviceErrorAddress      = 0x%016llX", entry->deviceErrorAddress));
-            COMMON_LVVV(("entry->errorResolution         = 0x%08X",    entry->errorResolution));
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->errorType               == DmiBits64MemoryErrorInformationErrorType::OK,             NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->errorGranularity        == DmiBits64MemoryErrorInformationErrorGranularity::UNKNOWN, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->errorOperation          == DmiBits64MemoryErrorInformationErrorOperation::UNKNOWN,   NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->vendorSyndrome          == 0x80000000,                                               NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->memoryArrayErrorAddress == 0x8000000000000000,                                       NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->deviceErrorAddress      == 0x8000000000000000,                                       NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->errorResolution         == 0x80000000,                                               NgosStatus::ASSERTION);
-
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBits64MemoryErrorInformationEntry), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiManagementDeviceEntry(DmiManagementDeviceEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->description.id = %u",     entry->description.id));
-            COMMON_LVVV(("entry->type           = %s",     enumToFullString(entry->type)));
-            COMMON_LVVV(("entry->address        = 0x%08X", entry->address));
-            COMMON_LVVV(("entry->addressType    = %s",     enumToFullString(entry->addressType)));
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->description.id == 1,                                     NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->type           == DmiManagementDeviceType::OTHER,        NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->address        == 0x00000000,                            NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->addressType    == DmiManagementDeviceAddressType::OTHER, NgosStatus::ASSERTION);
-
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceEntry), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    // Get strings
-    {
-        if (entry->description.id)
-        {
-            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
-            good_Char8 *begin = cur;
-
-            AVOID_UNUSED(begin);
-
-            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
-
-
-
-            DmiStringId stringId;
-
-            do
-            {
-                if (cur[0] == 0)
-                {
-                    ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
-
-
-
-                    if (stringId == entry->description)
-                    {
-                        COMMON_LVVV(("description = %s", begin));
-                    }
-
-
-
-                    if (cur[1] == 0)
-                    {
-                        break;
-                    }
-
-                    begin = cur + 1;
-                }
-
-
-
-                ++cur;
-            } while(true);
-        }
-        else
-        {
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiManagementDeviceComponentEntry(DmiManagementDeviceComponentEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->description.id         = %u",     entry->description.id));
-            COMMON_LVVV(("entry->managementDeviceHandle = 0x%04X", entry->managementDeviceHandle));
-            COMMON_LVVV(("entry->componentHandle        = 0x%04X", entry->componentHandle));
-            COMMON_LVVV(("entry->thresholdHandle        = 0x%04X", entry->thresholdHandle));
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->description.id         == 1,      NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->managementDeviceHandle == 0x0000, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->componentHandle        == 0x0000, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->thresholdHandle        == 0x0000, NgosStatus::ASSERTION);
-
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceComponentEntry), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    // Get strings
-    {
-        if (entry->description.id)
-        {
-            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
-            good_Char8 *begin = cur;
-
-            AVOID_UNUSED(begin);
-
-            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
-
-
-
-            DmiStringId stringId;
-
-            do
-            {
-                if (cur[0] == 0)
-                {
-                    ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
-
-
-
-                    if (stringId == entry->description)
-                    {
-                        COMMON_LVVV(("description = %s", begin));
-                    }
-
-
-
-                    if (cur[1] == 0)
-                    {
-                        break;
-                    }
-
-                    begin = cur + 1;
-                }
-
-
-
-                ++cur;
-            } while(true);
-        }
-        else
-        {
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiManagementDeviceThresholdDataEntry(DmiManagementDeviceThresholdDataEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    AVOID_UNUSED(entry);
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->lowerThresholdNonCritical    = %u", entry->lowerThresholdNonCritical));
-            COMMON_LVVV(("entry->upperThresholdNonCritical    = %u", entry->upperThresholdNonCritical));
-            COMMON_LVVV(("entry->lowerThresholdCritical       = %u", entry->lowerThresholdCritical));
-            COMMON_LVVV(("entry->upperThresholdCritical       = %u", entry->upperThresholdCritical));
-            COMMON_LVVV(("entry->lowerThresholdNonRecoverable = %u", entry->lowerThresholdNonRecoverable));
-            COMMON_LVVV(("entry->upperThresholdNonRecoverable = %u", entry->upperThresholdNonRecoverable));
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->lowerThresholdNonCritical    == 0, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->upperThresholdNonCritical    == 0, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->lowerThresholdCritical       == 0, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->upperThresholdCritical       == 0, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->lowerThresholdNonRecoverable == 0, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->upperThresholdNonRecoverable == 0, NgosStatus::ASSERTION);
-
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceThresholdDataEntry), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-
-
-
-    return NgosStatus::OK;
-}
-
-NgosStatus DMI::saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry)
-{
-    COMMON_LT((" | entry = 0x%p", entry));
-
-    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);
-
-
-
-    // Validation
-    {
-        // Output variables
-        {
-            COMMON_LVVV(("entry->powerUnitGroup                                     = %u",     entry->powerUnitGroup));
-            COMMON_LVVV(("entry->location.id                                        = %u",     entry->location.id));
-            COMMON_LVVV(("entry->deviceName.id                                      = %u",     entry->deviceName.id));
-            COMMON_LVVV(("entry->manufacturer.id                                    = %u",     entry->manufacturer.id));
-            COMMON_LVVV(("entry->serialNumber.id                                    = %u",     entry->serialNumber.id));
-            COMMON_LVVV(("entry->assetTagNumber.id                                  = %u",     entry->assetTagNumber.id));
-            COMMON_LVVV(("entry->modelPartNumber.id                                 = %u",     entry->modelPartNumber.id));
-            COMMON_LVVV(("entry->revisionLevel.id                                   = %u",     entry->revisionLevel.id));
-            COMMON_LVVV(("entry->maxPowerCapacity                                   = %u",     entry->maxPowerCapacity));
-            COMMON_LVVV(("entry->powerSupplyCharacteristics.hotReplaceable          = %u",     entry->powerSupplyCharacteristics.hotReplaceable));
-            COMMON_LVVV(("entry->powerSupplyCharacteristics.present                 = %u",     entry->powerSupplyCharacteristics.present));
-            COMMON_LVVV(("entry->powerSupplyCharacteristics.unplugged               = %u",     entry->powerSupplyCharacteristics.unplugged));
-            COMMON_LVVV(("entry->powerSupplyCharacteristics.inputVoltageRangeSwitch = %s",     enumToFullString((DmiSystemPowerSupplyInputVoltageRangeSwitch)entry->powerSupplyCharacteristics.inputVoltageRangeSwitch)));
-            COMMON_LVVV(("entry->powerSupplyCharacteristics.status                  = %s",     enumToFullString((DmiSystemPowerSupplyStatus)entry->powerSupplyCharacteristics.status)));
-            COMMON_LVVV(("entry->powerSupplyCharacteristics.type                    = %s",     enumToFullString((DmiSystemPowerSupplyType)entry->powerSupplyCharacteristics.type)));
-            COMMON_LVVV(("entry->powerSupplyCharacteristics.value16                 = 0x%04X", entry->powerSupplyCharacteristics.value16));
-            COMMON_LVVV(("entry->inputVoltageProbeHandle                            = 0x%04X", entry->inputVoltageProbeHandle));
-            COMMON_LVVV(("entry->coolingDeviceHandle                                = 0x%04X", entry->coolingDeviceHandle));
-            COMMON_LVVV(("entry->inputCurrentProbeHandle                            = 0x%04X", entry->inputCurrentProbeHandle));
-        }
-
-
-
-        // Check variables
-        {
-            // COMMON_TEST_ASSERT(entry->powerUnitGroup                                     == 0,                                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->location.id                                        == 1,                                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->deviceName.id                                      == 2,                                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->manufacturer.id                                    == 3,                                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->serialNumber.id                                    == 4,                                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->assetTagNumber.id                                  == 5,                                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->modelPartNumber.id                                 == 6,                                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->revisionLevel.id                                   == 7,                                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->maxPowerCapacity                                   == 0,                                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.hotReplaceable          == 0,                                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.present                 == 0,                                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.unplugged               == 0,                                                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.inputVoltageRangeSwitch == DmiSystemPowerSupplyInputVoltageRangeSwitch::OTHER, NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.status                  == DmiSystemPowerSupplyStatus::OTHER,                  NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.type                    == DmiSystemPowerSupplyType::OTHER,                    NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.value16                 == 0x0000,                                             NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->inputVoltageProbeHandle                            == 0x0000,                                             NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->coolingDeviceHandle                                == 0x0000,                                             NgosStatus::ASSERTION);
-            // COMMON_TEST_ASSERT(entry->inputCurrentProbeHandle                            == 0x0000,                                             NgosStatus::ASSERTION);
-
-            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemPowerSupplyEntry), NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    // Get strings
-    {
-        if (
-            entry->location.id
-            ||
-            entry->deviceName.id
-            ||
-            entry->manufacturer.id
-            ||
-            entry->serialNumber.id
-            ||
-            entry->assetTagNumber.id
-            ||
-            entry->modelPartNumber.id
-            ||
-            entry->revisionLevel.id
-           )
-        {
-            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;
-            good_Char8 *begin = cur;
-
-            AVOID_UNUSED(begin);
-
-            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);
-
-
-
-            DmiStringId stringId;
-
-            do
-            {
-                if (cur[0] == 0)
-                {
-                    ++stringId;
-                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));
-
-
-
-                    if (stringId == entry->location)
-                    {
-                        COMMON_LVVV(("location = %s", begin));
-                    }
-                    else
-                    if (stringId == entry->deviceName)
-                    {
-                        COMMON_LVVV(("deviceName = %s", begin));
-                    }
-                    else
-                    if (stringId == entry->manufacturer)
-                    {
-                        COMMON_LVVV(("manufacturer = %s", begin));
-                    }
-                    else
-                    if (stringId == entry->serialNumber)
-                    {
-                        COMMON_LVVV(("serialNumber = %s", begin));
-                    }
-                    else
-                    if (stringId == entry->assetTagNumber)
-                    {
-                        COMMON_LVVV(("assetTagNumber = %s", begin));
-                    }
-                    else
-                    if (stringId == entry->modelPartNumber)
-                    {
-                        COMMON_LVVV(("modelPartNumber = %s", begin));
-                    }
-                    else
-                    if (stringId == entry->revisionLevel)
-                    {
-                        COMMON_LVVV(("revisionLevel = %s", begin));
-                    }
-
-
-
-                    if (cur[1] == 0)
-                    {
-                        break;
-                    }
-
-                    begin = cur + 1;
-                }
-
-
-
-                ++cur;
-            } while(true);
-        }
-        else
-        {
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
-        }
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
+NgosStatus DMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *entry)                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DmiPhysicalMemoryArrayEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntryV27) ? reinterpret_cast<DmiPhysicalMemoryArrayEntryV27 *>(entry) : nullptr; // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->location                     = %s",     enumToFullString(entry->location)));                                                                                            // Colorize: green
+            COMMON_LVVV(("entry->use                          = %s",     enumToFullString(entry->use)));                                                                                                 // Colorize: green
+            COMMON_LVVV(("entry->memoryErrorCorrection        = %s",     enumToFullString(entry->memoryErrorCorrection)));                                                                               // Colorize: green
+            COMMON_LVVV(("entry->maximumCapacity.value        = 0x%08X", entry->maximumCapacity.value));                                                                                                 // Colorize: green
+            COMMON_LVVV(("entry->maximumCapacity.size()       = %s",     bytesToString(entry->maximumCapacity.size())));                                                                                 // Colorize: green
+            COMMON_LVVV(("entry->memoryErrorInformationHandle = 0x%04X", entry->memoryErrorInformationHandle));                                                                                          // Colorize: green
+            COMMON_LVVV(("entry->numberOfMemoryDevices        = %u",     entry->numberOfMemoryDevices));                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV27 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_LVVV(("entryV27->extendedMaximumCapacity = 0x%016llX", entryV27->extendedMaximumCapacity));                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->location                     == DmiPhysicalMemoryArrayLocation::OTHER,                NgosStatus::ASSERTION);                                                      // Colorize: green
+            COMMON_TEST_ASSERT(entry->use                          == DmiPhysicalMemoryArrayUse::SYSTEM_MEMORY,             NgosStatus::ASSERTION);                                                      // Colorize: green
+            COMMON_TEST_ASSERT(entry->memoryErrorCorrection        == DmiPhysicalMemoryArrayErrorCorrection::MULTI_BIT_ECC, NgosStatus::ASSERTION);                                                      // Colorize: green
+            COMMON_TEST_ASSERT(entry->maximumCapacity.value        == 0x00100000,                                           NgosStatus::ASSERTION);                                                      // Colorize: green
+            COMMON_TEST_ASSERT(entry->maximumCapacity.size()       == GB,                                                   NgosStatus::ASSERTION);                                                      // Colorize: green
+            COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                                               NgosStatus::ASSERTION);                                                      // Colorize: green
+            COMMON_TEST_ASSERT(entry->numberOfMemoryDevices        == 1,                                                    NgosStatus::ASSERTION);                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV27 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entryV27->extendedMaximumCapacity == 0x0000000000000000, NgosStatus::ASSERTION);                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntryV27), NgosStatus::ASSERTION);                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPhysicalMemoryArrayEntry), NgosStatus::ASSERTION);                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for strings                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Store PHYSICAL_MEMORY_ARRAY entry for SYSTEM_MEMORY                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (entry->use == DmiPhysicalMemoryArrayUse::SYSTEM_MEMORY)                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Set sSystemPhysicalMemoryArrayHandle                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (sSystemPhysicalMemoryArrayHandle != 0)                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    COMMON_LW(("Found 2 or more PHYSICAL_MEMORY_ARRAY entries with SYSTEM_MEMORY use"));                                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                sSystemPhysicalMemoryArrayHandle = entry->header.handle;                                                                                                                                 // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Set sSystemPhysicalMemoryArrayCapacity                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (                                                                                                                                                                                     // Colorize: green
+                    entry->maximumCapacity.value == DMI_PHYSICAL_MEMORY_ARRAY_MAXIMUM_CAPACITY_NEED_TO_EXTEND                                                                                            // Colorize: green
+                    &&                                                                                                                                                                                   // Colorize: green
+                    entryV27                                                                                                                                                                             // Colorize: green
+                   )                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    sSystemPhysicalMemoryArrayCapacity = entryV27->extendedMaximumCapacity;                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    sSystemPhysicalMemoryArrayCapacity = entry->maximumCapacity.size();                                                                                                                  // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry)                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DmiMemoryDeviceEntryV23 *entryV23 = DMI::getVersion() >= DMI_VERSION(2, 3) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV23) ? reinterpret_cast<DmiMemoryDeviceEntryV23 *>(entry) : nullptr; // Colorize: green
+    DmiMemoryDeviceEntryV26 *entryV26 = DMI::getVersion() >= DMI_VERSION(2, 6) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV26) ? reinterpret_cast<DmiMemoryDeviceEntryV26 *>(entry) : nullptr; // Colorize: green
+    DmiMemoryDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV27) ? reinterpret_cast<DmiMemoryDeviceEntryV27 *>(entry) : nullptr; // Colorize: green
+    DmiMemoryDeviceEntryV28 *entryV28 = DMI::getVersion() >= DMI_VERSION(2, 8) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV28) ? reinterpret_cast<DmiMemoryDeviceEntryV28 *>(entry) : nullptr; // Colorize: green
+    DmiMemoryDeviceEntryV32 *entryV32 = DMI::getVersion() >= DMI_VERSION(3, 2) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV32) ? reinterpret_cast<DmiMemoryDeviceEntryV32 *>(entry) : nullptr; // Colorize: green
+    DmiMemoryDeviceEntryV33 *entryV33 = DMI::getVersion() >= DMI_VERSION(3, 3) && entry->header.length >= sizeof(DmiMemoryDeviceEntryV33) ? reinterpret_cast<DmiMemoryDeviceEntryV33 *>(entry) : nullptr; // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->memoryArrayHandle            = 0x%04X", entry->memoryArrayHandle));                                                                                                     // Colorize: green
+            COMMON_LVVV(("entry->memoryErrorInformationHandle = 0x%04X", entry->memoryErrorInformationHandle));                                                                                          // Colorize: green
+            COMMON_LVVV(("entry->totalWidth                   = %u",     entry->totalWidth));                                                                                                            // Colorize: green
+            COMMON_LVVV(("entry->dataWidth                    = %u",     entry->dataWidth));                                                                                                             // Colorize: green
+            COMMON_LVVV(("entry->size.value                   = %u",     entry->size.value));                                                                                                            // Colorize: green
+            COMMON_LVVV(("entry->size.granularity             = %s",     enumToFullString(entry->size.granularity)));                                                                                    // Colorize: green
+            COMMON_LVVV(("entry->size.value16                 = 0x%04X", entry->size.value16));                                                                                                          // Colorize: green
+            COMMON_LVVV(("entry->size.size()                  = %s",     bytesToString(entry->size.size())));                                                                                            // Colorize: green
+            COMMON_LVVV(("entry->formFactor                   = %s",     enumToFullString(entry->formFactor)));                                                                                          // Colorize: green
+            COMMON_LVVV(("entry->deviceSet                    = %u",     entry->deviceSet));                                                                                                             // Colorize: green
+            COMMON_LVVV(("entry->deviceLocator.id             = %u",     entry->deviceLocator.id));                                                                                                      // Colorize: green
+            COMMON_LVVV(("entry->bankLocator.id               = %u",     entry->bankLocator.id));                                                                                                        // Colorize: green
+            COMMON_LVVV(("entry->memoryType                   = %s",     enumToFullString(entry->memoryType)));                                                                                          // Colorize: green
+            COMMON_LVVV(("entry->typeDetail                   = %s",     flagsToFullString(entry->typeDetail)));                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV23 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_LVVV(("entryV23->speed           = %u", entryV23->speed));                                                                                                                        // Colorize: green
+                COMMON_LVVV(("entryV23->manufacturer.id = %u", entryV23->manufacturer.id));                                                                                                              // Colorize: green
+                COMMON_LVVV(("entryV23->serialNumber.id = %u", entryV23->serialNumber.id));                                                                                                              // Colorize: green
+                COMMON_LVVV(("entryV23->assetTag.id     = %u", entryV23->assetTag.id));                                                                                                                  // Colorize: green
+                COMMON_LVVV(("entryV23->partNumber.id   = %u", entryV23->partNumber.id));                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (entryV26 != nullptr)                                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    COMMON_LVVV(("entryV26->attributes.rank       = %u",     entryV26->attributes.rank));                                                                                                // Colorize: green
+                    COMMON_LVVV(("entryV26->attributes.__reserved = %u",     entryV26->attributes.__reserved));                                                                                          // Colorize: green
+                    COMMON_LVVV(("entryV26->attributes.value8     = 0x%02X", entryV26->attributes.value8));                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (entryV27 != nullptr)                                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("entryV27->extendedSize.value      = %u",     entryV27->extendedSize.value));                                                                                       // Colorize: green
+                        COMMON_LVVV(("entryV27->extendedSize.__reserved = %u",     entryV27->extendedSize.__reserved));                                                                                  // Colorize: green
+                        COMMON_LVVV(("entryV27->extendedSize.value32    = 0x%08X", entryV27->extendedSize.value32));                                                                                     // Colorize: green
+                        COMMON_LVVV(("entryV27->extendedSize.size()     = %s",     bytesToString(entryV27->extendedSize.size())));                                                                       // Colorize: green
+                        COMMON_LVVV(("entryV27->configuredMemorySpeed   = %u",     entryV27->configuredMemorySpeed));                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (entryV28 != nullptr)                                                                                                                                                         // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            COMMON_LVVV(("entryV28->minimumVoltage    = %u", entryV28->minimumVoltage));                                                                                                 // Colorize: green
+                            COMMON_LVVV(("entryV28->maximumVoltage    = %u", entryV28->maximumVoltage));                                                                                                 // Colorize: green
+                            COMMON_LVVV(("entryV28->configuredVoltage = %u", entryV28->configuredVoltage));                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            if (entryV32 != nullptr)                                                                                                                                                     // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                COMMON_LVVV(("entryV32->memoryTechnology                        = %s", enumToFullString(entryV32->memoryTechnology)));                                                   // Colorize: green
+                                COMMON_LVVV(("entryV32->memoryOperatingModeCapability           = %s", flagsToFullString(entryV32->memoryOperatingModeCapability)));                                     // Colorize: green
+                                COMMON_LVVV(("entryV32->firmwareVersion.id                      = %u", entryV32->firmwareVersion.id));                                                                   // Colorize: green
+                                COMMON_LVVV(("entryV32->moduleManufacturerID                    = %u", entryV32->moduleManufacturerID));                                                                 // Colorize: green
+                                COMMON_LVVV(("entryV32->moduleProductID                         = %u", entryV32->moduleProductID));                                                                      // Colorize: green
+                                COMMON_LVVV(("entryV32->memorySubsystemControllerManufacturerID = %u", entryV32->memorySubsystemControllerManufacturerID));                                              // Colorize: green
+                                COMMON_LVVV(("entryV32->memorySubsystemControllerProductID      = %u", entryV32->memorySubsystemControllerProductID));                                                   // Colorize: green
+                                COMMON_LVVV(("entryV32->nonVolatileSize                         = %u", entryV32->nonVolatileSize));                                                                      // Colorize: green
+                                COMMON_LVVV(("entryV32->volatileSize                            = %u", entryV32->volatileSize));                                                                         // Colorize: green
+                                COMMON_LVVV(("entryV32->cacheSize                               = %u", entryV32->cacheSize));                                                                            // Colorize: green
+                                COMMON_LVVV(("entryV32->logicalSize                             = %u", entryV32->logicalSize));                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (entryV33 != nullptr)                                                                                                                                                 // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    COMMON_LVVV(("entryV33->extendedSpeed                 = %u", entryV33->extendedSpeed));                                                                              // Colorize: green
+                                    COMMON_LVVV(("entryV33->extendedConfiguredMemorySpeed = %u", entryV33->extendedConfiguredMemorySpeed));                                                              // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->memoryArrayHandle            == 0x1000,                                      NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->memoryErrorInformationHandle == 0xFFFE,                                      NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->totalWidth                   == 64,                                          NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->dataWidth                    == 64,                                          NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->size.value                   == 1024,                                        NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->size.granularity             == DmiMemoryDeviceSizeGranularity::_1_MEGABYTE, NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->size.value16                 == 0x0400,                                      NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->size.size()                  == GB,                                          NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->formFactor                   == DmiMemoryDeviceFormFactor::DIMM,             NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->deviceSet                    == 0,                                           NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->deviceLocator.id             == 1,                                           NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->bankLocator.id               == 2,                                           NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->memoryType                   == DmiMemoryDeviceType::RAM,                    NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->typeDetail                   == FLAGS(DmiMemoryDeviceTypeDetailFlag::OTHER), NgosStatus::ASSERTION);                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV23 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entryV23->speed           == 2133, NgosStatus::ASSERTION);                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entryV23->manufacturer.id == 3,    NgosStatus::ASSERTION);                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entryV23->serialNumber.id == 4,    NgosStatus::ASSERTION);                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entryV23->assetTag.id     == 5,    NgosStatus::ASSERTION);                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entryV23->partNumber.id   == 6,    NgosStatus::ASSERTION);                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (entryV26 != nullptr)                                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    COMMON_TEST_ASSERT(entryV26->attributes.rank       == 2,    NgosStatus::ASSERTION);                                                                                                  // Colorize: green
+                    COMMON_TEST_ASSERT(entryV26->attributes.__reserved == 0,    NgosStatus::ASSERTION);                                                                                                  // Colorize: green
+                    COMMON_TEST_ASSERT(entryV26->attributes.value8     == 0x02, NgosStatus::ASSERTION);                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (entryV27 != nullptr)                                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_TEST_ASSERT(entryV27->extendedSize.value      == 0,          NgosStatus::ASSERTION);                                                                                      // Colorize: green
+                        COMMON_TEST_ASSERT(entryV27->extendedSize.__reserved == 0,          NgosStatus::ASSERTION);                                                                                      // Colorize: green
+                        COMMON_TEST_ASSERT(entryV27->extendedSize.value32    == 0x00000000, NgosStatus::ASSERTION);                                                                                      // Colorize: green
+                        COMMON_TEST_ASSERT(entryV27->extendedSize.size()     == 0,          NgosStatus::ASSERTION);                                                                                      // Colorize: green
+                        COMMON_TEST_ASSERT(entryV27->configuredMemorySpeed   == 2133,       NgosStatus::ASSERTION);                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (entryV28 != nullptr)                                                                                                                                                         // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            COMMON_TEST_ASSERT(entryV28->minimumVoltage    == 1200, NgosStatus::ASSERTION);                                                                                              // Colorize: green
+                            COMMON_TEST_ASSERT(entryV28->maximumVoltage    == 1200, NgosStatus::ASSERTION);                                                                                              // Colorize: green
+                            COMMON_TEST_ASSERT(entryV28->configuredVoltage == 1200, NgosStatus::ASSERTION);                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            if (entryV32 != nullptr)                                                                                                                                                     // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                COMMON_TEST_ASSERT(entryV32->memoryTechnology                        == DmiMemoryDeviceTechnology::NONE,                         NgosStatus::ASSERTION);                 // Colorize: green
+                                COMMON_TEST_ASSERT(entryV32->memoryOperatingModeCapability           == FLAGS(DmiMemoryDeviceOperatingModeCapabilityFlag::NONE), NgosStatus::ASSERTION);                 // Colorize: green
+                                COMMON_TEST_ASSERT(entryV32->firmwareVersion.id                      == 7,                                                       NgosStatus::ASSERTION);                 // Colorize: green
+                                COMMON_TEST_ASSERT(entryV32->moduleManufacturerID                    == 0,                                                       NgosStatus::ASSERTION);                 // Colorize: green
+                                COMMON_TEST_ASSERT(entryV32->moduleProductID                         == 0,                                                       NgosStatus::ASSERTION);                 // Colorize: green
+                                COMMON_TEST_ASSERT(entryV32->memorySubsystemControllerManufacturerID == 0,                                                       NgosStatus::ASSERTION);                 // Colorize: green
+                                COMMON_TEST_ASSERT(entryV32->memorySubsystemControllerProductID      == 0,                                                       NgosStatus::ASSERTION);                 // Colorize: green
+                                COMMON_TEST_ASSERT(entryV32->nonVolatileSize                         == 0,                                                       NgosStatus::ASSERTION);                 // Colorize: green
+                                COMMON_TEST_ASSERT(entryV32->volatileSize                            == 0,                                                       NgosStatus::ASSERTION);                 // Colorize: green
+                                COMMON_TEST_ASSERT(entryV32->cacheSize                               == 0,                                                       NgosStatus::ASSERTION);                 // Colorize: green
+                                COMMON_TEST_ASSERT(entryV32->logicalSize                             == 0,                                                       NgosStatus::ASSERTION);                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (entryV33 != nullptr)                                                                                                                                                 // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    COMMON_TEST_ASSERT(entryV33->extendedSpeed                 == 0, NgosStatus::ASSERTION);                                                                             // Colorize: green
+                                    COMMON_TEST_ASSERT(entryV33->extendedConfiguredMemorySpeed == 0, NgosStatus::ASSERTION);                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntryV33), NgosStatus::ASSERTION);                                                                  // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                else                                                                                                                                                                     // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntryV32), NgosStatus::ASSERTION);                                                                  // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            else                                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntryV28), NgosStatus::ASSERTION);                                                                      // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntryV27), NgosStatus::ASSERTION);                                                                          // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntryV26), NgosStatus::ASSERTION);                                                                              // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntryV23), NgosStatus::ASSERTION);                                                                                  // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceEntry), NgosStatus::ASSERTION);                                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get strings                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DmiStringId manufacturerStringId;                                                                                                                                                                // Colorize: green
+        DmiStringId serialNumberStringId;                                                                                                                                                                // Colorize: green
+        DmiStringId assetTagStringId;                                                                                                                                                                    // Colorize: green
+        DmiStringId partNumberStringId;                                                                                                                                                                  // Colorize: green
+        DmiStringId firmwareVersionStringId;                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (entryV23 != nullptr)                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            manufacturerStringId = entryV23->manufacturer;                                                                                                                                               // Colorize: green
+            serialNumberStringId = entryV23->serialNumber;                                                                                                                                               // Colorize: green
+            assetTagStringId     = entryV23->assetTag;                                                                                                                                                   // Colorize: green
+            partNumberStringId   = entryV23->partNumber;                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV32 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                firmwareVersionStringId = entryV32->firmwareVersion;                                                                                                                                     // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            entry->deviceLocator.id > 0                                                                                                                                                                  // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->bankLocator.id > 0                                                                                                                                                                    // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            manufacturerStringId.id > 0                                                                                                                                                                  // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            serialNumberStringId.id > 0                                                                                                                                                                  // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            assetTagStringId.id > 0                                                                                                                                                                      // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            partNumberStringId.id > 0                                                                                                                                                                    // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            firmwareVersionStringId.id > 0                                                                                                                                                               // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;                                                                                                            // Colorize: green
+            good_Char8 *begin = cur;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            AVOID_UNUSED(begin);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            DmiStringId stringId;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            do                                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (cur[0] == 0)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++stringId;                                                                                                                                                                          // Colorize: green
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (stringId == entry->deviceLocator)                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("deviceLocator = %s", begin));                                                                                                                                      // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->bankLocator)                                                                                                                                                  // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("bankLocator = %s", begin));                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == manufacturerStringId)                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("manufacturer = %s", begin));                                                                                                                                       // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == serialNumberStringId)                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("serialNumber = %s", begin));                                                                                                                                       // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == assetTagStringId)                                                                                                                                                    // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("assetTag = %s", begin));                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == partNumberStringId)                                                                                                                                                  // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("partNumber = %s", begin));                                                                                                                                         // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == firmwareVersionStringId)                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("firmwareVersion = %s", begin));                                                                                                                                    // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (cur[1] == 0)                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    begin = cur + 1;                                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++cur;                                                                                                                                                                                   // Colorize: green
+            } while(true);                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Add entry to sMemoryDeviceEntries                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_ASSERT_EXECUTION(sMemoryDeviceEntries.append(entry), NgosStatus::ASSERTION);                                                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiBits32MemoryErrorInformationEntry(DmiBits32MemoryErrorInformationEntry *entry)                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    AVOID_UNUSED(entry);                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->errorType               = %s",     enumToFullString(entry->errorType)));                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->errorGranularity        = %s",     enumToFullString(entry->errorGranularity)));                                                                                         // Colorize: green
+            COMMON_LVVV(("entry->errorOperation          = %s",     enumToFullString(entry->errorOperation)));                                                                                           // Colorize: green
+            COMMON_LVVV(("entry->vendorSyndrome          = 0x%08X", entry->vendorSyndrome));                                                                                                             // Colorize: green
+            COMMON_LVVV(("entry->memoryArrayErrorAddress = 0x%08X", entry->memoryArrayErrorAddress));                                                                                                    // Colorize: green
+            COMMON_LVVV(("entry->deviceErrorAddress      = 0x%08X", entry->deviceErrorAddress));                                                                                                         // Colorize: green
+            COMMON_LVVV(("entry->errorResolution         = 0x%08X", entry->errorResolution));                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->errorType               == DmiBits32MemoryErrorInformationErrorType::OK,             NgosStatus::ASSERTION);                                                       // Colorize: green
+            COMMON_TEST_ASSERT(entry->errorGranularity        == DmiBits32MemoryErrorInformationErrorGranularity::UNKNOWN, NgosStatus::ASSERTION);                                                       // Colorize: green
+            COMMON_TEST_ASSERT(entry->errorOperation          == DmiBits32MemoryErrorInformationErrorOperation::UNKNOWN,   NgosStatus::ASSERTION);                                                       // Colorize: green
+            COMMON_TEST_ASSERT(entry->vendorSyndrome          == 0x80000000,                                               NgosStatus::ASSERTION);                                                       // Colorize: green
+            COMMON_TEST_ASSERT(entry->memoryArrayErrorAddress == 0x80000000,                                               NgosStatus::ASSERTION);                                                       // Colorize: green
+            COMMON_TEST_ASSERT(entry->deviceErrorAddress      == 0x80000000,                                               NgosStatus::ASSERTION);                                                       // Colorize: green
+            COMMON_TEST_ASSERT(entry->errorResolution         == 0x80000000,                                               NgosStatus::ASSERTION);                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBits32MemoryErrorInformationEntry), NgosStatus::ASSERTION);                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for strings                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddressEntry *entry)                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DmiMemoryArrayMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntryV27) ? reinterpret_cast<DmiMemoryArrayMappedAddressEntryV27 *>(entry) : nullptr; // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->startingAddress.value     = 0x%08X", entry->startingAddress.value));                                                                                                    // Colorize: green
+            COMMON_LVVV(("entry->startingAddress.address() = %s",     bytesToString(entry->startingAddress.address())));                                                                                 // Colorize: green
+            COMMON_LVVV(("entry->endingAddress.value       = 0x%08X", entry->endingAddress.value));                                                                                                      // Colorize: green
+            COMMON_LVVV(("entry->endingAddress.address()   = %s",     bytesToString(entry->endingAddress.address())));                                                                                   // Colorize: green
+            COMMON_LVVV(("entry->memoryArrayHandle         = 0x%04X", entry->memoryArrayHandle));                                                                                                        // Colorize: green
+            COMMON_LVVV(("entry->partitionWidth            = %u",     entry->partitionWidth));                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV27 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_LVVV(("entryV27->extendedStartingAddress = 0x%016llX", entryV27->extendedStartingAddress));                                                                                       // Colorize: green
+                COMMON_LVVV(("entryV27->extendedEndingAddress   = 0x%016llX", entryV27->extendedEndingAddress));                                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->startingAddress.value     == 0x00000000, NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+            COMMON_TEST_ASSERT(entry->startingAddress.address() == 0x00000000, NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+            COMMON_TEST_ASSERT(entry->endingAddress.value       == 0x000FFFFF, NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+            COMMON_TEST_ASSERT(entry->endingAddress.address()   == 0x000FFFFF, NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+            COMMON_TEST_ASSERT(entry->memoryArrayHandle         == 0x1000,     NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+            COMMON_TEST_ASSERT(entry->partitionWidth            == 1,          NgosStatus::ASSERTION);                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV27 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entryV27->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION);                                                                                      // Colorize: green
+                COMMON_TEST_ASSERT(entryV27->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION);                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntryV27), NgosStatus::ASSERTION);                                                                          // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryArrayMappedAddressEntry), NgosStatus::ASSERTION);                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for strings                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddressEntry *entry)                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DmiMemoryDeviceMappedAddressEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntryV27) ? reinterpret_cast<DmiMemoryDeviceMappedAddressEntryV27 *>(entry) : nullptr; // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->startingAddress.value          = 0x%08X", entry->startingAddress.value));                                                                                               // Colorize: green
+            COMMON_LVVV(("entry->startingAddress.address()      = %s",     bytesToString(entry->startingAddress.address())));                                                                            // Colorize: green
+            COMMON_LVVV(("entry->endingAddress.value            = 0x%08X", entry->endingAddress.value));                                                                                                 // Colorize: green
+            COMMON_LVVV(("entry->endingAddress.address()        = %s",     bytesToString(entry->endingAddress.address())));                                                                              // Colorize: green
+            COMMON_LVVV(("entry->memoryDeviceHandle             = 0x%04X", entry->memoryDeviceHandle));                                                                                                  // Colorize: green
+            COMMON_LVVV(("entry->memoryArrayMappedAddressHandle = 0x%04X", entry->memoryArrayMappedAddressHandle));                                                                                      // Colorize: green
+            COMMON_LVVV(("entry->partitionRowPosition           = %u",     entry->partitionRowPosition));                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->interleavePosition             = %u",     entry->interleavePosition));                                                                                                  // Colorize: green
+            COMMON_LVVV(("entry->interleavedDataDepth           = %u",     entry->interleavedDataDepth));                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV27 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_LVVV(("entryV27->extendedStartingAddress = 0x%016llX", entryV27->extendedStartingAddress));                                                                                       // Colorize: green
+                COMMON_LVVV(("entryV27->extendedEndingAddress   = 0x%016llX", entryV27->extendedEndingAddress));                                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->startingAddress.value          == 0x00000000, NgosStatus::ASSERTION);                                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->startingAddress.address()      == 0x00000000, NgosStatus::ASSERTION);                                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->endingAddress.value            == 0x000FFFFF, NgosStatus::ASSERTION);                                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->endingAddress.address()        == 0x000FFFFF, NgosStatus::ASSERTION);                                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->memoryDeviceHandle             == 0x0000,     NgosStatus::ASSERTION);                                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->memoryArrayMappedAddressHandle == 0x0000,     NgosStatus::ASSERTION);                                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->partitionRowPosition           == 1,          NgosStatus::ASSERTION);                                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->interleavePosition             == 1,          NgosStatus::ASSERTION);                                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->interleavedDataDepth           == 1,          NgosStatus::ASSERTION);                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV27 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entryV27->extendedStartingAddress == 0x0000000000000000, NgosStatus::ASSERTION);                                                                                      // Colorize: green
+                COMMON_TEST_ASSERT(entryV27->extendedEndingAddress   == 0x0000000000000000, NgosStatus::ASSERTION);                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntryV27), NgosStatus::ASSERTION);                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiMemoryDeviceMappedAddressEntry), NgosStatus::ASSERTION);                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for strings                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT_EXECUTION(sMemoryDeviceMappedAddressEntries.append(entry), NgosStatus::ASSERTION);                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DmiPortableBatteryEntryV22 *entryV22 = DMI::getVersion() >= DMI_VERSION(2, 2) && entry->header.length >= sizeof(DmiPortableBatteryEntryV22) ? reinterpret_cast<DmiPortableBatteryEntryV22 *>(entry) : nullptr; // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->location.id               = %u", entry->location.id));                                                                                                                  // Colorize: green
+            COMMON_LVVV(("entry->manufacturer.id           = %u", entry->manufacturer.id));                                                                                                              // Colorize: green
+            COMMON_LVVV(("entry->manufactureDate.id        = %u", entry->manufactureDate.id));                                                                                                           // Colorize: green
+            COMMON_LVVV(("entry->serialNumber.id           = %u", entry->serialNumber.id));                                                                                                              // Colorize: green
+            COMMON_LVVV(("entry->deviceName.id             = %u", entry->deviceName.id));                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->deviceChemistry           = %s", enumToFullString(entry->deviceChemistry)));                                                                                            // Colorize: green
+            COMMON_LVVV(("entry->designCapacity            = %u", entry->designCapacity));                                                                                                               // Colorize: green
+            COMMON_LVVV(("entry->designVoltage             = %u", entry->designVoltage));                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->sbdsVersionNumber.id      = %u", entry->sbdsVersionNumber.id));                                                                                                         // Colorize: green
+            COMMON_LVVV(("entry->maximumErrorInBatteryData = %u", entry->maximumErrorInBatteryData));                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV22 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_LVVV(("entryV22->sbdsSerialNumber            = %u",             entryV22->sbdsSerialNumber));                                                                                     // Colorize: green
+                COMMON_LVVV(("entryV22->sbdsManufactureDate.date    = %u",             entryV22->sbdsManufactureDate.date));                                                                             // Colorize: green
+                COMMON_LVVV(("entryV22->sbdsManufactureDate.month   = %u",             entryV22->sbdsManufactureDate.month));                                                                            // Colorize: green
+                COMMON_LVVV(("entryV22->sbdsManufactureDate.year    = %u",             entryV22->sbdsManufactureDate.year));                                                                             // Colorize: green
+                COMMON_LVVV(("entryV22->sbdsManufactureDate.value16 = 0x%04X",         entryV22->sbdsManufactureDate.value16));                                                                          // Colorize: green
+                COMMON_LVVV(("entryV22->sbdsManufactureDate         = %04u-%02u-%02u", entryV22->sbdsManufactureDate.yearReal(), entryV22->sbdsManufactureDate.month, entryV22->sbdsManufactureDate.date)); // Colorize: green
+                COMMON_LVVV(("entryV22->sbdsDeviceChemistry.id      = %u",             entryV22->sbdsDeviceChemistry.id));                                                                               // Colorize: green
+                COMMON_LVVV(("entryV22->designCapacityMultiplier    = %u",             entryV22->designCapacityMultiplier));                                                                             // Colorize: green
+                COMMON_LVVV(("entryV22->oemSpecific                 = 0x%08X",         entryV22->oemSpecific));                                                                                          // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->location.id               == 0,                                        NgosStatus::ASSERTION);                                                                     // Colorize: green
+            COMMON_TEST_ASSERT(entry->manufacturer.id           == 0,                                        NgosStatus::ASSERTION);                                                                     // Colorize: green
+            COMMON_TEST_ASSERT(entry->manufactureDate.id        == 0,                                        NgosStatus::ASSERTION);                                                                     // Colorize: green
+            COMMON_TEST_ASSERT(entry->serialNumber.id           == 0,                                        NgosStatus::ASSERTION);                                                                     // Colorize: green
+            COMMON_TEST_ASSERT(entry->deviceName.id             == 0,                                        NgosStatus::ASSERTION);                                                                     // Colorize: green
+            COMMON_TEST_ASSERT(entry->deviceChemistry           == DmiPortableBatteryDeviceChemistry::OTHER, NgosStatus::ASSERTION);                                                                     // Colorize: green
+            COMMON_TEST_ASSERT(entry->designCapacity            == 0,                                        NgosStatus::ASSERTION);                                                                     // Colorize: green
+            COMMON_TEST_ASSERT(entry->designVoltage             == 0,                                        NgosStatus::ASSERTION);                                                                     // Colorize: green
+            COMMON_TEST_ASSERT(entry->sbdsVersionNumber.id      == 0,                                        NgosStatus::ASSERTION);                                                                     // Colorize: green
+            COMMON_TEST_ASSERT(entry->maximumErrorInBatteryData == 0,                                        NgosStatus::ASSERTION);                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV22 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entryV22->sbdsSerialNumber               == 0,          NgosStatus::ASSERTION);                                                                                       // Colorize: green
+                COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.date       == 0,          NgosStatus::ASSERTION);                                                                                       // Colorize: green
+                COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.month      == 0,          NgosStatus::ASSERTION);                                                                                       // Colorize: green
+                COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.year       == 0,          NgosStatus::ASSERTION);                                                                                       // Colorize: green
+                COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.value16    == 0x0000,     NgosStatus::ASSERTION);                                                                                       // Colorize: green
+                COMMON_TEST_ASSERT(entryV22->sbdsManufactureDate.yearReal() == 0,          NgosStatus::ASSERTION);                                                                                       // Colorize: green
+                COMMON_TEST_ASSERT(entryV22->sbdsDeviceChemistry.id         == 0,          NgosStatus::ASSERTION);                                                                                       // Colorize: green
+                COMMON_TEST_ASSERT(entryV22->designCapacityMultiplier       == 0,          NgosStatus::ASSERTION);                                                                                       // Colorize: green
+                COMMON_TEST_ASSERT(entryV22->oemSpecific                    == 0x00000000, NgosStatus::ASSERTION);                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntryV22), NgosStatus::ASSERTION);                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiPortableBatteryEntry), NgosStatus::ASSERTION);                                                                                      // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get strings                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DmiStringId sbdsDeviceChemistryStringId;                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (entryV22 != nullptr)                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            sbdsDeviceChemistryStringId = entryV22->sbdsDeviceChemistry;                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            entry->location.id > 0                                                                                                                                                                       // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->manufacturer.id > 0                                                                                                                                                                   // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->manufactureDate.id > 0                                                                                                                                                                // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->serialNumber.id > 0                                                                                                                                                                   // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->deviceName.id > 0                                                                                                                                                                     // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->sbdsVersionNumber.id > 0                                                                                                                                                              // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            sbdsDeviceChemistryStringId.id > 0                                                                                                                                                           // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;                                                                                                            // Colorize: green
+            good_Char8 *begin = cur;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            AVOID_UNUSED(begin);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            DmiStringId stringId;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            do                                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (cur[0] == 0)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++stringId;                                                                                                                                                                          // Colorize: green
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (stringId == entry->location)                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("location = %s", begin));                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->manufacturer)                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("manufacturer = %s", begin));                                                                                                                                       // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->manufactureDate)                                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("manufactureDate = %s", begin));                                                                                                                                    // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->serialNumber)                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("serialNumber = %s", begin));                                                                                                                                       // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->deviceName)                                                                                                                                                   // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("deviceName = %s", begin));                                                                                                                                         // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->sbdsVersionNumber)                                                                                                                                            // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("sbdsVersionNumber = %s", begin));                                                                                                                                  // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == sbdsDeviceChemistryStringId)                                                                                                                                         // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("sbdsDeviceChemistry = %s", begin));                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (cur[1] == 0)                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    begin = cur + 1;                                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++cur;                                                                                                                                                                                   // Colorize: green
+            } while(true);                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiSystemResetEntry(DmiSystemResetEntry *entry)                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    AVOID_UNUSED(entry);                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->capabilities.enabled           = %s",     boolToString(entry->capabilities.enabled)));                                                                                  // Colorize: green
+            COMMON_LVVV(("entry->capabilities.bootOption        = %s",     enumToFullString(entry->capabilities.bootOption)));                                                                           // Colorize: green
+            COMMON_LVVV(("entry->capabilities.bootOptionOnLimit = %s",     enumToFullString(entry->capabilities.bootOptionOnLimit)));                                                                    // Colorize: green
+            COMMON_LVVV(("entry->capabilities.watchdogEnabled   = %s",     boolToString(entry->capabilities.watchdogEnabled)));                                                                          // Colorize: green
+            COMMON_LVVV(("entry->capabilities.__reserved        = %u",     entry->capabilities.__reserved));                                                                                             // Colorize: green
+            COMMON_LVVV(("entry->capabilities.value8            = 0x%02X", entry->capabilities.value8));                                                                                                 // Colorize: green
+            COMMON_LVVV(("entry->resetCount                     = %u",     entry->resetCount));                                                                                                          // Colorize: green
+            COMMON_LVVV(("entry->resetLimit                     = %u",     entry->resetLimit));                                                                                                          // Colorize: green
+            COMMON_LVVV(("entry->timerInterval                  = %u",     entry->timerInterval));                                                                                                       // Colorize: green
+            COMMON_LVVV(("entry->timeout                        = %u",     entry->timeout));                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->capabilities.enabled           == 1,                                       NgosStatus::ASSERTION);                                                                 // Colorize: green
+            COMMON_TEST_ASSERT(entry->capabilities.bootOption        == DmiSystemResetBootOption::DO_NOT_REBOOT, NgosStatus::ASSERTION);                                                                 // Colorize: green
+            COMMON_TEST_ASSERT(entry->capabilities.bootOptionOnLimit == DmiSystemResetBootOption::DO_NOT_REBOOT, NgosStatus::ASSERTION);                                                                 // Colorize: green
+            COMMON_TEST_ASSERT(entry->capabilities.watchdogEnabled   == 1,                                       NgosStatus::ASSERTION);                                                                 // Colorize: green
+            COMMON_TEST_ASSERT(entry->capabilities.__reserved        == 0,                                       NgosStatus::ASSERTION);                                                                 // Colorize: green
+            COMMON_TEST_ASSERT(entry->capabilities.value8            == 0x3F,                                    NgosStatus::ASSERTION);                                                                 // Colorize: green
+            COMMON_TEST_ASSERT(entry->resetCount                     == 0xFFFF,                                  NgosStatus::ASSERTION);                                                                 // Colorize: green
+            COMMON_TEST_ASSERT(entry->resetLimit                     == 0xFFFF,                                  NgosStatus::ASSERTION);                                                                 // Colorize: green
+            COMMON_TEST_ASSERT(entry->timerInterval                  == 0xFFFF,                                  NgosStatus::ASSERTION);                                                                 // Colorize: green
+            COMMON_TEST_ASSERT(entry->timeout                        == 0xFFFF,                                  NgosStatus::ASSERTION);                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemResetEntry), NgosStatus::ASSERTION);                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for strings                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiHardwareSecurityEntry(DmiHardwareSecurityEntry *entry)                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    AVOID_UNUSED(entry);                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->settings.frontPanelResetStatus       = %s",     enumToFullString(entry->settings.frontPanelResetStatus)));                                                              // Colorize: green
+            COMMON_LVVV(("entry->settings.administratorPasswordStatus = %s",     enumToFullString(entry->settings.administratorPasswordStatus)));                                                        // Colorize: green
+            COMMON_LVVV(("entry->settings.keyboardPasswordStatus      = %s",     enumToFullString(entry->settings.keyboardPasswordStatus)));                                                             // Colorize: green
+            COMMON_LVVV(("entry->settings.powerOnPasswordStatus       = %s",     enumToFullString(entry->settings.powerOnPasswordStatus)));                                                              // Colorize: green
+            COMMON_LVVV(("entry->settings.value8                      = 0x%02X", entry->settings.value8));                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->settings.frontPanelResetStatus       == DmiHardwareSecurityStatus::UNKNOWN,  NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->settings.administratorPasswordStatus == DmiHardwareSecurityStatus::ENABLED,  NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->settings.keyboardPasswordStatus      == DmiHardwareSecurityStatus::UNKNOWN,  NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->settings.powerOnPasswordStatus       == DmiHardwareSecurityStatus::DISABLED, NgosStatus::ASSERTION);                                                               // Colorize: green
+            COMMON_TEST_ASSERT(entry->settings.value8                      == 0x37,                                NgosStatus::ASSERTION);                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiHardwareSecurityEntry), NgosStatus::ASSERTION);                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for strings                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry)                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->description.id             = %u",     entry->description.id));                                                                                                          // Colorize: green
+            COMMON_LVVV(("entry->locationAndStatus.location = %s",     enumToFullString(entry->locationAndStatus.location)));                                                                            // Colorize: green
+            COMMON_LVVV(("entry->locationAndStatus.status   = %s",     enumToFullString(entry->locationAndStatus.status)));                                                                              // Colorize: green
+            COMMON_LVVV(("entry->locationAndStatus.value8   = 0x%02X", entry->locationAndStatus.value8));                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->maximumValue               = %u",     entry->maximumValue));                                                                                                            // Colorize: green
+            COMMON_LVVV(("entry->minimumValue               = %u",     entry->minimumValue));                                                                                                            // Colorize: green
+            COMMON_LVVV(("entry->resolution                 = %u",     entry->resolution));                                                                                                              // Colorize: green
+            COMMON_LVVV(("entry->tolerance                  = %u",     entry->tolerance));                                                                                                               // Colorize: green
+            COMMON_LVVV(("entry->accuracy                   = %u",     entry->accuracy));                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->oemDefined                 = 0x%08X", entry->oemDefined));                                                                                                              // Colorize: green
+            COMMON_LVVV(("entry->nominalValue               = %u",     entry->nominalValue));                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->description.id             == 1,                              NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiVoltageProbeLocation::OTHER, NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiVoltageProbeStatus::OTHER,   NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->locationAndStatus.value8   == 0x00,                           NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->maximumValue               == 0,                              NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->minimumValue               == 0,                              NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->resolution                 == 0,                              NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->tolerance                  == 0,                              NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->accuracy                   == 0,                              NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->oemDefined                 == 0x00000000,                     NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT(entry->nominalValue               == 0,                              NgosStatus::ASSERTION);                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiVoltageProbeEntry), NgosStatus::ASSERTION);                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get strings                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (entry->description.id)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;                                                                                                            // Colorize: green
+            good_Char8 *begin = cur;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            AVOID_UNUSED(begin);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            DmiStringId stringId;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            do                                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (cur[0] == 0)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++stringId;                                                                                                                                                                          // Colorize: green
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (stringId == entry->description)                                                                                                                                                  // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("description = %s", begin));                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (cur[1] == 0)                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    begin = cur + 1;                                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++cur;                                                                                                                                                                                   // Colorize: green
+            } while(true);                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DmiCoolingDeviceEntryV27 *entryV27 = DMI::getVersion() >= DMI_VERSION(2, 7) && entry->header.length >= sizeof(DmiCoolingDeviceEntryV27) ? reinterpret_cast<DmiCoolingDeviceEntryV27 *>(entry) : nullptr; // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->temperatureProbeHandle         = 0x%04X", entry->temperatureProbeHandle));                                                                                              // Colorize: green
+            COMMON_LVVV(("entry->deviceTypeAndStatus.deviceType = %s",     enumToFullString(entry->deviceTypeAndStatus.deviceType)));                                                                    // Colorize: green
+            COMMON_LVVV(("entry->deviceTypeAndStatus.status     = %s",     enumToFullString(entry->deviceTypeAndStatus.status)));                                                                        // Colorize: green
+            COMMON_LVVV(("entry->deviceTypeAndStatus.value8     = 0x%02X", entry->deviceTypeAndStatus.value8));                                                                                          // Colorize: green
+            COMMON_LVVV(("entry->coolingUnitGroup               = %u",     entry->coolingUnitGroup));                                                                                                    // Colorize: green
+            COMMON_LVVV(("entry->oemDefined                     = 0x%08X", entry->oemDefined));                                                                                                          // Colorize: green
+            COMMON_LVVV(("entry->nominalSpeed                   = %u",     entry->nominalSpeed));                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV27 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_LVVV(("entryV27->description.id = %u", entryV27->description.id));                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->temperatureProbeHandle         == 0x0000,                        NgosStatus::ASSERTION);                                                                           // Colorize: green
+            COMMON_TEST_ASSERT(entry->deviceTypeAndStatus.deviceType == DmiCoolingDeviceType::OTHER,   NgosStatus::ASSERTION);                                                                           // Colorize: green
+            COMMON_TEST_ASSERT(entry->deviceTypeAndStatus.status     == DmiCoolingDeviceStatus::OTHER, NgosStatus::ASSERTION);                                                                           // Colorize: green
+            COMMON_TEST_ASSERT(entry->deviceTypeAndStatus.value8     == 0x00,                          NgosStatus::ASSERTION);                                                                           // Colorize: green
+            COMMON_TEST_ASSERT(entry->coolingUnitGroup               == 0,                             NgosStatus::ASSERTION);                                                                           // Colorize: green
+            COMMON_TEST_ASSERT(entry->oemDefined                     == 0x00000000,                    NgosStatus::ASSERTION);                                                                           // Colorize: green
+            COMMON_TEST_ASSERT(entry->nominalSpeed                   == 0,                             NgosStatus::ASSERTION);                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entryV27 != nullptr)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entryV27->description.id == 1, NgosStatus::ASSERTION);                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntryV27), NgosStatus::ASSERTION);                                                                                     // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiCoolingDeviceEntry), NgosStatus::ASSERTION);                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get strings                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DmiStringId descriptionStringId;                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (entryV27 != nullptr)                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            descriptionStringId = entryV27->description;                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (descriptionStringId.id)                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;                                                                                                            // Colorize: green
+            good_Char8 *begin = cur;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            AVOID_UNUSED(begin);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            DmiStringId stringId;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            do                                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (cur[0] == 0)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++stringId;                                                                                                                                                                          // Colorize: green
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (stringId == descriptionStringId)                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("description = %s", begin));                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (cur[1] == 0)                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    begin = cur + 1;                                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++cur;                                                                                                                                                                                   // Colorize: green
+            } while(true);                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry)                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->description.id             = %u",     entry->description.id));                                                                                                          // Colorize: green
+            COMMON_LVVV(("entry->locationAndStatus.location = %s",     enumToFullString(entry->locationAndStatus.location)));                                                                            // Colorize: green
+            COMMON_LVVV(("entry->locationAndStatus.status   = %s",     enumToFullString(entry->locationAndStatus.status)));                                                                              // Colorize: green
+            COMMON_LVVV(("entry->locationAndStatus.value8   = 0x%02X", entry->locationAndStatus.value8));                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->maximumValue               = %u",     entry->maximumValue));                                                                                                            // Colorize: green
+            COMMON_LVVV(("entry->minimumValue               = %u",     entry->minimumValue));                                                                                                            // Colorize: green
+            COMMON_LVVV(("entry->resolution                 = %u",     entry->resolution));                                                                                                              // Colorize: green
+            COMMON_LVVV(("entry->tolerance                  = %u",     entry->tolerance));                                                                                                               // Colorize: green
+            COMMON_LVVV(("entry->accuracy                   = %u",     entry->accuracy));                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->oemDefined                 = 0x%08X", entry->oemDefined));                                                                                                              // Colorize: green
+            COMMON_LVVV(("entry->nominalValue               = %u",     entry->nominalValue));                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->description.id             == 1,                                  NgosStatus::ASSERTION);                                                                          // Colorize: green
+            COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiTemperatureProbeLocation::OTHER, NgosStatus::ASSERTION);                                                                          // Colorize: green
+            COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiTemperatureProbeStatus::OTHER,   NgosStatus::ASSERTION);                                                                          // Colorize: green
+            COMMON_TEST_ASSERT(entry->locationAndStatus.value8   == 0x00,                               NgosStatus::ASSERTION);                                                                          // Colorize: green
+            COMMON_TEST_ASSERT(entry->maximumValue               == 0,                                  NgosStatus::ASSERTION);                                                                          // Colorize: green
+            COMMON_TEST_ASSERT(entry->minimumValue               == 0,                                  NgosStatus::ASSERTION);                                                                          // Colorize: green
+            COMMON_TEST_ASSERT(entry->resolution                 == 0,                                  NgosStatus::ASSERTION);                                                                          // Colorize: green
+            COMMON_TEST_ASSERT(entry->tolerance                  == 0,                                  NgosStatus::ASSERTION);                                                                          // Colorize: green
+            COMMON_TEST_ASSERT(entry->accuracy                   == 0,                                  NgosStatus::ASSERTION);                                                                          // Colorize: green
+            COMMON_TEST_ASSERT(entry->oemDefined                 == 0x00000000,                         NgosStatus::ASSERTION);                                                                          // Colorize: green
+            COMMON_TEST_ASSERT(entry->nominalValue               == 0,                                  NgosStatus::ASSERTION);                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiTemperatureProbeEntry), NgosStatus::ASSERTION);                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get strings                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (entry->description.id)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;                                                                                                            // Colorize: green
+            good_Char8 *begin = cur;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            AVOID_UNUSED(begin);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            DmiStringId stringId;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            do                                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (cur[0] == 0)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++stringId;                                                                                                                                                                          // Colorize: green
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (stringId == entry->description)                                                                                                                                                  // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("description = %s", begin));                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (cur[1] == 0)                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    begin = cur + 1;                                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++cur;                                                                                                                                                                                   // Colorize: green
+            } while(true);                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntry *entry)                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->description.id             = %u",     entry->description.id));                                                                                                          // Colorize: green
+            COMMON_LVVV(("entry->locationAndStatus.location = %s",     enumToFullString(entry->locationAndStatus.location)));                                         // Colorize: green
+            COMMON_LVVV(("entry->locationAndStatus.status   = %s",     enumToFullString(entry->locationAndStatus.status)));                                             // Colorize: green
+            COMMON_LVVV(("entry->locationAndStatus.value8   = 0x%02X", entry->locationAndStatus.value8));                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->maximumValue               = %u",     entry->maximumValue));                                                                                                            // Colorize: green
+            COMMON_LVVV(("entry->minimumValue               = %u",     entry->minimumValue));                                                                                                            // Colorize: green
+            COMMON_LVVV(("entry->resolution                 = %u",     entry->resolution));                                                                                                              // Colorize: green
+            COMMON_LVVV(("entry->tolerance                  = %u",     entry->tolerance));                                                                                                               // Colorize: green
+            COMMON_LVVV(("entry->accuracy                   = %u",     entry->accuracy));                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->oemDefined                 = 0x%08X", entry->oemDefined));                                                                                                              // Colorize: green
+            COMMON_LVVV(("entry->nominalValue               = %u",     entry->nominalValue));                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->description.id             == 1,                                        NgosStatus::ASSERTION);                                                                    // Colorize: green
+            COMMON_TEST_ASSERT(entry->locationAndStatus.location == DmiElectricalCurrentProbeLocation::OTHER, NgosStatus::ASSERTION);                                                                    // Colorize: green
+            COMMON_TEST_ASSERT(entry->locationAndStatus.status   == DmiElectricalCurrentProbeStatus::OTHER,   NgosStatus::ASSERTION);                                                                    // Colorize: green
+            COMMON_TEST_ASSERT(entry->locationAndStatus.value8   == 0x00,                                     NgosStatus::ASSERTION);                                                                    // Colorize: green
+            COMMON_TEST_ASSERT(entry->maximumValue               == 0,                                        NgosStatus::ASSERTION);                                                                    // Colorize: green
+            COMMON_TEST_ASSERT(entry->minimumValue               == 0,                                        NgosStatus::ASSERTION);                                                                    // Colorize: green
+            COMMON_TEST_ASSERT(entry->resolution                 == 0,                                        NgosStatus::ASSERTION);                                                                    // Colorize: green
+            COMMON_TEST_ASSERT(entry->tolerance                  == 0,                                        NgosStatus::ASSERTION);                                                                    // Colorize: green
+            COMMON_TEST_ASSERT(entry->accuracy                   == 0,                                        NgosStatus::ASSERTION);                                                                    // Colorize: green
+            COMMON_TEST_ASSERT(entry->oemDefined                 == 0x00000000,                               NgosStatus::ASSERTION);                                                                    // Colorize: green
+            COMMON_TEST_ASSERT(entry->nominalValue               == 0,                                        NgosStatus::ASSERTION);                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiElectricalCurrentProbeEntry), NgosStatus::ASSERTION);                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get strings                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (entry->description.id)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;                                                                                                            // Colorize: green
+            good_Char8 *begin = cur;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            AVOID_UNUSED(begin);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            DmiStringId stringId;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            do                                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (cur[0] == 0)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++stringId;                                                                                                                                                                          // Colorize: green
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (stringId == entry->description)                                                                                                                                                  // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("description = %s", begin));                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (cur[1] == 0)                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    begin = cur + 1;                                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++cur;                                                                                                                                                                                   // Colorize: green
+            } while(true);                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiOutOfBandRemoteAccessEntry(DmiOutOfBandRemoteAccessEntry *entry)                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->manufacturerName.id = %u", entry->manufacturerName.id));                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->connections         = %s", flagsToFullString(entry->connections)));                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->manufacturerName.id == 1,                                                      NgosStatus::ASSERTION);                                                             // Colorize: green
+            COMMON_TEST_ASSERT(entry->connections         == FLAGS(DmiOutOfBandRemoteAccessConnectionFlag::INBOUND), NgosStatus::ASSERTION);                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiOutOfBandRemoteAccessEntry), NgosStatus::ASSERTION);                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get strings                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (entry->manufacturerName.id)                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;                                                                                                            // Colorize: green
+            good_Char8 *begin = cur;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            AVOID_UNUSED(begin);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            DmiStringId stringId;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            do                                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (cur[0] == 0)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++stringId;                                                                                                                                                                          // Colorize: green
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (stringId == entry->manufacturerName)                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("manufacturerName = %s", begin));                                                                                                                                   // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (cur[1] == 0)                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    begin = cur + 1;                                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++cur;                                                                                                                                                                                   // Colorize: green
+            } while(true);                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    AVOID_UNUSED(entry);                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->bootStatus = %s", enumToFullString(entry->bootStatus)));                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->bootStatus == DmiSystemBootStatus::NO_ERROR, NgosStatus::ASSERTION);                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemBootEntry), NgosStatus::ASSERTION);                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for strings                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiBits64MemoryErrorInformationEntry(DmiBits64MemoryErrorInformationEntry *entry)                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    AVOID_UNUSED(entry);                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->errorType               = %s",        enumToFullString(entry->errorType)));                                                                                             // Colorize: green
+            COMMON_LVVV(("entry->errorGranularity        = %s",        enumToFullString(entry->errorGranularity)));                                                                                      // Colorize: green
+            COMMON_LVVV(("entry->errorOperation          = %s",        enumToFullString(entry->errorOperation)));                                                                                        // Colorize: green
+            COMMON_LVVV(("entry->vendorSyndrome          = 0x%08X",    entry->vendorSyndrome));                                                                                                          // Colorize: green
+            COMMON_LVVV(("entry->memoryArrayErrorAddress = 0x%016llX", entry->memoryArrayErrorAddress));                                                                                                 // Colorize: green
+            COMMON_LVVV(("entry->deviceErrorAddress      = 0x%016llX", entry->deviceErrorAddress));                                                                                                      // Colorize: green
+            COMMON_LVVV(("entry->errorResolution         = 0x%08X",    entry->errorResolution));                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->errorType               == DmiBits64MemoryErrorInformationErrorType::OK,             NgosStatus::ASSERTION);                                                       // Colorize: green
+            COMMON_TEST_ASSERT(entry->errorGranularity        == DmiBits64MemoryErrorInformationErrorGranularity::UNKNOWN, NgosStatus::ASSERTION);                                                       // Colorize: green
+            COMMON_TEST_ASSERT(entry->errorOperation          == DmiBits64MemoryErrorInformationErrorOperation::UNKNOWN,   NgosStatus::ASSERTION);                                                       // Colorize: green
+            COMMON_TEST_ASSERT(entry->vendorSyndrome          == 0x80000000,                                               NgosStatus::ASSERTION);                                                       // Colorize: green
+            COMMON_TEST_ASSERT(entry->memoryArrayErrorAddress == 0x8000000000000000,                                       NgosStatus::ASSERTION);                                                       // Colorize: green
+            COMMON_TEST_ASSERT(entry->deviceErrorAddress      == 0x8000000000000000,                                       NgosStatus::ASSERTION);                                                       // Colorize: green
+            COMMON_TEST_ASSERT(entry->errorResolution         == 0x80000000,                                               NgosStatus::ASSERTION);                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiBits64MemoryErrorInformationEntry), NgosStatus::ASSERTION);                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for strings                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiManagementDeviceEntry(DmiManagementDeviceEntry *entry)                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->description.id = %u",     entry->description.id));                                                                                                                      // Colorize: green
+            COMMON_LVVV(("entry->type           = %s",     enumToFullString(entry->type)));                                                                                                              // Colorize: green
+            COMMON_LVVV(("entry->address        = 0x%08X", entry->address));                                                                                                                             // Colorize: green
+            COMMON_LVVV(("entry->addressType    = %s",     enumToFullString(entry->addressType)));                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->description.id == 1,                                     NgosStatus::ASSERTION);                                                                                   // Colorize: green
+            COMMON_TEST_ASSERT(entry->type           == DmiManagementDeviceType::OTHER,        NgosStatus::ASSERTION);                                                                                   // Colorize: green
+            COMMON_TEST_ASSERT(entry->address        == 0x00000000,                            NgosStatus::ASSERTION);                                                                                   // Colorize: green
+            COMMON_TEST_ASSERT(entry->addressType    == DmiManagementDeviceAddressType::OTHER, NgosStatus::ASSERTION);                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceEntry), NgosStatus::ASSERTION);                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get strings                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (entry->description.id > 0)                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;                                                                                                            // Colorize: green
+            good_Char8 *begin = cur;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            AVOID_UNUSED(begin);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            DmiStringId stringId;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            do                                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (cur[0] == 0)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++stringId;                                                                                                                                                                          // Colorize: green
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (stringId == entry->description)                                                                                                                                                  // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("description = %s", begin));                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (cur[1] == 0)                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    begin = cur + 1;                                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++cur;                                                                                                                                                                                   // Colorize: green
+            } while(true);                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiManagementDeviceComponentEntry(DmiManagementDeviceComponentEntry *entry)                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->description.id         = %u",     entry->description.id));                                                                                                              // Colorize: green
+            COMMON_LVVV(("entry->managementDeviceHandle = 0x%04X", entry->managementDeviceHandle));                                                                                                      // Colorize: green
+            COMMON_LVVV(("entry->componentHandle        = 0x%04X", entry->componentHandle));                                                                                                             // Colorize: green
+            COMMON_LVVV(("entry->thresholdHandle        = 0x%04X", entry->thresholdHandle));                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->description.id         == 1,      NgosStatus::ASSERTION);                                                                                                          // Colorize: green
+            COMMON_TEST_ASSERT(entry->managementDeviceHandle == 0x0000, NgosStatus::ASSERTION);                                                                                                          // Colorize: green
+            COMMON_TEST_ASSERT(entry->componentHandle        == 0x0000, NgosStatus::ASSERTION);                                                                                                          // Colorize: green
+            COMMON_TEST_ASSERT(entry->thresholdHandle        == 0x0000, NgosStatus::ASSERTION);                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceComponentEntry), NgosStatus::ASSERTION);                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get strings                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (entry->description.id)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;                                                                                                            // Colorize: green
+            good_Char8 *begin = cur;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            AVOID_UNUSED(begin);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            DmiStringId stringId;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            do                                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (cur[0] == 0)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++stringId;                                                                                                                                                                          // Colorize: green
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (stringId == entry->description)                                                                                                                                                  // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("description = %s", begin));                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (cur[1] == 0)                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    begin = cur + 1;                                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++cur;                                                                                                                                                                                   // Colorize: green
+            } while(true);                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiManagementDeviceThresholdDataEntry(DmiManagementDeviceThresholdDataEntry *entry)                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    AVOID_UNUSED(entry);                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->lowerThresholdNonCritical    = %u", entry->lowerThresholdNonCritical));                                                                                                 // Colorize: green
+            COMMON_LVVV(("entry->upperThresholdNonCritical    = %u", entry->upperThresholdNonCritical));                                                                                                 // Colorize: green
+            COMMON_LVVV(("entry->lowerThresholdCritical       = %u", entry->lowerThresholdCritical));                                                                                                    // Colorize: green
+            COMMON_LVVV(("entry->upperThresholdCritical       = %u", entry->upperThresholdCritical));                                                                                                    // Colorize: green
+            COMMON_LVVV(("entry->lowerThresholdNonRecoverable = %u", entry->lowerThresholdNonRecoverable));                                                                                              // Colorize: green
+            COMMON_LVVV(("entry->upperThresholdNonRecoverable = %u", entry->upperThresholdNonRecoverable));                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->lowerThresholdNonCritical    == 0, NgosStatus::ASSERTION);                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->upperThresholdNonCritical    == 0, NgosStatus::ASSERTION);                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->lowerThresholdCritical       == 0, NgosStatus::ASSERTION);                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->upperThresholdCritical       == 0, NgosStatus::ASSERTION);                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->lowerThresholdNonRecoverable == 0, NgosStatus::ASSERTION);                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->upperThresholdNonRecoverable == 0, NgosStatus::ASSERTION);                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiManagementDeviceThresholdDataEntry), NgosStatus::ASSERTION);                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for strings                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+        COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus DMI::saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry)                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    COMMON_LT((" | entry = 0x%p", entry));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    COMMON_ASSERT(entry != nullptr, "entry is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Validation                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Output variables                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_LVVV(("entry->powerUnitGroup                                     = %u",     entry->powerUnitGroup));                                                                                  // Colorize: green
+            COMMON_LVVV(("entry->location.id                                        = %u",     entry->location.id));                                                                                     // Colorize: green
+            COMMON_LVVV(("entry->deviceName.id                                      = %u",     entry->deviceName.id));                                                                                   // Colorize: green
+            COMMON_LVVV(("entry->manufacturer.id                                    = %u",     entry->manufacturer.id));                                                                                 // Colorize: green
+            COMMON_LVVV(("entry->serialNumber.id                                    = %u",     entry->serialNumber.id));                                                                                 // Colorize: green
+            COMMON_LVVV(("entry->assetTagNumber.id                                  = %u",     entry->assetTagNumber.id));                                                                               // Colorize: green
+            COMMON_LVVV(("entry->modelPartNumber.id                                 = %u",     entry->modelPartNumber.id));                                                                              // Colorize: green
+            COMMON_LVVV(("entry->revisionLevel.id                                   = %u",     entry->revisionLevel.id));                                                                                // Colorize: green
+            COMMON_LVVV(("entry->maxPowerCapacity                                   = %u",     entry->maxPowerCapacity));                                                                                // Colorize: green
+            COMMON_LVVV(("entry->powerSupplyCharacteristics.hotReplaceable          = %u",     entry->powerSupplyCharacteristics.hotReplaceable));                                                       // Colorize: green
+            COMMON_LVVV(("entry->powerSupplyCharacteristics.present                 = %u",     entry->powerSupplyCharacteristics.present));                                                              // Colorize: green
+            COMMON_LVVV(("entry->powerSupplyCharacteristics.unplugged               = %u",     entry->powerSupplyCharacteristics.unplugged));                                                            // Colorize: green
+            COMMON_LVVV(("entry->powerSupplyCharacteristics.inputVoltageRangeSwitch = %s",     enumToFullString(entry->powerSupplyCharacteristics.inputVoltageRangeSwitch)));                            // Colorize: green
+            COMMON_LVVV(("entry->powerSupplyCharacteristics.status                  = %s",     enumToFullString(entry->powerSupplyCharacteristics.status)));                                             // Colorize: green
+            COMMON_LVVV(("entry->powerSupplyCharacteristics.type                    = %s",     enumToFullString(entry->powerSupplyCharacteristics.type)));                                               // Colorize: green
+            COMMON_LVVV(("entry->powerSupplyCharacteristics.__reserved              = %u",     entry->powerSupplyCharacteristics.__reserved));                                                           // Colorize: green
+            COMMON_LVVV(("entry->powerSupplyCharacteristics.value16                 = 0x%04X", entry->powerSupplyCharacteristics.value16));                                                              // Colorize: green
+            COMMON_LVVV(("entry->inputVoltageProbeHandle                            = 0x%04X", entry->inputVoltageProbeHandle));                                                                         // Colorize: green
+            COMMON_LVVV(("entry->coolingDeviceHandle                                = 0x%04X", entry->coolingDeviceHandle));                                                                             // Colorize: green
+            COMMON_LVVV(("entry->inputCurrentProbeHandle                            = 0x%04X", entry->inputCurrentProbeHandle));                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check variables                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT(entry->powerUnitGroup                                     == 0,                                                  NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->location.id                                        == 1,                                                  NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->deviceName.id                                      == 2,                                                  NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->manufacturer.id                                    == 3,                                                  NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->serialNumber.id                                    == 4,                                                  NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->assetTagNumber.id                                  == 5,                                                  NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->modelPartNumber.id                                 == 6,                                                  NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->revisionLevel.id                                   == 7,                                                  NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->maxPowerCapacity                                   == 0,                                                  NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.hotReplaceable          == 0,                                                  NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.present                 == 0,                                                  NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.unplugged               == 0,                                                  NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.inputVoltageRangeSwitch == DmiSystemPowerSupplyInputVoltageRangeSwitch::OTHER, NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.status                  == DmiSystemPowerSupplyStatus::OTHER,                  NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.type                    == DmiSystemPowerSupplyType::OTHER,                    NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.__reserved              == 0,                                                  NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->powerSupplyCharacteristics.value16                 == 0x0000,                                             NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->inputVoltageProbeHandle                            == 0x0000,                                             NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->coolingDeviceHandle                                == 0x0000,                                             NgosStatus::ASSERTION);                                  // Colorize: green
+            COMMON_TEST_ASSERT(entry->inputCurrentProbeHandle                            == 0x0000,                                             NgosStatus::ASSERTION);                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(entry->header.length >= sizeof(DmiSystemPowerSupplyEntry), NgosStatus::ASSERTION);                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get strings                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            entry->location.id > 0                                                                                                                                                                       // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->deviceName.id > 0                                                                                                                                                                     // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->manufacturer.id > 0                                                                                                                                                                   // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->serialNumber.id > 0                                                                                                                                                                   // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->assetTagNumber.id > 0                                                                                                                                                                 // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->modelPartNumber.id > 0                                                                                                                                                                // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            entry->revisionLevel.id > 0                                                                                                                                                                  // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_Char8 *cur   = reinterpret_cast<good_Char8 *>(entry) + entry->header.length;                                                                                                            // Colorize: green
+            good_Char8 *begin = cur;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            AVOID_UNUSED(begin);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            COMMON_TEST_ASSERT(cur[0] != 0 || cur[1] != 0, NgosStatus::ASSERTION);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            DmiStringId stringId;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            do                                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (cur[0] == 0)                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++stringId;                                                                                                                                                                          // Colorize: green
+                    COMMON_LVVV(("String #%u: %s", stringId.id, begin));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (stringId == entry->location)                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("location = %s", begin));                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->deviceName)                                                                                                                                                   // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("deviceName = %s", begin));                                                                                                                                         // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->manufacturer)                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("manufacturer = %s", begin));                                                                                                                                       // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->serialNumber)                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("serialNumber = %s", begin));                                                                                                                                       // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->assetTagNumber)                                                                                                                                               // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("assetTagNumber = %s", begin));                                                                                                                                     // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->modelPartNumber)                                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("modelPartNumber = %s", begin));                                                                                                                                    // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (stringId == entry->revisionLevel)                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        COMMON_LVVV(("revisionLevel = %s", begin));                                                                                                                                      // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (cur[1] == 0)                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    begin = cur + 1;                                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++cur;                                                                                                                                                                                   // Colorize: green
+            } while(true);                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length]     == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+            COMMON_TEST_ASSERT((reinterpret_cast<good_U8 *>(entry))[entry->header.length + 1] == 0, NgosStatus::ASSERTION);                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 NgosStatus DMI::saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry *entry)
 {
     COMMON_LT((" | entry = 0x%p", entry));

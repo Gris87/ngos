@@ -1,57 +1,57 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMRESETBOOTOPTION_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMRESETBOOTOPTION_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiSystemResetBootOption: u8
-{
-    NONE             = 0,
-    OPERATION_SYSTEM = 1,
-    SYSTEM_UTILITIES = 2,
-    DO_NOT_REBOOT    = 3
-};
-
-
-
-inline const char8* enumToString(DmiSystemResetBootOption option) // TEST: NO
-{
-    // COMMON_LT((" | option = %u", option)); // Commented to avoid bad looking logs
-
-
-
-    switch (option)
-    {
-        case DmiSystemResetBootOption::NONE:             return "NONE";
-        case DmiSystemResetBootOption::OPERATION_SYSTEM: return "OPERATION_SYSTEM";
-        case DmiSystemResetBootOption::SYSTEM_UTILITIES: return "SYSTEM_UTILITIES";
-        case DmiSystemResetBootOption::DO_NOT_REBOOT:    return "DO_NOT_REBOOT";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiSystemResetBootOption option) // TEST: NO
-{
-    // COMMON_LT((" | option = %u", option)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[24];
-
-    sprintf(res, "0x%02X (%s)", (u8)option, enumToString(option));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMRESETBOOTOPTION_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMRESETBOOTOPTION_H                                                                                                                                  // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMRESETBOOTOPTION_H                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiSystemResetBootOption: u8                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE             = 0,                                                                                                                                                                                // Colorize: green
+    OPERATION_SYSTEM = 1,                                                                                                                                                                                // Colorize: green
+    SYSTEM_UTILITIES = 2,                                                                                                                                                                                // Colorize: green
+    DO_NOT_REBOOT    = 3                                                                                                                                                                                 // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiSystemResetBootOption option) // TEST: NO                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | option = %u", option)); // Commented to avoid bad looking logs                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (option)                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiSystemResetBootOption::NONE:             return "NONE";                                                                                                                                  // Colorize: green
+        case DmiSystemResetBootOption::OPERATION_SYSTEM: return "OPERATION_SYSTEM";                                                                                                                      // Colorize: green
+        case DmiSystemResetBootOption::SYSTEM_UTILITIES: return "SYSTEM_UTILITIES";                                                                                                                      // Colorize: green
+        case DmiSystemResetBootOption::DO_NOT_REBOOT:    return "DO_NOT_REBOOT";                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiSystemResetBootOption option) // TEST: NO                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | option = %u", option)); // Commented to avoid bad looking logs                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[24];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)option, enumToString(option));                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMRESETBOOTOPTION_H                                                                                                                                // Colorize: green

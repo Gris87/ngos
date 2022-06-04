@@ -1,33 +1,33 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYCHARACTERISTICS_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYCHARACTERISTICS_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystempowersupplyinputvoltagerangeswitch.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystempowersupplystatus.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystempowersupplytype.h>
-
-
-
-struct DmiSystemPowerSupplyCharacteristics
-{
-    union
-    {
-        struct
-        {
-            u16 hotReplaceable:          1;
-            u16 present:                 1;
-            u16 unplugged:               1;
-            u16 inputVoltageRangeSwitch: 4; // TODO: Use enum DmiSystemPowerSupplyInputVoltageRangeSwitch
-            u16 status:                  3; // TODO: Use enum DmiSystemPowerSupplyStatus
-            u16 type:                    4; // TODO: Use enum DmiSystemPowerSupplyType
-            u16 __reserved:              2;
-        };
-
-        u16 value16;
-    };
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYCHARACTERISTICS_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYCHARACTERISTICS_H                                                                                                                       // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYCHARACTERISTICS_H                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystempowersupplyinputvoltagerangeswitch.h>                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystempowersupplystatus.h>                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystempowersupplytype.h>                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiSystemPowerSupplyCharacteristics                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    union                                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        struct                                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            u16                                         hotReplaceable:          1;                                                                                                                      // Colorize: green
+            u16                                         present:                 1;                                                                                                                      // Colorize: green
+            u16                                         unplugged:               1;                                                                                                                      // Colorize: green
+            DmiSystemPowerSupplyInputVoltageRangeSwitch inputVoltageRangeSwitch: 4;                                                                                                                      // Colorize: green
+            DmiSystemPowerSupplyStatus                  status:                  3;                                                                                                                      // Colorize: green
+            DmiSystemPowerSupplyType                    type:                    4;                                                                                                                      // Colorize: green
+            u16                                         __reserved:              2;                                                                                                                      // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u16 value16;                                                                                                                                                                                     // Colorize: green
+    };                                                                                                                                                                                                   // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYCHARACTERISTICS_H                                                                                                                     // Colorize: green

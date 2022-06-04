@@ -1,24 +1,24 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMANAGEMENTDEVICEENTRY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMANAGEMENTDEVICEENTRY_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimanagementdeviceaddresstype.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimanagementdevicetype.h>
-
-
-
-struct DmiManagementDeviceEntry
-{
-    DmiEntryHeader                 header;
-    DmiStringId                    description;
-    DmiManagementDeviceType        type;
-    u32                            address;
-    DmiManagementDeviceAddressType addressType;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMANAGEMENTDEVICEENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMANAGEMENTDEVICEENTRY_H                                                                                                                                      // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMANAGEMENTDEVICEENTRY_H                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>                                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimanagementdeviceaddresstype.h>                                                                                                                     // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimanagementdevicetype.h>                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiManagementDeviceEntry                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryHeader                 header;                                                                                                                                                               // Colorize: green
+    DmiStringId                    description;                                                                                                                                                          // Colorize: green
+    DmiManagementDeviceType        type;                                                                                                                                                                 // Colorize: green
+    u32                            address;                                                                                                                                                              // Colorize: green
+    DmiManagementDeviceAddressType addressType;                                                                                                                                                          // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMANAGEMENTDEVICEENTRY_H                                                                                                                                    // Colorize: green

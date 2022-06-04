@@ -1,35 +1,35 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMEMORYARRAYMAPPEDADDRESSENTRY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMEMORYARRAYMAPPEDADDRESSENTRY_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemoryarraymappedaddressrange.h>
-
-
-
-#define DMI_MEMORY_ARRAY_MAPPED_ADDRESS_STARTING_ADDRESS_NEED_TO_EXTEND 0xFFFFFFFF
-#define DMI_MEMORY_ARRAY_MAPPED_ADDRESS_ENDING_ADDRESS_NEED_TO_EXTEND   0xFFFFFFFF
-
-
-
-struct DmiMemoryArrayMappedAddressEntry
-{
-    DmiEntryHeader                   header;
-    DmiMemoryArrayMappedAddressRange startingAddress;
-    DmiMemoryArrayMappedAddressRange endingAddress;
-    u16                              memoryArrayHandle;
-    u8                               partitionWidth;
-} __attribute__((packed));
-
-
-
-struct DmiMemoryArrayMappedAddressEntryV27: public DmiMemoryArrayMappedAddressEntry
-{
-    u64 extendedStartingAddress;
-    u64 extendedEndingAddress;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMEMORYARRAYMAPPEDADDRESSENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMEMORYARRAYMAPPEDADDRESSENTRY_H                                                                                                                              // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMEMORYARRAYMAPPEDADDRESSENTRY_H                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmimemoryarraymappedaddressrange.h>                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define DMI_MEMORY_ARRAY_MAPPED_ADDRESS_STARTING_ADDRESS_NEED_TO_EXTEND 0xFFFFFFFF                                                                                                                       // Colorize: green
+#define DMI_MEMORY_ARRAY_MAPPED_ADDRESS_ENDING_ADDRESS_NEED_TO_EXTEND   0xFFFFFFFF                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiMemoryArrayMappedAddressEntry                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryHeader                   header;                                                                                                                                                             // Colorize: green
+    DmiMemoryArrayMappedAddressRange startingAddress;                                                                                                                                                    // Colorize: green
+    DmiMemoryArrayMappedAddressRange endingAddress;                                                                                                                                                      // Colorize: green
+    u16                              memoryArrayHandle;                                                                                                                                                  // Colorize: green
+    u8                               partitionWidth;                                                                                                                                                     // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiMemoryArrayMappedAddressEntryV27: public DmiMemoryArrayMappedAddressEntry                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    u64 extendedStartingAddress;                                                                                                                                                                         // Colorize: green
+    u64 extendedEndingAddress;                                                                                                                                                                           // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMEMORYARRAYMAPPEDADDRESSENTRY_H                                                                                                                            // Colorize: green

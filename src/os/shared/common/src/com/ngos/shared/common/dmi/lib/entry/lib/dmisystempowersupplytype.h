@@ -1,67 +1,67 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYTYPE_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYTYPE_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiSystemPowerSupplyType: u8
-{
-    NONE      = 0,
-    OTHER     = 1,
-    UNKNOWN   = 2,
-    LINEAR    = 3,
-    SWITCHING = 4,
-    BATTERY   = 5,
-    UPS       = 6,
-    CONVERTER = 7,
-    REGULATOR = 8
-};
-
-
-
-inline const char8* enumToString(DmiSystemPowerSupplyType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    switch (type)
-    {
-        case DmiSystemPowerSupplyType::NONE:      return "NONE";
-        case DmiSystemPowerSupplyType::OTHER:     return "OTHER";
-        case DmiSystemPowerSupplyType::UNKNOWN:   return "UNKNOWN";
-        case DmiSystemPowerSupplyType::LINEAR:    return "LINEAR";
-        case DmiSystemPowerSupplyType::SWITCHING: return "SWITCHING";
-        case DmiSystemPowerSupplyType::BATTERY:   return "BATTERY";
-        case DmiSystemPowerSupplyType::UPS:       return "UPS";
-        case DmiSystemPowerSupplyType::CONVERTER: return "CONVERTER";
-        case DmiSystemPowerSupplyType::REGULATOR: return "REGULATOR";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiSystemPowerSupplyType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[17];
-
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYTYPE_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYTYPE_H                                                                                                                                  // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYTYPE_H                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiSystemPowerSupplyType: u8                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE      = 0,                                                                                                                                                                                       // Colorize: green
+    OTHER     = 1,                                                                                                                                                                                       // Colorize: green
+    UNKNOWN   = 2,                                                                                                                                                                                       // Colorize: green
+    LINEAR    = 3,                                                                                                                                                                                       // Colorize: green
+    SWITCHING = 4,                                                                                                                                                                                       // Colorize: green
+    BATTERY   = 5,                                                                                                                                                                                       // Colorize: green
+    UPS       = 6,                                                                                                                                                                                       // Colorize: green
+    CONVERTER = 7,                                                                                                                                                                                       // Colorize: green
+    REGULATOR = 8                                                                                                                                                                                        // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiSystemPowerSupplyType type) // TEST: NO                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (type)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiSystemPowerSupplyType::NONE:      return "NONE";                                                                                                                                         // Colorize: green
+        case DmiSystemPowerSupplyType::OTHER:     return "OTHER";                                                                                                                                        // Colorize: green
+        case DmiSystemPowerSupplyType::UNKNOWN:   return "UNKNOWN";                                                                                                                                      // Colorize: green
+        case DmiSystemPowerSupplyType::LINEAR:    return "LINEAR";                                                                                                                                       // Colorize: green
+        case DmiSystemPowerSupplyType::SWITCHING: return "SWITCHING";                                                                                                                                    // Colorize: green
+        case DmiSystemPowerSupplyType::BATTERY:   return "BATTERY";                                                                                                                                      // Colorize: green
+        case DmiSystemPowerSupplyType::UPS:       return "UPS";                                                                                                                                          // Colorize: green
+        case DmiSystemPowerSupplyType::CONVERTER: return "CONVERTER";                                                                                                                                    // Colorize: green
+        case DmiSystemPowerSupplyType::REGULATOR: return "REGULATOR";                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiSystemPowerSupplyType type) // TEST: NO                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[17];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMPOWERSUPPLYTYPE_H                                                                                                                                // Colorize: green

@@ -1,27 +1,27 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIELECTRICALCURRENTPROBELOCATIONANDSTATUS_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIELECTRICALCURRENTPROBELOCATIONANDSTATUS_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmielectricalcurrentprobelocation.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmielectricalcurrentprobestatus.h>
-
-
-
-struct DmiElectricalCurrentProbeLocationAndStatus
-{
-    union
-    {
-        struct
-        {
-            u8 location: 5; // TODO: Use enum DmiElectricalCurrentProbeLocation
-            u8 status:   3; // TODO: Use enum DmiElectricalCurrentProbeStatus
-        };
-
-        u8 value8;
-    };
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIELECTRICALCURRENTPROBELOCATIONANDSTATUS_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIELECTRICALCURRENTPROBELOCATIONANDSTATUS_H                                                                                                                // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIELECTRICALCURRENTPROBELOCATIONANDSTATUS_H                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmielectricalcurrentprobelocation.h>                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmielectricalcurrentprobestatus.h>                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiElectricalCurrentProbeLocationAndStatus                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    union                                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        struct                                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            DmiElectricalCurrentProbeLocation location: 5;                                                                                                                                               // Colorize: green
+            DmiElectricalCurrentProbeStatus   status:   3;                                                                                                                                               // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u8 value8;                                                                                                                                                                                       // Colorize: green
+    };                                                                                                                                                                                                   // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIELECTRICALCURRENTPROBELOCATIONANDSTATUS_H                                                                                                              // Colorize: green

@@ -1,59 +1,59 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIBITS64MEMORYERRORINFORMATIONERRORGRANULARITY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIBITS64MEMORYERRORINFORMATIONERRORGRANULARITY_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiBits64MemoryErrorInformationErrorGranularity: u8
-{
-    NONE                   = 0,
-    OTHER                  = 1,
-    UNKNOWN                = 2,
-    DEVICE_LEVEL           = 3,
-    MEMORY_PARTITION_LEVEL = 4
-};
-
-
-
-inline const char8* enumToString(DmiBits64MemoryErrorInformationErrorGranularity granularity) // TEST: NO
-{
-    // COMMON_LT((" | granularity = %u", granularity)); // Commented to avoid bad looking logs
-
-
-
-    switch (granularity)
-    {
-        case DmiBits64MemoryErrorInformationErrorGranularity::NONE:                   return "NONE";
-        case DmiBits64MemoryErrorInformationErrorGranularity::OTHER:                  return "OTHER";
-        case DmiBits64MemoryErrorInformationErrorGranularity::UNKNOWN:                return "UNKNOWN";
-        case DmiBits64MemoryErrorInformationErrorGranularity::DEVICE_LEVEL:           return "DEVICE_LEVEL";
-        case DmiBits64MemoryErrorInformationErrorGranularity::MEMORY_PARTITION_LEVEL: return "MEMORY_PARTITION_LEVEL";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiBits64MemoryErrorInformationErrorGranularity granularity) // TEST: NO
-{
-    // COMMON_LT((" | granularity = %u", granularity)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[30];
-
-    sprintf(res, "0x%02X (%s)", (u8)granularity, enumToString(granularity));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIBITS64MEMORYERRORINFORMATIONERRORGRANULARITY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIBITS64MEMORYERRORINFORMATIONERRORGRANULARITY_H                                                                                                           // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIBITS64MEMORYERRORINFORMATIONERRORGRANULARITY_H                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiBits64MemoryErrorInformationErrorGranularity: u8                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE                   = 0,                                                                                                                                                                          // Colorize: green
+    OTHER                  = 1,                                                                                                                                                                          // Colorize: green
+    UNKNOWN                = 2,                                                                                                                                                                          // Colorize: green
+    DEVICE_LEVEL           = 3,                                                                                                                                                                          // Colorize: green
+    MEMORY_PARTITION_LEVEL = 4                                                                                                                                                                           // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiBits64MemoryErrorInformationErrorGranularity granularity) // TEST: NO                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | granularity = %u", granularity)); // Commented to avoid bad looking logs                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (granularity)                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiBits64MemoryErrorInformationErrorGranularity::NONE:                   return "NONE";                                                                                                     // Colorize: green
+        case DmiBits64MemoryErrorInformationErrorGranularity::OTHER:                  return "OTHER";                                                                                                    // Colorize: green
+        case DmiBits64MemoryErrorInformationErrorGranularity::UNKNOWN:                return "UNKNOWN";                                                                                                  // Colorize: green
+        case DmiBits64MemoryErrorInformationErrorGranularity::DEVICE_LEVEL:           return "DEVICE_LEVEL";                                                                                             // Colorize: green
+        case DmiBits64MemoryErrorInformationErrorGranularity::MEMORY_PARTITION_LEVEL: return "MEMORY_PARTITION_LEVEL";                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiBits64MemoryErrorInformationErrorGranularity granularity) // TEST: NO                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | granularity = %u", granularity)); // Commented to avoid bad looking logs                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[30];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)granularity, enumToString(granularity));                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIBITS64MEMORYERRORINFORMATIONERRORGRANULARITY_H                                                                                                         // Colorize: green

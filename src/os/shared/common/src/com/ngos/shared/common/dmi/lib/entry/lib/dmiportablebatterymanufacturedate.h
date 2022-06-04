@@ -1,39 +1,39 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPORTABLEBATTERYMANUFACTUREDATE_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPORTABLEBATTERYMANUFACTUREDATE_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmivoltageprobelocation.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmivoltageprobestatus.h>
-
-
-
-struct DmiPortableBatteryManufactureDate
-{
-    u16 yearReal()
-    {
-        // COMMON_LT(("")); // Commented to avoid too frequent logs
-
-
-
-        return year + 1980;
-    }
-
-
-
-    union
-    {
-        struct
-        {
-            u16 date:  5;
-            u16 month: 4;
-            u16 year:  7;
-        };
-
-        u16 value16;
-    };
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPORTABLEBATTERYMANUFACTUREDATE_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPORTABLEBATTERYMANUFACTUREDATE_H                                                                                                                         // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPORTABLEBATTERYMANUFACTUREDATE_H                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmivoltageprobelocation.h>                                                                                                                            // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmivoltageprobestatus.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiPortableBatteryManufactureDate                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    inline good_U16 yearReal() const                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return year + 1980;                                                                                                                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    union                                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        struct                                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            good_U16 date:  5;                                                                                                                                                                           // Colorize: green
+            good_U16 month: 4;                                                                                                                                                                           // Colorize: green
+            good_U16 year:  7;                                                                                                                                                                           // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U16 value16;                                                                                                                                                                                // Colorize: green
+    };                                                                                                                                                                                                   // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPORTABLEBATTERYMANUFACTUREDATE_H                                                                                                                       // Colorize: green

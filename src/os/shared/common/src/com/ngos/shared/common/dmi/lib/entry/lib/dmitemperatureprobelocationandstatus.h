@@ -1,27 +1,27 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMITEMPERATUREPROBELOCATIONANDSTATUS_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMITEMPERATUREPROBELOCATIONANDSTATUS_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmitemperatureprobelocation.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmitemperatureprobestatus.h>
-
-
-
-struct DmiTemperatureProbeLocationAndStatus
-{
-    union
-    {
-        struct
-        {
-            u8 location: 5; // TODO: Use enum DmiTemperatureProbeLocation
-            u8 status:   3; // TODO: Use enum DmiTemperatureProbeStatus
-        };
-
-        u8 value8;
-    };
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMITEMPERATUREPROBELOCATIONANDSTATUS_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMITEMPERATUREPROBELOCATIONANDSTATUS_H                                                                                                                      // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMITEMPERATUREPROBELOCATIONANDSTATUS_H                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmitemperatureprobelocation.h>                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmitemperatureprobestatus.h>                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiTemperatureProbeLocationAndStatus                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    union                                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        struct                                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            DmiTemperatureProbeLocation location: 5;                                                                                                                                                     // Colorize: green
+            DmiTemperatureProbeStatus   status:   3;                                                                                                                                                     // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u8 value8;                                                                                                                                                                                       // Colorize: green
+    };                                                                                                                                                                                                   // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMITEMPERATUREPROBELOCATIONANDSTATUS_H                                                                                                                    // Colorize: green

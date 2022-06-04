@@ -1,28 +1,28 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIHARDWARESECURITYSETTINGS_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIHARDWARESECURITYSETTINGS_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmihardwaresecuritystatus.h>
-
-
-
-struct DmiHardwareSecuritySettings
-{
-    union
-    {
-        struct
-        {
-            u8 frontPanelResetStatus:       2; // TODO: Use enum DmiHardwareSecurityStatus
-            u8 administratorPasswordStatus: 2; // TODO: Use enum DmiHardwareSecurityStatus
-            u8 keyboardPasswordStatus:      2; // TODO: Use enum DmiHardwareSecurityStatus
-            u8 powerOnPasswordStatus:       2; // TODO: Use enum DmiHardwareSecurityStatus
-        };
-
-        u8 value8;
-    };
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIHARDWARESECURITYSETTINGS_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIHARDWARESECURITYSETTINGS_H                                                                                                                               // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIHARDWARESECURITYSETTINGS_H                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmihardwaresecuritystatus.h>                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiHardwareSecuritySettings                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    union                                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        struct                                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            DmiHardwareSecurityStatus frontPanelResetStatus:       2;                                                                                                                                    // Colorize: green
+            DmiHardwareSecurityStatus administratorPasswordStatus: 2;                                                                                                                                    // Colorize: green
+            DmiHardwareSecurityStatus keyboardPasswordStatus:      2;                                                                                                                                    // Colorize: green
+            DmiHardwareSecurityStatus powerOnPasswordStatus:       2;                                                                                                                                    // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u8 value8;                                                                                                                                                                                       // Colorize: green
+    };                                                                                                                                                                                                   // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIHARDWARESECURITYSETTINGS_H                                                                                                                             // Colorize: green

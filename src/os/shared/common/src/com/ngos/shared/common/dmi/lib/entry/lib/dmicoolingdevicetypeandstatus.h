@@ -1,27 +1,27 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICOOLINGDEVICETYPEANDSTATUS_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICOOLINGDEVICETYPEANDSTATUS_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicoolingdevicestatus.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicoolingdevicetype.h>
-
-
-
-struct DmiCoolingDeviceTypeAndStatus
-{
-    union
-    {
-        struct
-        {
-            u8 deviceType: 5; // TODO: Use enum DmiCoolingDeviceType
-            u8 status:     3; // TODO: Use enum DmiCoolingDeviceStatus
-        };
-
-        u8 value8;
-    };
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICOOLINGDEVICETYPEANDSTATUS_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICOOLINGDEVICETYPEANDSTATUS_H                                                                                                                             // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICOOLINGDEVICETYPEANDSTATUS_H                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicoolingdevicestatus.h>                                                                                                                             // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicoolingdevicetype.h>                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiCoolingDeviceTypeAndStatus                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    union                                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        struct                                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            DmiCoolingDeviceType   deviceType: 5;                                                                                                                                                        // Colorize: green
+            DmiCoolingDeviceStatus status:     3;                                                                                                                                                        // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        good_U8 value8;                                                                                                                                                                                       // Colorize: green
+    };                                                                                                                                                                                                   // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICOOLINGDEVICETYPEANDSTATUS_H                                                                                                                           // Colorize: green

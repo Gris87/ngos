@@ -1,21 +1,21 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIOUTOFBANDREMOTEACCESSENTRY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIOUTOFBANDREMOTEACCESSENTRY_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmioutofbandremoteaccessconnectionflags.h>
-
-
-
-struct DmiOutOfBandRemoteAccessEntry
-{
-    DmiEntryHeader                          header;
-    DmiStringId                             manufacturerName;
-    DmiOutOfBandRemoteAccessConnectionFlags connections;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIOUTOFBANDREMOTEACCESSENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIOUTOFBANDREMOTEACCESSENTRY_H                                                                                                                                 // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIOUTOFBANDREMOTEACCESSENTRY_H                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>                                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmioutofbandremoteaccessconnectionflags.h>                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiOutOfBandRemoteAccessEntry                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryHeader                          header;                                                                                                                                                      // Colorize: green
+    DmiStringId                             manufacturerName;                                                                                                                                            // Colorize: green
+    DmiOutOfBandRemoteAccessConnectionFlags connections;                                                                                                                                                 // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIOUTOFBANDREMOTEACCESSENTRY_H                                                                                                                               // Colorize: green

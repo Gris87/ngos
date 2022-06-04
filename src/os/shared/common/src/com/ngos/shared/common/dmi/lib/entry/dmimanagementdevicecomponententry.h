@@ -1,26 +1,26 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMANAGEMENTDEVICECOMPONENTENTRY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMANAGEMENTDEVICECOMPONENTENTRY_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
-
-
-
-#define DMI_MANAGEMENT_DEVICE_COMPONENT_THRESHOLD_HANDLE_NOT_AVAILABLE 0xFFFF
-
-
-
-struct DmiManagementDeviceComponentEntry
-{
-    DmiEntryHeader header;
-    DmiStringId    description;
-    u16            managementDeviceHandle;
-    u16            componentHandle;
-    u16            thresholdHandle;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMANAGEMENTDEVICECOMPONENTENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMANAGEMENTDEVICECOMPONENTENTRY_H                                                                                                                             // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMANAGEMENTDEVICECOMPONENTENTRY_H                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define DMI_MANAGEMENT_DEVICE_COMPONENT_THRESHOLD_HANDLE_NOT_AVAILABLE 0xFFFF                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiManagementDeviceComponentEntry                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryHeader header;                                                                                                                                                                               // Colorize: green
+    DmiStringId    description;                                                                                                                                                                          // Colorize: green
+    u16            managementDeviceHandle;                                                                                                                                                               // Colorize: green
+    u16            componentHandle;                                                                                                                                                                      // Colorize: green
+    u16            thresholdHandle;                                                                                                                                                                      // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIMANAGEMENTDEVICECOMPONENTENTRY_H                                                                                                                           // Colorize: green
