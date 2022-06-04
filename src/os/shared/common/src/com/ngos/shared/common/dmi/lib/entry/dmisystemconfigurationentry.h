@@ -1,18 +1,18 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMISYSTEMCONFIGURATIONENTRY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMISYSTEMCONFIGURATIONENTRY_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-
-
-
-struct DmiSystemConfigurationEntry
-{
-    DmiEntryHeader header;
-    u8             stringCount;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMISYSTEMCONFIGURATIONENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMISYSTEMCONFIGURATIONENTRY_H                                                                                                                                   // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMISYSTEMCONFIGURATIONENTRY_H                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiSystemConfigurationEntry                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryHeader header;                                                                                                                                                                               // Colorize: green
+    u8             stringCount;                                                                                                                                                                          // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMISYSTEMCONFIGURATIONENTRY_H                                                                                                                                 // Colorize: green

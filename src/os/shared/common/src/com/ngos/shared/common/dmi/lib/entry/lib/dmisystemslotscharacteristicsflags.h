@@ -1,110 +1,110 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSCHARACTERISTICSFLAGS_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSCHARACTERISTICSFLAGS_H
-
-
-
-#include <com/ngos/shared/common/ngos/flags.h>
-#include <com/ngos/shared/common/ngos/linkage.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-#include <com/ngos/shared/common/string/string.h>
-
-
-
-typedef u16 dmi_system_slots_characteristics_flags;
-
-enum class DmiSystemSlotsCharacteristicsFlag: dmi_system_slots_characteristics_flags
-{
-    NONE                        = 0,
-    CHARACTERISTICS_UNKNOWN     = (1ULL << 0),
-    PROVIDES_50_VOLTS           = (1ULL << 1),
-    PROVIDES_33_VOLTS           = (1ULL << 2),
-    SHARED_SLOT                 = (1ULL << 3),
-    PC_CARD_16_SUPPORTED        = (1ULL << 4),
-    CARD_BUS_SUPPORTED          = (1ULL << 5),
-    ZOOM_VIDEO_SUPPORTED        = (1ULL << 6),
-    MODEM_RING_RESUME_SUPPORTED = (1ULL << 7),
-    PME_SIGNAL_SUPPORTED        = (1ULL << 8),
-    HOT_PLUG_DEVICES_SUPPORTED  = (1ULL << 9),
-    SMBUS_SIGNAL_SUPPORTED      = (1ULL << 10),
-    BIFURCATION_SUPPORTED       = (1ULL << 11)
-};
-
-DEFINE_FLAGS(DmiSystemSlotsCharacteristicsFlags, dmi_system_slots_characteristics_flags); // TEST: NO
-
-
-
-inline const char8* flagToString(DmiSystemSlotsCharacteristicsFlag flag) // TEST: NO
-{
-    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
-
-
-
-    switch (flag)
-    {
-        case DmiSystemSlotsCharacteristicsFlag::NONE:                        return "NONE";
-        case DmiSystemSlotsCharacteristicsFlag::CHARACTERISTICS_UNKNOWN:     return "CHARACTERISTICS_UNKNOWN";
-        case DmiSystemSlotsCharacteristicsFlag::PROVIDES_50_VOLTS:           return "PROVIDES_50_VOLTS";
-        case DmiSystemSlotsCharacteristicsFlag::PROVIDES_33_VOLTS:           return "PROVIDES_33_VOLTS";
-        case DmiSystemSlotsCharacteristicsFlag::SHARED_SLOT:                 return "SHARED_SLOT";
-        case DmiSystemSlotsCharacteristicsFlag::PC_CARD_16_SUPPORTED:        return "PC_CARD_16_SUPPORTED";
-        case DmiSystemSlotsCharacteristicsFlag::CARD_BUS_SUPPORTED:          return "CARD_BUS_SUPPORTED";
-        case DmiSystemSlotsCharacteristicsFlag::ZOOM_VIDEO_SUPPORTED:        return "ZOOM_VIDEO_SUPPORTED";
-        case DmiSystemSlotsCharacteristicsFlag::MODEM_RING_RESUME_SUPPORTED: return "MODEM_RING_RESUME_SUPPORTED";
-        case DmiSystemSlotsCharacteristicsFlag::PME_SIGNAL_SUPPORTED:        return "PME_SIGNAL_SUPPORTED";
-        case DmiSystemSlotsCharacteristicsFlag::HOT_PLUG_DEVICES_SUPPORTED:  return "HOT_PLUG_DEVICES_SUPPORTED";
-        case DmiSystemSlotsCharacteristicsFlag::SMBUS_SIGNAL_SUPPORTED:      return "SMBUS_SIGNAL_SUPPORTED";
-        case DmiSystemSlotsCharacteristicsFlag::BIFURCATION_SUPPORTED:       return "BIFURCATION_SUPPORTED";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* flagToFullString(DmiSystemSlotsCharacteristicsFlag flag) // TEST: NO
-{
-    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[37];
-
-    sprintf(res, "0x%04X (%s)", (dmi_system_slots_characteristics_flags)flag, flagToString(flag));
-
-    return res;
-}
-
-
-
-inline const char8* flagsToString(const DmiSystemSlotsCharacteristicsFlags &flags) // TEST: NO
-{
-    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[291];
-
-    FLAGS_TO_STRING(res, flags.flags, DmiSystemSlotsCharacteristicsFlag);
-
-    return res;
-}
-
-
-
-inline const char8* flagsToFullString(const DmiSystemSlotsCharacteristicsFlags &flags) // TEST: NO
-{
-    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[300];
-
-    FLAGS_TO_FULL_STRING(res, flags.flags, DmiSystemSlotsCharacteristicsFlag, "0x%04X");
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSCHARACTERISTICSFLAGS_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSCHARACTERISTICSFLAGS_H                                                                                                                        // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSCHARACTERISTICSFLAGS_H                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/flags.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/ngos/linkage.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/string/string.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+typedef u16 dmi_system_slots_characteristics_flags;                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiSystemSlotsCharacteristicsFlag: dmi_system_slots_characteristics_flags                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE                        = 0,                                                                                                                                                                     // Colorize: green
+    CHARACTERISTICS_UNKNOWN     = (1ULL << 0),                                                                                                                                                           // Colorize: green
+    PROVIDES_50_VOLTS           = (1ULL << 1),                                                                                                                                                           // Colorize: green
+    PROVIDES_33_VOLTS           = (1ULL << 2),                                                                                                                                                           // Colorize: green
+    SHARED_SLOT                 = (1ULL << 3),                                                                                                                                                           // Colorize: green
+    PC_CARD_16_SUPPORTED        = (1ULL << 4),                                                                                                                                                           // Colorize: green
+    CARD_BUS_SUPPORTED          = (1ULL << 5),                                                                                                                                                           // Colorize: green
+    ZOOM_VIDEO_SUPPORTED        = (1ULL << 6),                                                                                                                                                           // Colorize: green
+    MODEM_RING_RESUME_SUPPORTED = (1ULL << 7),                                                                                                                                                           // Colorize: green
+    PME_SIGNAL_SUPPORTED        = (1ULL << 8),                                                                                                                                                           // Colorize: green
+    HOT_PLUG_DEVICES_SUPPORTED  = (1ULL << 9),                                                                                                                                                           // Colorize: green
+    SMBUS_SIGNAL_SUPPORTED      = (1ULL << 10),                                                                                                                                                          // Colorize: green
+    BIFURCATION_SUPPORTED       = (1ULL << 11)                                                                                                                                                           // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+DEFINE_FLAGS(DmiSystemSlotsCharacteristicsFlags, dmi_system_slots_characteristics_flags); // TEST: NO                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagToString(DmiSystemSlotsCharacteristicsFlag flag) // TEST: NO                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (flag)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiSystemSlotsCharacteristicsFlag::NONE:                        return "NONE";                                                                                                              // Colorize: green
+        case DmiSystemSlotsCharacteristicsFlag::CHARACTERISTICS_UNKNOWN:     return "CHARACTERISTICS_UNKNOWN";                                                                                           // Colorize: green
+        case DmiSystemSlotsCharacteristicsFlag::PROVIDES_50_VOLTS:           return "PROVIDES_50_VOLTS";                                                                                                 // Colorize: green
+        case DmiSystemSlotsCharacteristicsFlag::PROVIDES_33_VOLTS:           return "PROVIDES_33_VOLTS";                                                                                                 // Colorize: green
+        case DmiSystemSlotsCharacteristicsFlag::SHARED_SLOT:                 return "SHARED_SLOT";                                                                                                       // Colorize: green
+        case DmiSystemSlotsCharacteristicsFlag::PC_CARD_16_SUPPORTED:        return "PC_CARD_16_SUPPORTED";                                                                                              // Colorize: green
+        case DmiSystemSlotsCharacteristicsFlag::CARD_BUS_SUPPORTED:          return "CARD_BUS_SUPPORTED";                                                                                                // Colorize: green
+        case DmiSystemSlotsCharacteristicsFlag::ZOOM_VIDEO_SUPPORTED:        return "ZOOM_VIDEO_SUPPORTED";                                                                                              // Colorize: green
+        case DmiSystemSlotsCharacteristicsFlag::MODEM_RING_RESUME_SUPPORTED: return "MODEM_RING_RESUME_SUPPORTED";                                                                                       // Colorize: green
+        case DmiSystemSlotsCharacteristicsFlag::PME_SIGNAL_SUPPORTED:        return "PME_SIGNAL_SUPPORTED";                                                                                              // Colorize: green
+        case DmiSystemSlotsCharacteristicsFlag::HOT_PLUG_DEVICES_SUPPORTED:  return "HOT_PLUG_DEVICES_SUPPORTED";                                                                                        // Colorize: green
+        case DmiSystemSlotsCharacteristicsFlag::SMBUS_SIGNAL_SUPPORTED:      return "SMBUS_SIGNAL_SUPPORTED";                                                                                            // Colorize: green
+        case DmiSystemSlotsCharacteristicsFlag::BIFURCATION_SUPPORTED:       return "BIFURCATION_SUPPORTED";                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagToFullString(DmiSystemSlotsCharacteristicsFlag flag) // TEST: NO                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[37];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%04X (%s)", (dmi_system_slots_characteristics_flags)flag, flagToString(flag));                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagsToString(const DmiSystemSlotsCharacteristicsFlags &flags) // TEST: NO                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[291];                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    FLAGS_TO_STRING(res, flags.flags, DmiSystemSlotsCharacteristicsFlag);                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagsToFullString(const DmiSystemSlotsCharacteristicsFlags &flags) // TEST: NO                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[300];                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    FLAGS_TO_FULL_STRING(res, flags.flags, DmiSystemSlotsCharacteristicsFlag, "0x%04X");                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSCHARACTERISTICSFLAGS_H                                                                                                                      // Colorize: green

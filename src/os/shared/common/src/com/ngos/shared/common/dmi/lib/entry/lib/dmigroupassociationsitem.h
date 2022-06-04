@@ -1,18 +1,18 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIGROUPASSOCIATIONSITEM_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIGROUPASSOCIATIONSITEM_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientrytype.h>
-
-
-
-struct DmiGroupAssociationsItem
-{
-    DmiEntryType type;
-    u16          handle;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIGROUPASSOCIATIONSITEM_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIGROUPASSOCIATIONSITEM_H                                                                                                                                  // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIGROUPASSOCIATIONSITEM_H                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientrytype.h>                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiGroupAssociationsItem                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryType type;                                                                                                                                                                                   // Colorize: green
+    u16          handle;                                                                                                                                                                                 // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIGROUPASSOCIATIONSITEM_H                                                                                                                                // Colorize: green

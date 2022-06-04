@@ -1,32 +1,32 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORSIGNATURE_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORSIGNATURE_H
-
-
-
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-struct DmiProcessorSignature
-{ // TODO: The same as CPU info from CPUID. Should unify
-    union
-    {
-        struct
-        {
-            u32 stepping:       4;
-            u32 model:          4;
-            u32 family:         4;
-            u32 type:           2;
-            u32 __reserved:     2;
-            u32 extendedModel:  4;
-            u32 extendedFamily: 8;
-            u32 __reserved2:    4;
-        };
-
-        u32 value32;
-    };
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORSIGNATURE_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORSIGNATURE_H                                                                                                                                     // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORSIGNATURE_H                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiProcessorSignature                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    union                                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        struct                                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            u32 stepping:       4;                                                                                                                                                                       // Colorize: green
+            u32 model:          4;                                                                                                                                                                       // Colorize: green
+            u32 family:         4;                                                                                                                                                                       // Colorize: green
+            u32 type:           2;                                                                                                                                                                       // Colorize: green
+            u32 __reserved:     2;                                                                                                                                                                       // Colorize: green
+            u32 extendedModel:  4;                                                                                                                                                                       // Colorize: green
+            u32 extendedFamily: 8;                                                                                                                                                                       // Colorize: green
+            u32 __reserved2:    4;                                                                                                                                                                       // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u32 value32;                                                                                                                                                                                     // Colorize: green
+    };                                                                                                                                                                                                   // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORSIGNATURE_H                                                                                                                                   // Colorize: green

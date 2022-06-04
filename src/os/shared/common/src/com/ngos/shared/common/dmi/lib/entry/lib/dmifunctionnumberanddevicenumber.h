@@ -1,26 +1,26 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIFUNCTIONNUMBERANDDEVICENUMBER_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIFUNCTIONNUMBERANDDEVICENUMBER_H
-
-
-
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-struct DmiFunctionNumberAndDeviceNumber
-{
-    union
-    {
-        struct
-        {
-            u8 functionNumber: 3;
-            u8 deviceNumber:   5;
-        };
-
-        u8 value8;
-    };
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIFUNCTIONNUMBERANDDEVICENUMBER_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIFUNCTIONNUMBERANDDEVICENUMBER_H                                                                                                                          // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIFUNCTIONNUMBERANDDEVICENUMBER_H                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiFunctionNumberAndDeviceNumber                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    union                                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        struct                                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            u8 functionNumber: 3;                                                                                                                                                                        // Colorize: green
+            u8 deviceNumber:   5;                                                                                                                                                                        // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u8 value8;                                                                                                                                                                                       // Colorize: green
+    };                                                                                                                                                                                                   // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIFUNCTIONNUMBERANDDEVICENUMBER_H                                                                                                                        // Colorize: green

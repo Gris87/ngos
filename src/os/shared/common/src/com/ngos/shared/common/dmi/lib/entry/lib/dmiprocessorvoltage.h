@@ -1,35 +1,35 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORVOLTAGE_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORVOLTAGE_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorvoltageflags.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorvoltagemodetype.h>
-
-
-
-struct DmiProcessorVoltage
-{
-    union
-    {
-        // DmiProcessorVoltageModeType::LEGACY_MODE
-        struct
-        {
-            u8 flags:    7; // TODO: Use enum DmiProcessorVoltageFlags
-            u8 modeType: 1; // TODO: Use enum DmiProcessorVoltageModeType
-        };
-
-        // DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE
-        struct
-        {
-            u8 value: 7;
-            u8 __pad: 1; // Ignore this field. The same as modeType
-        };
-
-        u8 value8;
-    };
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORVOLTAGE_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORVOLTAGE_H                                                                                                                                       // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORVOLTAGE_H                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorvoltageflags.h>                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorvoltagemodetype.h>                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiProcessorVoltage                                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    union                                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // DmiProcessorVoltageModeType::LEGACY_MODE                                                                                                                                                      // Colorize: green
+        struct                                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            dmi_processor_voltage_flags flags:    7;                                                                                                                                                     // Colorize: green
+            DmiProcessorVoltageModeType modeType: 1;                                                                                                                                                     // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE                                                                                                                                             // Colorize: green
+        struct                                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            u8                          value: 7;                                                                                                                                                        // Colorize: green
+            DmiProcessorVoltageModeType __pad: 1; // Ignore this field. The same as modeType                                                                                                             // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        u8 value8;                                                                                                                                                                                       // Colorize: green
+    };                                                                                                                                                                                                   // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORVOLTAGE_H                                                                                                                                     // Colorize: green

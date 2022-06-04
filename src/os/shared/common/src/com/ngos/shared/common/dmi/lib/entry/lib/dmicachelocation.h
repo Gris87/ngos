@@ -1,55 +1,55 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHELOCATION_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHELOCATION_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiCacheLocation: u8
-{
-    INTERNAL = 0,
-    EXTERNAL = 1,
-    UNKNOWN  = 3
-};
-
-
-
-inline const char8* enumToString(DmiCacheLocation location) // TEST: NO
-{
-    // COMMON_LT((" | location = %u", location)); // Commented to avoid bad looking logs
-
-
-
-    switch (location)
-    {
-        case DmiCacheLocation::INTERNAL: return "INTERNAL";
-        case DmiCacheLocation::EXTERNAL: return "EXTERNAL";
-        case DmiCacheLocation::UNKNOWN:  return "UNKNOWN";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiCacheLocation location) // TEST: NO
-{
-    // COMMON_LT((" | location = %u", location)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[16];
-
-    sprintf(res, "0x%02X (%s)", (u8)location, enumToString(location));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHELOCATION_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHELOCATION_H                                                                                                                                          // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHELOCATION_H                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiCacheLocation: u8                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    INTERNAL = 0,                                                                                                                                                                                        // Colorize: green
+    EXTERNAL = 1,                                                                                                                                                                                        // Colorize: green
+    UNKNOWN  = 3                                                                                                                                                                                         // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiCacheLocation location) // TEST: NO                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | location = %u", location)); // Commented to avoid bad looking logs                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (location)                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiCacheLocation::INTERNAL: return "INTERNAL";                                                                                                                                              // Colorize: green
+        case DmiCacheLocation::EXTERNAL: return "EXTERNAL";                                                                                                                                              // Colorize: green
+        case DmiCacheLocation::UNKNOWN:  return "UNKNOWN";                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiCacheLocation location) // TEST: NO                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | location = %u", location)); // Commented to avoid bad looking logs                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[16];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)location, enumToString(location));                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHELOCATION_H                                                                                                                                        // Colorize: green

@@ -1,61 +1,61 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSUSAGE_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSUSAGE_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiSystemSlotsUsage: u8
-{
-    NONE        = 0,
-    OTHER       = 1,
-    UNKNOWN     = 2,
-    AVAILABLE   = 3,
-    IN_USE      = 4,
-    UNAVAILABLE = 5
-};
-
-
-
-inline const char8* enumToString(DmiSystemSlotsUsage usage) // TEST: NO
-{
-    // COMMON_LT((" | usage = %u", usage)); // Commented to avoid bad looking logs
-
-
-
-    switch (usage)
-    {
-        case DmiSystemSlotsUsage::NONE:        return "NONE";
-        case DmiSystemSlotsUsage::OTHER:       return "OTHER";
-        case DmiSystemSlotsUsage::UNKNOWN:     return "UNKNOWN";
-        case DmiSystemSlotsUsage::AVAILABLE:   return "AVAILABLE";
-        case DmiSystemSlotsUsage::IN_USE:      return "IN_USE";
-        case DmiSystemSlotsUsage::UNAVAILABLE: return "UNAVAILABLE";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiSystemSlotsUsage usage) // TEST: NO
-{
-    // COMMON_LT((" | usage = %u", usage)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[19];
-
-    sprintf(res, "0x%02X (%s)", (u8)usage, enumToString(usage));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSUSAGE_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSUSAGE_H                                                                                                                                       // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSUSAGE_H                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiSystemSlotsUsage: u8                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE        = 0,                                                                                                                                                                                     // Colorize: green
+    OTHER       = 1,                                                                                                                                                                                     // Colorize: green
+    UNKNOWN     = 2,                                                                                                                                                                                     // Colorize: green
+    AVAILABLE   = 3,                                                                                                                                                                                     // Colorize: green
+    IN_USE      = 4,                                                                                                                                                                                     // Colorize: green
+    UNAVAILABLE = 5                                                                                                                                                                                      // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiSystemSlotsUsage usage) // TEST: NO                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | usage = %u", usage)); // Commented to avoid bad looking logs                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (usage)                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiSystemSlotsUsage::NONE:        return "NONE";                                                                                                                                            // Colorize: green
+        case DmiSystemSlotsUsage::OTHER:       return "OTHER";                                                                                                                                           // Colorize: green
+        case DmiSystemSlotsUsage::UNKNOWN:     return "UNKNOWN";                                                                                                                                         // Colorize: green
+        case DmiSystemSlotsUsage::AVAILABLE:   return "AVAILABLE";                                                                                                                                       // Colorize: green
+        case DmiSystemSlotsUsage::IN_USE:      return "IN_USE";                                                                                                                                          // Colorize: green
+        case DmiSystemSlotsUsage::UNAVAILABLE: return "UNAVAILABLE";                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiSystemSlotsUsage usage) // TEST: NO                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | usage = %u", usage)); // Commented to avoid bad looking logs                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[19];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)usage, enumToString(usage));                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSUSAGE_H                                                                                                                                     // Colorize: green

@@ -1,21 +1,21 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSPEERGROUP_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSPEERGROUP_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmifunctionnumberanddevicenumber.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystemslotsdatabuswidth.h>
-
-
-
-struct DmiSystemSlotsPeerGroup
-{
-    u16                              segmentGroupNumber;
-    u8                               busNumber;
-    DmiFunctionNumberAndDeviceNumber functionNumberAndDeviceNumber;
-    u8                               dataBusWidth;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSPEERGROUP_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSPEERGROUP_H                                                                                                                                   // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSPEERGROUP_H                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmifunctionnumberanddevicenumber.h>                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystemslotsdatabuswidth.h>                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiSystemSlotsPeerGroup                                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    u16                              segmentGroupNumber;                                                                                                                                                 // Colorize: green
+    u8                               busNumber;                                                                                                                                                          // Colorize: green
+    DmiFunctionNumberAndDeviceNumber functionNumberAndDeviceNumber;                                                                                                                                      // Colorize: green
+    u8                               dataBusWidth;                                                                                                                                                       // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMSLOTSPEERGROUP_H                                                                                                                                 // Colorize: green

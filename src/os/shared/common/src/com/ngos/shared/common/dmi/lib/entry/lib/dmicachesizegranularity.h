@@ -1,53 +1,53 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHESIZEGRANULARITY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHESIZEGRANULARITY_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiCacheSizeGranularity: u8
-{
-    _1_KILOBYTE   = 0,
-    _64_KILOBYTES = 1
-};
-
-
-
-inline const char8* enumToString(DmiCacheSizeGranularity granularity) // TEST: NO
-{
-    // COMMON_LT((" | granularity = %u", granularity)); // Commented to avoid bad looking logs
-
-
-
-    switch (granularity)
-    {
-        case DmiCacheSizeGranularity::_1_KILOBYTE:   return "1_KILOBYTE";
-        case DmiCacheSizeGranularity::_64_KILOBYTES: return "64_KILOBYTES";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiCacheSizeGranularity granularity) // TEST: NO
-{
-    // COMMON_LT((" | granularity = %u", granularity)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[20];
-
-    sprintf(res, "0x%02X (%s)", (u8)granularity, enumToString(granularity));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHESIZEGRANULARITY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHESIZEGRANULARITY_H                                                                                                                                   // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHESIZEGRANULARITY_H                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiCacheSizeGranularity: u8                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    _1_KILOBYTE   = 0,                                                                                                                                                                                   // Colorize: green
+    _64_KILOBYTES = 1                                                                                                                                                                                    // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiCacheSizeGranularity granularity) // TEST: NO                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | granularity = %u", granularity)); // Commented to avoid bad looking logs                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (granularity)                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiCacheSizeGranularity::_1_KILOBYTE:   return "1_KILOBYTE";                                                                                                                                // Colorize: green
+        case DmiCacheSizeGranularity::_64_KILOBYTES: return "64_KILOBYTES";                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiCacheSizeGranularity granularity) // TEST: NO                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | granularity = %u", granularity)); // Commented to avoid bad looking logs                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[20];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)granularity, enumToString(granularity));                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHESIZEGRANULARITY_H                                                                                                                                 // Colorize: green

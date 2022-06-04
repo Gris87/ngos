@@ -1,56 +1,56 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMICACHEENTRY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMICACHEENTRY_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicacheassociativity.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicacheconfiguration.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicacheerrorcorrectiontype.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachesize.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachesize2.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachesramtypeflags.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachetype.h>
-
-
-
-#define DMI_CACHE_MAXIMUM_CACHE_SIZE_NEED_TO_EXTEND 0xFFFF
-#define DMI_CACHE_INSTALLED_SIZE_NO_CACHE           0x0000
-#define DMI_CACHE_INSTALLED_SIZE_NEED_TO_EXTEND     0xFFFF
-#define DMI_CACHE_CACHE_SPEED_UNKNOWN               0x0000
-
-
-
-struct DmiCacheEntry
-{
-    DmiEntryHeader        header;
-    DmiStringId           socketDesignation;
-    DmiCacheConfiguration cacheConfiguration;
-    DmiCacheSize          maximumCacheSize;
-    DmiCacheSize          installedSize;
-    DmiCacheSramTypeFlags supportedSramType;
-    DmiCacheSramTypeFlags currentSramType;
-} __attribute__((packed));
-
-
-
-struct DmiCacheEntryV21: public DmiCacheEntry
-{
-    u8                          cacheSpeed;
-    DmiCacheErrorCorrectionType errorCorrectionType;
-    DmiCacheType                systemCacheType;
-    DmiCacheAssociativity       associativity;
-} __attribute__((packed));
-
-
-
-struct DmiCacheEntryV31: public DmiCacheEntryV21
-{
-    DmiCacheSize2 maximumCacheSize2;
-    DmiCacheSize2 installedSize2;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMICACHEENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMICACHEENTRY_H                                                                                                                                                 // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMICACHEENTRY_H                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>                                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicacheassociativity.h>                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicacheconfiguration.h>                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicacheerrorcorrectiontype.h>                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachesize.h>                                                                                                                                       // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachesize2.h>                                                                                                                                      // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachesramtypeflags.h>                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachetype.h>                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define DMI_CACHE_MAXIMUM_CACHE_SIZE_NEED_TO_EXTEND 0xFFFF                                                                                                                                               // Colorize: green
+#define DMI_CACHE_INSTALLED_SIZE_NO_CACHE           0x0000                                                                                                                                               // Colorize: green
+#define DMI_CACHE_INSTALLED_SIZE_NEED_TO_EXTEND     0xFFFF                                                                                                                                               // Colorize: green
+#define DMI_CACHE_CACHE_SPEED_UNKNOWN               0x0000                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiCacheEntry                                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryHeader        header;                                                                                                                                                                        // Colorize: green
+    DmiStringId           socketDesignation;                                                                                                                                                             // Colorize: green
+    DmiCacheConfiguration cacheConfiguration;                                                                                                                                                            // Colorize: green
+    DmiCacheSize          maximumCacheSize;                                                                                                                                                              // Colorize: green
+    DmiCacheSize          installedSize;                                                                                                                                                                 // Colorize: green
+    DmiCacheSramTypeFlags supportedSramType;                                                                                                                                                             // Colorize: green
+    DmiCacheSramTypeFlags currentSramType;                                                                                                                                                               // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiCacheEntryV21: public DmiCacheEntry                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    u8                          cacheSpeed;                                                                                                                                                              // Colorize: green
+    DmiCacheErrorCorrectionType errorCorrectionType;                                                                                                                                                     // Colorize: green
+    DmiCacheType                systemCacheType;                                                                                                                                                         // Colorize: green
+    DmiCacheAssociativity       associativity;                                                                                                                                                           // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiCacheEntryV31: public DmiCacheEntryV21                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiCacheSize2 maximumCacheSize2;                                                                                                                                                                     // Colorize: green
+    DmiCacheSize2 installedSize2;                                                                                                                                                                        // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMICACHEENTRY_H                                                                                                                                               // Colorize: green

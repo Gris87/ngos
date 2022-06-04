@@ -82,15 +82,15 @@ private:                                                                        
     static NgosStatus saveDmiSystemEntry(DmiSystemEntry *entry); // TEST: NO                                                                                                                             // Colorize: green
     static NgosStatus saveDmiBaseboardEntry(DmiBaseboardEntry *entry); // TEST: NO                                                                                                                       // Colorize: green
     static NgosStatus saveDmiChassisEntry(DmiChassisEntry *entry); // TEST: NO                                                                                                                           // Colorize: green
-    static NgosStatus saveDmiProcessorEntry(DmiProcessorEntry *entry); // TEST: NO
-    static NgosStatus saveDmiCacheEntry(DmiCacheEntry *entry); // TEST: NO
-    static NgosStatus saveDmiPortConnectorEntry(DmiPortConnectorEntry *entry); // TEST: NO
-    static NgosStatus saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry); // TEST: NO
-    static NgosStatus saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry); // TEST: NO
-    static NgosStatus saveDmiOemStringsEntry(DmiOemStringsEntry *entry); // TEST: NO
-    static NgosStatus saveDmiSystemConfigurationEntry(DmiSystemConfigurationEntry *entry); // TEST: NO
-    static NgosStatus saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entry); // TEST: NO
-    static NgosStatus saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry); // TEST: NO
+    static NgosStatus saveDmiProcessorEntry(DmiProcessorEntry *entry); // TEST: NO                                                                                                                       // Colorize: green
+    static NgosStatus saveDmiCacheEntry(DmiCacheEntry *entry); // TEST: NO                                                                                                                               // Colorize: green
+    static NgosStatus saveDmiPortConnectorEntry(DmiPortConnectorEntry *entry); // TEST: NO                                                                                                               // Colorize: green
+    static NgosStatus saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry); // TEST: NO                                                                                                                   // Colorize: green
+    static NgosStatus saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry); // TEST: NO                                                                                                             // Colorize: green
+    static NgosStatus saveDmiOemStringsEntry(DmiOemStringsEntry *entry); // TEST: NO                                                                                                                     // Colorize: green
+    static NgosStatus saveDmiSystemConfigurationEntry(DmiSystemConfigurationEntry *entry); // TEST: NO                                                                                                   // Colorize: green
+    static NgosStatus saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entry); // TEST: NO                                                                                                                 // Colorize: green
+    static NgosStatus saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry); // TEST: NO                                                                                                       // Colorize: green
     static NgosStatus saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *entry); // TEST: NO
     static NgosStatus saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry); // TEST: NO
     static NgosStatus saveDmiBits32MemoryErrorInformationEntry(DmiBits32MemoryErrorInformationEntry *entry); // TEST: NO

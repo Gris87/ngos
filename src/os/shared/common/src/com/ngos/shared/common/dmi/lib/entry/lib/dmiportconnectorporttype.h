@@ -1,127 +1,127 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPORTCONNECTORPORTTYPE_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPORTCONNECTORPORTTYPE_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiPortConnectorPortType: u8
-{
-    NONE                        = 0,
-    PARALLEL_XT_AT_COMPATIBLE   = 0x01,
-    PARALLEL_PS2                = 0x02,
-    PARALLEL_ECP                = 0x03,
-    PARALLEL_EPP                = 0x04,
-    PARALLEL_ECP_EPP            = 0x05,
-    SERIAL_XT_AT_COMPATIBLE     = 0x06,
-    SERIAL_16450_COMPATIBLE     = 0x07,
-    SERIAL_16550_COMPATIBLE     = 0x08,
-    SERIAL_16550A_COMPATIBLE    = 0x09,
-    SCSI                        = 0x0A,
-    MIDI                        = 0x0B,
-    JOYSTICK                    = 0x0C,
-    KEYBOARD                    = 0x0D,
-    MOUSE                       = 0x0E,
-    SSA_SCSI                    = 0x0F,
-    USB                         = 0x10,
-    FIREWIRE                    = 0x11,
-    PCMCIA_TYPE_I               = 0x12,
-    PCMCIA_TYPE_II              = 0x13,
-    PCMCIA_TYPE_III             = 0x14,
-    CARD_BUS                    = 0x15,
-    ACCESS_BUS_PORT             = 0x16,
-    SCSI_II                     = 0x17,
-    SCSI_WIDE                   = 0x18,
-    PC98                        = 0x19,
-    PC98_HIRESO                 = 0x1A,
-    PCH98                       = 0x1B,
-    VIDEO_PORT                  = 0x1C,
-    AUDIO_PORT                  = 0x1D,
-    MODEM_PORT                  = 0x1E,
-    NETWORK_PORT                = 0x1F,
-    SATA                        = 0x20,
-    SAS                         = 0x21,
-    MULTI_FUNCTION_DISPLAY_PORT = 0x22,
-    THUNDERBOLT                 = 0x23,
-    _8251_COMPATIBLE            = 0xA0,
-    _8251_FIFO_COMPATIBLE       = 0xA1,
-    OTHER                       = 0xFF
-};
-
-
-
-inline const char8* enumToString(DmiPortConnectorPortType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    switch (type)
-    {
-        case DmiPortConnectorPortType::NONE:                        return "NONE";
-        case DmiPortConnectorPortType::PARALLEL_XT_AT_COMPATIBLE:   return "PARALLEL_XT_AT_COMPATIBLE";
-        case DmiPortConnectorPortType::PARALLEL_PS2:                return "PARALLEL_PS2";
-        case DmiPortConnectorPortType::PARALLEL_ECP:                return "PARALLEL_ECP";
-        case DmiPortConnectorPortType::PARALLEL_EPP:                return "PARALLEL_EPP";
-        case DmiPortConnectorPortType::PARALLEL_ECP_EPP:            return "PARALLEL_ECP_EPP";
-        case DmiPortConnectorPortType::SERIAL_XT_AT_COMPATIBLE:     return "SERIAL_XT_AT_COMPATIBLE";
-        case DmiPortConnectorPortType::SERIAL_16450_COMPATIBLE:     return "SERIAL_16450_COMPATIBLE";
-        case DmiPortConnectorPortType::SERIAL_16550_COMPATIBLE:     return "SERIAL_16550_COMPATIBLE";
-        case DmiPortConnectorPortType::SERIAL_16550A_COMPATIBLE:    return "SERIAL_16550A_COMPATIBLE";
-        case DmiPortConnectorPortType::SCSI:                        return "SCSI";
-        case DmiPortConnectorPortType::MIDI:                        return "MIDI";
-        case DmiPortConnectorPortType::JOYSTICK:                    return "JOYSTICK";
-        case DmiPortConnectorPortType::KEYBOARD:                    return "KEYBOARD";
-        case DmiPortConnectorPortType::MOUSE:                       return "MOUSE";
-        case DmiPortConnectorPortType::SSA_SCSI:                    return "SSA_SCSI";
-        case DmiPortConnectorPortType::USB:                         return "USB";
-        case DmiPortConnectorPortType::FIREWIRE:                    return "FIREWIRE";
-        case DmiPortConnectorPortType::PCMCIA_TYPE_I:               return "PCMCIA_TYPE_I";
-        case DmiPortConnectorPortType::PCMCIA_TYPE_II:              return "PCMCIA_TYPE_II";
-        case DmiPortConnectorPortType::PCMCIA_TYPE_III:             return "PCMCIA_TYPE_III";
-        case DmiPortConnectorPortType::CARD_BUS:                    return "CARD_BUS";
-        case DmiPortConnectorPortType::ACCESS_BUS_PORT:             return "ACCESS_BUS_PORT";
-        case DmiPortConnectorPortType::SCSI_II:                     return "SCSI_II";
-        case DmiPortConnectorPortType::SCSI_WIDE:                   return "SCSI_WIDE";
-        case DmiPortConnectorPortType::PC98:                        return "PC98";
-        case DmiPortConnectorPortType::PC98_HIRESO:                 return "PC98_HIRESO";
-        case DmiPortConnectorPortType::PCH98:                       return "PCH98";
-        case DmiPortConnectorPortType::VIDEO_PORT:                  return "VIDEO_PORT";
-        case DmiPortConnectorPortType::AUDIO_PORT:                  return "AUDIO_PORT";
-        case DmiPortConnectorPortType::MODEM_PORT:                  return "MODEM_PORT";
-        case DmiPortConnectorPortType::NETWORK_PORT:                return "NETWORK_PORT";
-        case DmiPortConnectorPortType::SATA:                        return "SATA";
-        case DmiPortConnectorPortType::SAS:                         return "SAS";
-        case DmiPortConnectorPortType::MULTI_FUNCTION_DISPLAY_PORT: return "MULTI_FUNCTION_DISPLAY_PORT";
-        case DmiPortConnectorPortType::THUNDERBOLT:                 return "THUNDERBOLT";
-        case DmiPortConnectorPortType::_8251_COMPATIBLE:            return "8251_COMPATIBLE";
-        case DmiPortConnectorPortType::_8251_FIFO_COMPATIBLE:       return "8251_FIFO_COMPATIBLE";
-        case DmiPortConnectorPortType::OTHER:                       return "OTHER";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiPortConnectorPortType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[35];
-
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPORTCONNECTORPORTTYPE_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPORTCONNECTORPORTTYPE_H                                                                                                                                  // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPORTCONNECTORPORTTYPE_H                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiPortConnectorPortType: u8                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE                        = 0,                                                                                                                                                                     // Colorize: green
+    PARALLEL_XT_AT_COMPATIBLE   = 0x01,                                                                                                                                                                  // Colorize: green
+    PARALLEL_PS2                = 0x02,                                                                                                                                                                  // Colorize: green
+    PARALLEL_ECP                = 0x03,                                                                                                                                                                  // Colorize: green
+    PARALLEL_EPP                = 0x04,                                                                                                                                                                  // Colorize: green
+    PARALLEL_ECP_EPP            = 0x05,                                                                                                                                                                  // Colorize: green
+    SERIAL_XT_AT_COMPATIBLE     = 0x06,                                                                                                                                                                  // Colorize: green
+    SERIAL_16450_COMPATIBLE     = 0x07,                                                                                                                                                                  // Colorize: green
+    SERIAL_16550_COMPATIBLE     = 0x08,                                                                                                                                                                  // Colorize: green
+    SERIAL_16550A_COMPATIBLE    = 0x09,                                                                                                                                                                  // Colorize: green
+    SCSI                        = 0x0A,                                                                                                                                                                  // Colorize: green
+    MIDI                        = 0x0B,                                                                                                                                                                  // Colorize: green
+    JOYSTICK                    = 0x0C,                                                                                                                                                                  // Colorize: green
+    KEYBOARD                    = 0x0D,                                                                                                                                                                  // Colorize: green
+    MOUSE                       = 0x0E,                                                                                                                                                                  // Colorize: green
+    SSA_SCSI                    = 0x0F,                                                                                                                                                                  // Colorize: green
+    USB                         = 0x10,                                                                                                                                                                  // Colorize: green
+    FIREWIRE                    = 0x11,                                                                                                                                                                  // Colorize: green
+    PCMCIA_TYPE_I               = 0x12,                                                                                                                                                                  // Colorize: green
+    PCMCIA_TYPE_II              = 0x13,                                                                                                                                                                  // Colorize: green
+    PCMCIA_TYPE_III             = 0x14,                                                                                                                                                                  // Colorize: green
+    CARD_BUS                    = 0x15,                                                                                                                                                                  // Colorize: green
+    ACCESS_BUS_PORT             = 0x16,                                                                                                                                                                  // Colorize: green
+    SCSI_II                     = 0x17,                                                                                                                                                                  // Colorize: green
+    SCSI_WIDE                   = 0x18,                                                                                                                                                                  // Colorize: green
+    PC98                        = 0x19,                                                                                                                                                                  // Colorize: green
+    PC98_HIRESO                 = 0x1A,                                                                                                                                                                  // Colorize: green
+    PCH98                       = 0x1B,                                                                                                                                                                  // Colorize: green
+    VIDEO_PORT                  = 0x1C,                                                                                                                                                                  // Colorize: green
+    AUDIO_PORT                  = 0x1D,                                                                                                                                                                  // Colorize: green
+    MODEM_PORT                  = 0x1E,                                                                                                                                                                  // Colorize: green
+    NETWORK_PORT                = 0x1F,                                                                                                                                                                  // Colorize: green
+    SATA                        = 0x20,                                                                                                                                                                  // Colorize: green
+    SAS                         = 0x21,                                                                                                                                                                  // Colorize: green
+    MULTI_FUNCTION_DISPLAY_PORT = 0x22,                                                                                                                                                                  // Colorize: green
+    THUNDERBOLT                 = 0x23,                                                                                                                                                                  // Colorize: green
+    _8251_COMPATIBLE            = 0xA0,                                                                                                                                                                  // Colorize: green
+    _8251_FIFO_COMPATIBLE       = 0xA1,                                                                                                                                                                  // Colorize: green
+    OTHER                       = 0xFF                                                                                                                                                                   // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiPortConnectorPortType type) // TEST: NO                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (type)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiPortConnectorPortType::NONE:                        return "NONE";                                                                                                                       // Colorize: green
+        case DmiPortConnectorPortType::PARALLEL_XT_AT_COMPATIBLE:   return "PARALLEL_XT_AT_COMPATIBLE";                                                                                                  // Colorize: green
+        case DmiPortConnectorPortType::PARALLEL_PS2:                return "PARALLEL_PS2";                                                                                                               // Colorize: green
+        case DmiPortConnectorPortType::PARALLEL_ECP:                return "PARALLEL_ECP";                                                                                                               // Colorize: green
+        case DmiPortConnectorPortType::PARALLEL_EPP:                return "PARALLEL_EPP";                                                                                                               // Colorize: green
+        case DmiPortConnectorPortType::PARALLEL_ECP_EPP:            return "PARALLEL_ECP_EPP";                                                                                                           // Colorize: green
+        case DmiPortConnectorPortType::SERIAL_XT_AT_COMPATIBLE:     return "SERIAL_XT_AT_COMPATIBLE";                                                                                                    // Colorize: green
+        case DmiPortConnectorPortType::SERIAL_16450_COMPATIBLE:     return "SERIAL_16450_COMPATIBLE";                                                                                                    // Colorize: green
+        case DmiPortConnectorPortType::SERIAL_16550_COMPATIBLE:     return "SERIAL_16550_COMPATIBLE";                                                                                                    // Colorize: green
+        case DmiPortConnectorPortType::SERIAL_16550A_COMPATIBLE:    return "SERIAL_16550A_COMPATIBLE";                                                                                                   // Colorize: green
+        case DmiPortConnectorPortType::SCSI:                        return "SCSI";                                                                                                                       // Colorize: green
+        case DmiPortConnectorPortType::MIDI:                        return "MIDI";                                                                                                                       // Colorize: green
+        case DmiPortConnectorPortType::JOYSTICK:                    return "JOYSTICK";                                                                                                                   // Colorize: green
+        case DmiPortConnectorPortType::KEYBOARD:                    return "KEYBOARD";                                                                                                                   // Colorize: green
+        case DmiPortConnectorPortType::MOUSE:                       return "MOUSE";                                                                                                                      // Colorize: green
+        case DmiPortConnectorPortType::SSA_SCSI:                    return "SSA_SCSI";                                                                                                                   // Colorize: green
+        case DmiPortConnectorPortType::USB:                         return "USB";                                                                                                                        // Colorize: green
+        case DmiPortConnectorPortType::FIREWIRE:                    return "FIREWIRE";                                                                                                                   // Colorize: green
+        case DmiPortConnectorPortType::PCMCIA_TYPE_I:               return "PCMCIA_TYPE_I";                                                                                                              // Colorize: green
+        case DmiPortConnectorPortType::PCMCIA_TYPE_II:              return "PCMCIA_TYPE_II";                                                                                                             // Colorize: green
+        case DmiPortConnectorPortType::PCMCIA_TYPE_III:             return "PCMCIA_TYPE_III";                                                                                                            // Colorize: green
+        case DmiPortConnectorPortType::CARD_BUS:                    return "CARD_BUS";                                                                                                                   // Colorize: green
+        case DmiPortConnectorPortType::ACCESS_BUS_PORT:             return "ACCESS_BUS_PORT";                                                                                                            // Colorize: green
+        case DmiPortConnectorPortType::SCSI_II:                     return "SCSI_II";                                                                                                                    // Colorize: green
+        case DmiPortConnectorPortType::SCSI_WIDE:                   return "SCSI_WIDE";                                                                                                                  // Colorize: green
+        case DmiPortConnectorPortType::PC98:                        return "PC98";                                                                                                                       // Colorize: green
+        case DmiPortConnectorPortType::PC98_HIRESO:                 return "PC98_HIRESO";                                                                                                                // Colorize: green
+        case DmiPortConnectorPortType::PCH98:                       return "PCH98";                                                                                                                      // Colorize: green
+        case DmiPortConnectorPortType::VIDEO_PORT:                  return "VIDEO_PORT";                                                                                                                 // Colorize: green
+        case DmiPortConnectorPortType::AUDIO_PORT:                  return "AUDIO_PORT";                                                                                                                 // Colorize: green
+        case DmiPortConnectorPortType::MODEM_PORT:                  return "MODEM_PORT";                                                                                                                 // Colorize: green
+        case DmiPortConnectorPortType::NETWORK_PORT:                return "NETWORK_PORT";                                                                                                               // Colorize: green
+        case DmiPortConnectorPortType::SATA:                        return "SATA";                                                                                                                       // Colorize: green
+        case DmiPortConnectorPortType::SAS:                         return "SAS";                                                                                                                        // Colorize: green
+        case DmiPortConnectorPortType::MULTI_FUNCTION_DISPLAY_PORT: return "MULTI_FUNCTION_DISPLAY_PORT";                                                                                                // Colorize: green
+        case DmiPortConnectorPortType::THUNDERBOLT:                 return "THUNDERBOLT";                                                                                                                // Colorize: green
+        case DmiPortConnectorPortType::_8251_COMPATIBLE:            return "8251_COMPATIBLE";                                                                                                            // Colorize: green
+        case DmiPortConnectorPortType::_8251_FIFO_COMPATIBLE:       return "8251_FIFO_COMPATIBLE";                                                                                                       // Colorize: green
+        case DmiPortConnectorPortType::OTHER:                       return "OTHER";                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiPortConnectorPortType type) // TEST: NO                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[35];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPORTCONNECTORPORTTYPE_H                                                                                                                                // Colorize: green

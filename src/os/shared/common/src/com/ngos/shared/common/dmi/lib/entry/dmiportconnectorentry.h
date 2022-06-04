@@ -1,25 +1,25 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIPORTCONNECTORENTRY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIPORTCONNECTORENTRY_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiportconnectorporttype.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiportconnectortype.h>
-
-
-
-struct DmiPortConnectorEntry
-{
-    DmiEntryHeader           header;
-    DmiStringId              internalReferenceDesignator;
-    DmiPortConnectorType     internalConnectorType;
-    DmiStringId              externalReferenceDesignator;
-    DmiPortConnectorType     externalConnectorType;
-    DmiPortConnectorPortType portType;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIPORTCONNECTORENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIPORTCONNECTORENTRY_H                                                                                                                                         // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIPORTCONNECTORENTRY_H                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>                                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiportconnectorporttype.h>                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiportconnectortype.h>                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiPortConnectorEntry                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryHeader           header;                                                                                                                                                                     // Colorize: green
+    DmiStringId              internalReferenceDesignator;                                                                                                                                                // Colorize: green
+    DmiPortConnectorType     internalConnectorType;                                                                                                                                                      // Colorize: green
+    DmiStringId              externalReferenceDesignator;                                                                                                                                                // Colorize: green
+    DmiPortConnectorType     externalConnectorType;                                                                                                                                                      // Colorize: green
+    DmiPortConnectorPortType portType;                                                                                                                                                                   // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIPORTCONNECTORENTRY_H                                                                                                                                       // Colorize: green

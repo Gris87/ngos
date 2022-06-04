@@ -1,19 +1,19 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORID_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORID_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorfeatureflags.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorsignature.h>
-
-
-
-struct DmiProcessorId
-{
-    DmiProcessorSignature    signature;
-    DmiProcessorFeatureFlags featureFlags;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORID_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORID_H                                                                                                                                            // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORID_H                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorfeatureflags.h>                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorsignature.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiProcessorId                                                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiProcessorSignature    signature;                                                                                                                                                                  // Colorize: green
+    DmiProcessorFeatureFlags featureFlags;                                                                                                                                                               // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORID_H                                                                                                                                          // Colorize: green

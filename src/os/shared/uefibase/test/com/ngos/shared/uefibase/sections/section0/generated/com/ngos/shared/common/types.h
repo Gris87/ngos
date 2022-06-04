@@ -837,9 +837,9 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(temp.level,           static_cast<u16>(4));
         TEST_ASSERT_EQUALS(temp.socketed,        static_cast<u16>(0));
         TEST_ASSERT_EQUALS(temp.__reserved,      static_cast<u16>(0));
-        TEST_ASSERT_EQUALS(temp.location,        static_cast<u16>(3));
+        TEST_ASSERT_EQUALS(temp.location,        static_cast<DmiCacheLocation>(3));
         TEST_ASSERT_EQUALS(temp.enabled,         static_cast<u16>(0));
-        TEST_ASSERT_EQUALS(temp.operationalMode, static_cast<u16>(2));
+        TEST_ASSERT_EQUALS(temp.operationalMode, static_cast<DmiCacheOperationalMode>(2));
         TEST_ASSERT_EQUALS(temp.__reserved2,     static_cast<u16>(41));
 
 
@@ -870,7 +870,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |        101001         |  10   |
         // | 0 |  00   | 1 | 1 |    011    |
-        temp.location = static_cast<u16>(0);
+        temp.location = static_cast<DmiCacheLocation>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xA61B);
 
@@ -886,7 +886,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |        101001         |  01   |
         // | 1 |  00   | 1 | 1 |    011    |
-        temp.operationalMode = static_cast<u16>(1);
+        temp.operationalMode = static_cast<DmiCacheOperationalMode>(1);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xA59B);
 
@@ -923,7 +923,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.value16 = 0xA18A;
 
         TEST_ASSERT_EQUALS(temp.value,       static_cast<u16>(8586));
-        TEST_ASSERT_EQUALS(temp.granularity, static_cast<u16>(1));
+        TEST_ASSERT_EQUALS(temp.granularity, static_cast<DmiCacheSizeGranularity>(1));
 
 
 
@@ -937,7 +937,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |          1011110          |
         // |           01110101            |
-        temp.granularity = static_cast<u16>(0);
+        temp.granularity = static_cast<DmiCacheSizeGranularity>(0);
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5E75);
     }
@@ -970,7 +970,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.value32 = 0x77E3EB28;
 
         TEST_ASSERT_EQUALS(temp.value,       static_cast<u32>(2011425576));
-        TEST_ASSERT_EQUALS(temp.granularity, static_cast<u32>(0));
+        TEST_ASSERT_EQUALS(temp.granularity, static_cast<DmiCacheSizeGranularity>(0));
 
 
 
@@ -988,7 +988,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00011100            |
         // |           00010100            |
         // |           11010111            |
-        temp.granularity = static_cast<u32>(1);
+        temp.granularity = static_cast<DmiCacheSizeGranularity>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x881C14D7);
     }
@@ -1360,13 +1360,13 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 0001000 |
         temp.value8 = 0x88;
 
-        TEST_ASSERT_EQUALS(temp.deviceType, static_cast<u8>(8));
+        TEST_ASSERT_EQUALS(temp.deviceType, static_cast<DmiOnboardDevicesDeviceType>(8));
         TEST_ASSERT_EQUALS(temp.enabled,    static_cast<u8>(1));
 
 
 
         // | 1 | 1110111 |
-        temp.deviceType = static_cast<u8>(119);
+        temp.deviceType = static_cast<DmiOnboardDevicesDeviceType>(119);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xF7);
 
@@ -1616,7 +1616,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 0 | 101 | 010 |
         temp.value8 = 0xAA;
 
-        TEST_ASSERT_EQUALS(temp.status,          static_cast<u8>(2));
+        TEST_ASSERT_EQUALS(temp.status,          static_cast<DmiProcessorStatus>(2));
         TEST_ASSERT_EQUALS(temp.__reserved,      static_cast<u8>(5));
         TEST_ASSERT_EQUALS(temp.socketPopulated, static_cast<u8>(0));
         TEST_ASSERT_EQUALS(temp.__reserved2,     static_cast<u8>(1));
@@ -1624,7 +1624,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
 
         // | 1 | 0 | 101 | 101 |
-        temp.status = static_cast<u8>(5);
+        temp.status = static_cast<DmiProcessorStatus>(5);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xAD);
 

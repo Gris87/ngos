@@ -5756,32 +5756,32 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         // | 0 | 1101010 |
         temp.value8 = 0x6A;
 
-        TEST_ASSERT_EQUALS(temp.modeType, 0);
-        TEST_ASSERT_EQUALS(temp.flags,    106);
-        TEST_ASSERT_EQUALS(temp.value,    106);
+        TEST_ASSERT_EQUALS(temp.modeType, static_cast<DmiProcessorVoltageModeType>(0));
+        TEST_ASSERT_EQUALS(temp.flags,    static_cast<dmi_processor_voltage_flags>(106));
+        TEST_ASSERT_EQUALS(temp.value,    static_cast<good_U8>(106));
 
 
 
         // | 1 | 1101010 |
-        temp.modeType = 1;
+        temp.modeType = static_cast<DmiProcessorVoltageModeType>(1);
 
         TEST_ASSERT_EQUALS(temp.value8, 0xEA);
 
 
 
         // | 1 | 0000101 |
-        temp.flags = 5;
+        temp.flags = static_cast<dmi_processor_voltage_flags>(5);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x85);
-        TEST_ASSERT_EQUALS(temp.value,  5);
+        TEST_ASSERT_EQUALS(temp.value,  static_cast<good_U8>(5));
 
 
 
         // | 1 | 0000010 |
-        temp.value = 2;
+        temp.value = static_cast<good_U8>(2);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x82);
-        TEST_ASSERT_EQUALS(temp.flags,  2);
+        TEST_ASSERT_EQUALS(temp.flags,  static_cast<dmi_processor_voltage_flags>(2));
     }
     TEST_CASE_END();
 }

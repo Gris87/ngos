@@ -1,63 +1,63 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORTYPE_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORTYPE_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiProcessorType: u8
-{
-    NONE              = 0,
-    OTHER             = 1,
-    UNKNOWN           = 2,
-    CENTRAL_PROCESSOR = 3,
-    MATH_PROCESSOR    = 4,
-    DSP_PROCESSOR     = 5,
-    VIDEO_PROCESSOR   = 6
-};
-
-
-
-inline const char8* enumToString(DmiProcessorType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    switch (type)
-    {
-        case DmiProcessorType::NONE:              return "NONE";
-        case DmiProcessorType::OTHER:             return "OTHER";
-        case DmiProcessorType::UNKNOWN:           return "UNKNOWN";
-        case DmiProcessorType::CENTRAL_PROCESSOR: return "CENTRAL_PROCESSOR";
-        case DmiProcessorType::MATH_PROCESSOR:    return "MATH_PROCESSOR";
-        case DmiProcessorType::DSP_PROCESSOR:     return "DSP_PROCESSOR";
-        case DmiProcessorType::VIDEO_PROCESSOR:   return "VIDEO_PROCESSOR";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiProcessorType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[25];
-
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORTYPE_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORTYPE_H                                                                                                                                          // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORTYPE_H                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiProcessorType: u8                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE              = 0,                                                                                                                                                                               // Colorize: green
+    OTHER             = 1,                                                                                                                                                                               // Colorize: green
+    UNKNOWN           = 2,                                                                                                                                                                               // Colorize: green
+    CENTRAL_PROCESSOR = 3,                                                                                                                                                                               // Colorize: green
+    MATH_PROCESSOR    = 4,                                                                                                                                                                               // Colorize: green
+    DSP_PROCESSOR     = 5,                                                                                                                                                                               // Colorize: green
+    VIDEO_PROCESSOR   = 6                                                                                                                                                                                // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiProcessorType type) // TEST: NO                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (type)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiProcessorType::NONE:              return "NONE";                                                                                                                                         // Colorize: green
+        case DmiProcessorType::OTHER:             return "OTHER";                                                                                                                                        // Colorize: green
+        case DmiProcessorType::UNKNOWN:           return "UNKNOWN";                                                                                                                                      // Colorize: green
+        case DmiProcessorType::CENTRAL_PROCESSOR: return "CENTRAL_PROCESSOR";                                                                                                                            // Colorize: green
+        case DmiProcessorType::MATH_PROCESSOR:    return "MATH_PROCESSOR";                                                                                                                               // Colorize: green
+        case DmiProcessorType::DSP_PROCESSOR:     return "DSP_PROCESSOR";                                                                                                                                // Colorize: green
+        case DmiProcessorType::VIDEO_PROCESSOR:   return "VIDEO_PROCESSOR";                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiProcessorType type) // TEST: NO                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[25];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORTYPE_H                                                                                                                                        // Colorize: green
