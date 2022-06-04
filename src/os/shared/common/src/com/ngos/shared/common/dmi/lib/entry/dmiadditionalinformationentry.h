@@ -1,20 +1,20 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIADDITIONALINFORMATIONENTRY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIADDITIONALINFORMATIONENTRY_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiadditionalinformation.h>
-
-
-
-struct DmiAdditionalInformationEntry
-{
-    DmiEntryHeader           header;
-    u8                       numberOfAdditionalInformationEntries;
-    DmiAdditionalInformation additionalInformationEntries[0];
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIADDITIONALINFORMATIONENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIADDITIONALINFORMATIONENTRY_H                                                                                                                                 // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIADDITIONALINFORMATIONENTRY_H                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiadditionalinformation.h>                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiAdditionalInformationEntry                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryHeader           header;                                                                                                                                                                     // Colorize: green
+    u8                       numberOfAdditionalInformationEntries;                                                                                                                                       // Colorize: green
+    DmiAdditionalInformation additionalInformationEntries[0];                                                                                                                                            // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIADDITIONALINFORMATIONENTRY_H                                                                                                                               // Colorize: green

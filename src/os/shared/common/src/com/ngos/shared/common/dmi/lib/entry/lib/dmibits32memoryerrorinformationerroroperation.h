@@ -1,61 +1,61 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIBITS32MEMORYERRORINFORMATIONERROROPERATION_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIBITS32MEMORYERRORINFORMATIONERROROPERATION_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiBits32MemoryErrorInformationErrorOperation: u8
-{
-    NONE          = 0,
-    OTHER         = 1,
-    UNKNOWN       = 2,
-    READ          = 3,
-    WRITE         = 4,
-    PARTIAL_WRITE = 5
-};
-
-
-
-inline const char8* enumToString(DmiBits32MemoryErrorInformationErrorOperation operation) // TEST: NO
-{
-    // COMMON_LT((" | operation = %u", operation)); // Commented to avoid bad looking logs
-
-
-
-    switch (operation)
-    {
-        case DmiBits32MemoryErrorInformationErrorOperation::NONE:          return "NONE";
-        case DmiBits32MemoryErrorInformationErrorOperation::OTHER:         return "OTHER";
-        case DmiBits32MemoryErrorInformationErrorOperation::UNKNOWN:       return "UNKNOWN";
-        case DmiBits32MemoryErrorInformationErrorOperation::READ:          return "READ";
-        case DmiBits32MemoryErrorInformationErrorOperation::WRITE:         return "WRITE";
-        case DmiBits32MemoryErrorInformationErrorOperation::PARTIAL_WRITE: return "PARTIAL_WRITE";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiBits32MemoryErrorInformationErrorOperation operation) // TEST: NO
-{
-    // COMMON_LT((" | operation = %u", operation)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[21];
-
-    sprintf(res, "0x%02X (%s)", (u8)operation, enumToString(operation));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIBITS32MEMORYERRORINFORMATIONERROROPERATION_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIBITS32MEMORYERRORINFORMATIONERROROPERATION_H                                                                                                             // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIBITS32MEMORYERRORINFORMATIONERROROPERATION_H                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiBits32MemoryErrorInformationErrorOperation: u8                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE          = 0,                                                                                                                                                                                   // Colorize: green
+    OTHER         = 1,                                                                                                                                                                                   // Colorize: green
+    UNKNOWN       = 2,                                                                                                                                                                                   // Colorize: green
+    READ          = 3,                                                                                                                                                                                   // Colorize: green
+    WRITE         = 4,                                                                                                                                                                                   // Colorize: green
+    PARTIAL_WRITE = 5                                                                                                                                                                                    // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiBits32MemoryErrorInformationErrorOperation operation) // TEST: NO                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | operation = %u", operation)); // Commented to avoid bad looking logs                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (operation)                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiBits32MemoryErrorInformationErrorOperation::NONE:          return "NONE";                                                                                                                // Colorize: green
+        case DmiBits32MemoryErrorInformationErrorOperation::OTHER:         return "OTHER";                                                                                                               // Colorize: green
+        case DmiBits32MemoryErrorInformationErrorOperation::UNKNOWN:       return "UNKNOWN";                                                                                                             // Colorize: green
+        case DmiBits32MemoryErrorInformationErrorOperation::READ:          return "READ";                                                                                                                // Colorize: green
+        case DmiBits32MemoryErrorInformationErrorOperation::WRITE:         return "WRITE";                                                                                                               // Colorize: green
+        case DmiBits32MemoryErrorInformationErrorOperation::PARTIAL_WRITE: return "PARTIAL_WRITE";                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiBits32MemoryErrorInformationErrorOperation operation) // TEST: NO                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | operation = %u", operation)); // Commented to avoid bad looking logs                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[21];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)operation, enumToString(operation));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIBITS32MEMORYERRORINFORMATIONERROROPERATION_H                                                                                                           // Colorize: green

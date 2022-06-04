@@ -1,83 +1,83 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYDEVICEFORMFACTOR_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYDEVICEFORMFACTOR_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiMemoryDeviceFormFactor: u8
-{
-    NONE             = 0,
-    OTHER            = 1,
-    UNKNOWN          = 2,
-    SIMM             = 3,
-    SIP              = 4,
-    CHIP             = 5,
-    DIP              = 6,
-    ZIP              = 7,
-    PROPRIETARY_CARD = 8,
-    DIMM             = 9,
-    TSOP             = 10,
-    ROW_OF_CHIPS     = 11,
-    RIMM             = 12,
-    SODIMM           = 13,
-    SRIMM            = 14,
-    FB_DIMM          = 15,
-    DIE              = 16
-};
-
-
-
-inline const char8* enumToString(DmiMemoryDeviceFormFactor factor) // TEST: NO
-{
-    // COMMON_LT((" | factor = %u", factor)); // Commented to avoid bad looking logs
-
-
-
-    switch (factor)
-    {
-        case DmiMemoryDeviceFormFactor::NONE:             return "NONE";
-        case DmiMemoryDeviceFormFactor::OTHER:            return "OTHER";
-        case DmiMemoryDeviceFormFactor::UNKNOWN:          return "UNKNOWN";
-        case DmiMemoryDeviceFormFactor::SIMM:             return "SIMM";
-        case DmiMemoryDeviceFormFactor::SIP:              return "SIP";
-        case DmiMemoryDeviceFormFactor::CHIP:             return "CHIP";
-        case DmiMemoryDeviceFormFactor::DIP:              return "DIP";
-        case DmiMemoryDeviceFormFactor::ZIP:              return "ZIP";
-        case DmiMemoryDeviceFormFactor::PROPRIETARY_CARD: return "PROPRIETARY_CARD";
-        case DmiMemoryDeviceFormFactor::DIMM:             return "DIMM";
-        case DmiMemoryDeviceFormFactor::TSOP:             return "TSOP";
-        case DmiMemoryDeviceFormFactor::ROW_OF_CHIPS:     return "ROW_OF_CHIPS";
-        case DmiMemoryDeviceFormFactor::RIMM:             return "RIMM";
-        case DmiMemoryDeviceFormFactor::SODIMM:           return "SODIMM";
-        case DmiMemoryDeviceFormFactor::SRIMM:            return "SRIMM";
-        case DmiMemoryDeviceFormFactor::FB_DIMM:          return "FB_DIMM";
-        case DmiMemoryDeviceFormFactor::DIE:              return "DIE";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiMemoryDeviceFormFactor factor) // TEST: NO
-{
-    // COMMON_LT((" | factor = %u", factor)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[24];
-
-    sprintf(res, "0x%02X (%s)", (u8)factor, enumToString(factor));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYDEVICEFORMFACTOR_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYDEVICEFORMFACTOR_H                                                                                                                                 // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYDEVICEFORMFACTOR_H                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiMemoryDeviceFormFactor: u8                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE             = 0,                                                                                                                                                                                // Colorize: green
+    OTHER            = 1,                                                                                                                                                                                // Colorize: green
+    UNKNOWN          = 2,                                                                                                                                                                                // Colorize: green
+    SIMM             = 3,                                                                                                                                                                                // Colorize: green
+    SIP              = 4,                                                                                                                                                                                // Colorize: green
+    CHIP             = 5,                                                                                                                                                                                // Colorize: green
+    DIP              = 6,                                                                                                                                                                                // Colorize: green
+    ZIP              = 7,                                                                                                                                                                                // Colorize: green
+    PROPRIETARY_CARD = 8,                                                                                                                                                                                // Colorize: green
+    DIMM             = 9,                                                                                                                                                                                // Colorize: green
+    TSOP             = 10,                                                                                                                                                                               // Colorize: green
+    ROW_OF_CHIPS     = 11,                                                                                                                                                                               // Colorize: green
+    RIMM             = 12,                                                                                                                                                                               // Colorize: green
+    SODIMM           = 13,                                                                                                                                                                               // Colorize: green
+    SRIMM            = 14,                                                                                                                                                                               // Colorize: green
+    FB_DIMM          = 15,                                                                                                                                                                               // Colorize: green
+    DIE              = 16                                                                                                                                                                                // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiMemoryDeviceFormFactor factor) // TEST: NO                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | factor = %u", factor)); // Commented to avoid bad looking logs                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (factor)                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiMemoryDeviceFormFactor::NONE:             return "NONE";                                                                                                                                 // Colorize: green
+        case DmiMemoryDeviceFormFactor::OTHER:            return "OTHER";                                                                                                                                // Colorize: green
+        case DmiMemoryDeviceFormFactor::UNKNOWN:          return "UNKNOWN";                                                                                                                              // Colorize: green
+        case DmiMemoryDeviceFormFactor::SIMM:             return "SIMM";                                                                                                                                 // Colorize: green
+        case DmiMemoryDeviceFormFactor::SIP:              return "SIP";                                                                                                                                  // Colorize: green
+        case DmiMemoryDeviceFormFactor::CHIP:             return "CHIP";                                                                                                                                 // Colorize: green
+        case DmiMemoryDeviceFormFactor::DIP:              return "DIP";                                                                                                                                  // Colorize: green
+        case DmiMemoryDeviceFormFactor::ZIP:              return "ZIP";                                                                                                                                  // Colorize: green
+        case DmiMemoryDeviceFormFactor::PROPRIETARY_CARD: return "PROPRIETARY_CARD";                                                                                                                     // Colorize: green
+        case DmiMemoryDeviceFormFactor::DIMM:             return "DIMM";                                                                                                                                 // Colorize: green
+        case DmiMemoryDeviceFormFactor::TSOP:             return "TSOP";                                                                                                                                 // Colorize: green
+        case DmiMemoryDeviceFormFactor::ROW_OF_CHIPS:     return "ROW_OF_CHIPS";                                                                                                                         // Colorize: green
+        case DmiMemoryDeviceFormFactor::RIMM:             return "RIMM";                                                                                                                                 // Colorize: green
+        case DmiMemoryDeviceFormFactor::SODIMM:           return "SODIMM";                                                                                                                               // Colorize: green
+        case DmiMemoryDeviceFormFactor::SRIMM:            return "SRIMM";                                                                                                                                // Colorize: green
+        case DmiMemoryDeviceFormFactor::FB_DIMM:          return "FB_DIMM";                                                                                                                              // Colorize: green
+        case DmiMemoryDeviceFormFactor::DIE:              return "DIE";                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiMemoryDeviceFormFactor factor) // TEST: NO                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | factor = %u", factor)); // Commented to avoid bad looking logs                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[24];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)factor, enumToString(factor));                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYDEVICEFORMFACTOR_H                                                                                                                               // Colorize: green

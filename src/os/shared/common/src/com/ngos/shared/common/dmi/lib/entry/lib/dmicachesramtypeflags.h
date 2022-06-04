@@ -1,100 +1,100 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHESRAMTYPEFLAGS_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHESRAMTYPEFLAGS_H
-
-
-
-#include <com/ngos/shared/common/ngos/flags.h>
-#include <com/ngos/shared/common/ngos/linkage.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-#include <com/ngos/shared/common/string/string.h>
-
-
-
-typedef u16 dmi_cache_sram_type_flags;
-
-enum class DmiCacheSramTypeFlag: dmi_cache_sram_type_flags
-{
-    NONE           = 0,
-    OTHER          = (1ULL << 0),
-    UNKNOWN        = (1ULL << 1),
-    NON_BURST      = (1ULL << 2),
-    BURST          = (1ULL << 3),
-    PIPELINE_BURST = (1ULL << 4),
-    SYNCHRONOUS    = (1ULL << 5),
-    ASYNCHRONOUS   = (1ULL << 6)
-};
-
-DEFINE_FLAGS(DmiCacheSramTypeFlags, dmi_cache_sram_type_flags); // TEST: NO
-
-
-
-inline const char8* flagToString(DmiCacheSramTypeFlag flag) // TEST: NO
-{
-    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
-
-
-
-    switch (flag)
-    {
-        case DmiCacheSramTypeFlag::NONE:           return "NONE";
-        case DmiCacheSramTypeFlag::OTHER:          return "OTHER";
-        case DmiCacheSramTypeFlag::UNKNOWN:        return "UNKNOWN";
-        case DmiCacheSramTypeFlag::NON_BURST:      return "NON_BURST";
-        case DmiCacheSramTypeFlag::BURST:          return "BURST";
-        case DmiCacheSramTypeFlag::PIPELINE_BURST: return "PIPELINE_BURST";
-        case DmiCacheSramTypeFlag::SYNCHRONOUS:    return "SYNCHRONOUS";
-        case DmiCacheSramTypeFlag::ASYNCHRONOUS:   return "ASYNCHRONOUS";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* flagToFullString(DmiCacheSramTypeFlag flag) // TEST: NO
-{
-    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[24];
-
-    sprintf(res, "0x%04X (%s)", (dmi_cache_sram_type_flags)flag, flagToString(flag));
-
-    return res;
-}
-
-
-
-inline const char8* flagsToString(const DmiCacheSramTypeFlags &flags) // TEST: NO
-{
-    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[97];
-
-    FLAGS_TO_STRING(res, flags.flags, DmiCacheSramTypeFlag);
-
-    return res;
-}
-
-
-
-inline const char8* flagsToFullString(const DmiCacheSramTypeFlags &flags) // TEST: NO
-{
-    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[106];
-
-    FLAGS_TO_FULL_STRING(res, flags.flags, DmiCacheSramTypeFlag, "0x%04X");
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHESRAMTYPEFLAGS_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHESRAMTYPEFLAGS_H                                                                                                                                     // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHESRAMTYPEFLAGS_H                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/flags.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/ngos/linkage.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/string/string.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+typedef u16 dmi_cache_sram_type_flags;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiCacheSramTypeFlag: dmi_cache_sram_type_flags                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE           = 0,                                                                                                                                                                                  // Colorize: green
+    OTHER          = (1ULL << 0),                                                                                                                                                                        // Colorize: green
+    UNKNOWN        = (1ULL << 1),                                                                                                                                                                        // Colorize: green
+    NON_BURST      = (1ULL << 2),                                                                                                                                                                        // Colorize: green
+    BURST          = (1ULL << 3),                                                                                                                                                                        // Colorize: green
+    PIPELINE_BURST = (1ULL << 4),                                                                                                                                                                        // Colorize: green
+    SYNCHRONOUS    = (1ULL << 5),                                                                                                                                                                        // Colorize: green
+    ASYNCHRONOUS   = (1ULL << 6)                                                                                                                                                                         // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+DEFINE_FLAGS(DmiCacheSramTypeFlags, dmi_cache_sram_type_flags); // TEST: NO                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagToString(DmiCacheSramTypeFlag flag) // TEST: NO                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (flag)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiCacheSramTypeFlag::NONE:           return "NONE";                                                                                                                                        // Colorize: green
+        case DmiCacheSramTypeFlag::OTHER:          return "OTHER";                                                                                                                                       // Colorize: green
+        case DmiCacheSramTypeFlag::UNKNOWN:        return "UNKNOWN";                                                                                                                                     // Colorize: green
+        case DmiCacheSramTypeFlag::NON_BURST:      return "NON_BURST";                                                                                                                                   // Colorize: green
+        case DmiCacheSramTypeFlag::BURST:          return "BURST";                                                                                                                                       // Colorize: green
+        case DmiCacheSramTypeFlag::PIPELINE_BURST: return "PIPELINE_BURST";                                                                                                                              // Colorize: green
+        case DmiCacheSramTypeFlag::SYNCHRONOUS:    return "SYNCHRONOUS";                                                                                                                                 // Colorize: green
+        case DmiCacheSramTypeFlag::ASYNCHRONOUS:   return "ASYNCHRONOUS";                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagToFullString(DmiCacheSramTypeFlag flag) // TEST: NO                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[24];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%04X (%s)", (dmi_cache_sram_type_flags)flag, flagToString(flag));                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagsToString(const DmiCacheSramTypeFlags &flags) // TEST: NO                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[97];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    FLAGS_TO_STRING(res, flags.flags, DmiCacheSramTypeFlag);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagsToFullString(const DmiCacheSramTypeFlags &flags) // TEST: NO                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[106];                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    FLAGS_TO_FULL_STRING(res, flags.flags, DmiCacheSramTypeFlag, "0x%04X");                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHESRAMTYPEFLAGS_H                                                                                                                                   // Colorize: green

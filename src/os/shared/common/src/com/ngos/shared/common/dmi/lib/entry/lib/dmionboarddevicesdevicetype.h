@@ -1,71 +1,71 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIONBOARDDEVICESDEVICETYPE_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIONBOARDDEVICESDEVICETYPE_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiOnboardDevicesDeviceType: u8
-{
-    NONE            = 0,
-    OTHER           = 1,
-    UNKNOWN         = 2,
-    VIDEO           = 3,
-    SCSI_CONTROLLER = 4,
-    ETHERNET        = 5,
-    TOKEN_RING      = 6,
-    SOUND           = 7,
-    PATA_CONTROLLER = 8,
-    SATA_CONTROLLER = 9,
-    SAS_CONTROLLER  = 10
-};
-
-
-
-inline const char8* enumToString(DmiOnboardDevicesDeviceType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    switch (type)
-    {
-        case DmiOnboardDevicesDeviceType::NONE:            return "NONE";
-        case DmiOnboardDevicesDeviceType::OTHER:           return "OTHER";
-        case DmiOnboardDevicesDeviceType::UNKNOWN:         return "UNKNOWN";
-        case DmiOnboardDevicesDeviceType::VIDEO:           return "VIDEO";
-        case DmiOnboardDevicesDeviceType::SCSI_CONTROLLER: return "SCSI_CONTROLLER";
-        case DmiOnboardDevicesDeviceType::ETHERNET:        return "ETHERNET";
-        case DmiOnboardDevicesDeviceType::TOKEN_RING:      return "TOKEN_RING";
-        case DmiOnboardDevicesDeviceType::SOUND:           return "SOUND";
-        case DmiOnboardDevicesDeviceType::PATA_CONTROLLER: return "PATA_CONTROLLER";
-        case DmiOnboardDevicesDeviceType::SATA_CONTROLLER: return "SATA_CONTROLLER";
-        case DmiOnboardDevicesDeviceType::SAS_CONTROLLER:  return "SAS_CONTROLLER";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiOnboardDevicesDeviceType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[23];
-
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIONBOARDDEVICESDEVICETYPE_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIONBOARDDEVICESDEVICETYPE_H                                                                                                                               // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIONBOARDDEVICESDEVICETYPE_H                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiOnboardDevicesDeviceType: u8                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE            = 0,                                                                                                                                                                                 // Colorize: green
+    OTHER           = 1,                                                                                                                                                                                 // Colorize: green
+    UNKNOWN         = 2,                                                                                                                                                                                 // Colorize: green
+    VIDEO           = 3,                                                                                                                                                                                 // Colorize: green
+    SCSI_CONTROLLER = 4,                                                                                                                                                                                 // Colorize: green
+    ETHERNET        = 5,                                                                                                                                                                                 // Colorize: green
+    TOKEN_RING      = 6,                                                                                                                                                                                 // Colorize: green
+    SOUND           = 7,                                                                                                                                                                                 // Colorize: green
+    PATA_CONTROLLER = 8,                                                                                                                                                                                 // Colorize: green
+    SATA_CONTROLLER = 9,                                                                                                                                                                                 // Colorize: green
+    SAS_CONTROLLER  = 10                                                                                                                                                                                 // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiOnboardDevicesDeviceType type) // TEST: NO                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (type)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiOnboardDevicesDeviceType::NONE:            return "NONE";                                                                                                                                // Colorize: green
+        case DmiOnboardDevicesDeviceType::OTHER:           return "OTHER";                                                                                                                               // Colorize: green
+        case DmiOnboardDevicesDeviceType::UNKNOWN:         return "UNKNOWN";                                                                                                                             // Colorize: green
+        case DmiOnboardDevicesDeviceType::VIDEO:           return "VIDEO";                                                                                                                               // Colorize: green
+        case DmiOnboardDevicesDeviceType::SCSI_CONTROLLER: return "SCSI_CONTROLLER";                                                                                                                     // Colorize: green
+        case DmiOnboardDevicesDeviceType::ETHERNET:        return "ETHERNET";                                                                                                                            // Colorize: green
+        case DmiOnboardDevicesDeviceType::TOKEN_RING:      return "TOKEN_RING";                                                                                                                          // Colorize: green
+        case DmiOnboardDevicesDeviceType::SOUND:           return "SOUND";                                                                                                                               // Colorize: green
+        case DmiOnboardDevicesDeviceType::PATA_CONTROLLER: return "PATA_CONTROLLER";                                                                                                                     // Colorize: green
+        case DmiOnboardDevicesDeviceType::SATA_CONTROLLER: return "SATA_CONTROLLER";                                                                                                                     // Colorize: green
+        case DmiOnboardDevicesDeviceType::SAS_CONTROLLER:  return "SAS_CONTROLLER";                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiOnboardDevicesDeviceType type) // TEST: NO                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[23];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIONBOARDDEVICESDEVICETYPE_H                                                                                                                             // Colorize: green

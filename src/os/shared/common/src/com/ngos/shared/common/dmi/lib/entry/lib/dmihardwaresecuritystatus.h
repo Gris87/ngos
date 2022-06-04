@@ -1,57 +1,57 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIHARDWARESECURITYSTATUS_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIHARDWARESECURITYSTATUS_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiHardwareSecurityStatus: u8
-{
-    DISABLED        = 0,
-    ENABLED         = 1,
-    NOT_IMPLEMENTED = 2,
-    UNKNOWN         = 3
-};
-
-
-
-inline const char8* enumToString(DmiHardwareSecurityStatus status) // TEST: NO
-{
-    // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs
-
-
-
-    switch (status)
-    {
-        case DmiHardwareSecurityStatus::DISABLED:        return "DISABLED";
-        case DmiHardwareSecurityStatus::ENABLED:         return "ENABLED";
-        case DmiHardwareSecurityStatus::NOT_IMPLEMENTED: return "NOT_IMPLEMENTED";
-        case DmiHardwareSecurityStatus::UNKNOWN:         return "UNKNOWN";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiHardwareSecurityStatus status) // TEST: NO
-{
-    // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[23];
-
-    sprintf(res, "0x%02X (%s)", (u8)status, enumToString(status));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIHARDWARESECURITYSTATUS_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIHARDWARESECURITYSTATUS_H                                                                                                                                 // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIHARDWARESECURITYSTATUS_H                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiHardwareSecurityStatus: u8                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DISABLED        = 0,                                                                                                                                                                                 // Colorize: green
+    ENABLED         = 1,                                                                                                                                                                                 // Colorize: green
+    NOT_IMPLEMENTED = 2,                                                                                                                                                                                 // Colorize: green
+    UNKNOWN         = 3                                                                                                                                                                                  // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiHardwareSecurityStatus status) // TEST: NO                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (status)                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiHardwareSecurityStatus::DISABLED:        return "DISABLED";                                                                                                                              // Colorize: green
+        case DmiHardwareSecurityStatus::ENABLED:         return "ENABLED";                                                                                                                               // Colorize: green
+        case DmiHardwareSecurityStatus::NOT_IMPLEMENTED: return "NOT_IMPLEMENTED";                                                                                                                       // Colorize: green
+        case DmiHardwareSecurityStatus::UNKNOWN:         return "UNKNOWN";                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiHardwareSecurityStatus status) // TEST: NO                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[23];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)status, enumToString(status));                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIHARDWARESECURITYSTATUS_H                                                                                                                               // Colorize: green

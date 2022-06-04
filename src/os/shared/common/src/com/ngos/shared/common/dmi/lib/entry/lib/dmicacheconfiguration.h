@@ -10,7 +10,7 @@
                                                                                                                                                                                                          // Colorize: green
 struct DmiCacheConfiguration                                                                                                                                                                             // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
-    u16 levelReal()                                                                                                                                                                                      // Colorize: green
+    inline u16 levelReal() const                                                                                                                                                                                      // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
         // COMMON_LT(("")); // Commented to avoid too frequent logs                                                                                                                                      // Colorize: green
                                                                                                                                                                                                          // Colorize: green

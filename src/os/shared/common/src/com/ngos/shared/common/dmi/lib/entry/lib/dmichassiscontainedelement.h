@@ -1,19 +1,19 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISCONTAINEDELEMENT_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISCONTAINEDELEMENT_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassiscontainedelementtype.h>
-
-
-
-struct DmiChassisContainedElement
-{
-    DmiChassisContainedElementType type;
-    u8                             minimum;
-    u8                             maximum;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISCONTAINEDELEMENT_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISCONTAINEDELEMENT_H                                                                                                                                // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISCONTAINEDELEMENT_H                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassiscontainedelementtype.h>                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiChassisContainedElement                                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiChassisContainedElementType type;                                                                                                                                                                 // Colorize: green
+    u8                             minimum;                                                                                                                                                              // Colorize: green
+    u8                             maximum;                                                                                                                                                              // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICHASSISCONTAINEDELEMENT_H                                                                                                                              // Colorize: green

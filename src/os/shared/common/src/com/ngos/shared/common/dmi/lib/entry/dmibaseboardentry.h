@@ -1,31 +1,31 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIBASEBOARDENTRY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIBASEBOARDENTRY_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibaseboardfeatureflags.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibaseboardtype.h>
-
-
-
-struct DmiBaseboardEntry
-{
-    DmiEntryHeader           header;
-    DmiStringId              manufacturer;
-    DmiStringId              product;
-    DmiStringId              version;
-    DmiStringId              serialNumber;
-    DmiStringId              assetTag;
-    DmiBaseboardFeatureFlags featureFlags;
-    DmiStringId              locationInChassis;
-    u16                      chassisHandle;
-    DmiBaseboardType         boardType;
-    u8                       numberOfContainedObjectHandles;
-    u16                      containedObjectHandles[0];
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIBASEBOARDENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIBASEBOARDENTRY_H                                                                                                                                             // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIBASEBOARDENTRY_H                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>                                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibaseboardfeatureflags.h>                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmibaseboardtype.h>                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiBaseboardEntry                                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryHeader           header;                                                                                                                                                                     // Colorize: green
+    DmiStringId              manufacturer;                                                                                                                                                               // Colorize: green
+    DmiStringId              product;                                                                                                                                                                    // Colorize: green
+    DmiStringId              version;                                                                                                                                                                    // Colorize: green
+    DmiStringId              serialNumber;                                                                                                                                                               // Colorize: green
+    DmiStringId              assetTag;                                                                                                                                                                   // Colorize: green
+    DmiBaseboardFeatureFlags featureFlags;                                                                                                                                                               // Colorize: green
+    DmiStringId              locationInChassis;                                                                                                                                                          // Colorize: green
+    u16                      chassisHandle;                                                                                                                                                              // Colorize: green
+    DmiBaseboardType         boardType;                                                                                                                                                                  // Colorize: green
+    u8                       numberOfContainedObjectHandles;                                                                                                                                             // Colorize: green
+    u16                      containedObjectHandles[0];                                                                                                                                                  // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIBASEBOARDENTRY_H                                                                                                                                           // Colorize: green

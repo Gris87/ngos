@@ -1,61 +1,61 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHETYPE_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHETYPE_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiCacheType: u8
-{
-    NONE        = 0,
-    OTHER       = 1,
-    UNKNOWN     = 2,
-    INSTRUCTION = 3,
-    DATA        = 4,
-    UNIFIED     = 5
-};
-
-
-
-inline const char8* enumToString(DmiCacheType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    switch (type)
-    {
-        case DmiCacheType::NONE:        return "NONE";
-        case DmiCacheType::OTHER:       return "OTHER";
-        case DmiCacheType::UNKNOWN:     return "UNKNOWN";
-        case DmiCacheType::INSTRUCTION: return "INSTRUCTION";
-        case DmiCacheType::DATA:        return "DATA";
-        case DmiCacheType::UNIFIED:     return "UNIFIED";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiCacheType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[19];
-
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHETYPE_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHETYPE_H                                                                                                                                              // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHETYPE_H                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiCacheType: u8                                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE        = 0,                                                                                                                                                                                     // Colorize: green
+    OTHER       = 1,                                                                                                                                                                                     // Colorize: green
+    UNKNOWN     = 2,                                                                                                                                                                                     // Colorize: green
+    INSTRUCTION = 3,                                                                                                                                                                                     // Colorize: green
+    DATA        = 4,                                                                                                                                                                                     // Colorize: green
+    UNIFIED     = 5                                                                                                                                                                                      // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiCacheType type) // TEST: NO                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (type)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiCacheType::NONE:        return "NONE";                                                                                                                                                   // Colorize: green
+        case DmiCacheType::OTHER:       return "OTHER";                                                                                                                                                  // Colorize: green
+        case DmiCacheType::UNKNOWN:     return "UNKNOWN";                                                                                                                                                // Colorize: green
+        case DmiCacheType::INSTRUCTION: return "INSTRUCTION";                                                                                                                                            // Colorize: green
+        case DmiCacheType::DATA:        return "DATA";                                                                                                                                                   // Colorize: green
+        case DmiCacheType::UNIFIED:     return "UNIFIED";                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiCacheType type) // TEST: NO                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[19];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHETYPE_H                                                                                                                                            // Colorize: green

@@ -1,79 +1,79 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHEASSOCIATIVITY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHEASSOCIATIVITY_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiCacheAssociativity: u8
-{
-    NONE          = 0,
-    OTHER         = 1,
-    UNKNOWN       = 2,
-    DIRECT_MAPPED = 3,
-    _2_WAY        = 4,
-    _4_WAY        = 5,
-    FULLY         = 6,
-    _8_WAY        = 7,
-    _16_WAY       = 8,
-    _12_WAY       = 9,
-    _24_WAY       = 10,
-    _32_WAY       = 11,
-    _48_WAY       = 12,
-    _64_WAY       = 13,
-    _20_WAY       = 14
-};
-
-
-
-inline const char8* enumToString(DmiCacheAssociativity associativity) // TEST: NO
-{
-    // COMMON_LT((" | associativity = %u", associativity)); // Commented to avoid bad looking logs
-
-
-
-    switch (associativity)
-    {
-        case DmiCacheAssociativity::NONE:          return "NONE";
-        case DmiCacheAssociativity::OTHER:         return "OTHER";
-        case DmiCacheAssociativity::UNKNOWN:       return "UNKNOWN";
-        case DmiCacheAssociativity::DIRECT_MAPPED: return "DIRECT_MAPPED";
-        case DmiCacheAssociativity::_2_WAY:        return "2_WAY";
-        case DmiCacheAssociativity::_4_WAY:        return "4_WAY";
-        case DmiCacheAssociativity::FULLY:         return "FULLY";
-        case DmiCacheAssociativity::_8_WAY:        return "8_WAY";
-        case DmiCacheAssociativity::_16_WAY:       return "16_WAY";
-        case DmiCacheAssociativity::_12_WAY:       return "12_WAY";
-        case DmiCacheAssociativity::_24_WAY:       return "24_WAY";
-        case DmiCacheAssociativity::_32_WAY:       return "32_WAY";
-        case DmiCacheAssociativity::_48_WAY:       return "48_WAY";
-        case DmiCacheAssociativity::_64_WAY:       return "64_WAY";
-        case DmiCacheAssociativity::_20_WAY:       return "20_WAY";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiCacheAssociativity associativity) // TEST: NO
-{
-    // COMMON_LT((" | associativity = %u", associativity)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[21];
-
-    sprintf(res, "0x%02X (%s)", (u8)associativity, enumToString(associativity));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHEASSOCIATIVITY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHEASSOCIATIVITY_H                                                                                                                                     // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHEASSOCIATIVITY_H                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiCacheAssociativity: u8                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE          = 0,                                                                                                                                                                                   // Colorize: green
+    OTHER         = 1,                                                                                                                                                                                   // Colorize: green
+    UNKNOWN       = 2,                                                                                                                                                                                   // Colorize: green
+    DIRECT_MAPPED = 3,                                                                                                                                                                                   // Colorize: green
+    _2_WAY        = 4,                                                                                                                                                                                   // Colorize: green
+    _4_WAY        = 5,                                                                                                                                                                                   // Colorize: green
+    FULLY         = 6,                                                                                                                                                                                   // Colorize: green
+    _8_WAY        = 7,                                                                                                                                                                                   // Colorize: green
+    _16_WAY       = 8,                                                                                                                                                                                   // Colorize: green
+    _12_WAY       = 9,                                                                                                                                                                                   // Colorize: green
+    _24_WAY       = 10,                                                                                                                                                                                  // Colorize: green
+    _32_WAY       = 11,                                                                                                                                                                                  // Colorize: green
+    _48_WAY       = 12,                                                                                                                                                                                  // Colorize: green
+    _64_WAY       = 13,                                                                                                                                                                                  // Colorize: green
+    _20_WAY       = 14                                                                                                                                                                                   // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiCacheAssociativity associativity) // TEST: NO                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | associativity = %u", associativity)); // Commented to avoid bad looking logs                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (associativity)                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiCacheAssociativity::NONE:          return "NONE";                                                                                                                                        // Colorize: green
+        case DmiCacheAssociativity::OTHER:         return "OTHER";                                                                                                                                       // Colorize: green
+        case DmiCacheAssociativity::UNKNOWN:       return "UNKNOWN";                                                                                                                                     // Colorize: green
+        case DmiCacheAssociativity::DIRECT_MAPPED: return "DIRECT_MAPPED";                                                                                                                               // Colorize: green
+        case DmiCacheAssociativity::_2_WAY:        return "2_WAY";                                                                                                                                       // Colorize: green
+        case DmiCacheAssociativity::_4_WAY:        return "4_WAY";                                                                                                                                       // Colorize: green
+        case DmiCacheAssociativity::FULLY:         return "FULLY";                                                                                                                                       // Colorize: green
+        case DmiCacheAssociativity::_8_WAY:        return "8_WAY";                                                                                                                                       // Colorize: green
+        case DmiCacheAssociativity::_16_WAY:       return "16_WAY";                                                                                                                                      // Colorize: green
+        case DmiCacheAssociativity::_12_WAY:       return "12_WAY";                                                                                                                                      // Colorize: green
+        case DmiCacheAssociativity::_24_WAY:       return "24_WAY";                                                                                                                                      // Colorize: green
+        case DmiCacheAssociativity::_32_WAY:       return "32_WAY";                                                                                                                                      // Colorize: green
+        case DmiCacheAssociativity::_48_WAY:       return "48_WAY";                                                                                                                                      // Colorize: green
+        case DmiCacheAssociativity::_64_WAY:       return "64_WAY";                                                                                                                                      // Colorize: green
+        case DmiCacheAssociativity::_20_WAY:       return "20_WAY";                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiCacheAssociativity associativity) // TEST: NO                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | associativity = %u", associativity)); // Commented to avoid bad looking logs                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[21];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)associativity, enumToString(associativity));                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMICACHEASSOCIATIVITY_H                                                                                                                                   // Colorize: green

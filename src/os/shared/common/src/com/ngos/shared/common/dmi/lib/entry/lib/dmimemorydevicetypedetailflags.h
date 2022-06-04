@@ -1,116 +1,116 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYDEVICETYPEDETAILFLAGS_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYDEVICETYPEDETAILFLAGS_H
-
-
-
-#include <com/ngos/shared/common/ngos/flags.h>
-#include <com/ngos/shared/common/ngos/linkage.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-#include <com/ngos/shared/common/string/string.h>
-
-
-
-typedef u16 dmi_memory_device_type_detail_flags;
-
-enum class DmiMemoryDeviceTypeDetailFlag: dmi_memory_device_type_detail_flags
-{
-    NONE          = 0,
-    OTHER         = (1ULL << 1),
-    UNKNOWN       = (1ULL << 2),
-    FAST_PAGED    = (1ULL << 3),
-    STATIC_COLUMN = (1ULL << 4),
-    PSEUDO_STATIC = (1ULL << 5),
-    RAMBUS        = (1ULL << 6),
-    SYNCHRONOUS   = (1ULL << 7),
-    CMOS          = (1ULL << 8),
-    EDO           = (1ULL << 9),
-    WINDOW_DRAM   = (1ULL << 10),
-    CACHE_DRAM    = (1ULL << 11),
-    NON_VOLATILE  = (1ULL << 12),
-    REGISTERED    = (1ULL << 13),
-    UNBUFFERED    = (1ULL << 14),
-    LRDIMM        = (1ULL << 15)
-};
-
-DEFINE_FLAGS(DmiMemoryDeviceTypeDetailFlags, dmi_memory_device_type_detail_flags); // TEST: NO
-
-
-
-inline const char8* flagToString(DmiMemoryDeviceTypeDetailFlag flag) // TEST: NO
-{
-    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
-
-
-
-    switch (flag)
-    {
-        case DmiMemoryDeviceTypeDetailFlag::NONE:          return "NONE";
-        case DmiMemoryDeviceTypeDetailFlag::OTHER:         return "OTHER";
-        case DmiMemoryDeviceTypeDetailFlag::UNKNOWN:       return "UNKNOWN";
-        case DmiMemoryDeviceTypeDetailFlag::FAST_PAGED:    return "FAST_PAGED";
-        case DmiMemoryDeviceTypeDetailFlag::STATIC_COLUMN: return "STATIC_COLUMN";
-        case DmiMemoryDeviceTypeDetailFlag::PSEUDO_STATIC: return "PSEUDO_STATIC";
-        case DmiMemoryDeviceTypeDetailFlag::RAMBUS:        return "RAMBUS";
-        case DmiMemoryDeviceTypeDetailFlag::SYNCHRONOUS:   return "SYNCHRONOUS";
-        case DmiMemoryDeviceTypeDetailFlag::CMOS:          return "CMOS";
-        case DmiMemoryDeviceTypeDetailFlag::EDO:           return "EDO";
-        case DmiMemoryDeviceTypeDetailFlag::WINDOW_DRAM:   return "WINDOW_DRAM";
-        case DmiMemoryDeviceTypeDetailFlag::CACHE_DRAM:    return "CACHE_DRAM";
-        case DmiMemoryDeviceTypeDetailFlag::NON_VOLATILE:  return "NON_VOLATILE";
-        case DmiMemoryDeviceTypeDetailFlag::REGISTERED:    return "REGISTERED";
-        case DmiMemoryDeviceTypeDetailFlag::UNBUFFERED:    return "UNBUFFERED";
-        case DmiMemoryDeviceTypeDetailFlag::LRDIMM:        return "LRDIMM";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* flagToFullString(DmiMemoryDeviceTypeDetailFlag flag) // TEST: NO
-{
-    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[23];
-
-    sprintf(res, "0x%04X (%s)", (dmi_memory_device_type_detail_flags)flag, flagToString(flag));
-
-    return res;
-}
-
-
-
-inline const char8* flagsToString(const DmiMemoryDeviceTypeDetailFlags &flags) // TEST: NO
-{
-    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[189];
-
-    FLAGS_TO_STRING(res, flags.flags, DmiMemoryDeviceTypeDetailFlag);
-
-    return res;
-}
-
-
-
-inline const char8* flagsToFullString(const DmiMemoryDeviceTypeDetailFlags &flags) // TEST: NO
-{
-    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[198];
-
-    FLAGS_TO_FULL_STRING(res, flags.flags, DmiMemoryDeviceTypeDetailFlag, "0x%04X");
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYDEVICETYPEDETAILFLAGS_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYDEVICETYPEDETAILFLAGS_H                                                                                                                            // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYDEVICETYPEDETAILFLAGS_H                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/flags.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/ngos/linkage.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/string/string.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+typedef u16 dmi_memory_device_type_detail_flags;                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiMemoryDeviceTypeDetailFlag: dmi_memory_device_type_detail_flags                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE          = 0,                                                                                                                                                                                   // Colorize: green
+    OTHER         = (1ULL << 1),                                                                                                                                                                         // Colorize: green
+    UNKNOWN       = (1ULL << 2),                                                                                                                                                                         // Colorize: green
+    FAST_PAGED    = (1ULL << 3),                                                                                                                                                                         // Colorize: green
+    STATIC_COLUMN = (1ULL << 4),                                                                                                                                                                         // Colorize: green
+    PSEUDO_STATIC = (1ULL << 5),                                                                                                                                                                         // Colorize: green
+    RAMBUS        = (1ULL << 6),                                                                                                                                                                         // Colorize: green
+    SYNCHRONOUS   = (1ULL << 7),                                                                                                                                                                         // Colorize: green
+    CMOS          = (1ULL << 8),                                                                                                                                                                         // Colorize: green
+    EDO           = (1ULL << 9),                                                                                                                                                                         // Colorize: green
+    WINDOW_DRAM   = (1ULL << 10),                                                                                                                                                                        // Colorize: green
+    CACHE_DRAM    = (1ULL << 11),                                                                                                                                                                        // Colorize: green
+    NON_VOLATILE  = (1ULL << 12),                                                                                                                                                                        // Colorize: green
+    REGISTERED    = (1ULL << 13),                                                                                                                                                                        // Colorize: green
+    UNBUFFERED    = (1ULL << 14),                                                                                                                                                                        // Colorize: green
+    LRDIMM        = (1ULL << 15)                                                                                                                                                                         // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+DEFINE_FLAGS(DmiMemoryDeviceTypeDetailFlags, dmi_memory_device_type_detail_flags); // TEST: NO                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagToString(DmiMemoryDeviceTypeDetailFlag flag) // TEST: NO                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (flag)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::NONE:          return "NONE";                                                                                                                                // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::OTHER:         return "OTHER";                                                                                                                               // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::UNKNOWN:       return "UNKNOWN";                                                                                                                             // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::FAST_PAGED:    return "FAST_PAGED";                                                                                                                          // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::STATIC_COLUMN: return "STATIC_COLUMN";                                                                                                                       // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::PSEUDO_STATIC: return "PSEUDO_STATIC";                                                                                                                       // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::RAMBUS:        return "RAMBUS";                                                                                                                              // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::SYNCHRONOUS:   return "SYNCHRONOUS";                                                                                                                         // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::CMOS:          return "CMOS";                                                                                                                                // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::EDO:           return "EDO";                                                                                                                                 // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::WINDOW_DRAM:   return "WINDOW_DRAM";                                                                                                                         // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::CACHE_DRAM:    return "CACHE_DRAM";                                                                                                                          // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::NON_VOLATILE:  return "NON_VOLATILE";                                                                                                                        // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::REGISTERED:    return "REGISTERED";                                                                                                                          // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::UNBUFFERED:    return "UNBUFFERED";                                                                                                                          // Colorize: green
+        case DmiMemoryDeviceTypeDetailFlag::LRDIMM:        return "LRDIMM";                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagToFullString(DmiMemoryDeviceTypeDetailFlag flag) // TEST: NO                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[23];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%04X (%s)", (dmi_memory_device_type_detail_flags)flag, flagToString(flag));                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagsToString(const DmiMemoryDeviceTypeDetailFlags &flags) // TEST: NO                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[189];                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    FLAGS_TO_STRING(res, flags.flags, DmiMemoryDeviceTypeDetailFlag);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagsToFullString(const DmiMemoryDeviceTypeDetailFlags &flags) // TEST: NO                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[198];                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    FLAGS_TO_FULL_STRING(res, flags.flags, DmiMemoryDeviceTypeDetailFlag, "0x%04X");                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIMEMORYDEVICETYPEDETAILFLAGS_H                                                                                                                          // Colorize: green

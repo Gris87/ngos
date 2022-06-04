@@ -1,26 +1,26 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIONBOARDDEVICESEXTENDEDENTRY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIONBOARDDEVICESEXTENDEDENTRY_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmifunctionnumberanddevicenumber.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmionboarddevicesextendeddevicetypeandenabled.h>
-
-
-
-struct DmiOnboardDevicesExtendedEntry
-{
-    DmiEntryHeader                                header;
-    DmiStringId                                   referenceDesignation;
-    DmiOnboardDevicesExtendedDeviceTypeAndEnabled deviceTypeAndEnabled;
-    u8                                            deviceTypeInstance;
-    u16                                           segmentGroupNumber;
-    u8                                            busNumber;
-    DmiFunctionNumberAndDeviceNumber              functionNumberAndDeviceNumber;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIONBOARDDEVICESEXTENDEDENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIONBOARDDEVICESEXTENDEDENTRY_H                                                                                                                                // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIONBOARDDEVICESEXTENDEDENTRY_H                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>                                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmifunctionnumberanddevicenumber.h>                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmionboarddevicesextendeddevicetypeandenabled.h>                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiOnboardDevicesExtendedEntry                                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryHeader                                header;                                                                                                                                                // Colorize: green
+    DmiStringId                                   referenceDesignation;                                                                                                                                  // Colorize: green
+    DmiOnboardDevicesExtendedDeviceTypeAndEnabled deviceTypeAndEnabled;                                                                                                                                  // Colorize: green
+    u8                                            deviceTypeInstance;                                                                                                                                    // Colorize: green
+    u16                                           segmentGroupNumber;                                                                                                                                    // Colorize: green
+    u8                                            busNumber;                                                                                                                                             // Colorize: green
+    DmiFunctionNumberAndDeviceNumber              functionNumberAndDeviceNumber;                                                                                                                         // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIONBOARDDEVICESEXTENDEDENTRY_H                                                                                                                              // Colorize: green

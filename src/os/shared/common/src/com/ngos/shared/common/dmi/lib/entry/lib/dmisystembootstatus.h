@@ -1,73 +1,73 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMBOOTSTATUS_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMBOOTSTATUS_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiSystemBootStatus: u8
-{
-    NO_ERROR                  = 0,
-    NO_BOOTABLE_MEDIA         = 1,
-    NORMAL_OS_FAILED_TO_LOAD  = 2,
-    FIRMWARE_DETECTED_FAILURE = 3,
-    OS_DETECTED_FAILURE       = 4,
-    USER_REQUESTED_BOOT       = 5,
-    SYSTEM_SECURITY_VIOLATION = 6,
-    PREVIOUS_REQUESTED_IMAGE  = 7,
-    WATCHDOG_TIMER_EXPIRED    = 8,
-    START_RESERVED            = 9,
-    START_OEM_SPECIFIC        = 0x80,
-    START_PRODUCT_SPECIFIC    = 0xC0
-};
-
-
-
-inline const char8* enumToString(DmiSystemBootStatus status) // TEST: NO
-{
-    // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs
-
-
-
-    switch (status)
-    {
-        case DmiSystemBootStatus::NO_ERROR:                  return "NO_ERROR";
-        case DmiSystemBootStatus::NO_BOOTABLE_MEDIA:         return "NO_BOOTABLE_MEDIA";
-        case DmiSystemBootStatus::NORMAL_OS_FAILED_TO_LOAD:  return "NORMAL_OS_FAILED_TO_LOAD";
-        case DmiSystemBootStatus::FIRMWARE_DETECTED_FAILURE: return "FIRMWARE_DETECTED_FAILURE";
-        case DmiSystemBootStatus::OS_DETECTED_FAILURE:       return "OS_DETECTED_FAILURE";
-        case DmiSystemBootStatus::USER_REQUESTED_BOOT:       return "USER_REQUESTED_BOOT";
-        case DmiSystemBootStatus::SYSTEM_SECURITY_VIOLATION: return "SYSTEM_SECURITY_VIOLATION";
-        case DmiSystemBootStatus::PREVIOUS_REQUESTED_IMAGE:  return "PREVIOUS_REQUESTED_IMAGE";
-        case DmiSystemBootStatus::WATCHDOG_TIMER_EXPIRED:    return "WATCHDOG_TIMER_EXPIRED";
-        case DmiSystemBootStatus::START_RESERVED:            return "START_RESERVED";
-        case DmiSystemBootStatus::START_OEM_SPECIFIC:        return "START_OEM_SPECIFIC";
-        case DmiSystemBootStatus::START_PRODUCT_SPECIFIC:    return "START_PRODUCT_SPECIFIC";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiSystemBootStatus status) // TEST: NO
-{
-    // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[33];
-
-    sprintf(res, "0x%02X (%s)", (u8)status, enumToString(status));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMBOOTSTATUS_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMBOOTSTATUS_H                                                                                                                                       // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMBOOTSTATUS_H                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiSystemBootStatus: u8                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NO_ERROR                  = 0,                                                                                                                                                                       // Colorize: green
+    NO_BOOTABLE_MEDIA         = 1,                                                                                                                                                                       // Colorize: green
+    NORMAL_OS_FAILED_TO_LOAD  = 2,                                                                                                                                                                       // Colorize: green
+    FIRMWARE_DETECTED_FAILURE = 3,                                                                                                                                                                       // Colorize: green
+    OS_DETECTED_FAILURE       = 4,                                                                                                                                                                       // Colorize: green
+    USER_REQUESTED_BOOT       = 5,                                                                                                                                                                       // Colorize: green
+    SYSTEM_SECURITY_VIOLATION = 6,                                                                                                                                                                       // Colorize: green
+    PREVIOUS_REQUESTED_IMAGE  = 7,                                                                                                                                                                       // Colorize: green
+    WATCHDOG_TIMER_EXPIRED    = 8,                                                                                                                                                                       // Colorize: green
+    START_RESERVED            = 9,                                                                                                                                                                       // Colorize: green
+    START_OEM_SPECIFIC        = 0x80,                                                                                                                                                                    // Colorize: green
+    START_PRODUCT_SPECIFIC    = 0xC0                                                                                                                                                                     // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiSystemBootStatus status) // TEST: NO                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (status)                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiSystemBootStatus::NO_ERROR:                  return "NO_ERROR";                                                                                                                          // Colorize: green
+        case DmiSystemBootStatus::NO_BOOTABLE_MEDIA:         return "NO_BOOTABLE_MEDIA";                                                                                                                 // Colorize: green
+        case DmiSystemBootStatus::NORMAL_OS_FAILED_TO_LOAD:  return "NORMAL_OS_FAILED_TO_LOAD";                                                                                                          // Colorize: green
+        case DmiSystemBootStatus::FIRMWARE_DETECTED_FAILURE: return "FIRMWARE_DETECTED_FAILURE";                                                                                                         // Colorize: green
+        case DmiSystemBootStatus::OS_DETECTED_FAILURE:       return "OS_DETECTED_FAILURE";                                                                                                               // Colorize: green
+        case DmiSystemBootStatus::USER_REQUESTED_BOOT:       return "USER_REQUESTED_BOOT";                                                                                                               // Colorize: green
+        case DmiSystemBootStatus::SYSTEM_SECURITY_VIOLATION: return "SYSTEM_SECURITY_VIOLATION";                                                                                                         // Colorize: green
+        case DmiSystemBootStatus::PREVIOUS_REQUESTED_IMAGE:  return "PREVIOUS_REQUESTED_IMAGE";                                                                                                          // Colorize: green
+        case DmiSystemBootStatus::WATCHDOG_TIMER_EXPIRED:    return "WATCHDOG_TIMER_EXPIRED";                                                                                                            // Colorize: green
+        case DmiSystemBootStatus::START_RESERVED:            return "START_RESERVED";                                                                                                                    // Colorize: green
+        case DmiSystemBootStatus::START_OEM_SPECIFIC:        return "START_OEM_SPECIFIC";                                                                                                                // Colorize: green
+        case DmiSystemBootStatus::START_PRODUCT_SPECIFIC:    return "START_PRODUCT_SPECIFIC";                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiSystemBootStatus status) // TEST: NO                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[33];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)status, enumToString(status));                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMBOOTSTATUS_H                                                                                                                                     // Colorize: green

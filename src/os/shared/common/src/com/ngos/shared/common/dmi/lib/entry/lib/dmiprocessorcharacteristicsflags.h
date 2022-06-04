@@ -1,102 +1,102 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORCHARACTERISTICSFLAGS_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORCHARACTERISTICSFLAGS_H
-
-
-
-#include <com/ngos/shared/common/ngos/flags.h>
-#include <com/ngos/shared/common/ngos/linkage.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-#include <com/ngos/shared/common/string/string.h>
-
-
-
-typedef u16 dmi_processor_characteristics_flags;
-
-enum class DmiProcessorCharacteristicsFlag: dmi_processor_characteristics_flags
-{
-    NONE                      = 0,
-    UNKNOWN                   = (1ULL << 1),
-    SUPPORT_64_BIT            = (1ULL << 2),
-    MULTI_CORE                = (1ULL << 3),
-    HARDWARE_THREAD           = (1ULL << 4),
-    EXECUTE_PROTECTION        = (1ULL << 5),
-    ENHANCED_VIRTUALIZATION   = (1ULL << 6),
-    POWER_PERFORMANCE_CONTROL = (1ULL << 7),
-    SUPPORT_128_BIT           = (1ULL << 8)
-};
-
-DEFINE_FLAGS(DmiProcessorCharacteristicsFlags, dmi_processor_characteristics_flags); // TEST: NO
-
-
-
-inline const char8* flagToString(DmiProcessorCharacteristicsFlag flag) // TEST: NO
-{
-    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
-
-
-
-    switch (flag)
-    {
-        case DmiProcessorCharacteristicsFlag::NONE:                      return "NONE";
-        case DmiProcessorCharacteristicsFlag::UNKNOWN:                   return "UNKNOWN";
-        case DmiProcessorCharacteristicsFlag::SUPPORT_64_BIT:            return "SUPPORT_64_BIT";
-        case DmiProcessorCharacteristicsFlag::MULTI_CORE:                return "MULTI_CORE";
-        case DmiProcessorCharacteristicsFlag::HARDWARE_THREAD:           return "HARDWARE_THREAD";
-        case DmiProcessorCharacteristicsFlag::EXECUTE_PROTECTION:        return "EXECUTE_PROTECTION";
-        case DmiProcessorCharacteristicsFlag::ENHANCED_VIRTUALIZATION:   return "ENHANCED_VIRTUALIZATION";
-        case DmiProcessorCharacteristicsFlag::POWER_PERFORMANCE_CONTROL: return "POWER_PERFORMANCE_CONTROL";
-        case DmiProcessorCharacteristicsFlag::SUPPORT_128_BIT:           return "SUPPORT_128_BIT";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* flagToFullString(DmiProcessorCharacteristicsFlag flag) // TEST: NO
-{
-    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[35];
-
-    sprintf(res, "0x%04X (%s)", (dmi_processor_characteristics_flags)flag, flagToString(flag));
-
-    return res;
-}
-
-
-
-inline const char8* flagsToString(const DmiProcessorCharacteristicsFlags &flags) // TEST: NO
-{
-    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[164];
-
-    FLAGS_TO_STRING(res, flags.flags, DmiProcessorCharacteristicsFlag);
-
-    return res;
-}
-
-
-
-inline const char8* flagsToFullString(const DmiProcessorCharacteristicsFlags &flags) // TEST: NO
-{
-    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[173];
-
-    FLAGS_TO_FULL_STRING(res, flags.flags, DmiProcessorCharacteristicsFlag, "0x%04X");
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORCHARACTERISTICSFLAGS_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORCHARACTERISTICSFLAGS_H                                                                                                                          // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORCHARACTERISTICSFLAGS_H                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/flags.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/ngos/linkage.h>                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/string/string.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+typedef u16 dmi_processor_characteristics_flags;                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiProcessorCharacteristicsFlag: dmi_processor_characteristics_flags                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE                      = 0,                                                                                                                                                                       // Colorize: green
+    UNKNOWN                   = (1ULL << 1),                                                                                                                                                             // Colorize: green
+    SUPPORT_64_BIT            = (1ULL << 2),                                                                                                                                                             // Colorize: green
+    MULTI_CORE                = (1ULL << 3),                                                                                                                                                             // Colorize: green
+    HARDWARE_THREAD           = (1ULL << 4),                                                                                                                                                             // Colorize: green
+    EXECUTE_PROTECTION        = (1ULL << 5),                                                                                                                                                             // Colorize: green
+    ENHANCED_VIRTUALIZATION   = (1ULL << 6),                                                                                                                                                             // Colorize: green
+    POWER_PERFORMANCE_CONTROL = (1ULL << 7),                                                                                                                                                             // Colorize: green
+    SUPPORT_128_BIT           = (1ULL << 8)                                                                                                                                                              // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+DEFINE_FLAGS(DmiProcessorCharacteristicsFlags, dmi_processor_characteristics_flags); // TEST: NO                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagToString(DmiProcessorCharacteristicsFlag flag) // TEST: NO                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (flag)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiProcessorCharacteristicsFlag::NONE:                      return "NONE";                                                                                                                  // Colorize: green
+        case DmiProcessorCharacteristicsFlag::UNKNOWN:                   return "UNKNOWN";                                                                                                               // Colorize: green
+        case DmiProcessorCharacteristicsFlag::SUPPORT_64_BIT:            return "SUPPORT_64_BIT";                                                                                                        // Colorize: green
+        case DmiProcessorCharacteristicsFlag::MULTI_CORE:                return "MULTI_CORE";                                                                                                            // Colorize: green
+        case DmiProcessorCharacteristicsFlag::HARDWARE_THREAD:           return "HARDWARE_THREAD";                                                                                                       // Colorize: green
+        case DmiProcessorCharacteristicsFlag::EXECUTE_PROTECTION:        return "EXECUTE_PROTECTION";                                                                                                    // Colorize: green
+        case DmiProcessorCharacteristicsFlag::ENHANCED_VIRTUALIZATION:   return "ENHANCED_VIRTUALIZATION";                                                                                               // Colorize: green
+        case DmiProcessorCharacteristicsFlag::POWER_PERFORMANCE_CONTROL: return "POWER_PERFORMANCE_CONTROL";                                                                                             // Colorize: green
+        case DmiProcessorCharacteristicsFlag::SUPPORT_128_BIT:           return "SUPPORT_128_BIT";                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagToFullString(DmiProcessorCharacteristicsFlag flag) // TEST: NO                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[35];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%04X (%s)", (dmi_processor_characteristics_flags)flag, flagToString(flag));                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagsToString(const DmiProcessorCharacteristicsFlags &flags) // TEST: NO                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[164];                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    FLAGS_TO_STRING(res, flags.flags, DmiProcessorCharacteristicsFlag);                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* flagsToFullString(const DmiProcessorCharacteristicsFlags &flags) // TEST: NO                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[173];                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    FLAGS_TO_FULL_STRING(res, flags.flags, DmiProcessorCharacteristicsFlag, "0x%04X");                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPROCESSORCHARACTERISTICSFLAGS_H                                                                                                                        // Colorize: green

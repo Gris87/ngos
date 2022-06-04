@@ -1,37 +1,37 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIVOLTAGEPROBEENTRY_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIVOLTAGEPROBEENTRY_H
-
-
-
-#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>
-#include <com/ngos/shared/common/dmi/lib/dmistringid.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmivoltageprobelocationandstatus.h>
-
-
-
-#define DMI_VOLTAGE_PROBE_MAXIMUM_VALUE_UNKNOWN 0x8000
-#define DMI_VOLTAGE_PROBE_MINIMUM_VALUE_UNKNOWN 0x8000
-#define DMI_VOLTAGE_PROBE_RESOLUTION_UNKNOWN    0x8000
-#define DMI_VOLTAGE_PROBE_TOLERANCE_UNKNOWN     0x8000
-#define DMI_VOLTAGE_PROBE_ACCURACY_UNKNOWN      0x8000
-#define DMI_VOLTAGE_PROBE_NOMINAL_VALUE_UNKNOWN 0x8000
-
-
-
-struct DmiVoltageProbeEntry
-{
-    DmiEntryHeader                   header;
-    DmiStringId                      description;
-    DmiVoltageProbeLocationAndStatus locationAndStatus;
-    u16                              maximumValue;
-    u16                              minimumValue;
-    u16                              resolution;
-    u16                              tolerance;
-    u16                              accuracy;
-    u32                              oemDefined;
-    u16                              nominalValue;
-} __attribute__((packed));
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIVOLTAGEPROBEENTRY_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIVOLTAGEPROBEENTRY_H                                                                                                                                          // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIVOLTAGEPROBEENTRY_H                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmientryheader.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmistringid.h>                                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmivoltageprobelocationandstatus.h>                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define DMI_VOLTAGE_PROBE_MAXIMUM_VALUE_UNKNOWN 0x8000                                                                                                                                                   // Colorize: green
+#define DMI_VOLTAGE_PROBE_MINIMUM_VALUE_UNKNOWN 0x8000                                                                                                                                                   // Colorize: green
+#define DMI_VOLTAGE_PROBE_RESOLUTION_UNKNOWN    0x8000                                                                                                                                                   // Colorize: green
+#define DMI_VOLTAGE_PROBE_TOLERANCE_UNKNOWN     0x8000                                                                                                                                                   // Colorize: green
+#define DMI_VOLTAGE_PROBE_ACCURACY_UNKNOWN      0x8000                                                                                                                                                   // Colorize: green
+#define DMI_VOLTAGE_PROBE_NOMINAL_VALUE_UNKNOWN 0x8000                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DmiVoltageProbeEntry                                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DmiEntryHeader                   header;                                                                                                                                                             // Colorize: green
+    DmiStringId                      description;                                                                                                                                                        // Colorize: green
+    DmiVoltageProbeLocationAndStatus locationAndStatus;                                                                                                                                                  // Colorize: green
+    u16                              maximumValue;                                                                                                                                                       // Colorize: green
+    u16                              minimumValue;                                                                                                                                                       // Colorize: green
+    u16                              resolution;                                                                                                                                                         // Colorize: green
+    u16                              tolerance;                                                                                                                                                          // Colorize: green
+    u16                              accuracy;                                                                                                                                                           // Colorize: green
+    u32                              oemDefined;                                                                                                                                                         // Colorize: green
+    u16                              nominalValue;                                                                                                                                                       // Colorize: green
+} __attribute__((packed));                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_DMIVOLTAGEPROBEENTRY_H                                                                                                                                        // Colorize: green

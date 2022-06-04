@@ -1,67 +1,67 @@
-#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMWAKEUPTYPE_H
-#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMWAKEUPTYPE_H
-
-
-
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/printf/printf.h>
-
-
-
-enum class DmiSystemWakeUpType: u8
-{
-    NONE              = 0,
-    OTHER             = 1,
-    UNKNOWN           = 2,
-    APM_TIMER         = 3,
-    MODEM_RING        = 4,
-    LAN_REMOTE        = 5,
-    POWER_SWITCH      = 6,
-    PCI_PME           = 7,
-    AC_POWER_RESTORED = 8
-};
-
-
-
-inline const char8* enumToString(DmiSystemWakeUpType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    switch (type)
-    {
-        case DmiSystemWakeUpType::NONE:              return "NONE";
-        case DmiSystemWakeUpType::OTHER:             return "OTHER";
-        case DmiSystemWakeUpType::UNKNOWN:           return "UNKNOWN";
-        case DmiSystemWakeUpType::APM_TIMER:         return "APM_TIMER";
-        case DmiSystemWakeUpType::MODEM_RING:        return "MODEM_RING";
-        case DmiSystemWakeUpType::LAN_REMOTE:        return "LAN_REMOTE";
-        case DmiSystemWakeUpType::POWER_SWITCH:      return "POWER_SWITCH";
-        case DmiSystemWakeUpType::PCI_PME:           return "PCI_PME";
-        case DmiSystemWakeUpType::AC_POWER_RESTORED: return "AC_POWER_RESTORED";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DmiSystemWakeUpType type) // TEST: NO
-{
-    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs
-
-
-
-    static char8 res[25];
-
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMWAKEUPTYPE_H
+#ifndef COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMWAKEUPTYPE_H                                                                                                                                       // Colorize: green
+#define COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMWAKEUPTYPE_H                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/printf/printf.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DmiSystemWakeUpType: u8                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE              = 0,                                                                                                                                                                               // Colorize: green
+    OTHER             = 1,                                                                                                                                                                               // Colorize: green
+    UNKNOWN           = 2,                                                                                                                                                                               // Colorize: green
+    APM_TIMER         = 3,                                                                                                                                                                               // Colorize: green
+    MODEM_RING        = 4,                                                                                                                                                                               // Colorize: green
+    LAN_REMOTE        = 5,                                                                                                                                                                               // Colorize: green
+    POWER_SWITCH      = 6,                                                                                                                                                                               // Colorize: green
+    PCI_PME           = 7,                                                                                                                                                                               // Colorize: green
+    AC_POWER_RESTORED = 8                                                                                                                                                                                // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DmiSystemWakeUpType type) // TEST: NO                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (type)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DmiSystemWakeUpType::NONE:              return "NONE";                                                                                                                                      // Colorize: green
+        case DmiSystemWakeUpType::OTHER:             return "OTHER";                                                                                                                                     // Colorize: green
+        case DmiSystemWakeUpType::UNKNOWN:           return "UNKNOWN";                                                                                                                                   // Colorize: green
+        case DmiSystemWakeUpType::APM_TIMER:         return "APM_TIMER";                                                                                                                                 // Colorize: green
+        case DmiSystemWakeUpType::MODEM_RING:        return "MODEM_RING";                                                                                                                                // Colorize: green
+        case DmiSystemWakeUpType::LAN_REMOTE:        return "LAN_REMOTE";                                                                                                                                // Colorize: green
+        case DmiSystemWakeUpType::POWER_SWITCH:      return "POWER_SWITCH";                                                                                                                              // Colorize: green
+        case DmiSystemWakeUpType::PCI_PME:           return "PCI_PME";                                                                                                                                   // Colorize: green
+        case DmiSystemWakeUpType::AC_POWER_RESTORED: return "AC_POWER_RESTORED";                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DmiSystemWakeUpType type) // TEST: NO                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // COMMON_LT((" | type = %u", type)); // Commented to avoid bad looking logs                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static char8 res[25];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMISYSTEMWAKEUPTYPE_H                                                                                                                                     // Colorize: green

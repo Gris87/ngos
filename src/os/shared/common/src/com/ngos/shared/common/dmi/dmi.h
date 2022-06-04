@@ -110,13 +110,13 @@ private:                                                                        
     static NgosStatus saveDmiManagementDeviceComponentEntry(DmiManagementDeviceComponentEntry *entry); // TEST: NO                                                                                       // Colorize: green
     static NgosStatus saveDmiManagementDeviceThresholdDataEntry(DmiManagementDeviceThresholdDataEntry *entry); // TEST: NO                                                                               // Colorize: green
     static NgosStatus saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry); // TEST: NO                                                                                                       // Colorize: green
-    static NgosStatus saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry *entry); // TEST: NO
-    static NgosStatus saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntry *entry); // TEST: NO
-    static NgosStatus saveDmiInactiveEntry(DmiInactiveEntry *entry); // TEST: NO
-    static NgosStatus storeDmiMemoryDevices(); // TEST: NO
-    static NgosStatus storeIdentity(DmiIdentity id, const char8 *address, u64 size); // TEST: NO
-    static NgosStatus storeUuid(DmiStoredUuid id, Uuid *uuid); // TEST: NO
-    static NgosStatus storeString(const char8 *address, u64 size, const char8 **destination); // TEST: NO
+    static NgosStatus saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry *entry); // TEST: NO                                                                                               // Colorize: green
+    static NgosStatus saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntry *entry); // TEST: NO                                                                                             // Colorize: green
+    static NgosStatus saveDmiInactiveEntry(DmiInactiveEntry *entry); // TEST: NO                                                                                                                         // Colorize: green
+    static NgosStatus storeDmiMemoryDevices(); // TEST: NO                                                                                                                                               // Colorize: green
+    static NgosStatus storeIdentity(DmiIdentity id, const good_Char8 *address, good_I64 size); // TEST: NO                                                                                               // Colorize: green
+    static NgosStatus storeUuid(DmiStoredUuid id, Uuid *uuid); // TEST: NO                                                                                                                               // Colorize: green
+    static NgosStatus storeString(const good_Char8 *address, good_I64 size, const good_Char8 **destination); // TEST: NO                                                                                 // Colorize: green
     static good_U8 checksum(void *address, good_I64 size, good_U8 checksumValue);                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
     static DmiVersion                                      sVersion;                                                                                                                                     // Colorize: green
