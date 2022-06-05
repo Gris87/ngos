@@ -1,106 +1,106 @@
-#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMI_H
-#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMI_H
-
-
-
-#include <buildconfig.h>
-#include <com/ngos/shared/common/dmi/dmi.h>
-#include <com/ngos/shared/uefibase/testengine.h>
-
-
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-
-
-
-u8 testAmount;
-
-NgosStatus testCountEntry(DmiEntryHeader *header)
-{
-    UEFI_LT((" | header = 0x%p", header));
-
-    UEFI_ASSERT(header != nullptr, "header is null", NgosStatus::ASSERTION);
-
-
-
-    if (header->type == DmiEntryType::SYSTEM)
-    {
-        ++testAmount;
-    }
-
-
-
-    return NgosStatus::OK;
-}
-
-
-
-TEST_CASES(section0, com_ngos_shared_common_dmi_dmi);
-{
-    TEST_CASE("iterateDmiEntries()");
-    {
-        u8 buf[] =
-        {
-            1, 10, 0x00, 0x11,
-            0x11, 0x22, 0x33, 0x44, 0x55, 0x66,
-            'T', 'e', 's', 't', 0,
-            'B', 'l', 'a', 'h', 0,
-            0,
-
-            1, 12, 0x00, 0x12,
-            0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88,
-            'H', 'i', 0,
-            'g', 'u', 'y', 's', 0,
-            0,
-
-            2, 13, 0x00, 0x13,
-            0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99,
-            'M', 'e', 'g', 'a', 0,
-            'B', 'o', 'm', 'b', 0,
-            0,
-
-            1, 5, 0x00, 0x14,
-            0x11,
-            'W', 'h', 'e', 'r', 'e', 0,
-            'i', 's', 0,
-            'm', 'y', 0,
-            'p', 'i', 'z', 'z', 'a', 0,
-            0,
-
-            127, 4, 0x00, 0x15,
-            0,
-            0
-        };
-
-
-
-        testAmount = 0;
-
-        TEST_ASSERT_EQUALS(DMI::iterateDmiEntries(buf, testCountEntry), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(testAmount,                                  3);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("checksum()");
-    {
-        u8 temp1[10] = { 5, 98, 31, 24, 18, 23, 67, 71, 82, 93 };
-        u8 temp2[10] = { 7, 82, 94, 37, 16, 79, 98, 46, 37, 16 };
-        u8 temp3[10] = { 9, 69, 58, 94, 31, 67, 34, 21, 34, 95 };
-
-        TEST_ASSERT_EQUALS(DMI::checksum(temp1, sizeof(temp1), temp1[4]), temp1[4]);
-        TEST_ASSERT_EQUALS(DMI::checksum(temp2, sizeof(temp2), temp2[6]), temp2[6]);
-        TEST_ASSERT_EQUALS(DMI::checksum(temp3, sizeof(temp3), temp3[1]), temp3[1]);
-    }
-    TEST_CASE_END();
-}
-TEST_CASES_END();
-
-
-
-#endif
-
-
-
-#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMI_H
+#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMI_H                                                                                                                      // Colorize: green
+#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMI_H                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <buildconfig.h>                                                                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/common/dmi/dmi.h>                                                                                                                                                              // Colorize: green
+#include <com/ngos/shared/uefibase/testengine.h>                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+u8 testAmount;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NgosStatus testCountEntry(DmiEntryHeader *header)                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    UEFI_LT((" | header = 0x%p", header));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    UEFI_ASSERT(header != nullptr, "header is null", NgosStatus::ASSERTION);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (header->type == DmiEntryType::SYSTEM)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        ++testAmount;                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return NgosStatus::OK;                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TEST_CASES(section0, com_ngos_shared_common_dmi_dmi);                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    TEST_CASE("iterateDmiEntries()");                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        u8 buf[] =                                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            1, 10, 0x00, 0x11,                                                                                                                                                                           // Colorize: green
+            0x11, 0x22, 0x33, 0x44, 0x55, 0x66,                                                                                                                                                          // Colorize: green
+            'T', 'e', 's', 't', 0,                                                                                                                                                                       // Colorize: green
+            'B', 'l', 'a', 'h', 0,                                                                                                                                                                       // Colorize: green
+            0,                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            1, 12, 0x00, 0x12,                                                                                                                                                                           // Colorize: green
+            0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88,                                                                                                                                              // Colorize: green
+            'H', 'i', 0,                                                                                                                                                                                 // Colorize: green
+            'g', 'u', 'y', 's', 0,                                                                                                                                                                       // Colorize: green
+            0,                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            2, 13, 0x00, 0x13,                                                                                                                                                                           // Colorize: green
+            0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99,                                                                                                                                        // Colorize: green
+            'M', 'e', 'g', 'a', 0,                                                                                                                                                                       // Colorize: green
+            'B', 'o', 'm', 'b', 0,                                                                                                                                                                       // Colorize: green
+            0,                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            1, 5, 0x00, 0x14,                                                                                                                                                                            // Colorize: green
+            0x11,                                                                                                                                                                                        // Colorize: green
+            'W', 'h', 'e', 'r', 'e', 0,                                                                                                                                                                  // Colorize: green
+            'i', 's', 0,                                                                                                                                                                                 // Colorize: green
+            'm', 'y', 0,                                                                                                                                                                                 // Colorize: green
+            'p', 'i', 'z', 'z', 'a', 0,                                                                                                                                                                  // Colorize: green
+            0,                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            127, 4, 0x00, 0x15,                                                                                                                                                                          // Colorize: green
+            0,                                                                                                                                                                                           // Colorize: green
+            0                                                                                                                                                                                            // Colorize: green
+        };                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        testAmount = 0;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(DMI::iterateDmiEntries(buf, testCountEntry), NgosStatus::OK);                                                                                                                 // Colorize: green
+        TEST_ASSERT_EQUALS(testAmount,                                  3);                                                                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("checksum()");                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        u8 temp1[10] = { 5, 98, 31, 24, 18, 23, 67, 71, 82, 93 };                                                                                                                                        // Colorize: green
+        u8 temp2[10] = { 7, 82, 94, 37, 16, 79, 98, 46, 37, 16 };                                                                                                                                        // Colorize: green
+        u8 temp3[10] = { 9, 69, 58, 94, 31, 67, 34, 21, 34, 95 };                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(DMI::checksum(temp1, sizeof(temp1), temp1[4]), temp1[4]);                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(DMI::checksum(temp2, sizeof(temp2), temp2[6]), temp2[6]);                                                                                                                     // Colorize: green
+        TEST_ASSERT_EQUALS(DMI::checksum(temp3, sizeof(temp3), temp3[1]), temp3[1]);                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+TEST_CASES_END();                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMI_H                                                                                                                    // Colorize: green

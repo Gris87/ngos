@@ -1,46 +1,46 @@
-#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMIVERSION_H
-#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMIVERSION_H
-
-
-
-#include <buildconfig.h>
-#include <com/ngos/shared/common/dmi/lib/dmiversion.h>
-#include <com/ngos/shared/uefibase/testengine.h>
-
-
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-
-
-
-TEST_CASES(section0, com_ngos_shared_common_dmi_lib_dmiversion);
-{
-    TEST_CASE("DMI_VERSION()");
-    {
-        TEST_ASSERT_EQUALS(DMI_VERSION(2,    7),   0x00020700);
-        TEST_ASSERT_EQUALS(DMI_VERSION(3,    1),   0x00030100);
-        TEST_ASSERT_EQUALS(DMI_VERSION(9,    67),  0x00094300);
-        TEST_ASSERT_EQUALS(DMI_VERSION(3202, 927), 0x0C829F00);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("DMI_VERSION_3()");
-    {
-        TEST_ASSERT_EQUALS(DMI_VERSION_3(2,    7,   0),   0x00020700);
-        TEST_ASSERT_EQUALS(DMI_VERSION_3(3,    1,   2),   0x00030102);
-        TEST_ASSERT_EQUALS(DMI_VERSION_3(9,    67,  56),  0x00094338);
-        TEST_ASSERT_EQUALS(DMI_VERSION_3(3202, 927, 619), 0x0C829F6B);
-    }
-    TEST_CASE_END();
-}
-TEST_CASES_END();
-
-
-
-#endif
-
-
-
-#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMIVERSION_H
+#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMIVERSION_H                                                                                                               // Colorize: green
+#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMIVERSION_H                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <buildconfig.h>                                                                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/dmiversion.h>                                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/uefibase/testengine.h>                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TEST_CASES(section0, com_ngos_shared_common_dmi_lib_dmiversion);                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    TEST_CASE("DMI_VERSION()");                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        TEST_ASSERT_EQUALS(DMI_VERSION(2,    7),   0x00020700);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(DMI_VERSION(3,    1),   0x00030100);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(DMI_VERSION(9,    67),  0x00094300);                                                                                                                                          // Colorize: green
+        TEST_ASSERT_EQUALS(DMI_VERSION(3202, 927), 0x0C829F00);                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TEST_CASE("DMI_VERSION_3()");                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        TEST_ASSERT_EQUALS(DMI_VERSION_3(2,    7,   0),   0x00020700);                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(DMI_VERSION_3(3,    1,   2),   0x00030102);                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(DMI_VERSION_3(9,    67,  56),  0x00094338);                                                                                                                                   // Colorize: green
+        TEST_ASSERT_EQUALS(DMI_VERSION_3(3202, 927, 619), 0x0C829F6B);                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+TEST_CASES_END();                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_DMIVERSION_H                                                                                                             // Colorize: green

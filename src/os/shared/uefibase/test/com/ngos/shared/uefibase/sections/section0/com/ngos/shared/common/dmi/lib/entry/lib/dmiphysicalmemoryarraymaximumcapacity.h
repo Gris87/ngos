@@ -1,56 +1,56 @@
-#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPHYSICALMEMORYARRAYMAXIMUMCAPACITY_H
-#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPHYSICALMEMORYARRAYMAXIMUMCAPACITY_H
-
-
-
-#include <buildconfig.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h>
-#include <com/ngos/shared/uefibase/testengine.h>
-
-
-
-#if NGOS_BUILD_TEST_MODE == OPTION_YES
-
-
-
-TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmiphysicalmemoryarraymaximumcapacity);
-{
-    TEST_CASE("size()");
-    {
-        DmiPhysicalMemoryArrayMaximumCapacity temp;
-
-
-
-        temp.value = 1;
-
-        TEST_ASSERT_EQUALS(temp.size(), KB);
-
-
-
-        temp.value = 64;
-
-        TEST_ASSERT_EQUALS(temp.size(), 64 * KB);
-
-
-
-        temp.value = 16383;
-
-        TEST_ASSERT_EQUALS(temp.size(), 16383 * KB);
-
-
-
-        temp.value = 916383;
-
-        TEST_ASSERT_EQUALS(temp.size(), 916383 * KB);
-    }
-    TEST_CASE_END();
-}
-TEST_CASES_END();
-
-
-
-#endif
-
-
-
-#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPHYSICALMEMORYARRAYMAXIMUMCAPACITY_H
+#ifndef COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPHYSICALMEMORYARRAYMAXIMUMCAPACITY_H                                                                          // Colorize: green
+#define COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPHYSICALMEMORYARRAYMAXIMUMCAPACITY_H                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <buildconfig.h>                                                                                                                                                                                 // Colorize: green
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiphysicalmemoryarraymaximumcapacity.h>                                                                                                              // Colorize: green
+#include <com/ngos/shared/uefibase/testengine.h>                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#if NGOS_BUILD_TEST_MODE == OPTION_YES                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TEST_CASES(section0, com_ngos_shared_common_dmi_lib_entry_lib_dmiphysicalmemoryarraymaximumcapacity);                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    TEST_CASE("size()");                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DmiPhysicalMemoryArrayMaximumCapacity temp;                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        temp.value = 1;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.size(), KB);                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        temp.value = 64;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.size(), 64 * KB);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        temp.value = 16383;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.size(), 16383 * KB);                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        temp.value = 916383;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TEST_ASSERT_EQUALS(temp.size(), 916383 * KB);                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    TEST_CASE_END();                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+TEST_CASES_END();                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_UEFIBASE_SECTIONS_SECTION0_COM_NGOS_SHARED_COMMON_DMI_ENTRY_LIB_DMIPHYSICALMEMORYARRAYMAXIMUMCAPACITY_H                                                                        // Colorize: green
