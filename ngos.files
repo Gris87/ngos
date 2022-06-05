@@ -6087,6 +6087,8 @@ tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/cpu/intelcpui
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/cpu/intelcpuidspecverifier.h
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/cpu/x86registersspecverifier.cpp
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/cpu/x86registersspecverifier.h
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/dmi/dmispecverifier.cpp
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/dmi/dmispecverifier.h
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/elf/elfspecverifier.cpp
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/elf/elfspecverifier.h
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/msr/intelmsrspecverifier.cpp
