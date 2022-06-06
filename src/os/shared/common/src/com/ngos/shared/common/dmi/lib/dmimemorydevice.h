@@ -12,6 +12,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
+// Internal structure                                                                                                                                                                                    // Colorize: green
 struct DmiMemoryDevice                                                                                                                                                                                   // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
     DmiMemoryDeviceType  memoryType;                                                                                                                                                                     // Colorize: green

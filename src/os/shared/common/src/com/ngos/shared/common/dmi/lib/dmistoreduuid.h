@@ -10,6 +10,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
+// Internal structure                                                                                                                                                                                    // Colorize: green
 enum class DmiStoredUuid: u8                                                                                                                                                                             // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
     SYSTEM_UUID,                                                                                                                                                                                         // Colorize: green
