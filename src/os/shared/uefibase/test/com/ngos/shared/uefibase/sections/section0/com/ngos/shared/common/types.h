@@ -1334,7 +1334,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosEntryV24),                                                   24);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosEntryV31),                                                   26);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosExtendedRomSize),                                            2);
-        TEST_ASSERT_EQUALS(sizeof(DmiBiosExtendedRomSizeUnit),                                        1);
+        TEST_ASSERT_EQUALS(sizeof(DmiBiosExtendedRomSizeUnit),                                        2);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosLanguageEntry),                                              22);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosLanguageFlag),                                               1);
         TEST_ASSERT_EQUALS(sizeof(DmiBiosRomSize),                                                    1);
