@@ -13,7 +13,7 @@
 // Verified with DmiSpecVerifier [BEGIN] // https://www.dmtf.org/sites/default/files/standards/documents/DSP0134_3.4.0.pdf                                                                               // Colorize: green
 struct DmiSystemEntry                                                                                                                                                                                    // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
-    DmiEntryHeader              header;                                                                                                                                                                  // Colorize: green
+    DmiEntryHeader header;                                                                                                                                                                  // Colorize: green
     DmiStringId    manufacturer; // Number of null-terminated string                                                                                                                                     // Colorize: green
     DmiStringId    productName;  // Number of null-terminated string                                                                                                                                     // Colorize: green
     DmiStringId    version;      // Number of null-terminated string                                                                                                                                     // Colorize: green
