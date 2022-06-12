@@ -1369,7 +1369,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(DmiChassisSecurityStatus),                                          1);
         TEST_ASSERT_EQUALS(sizeof(DmiChassisState),                                                   1);
         TEST_ASSERT_EQUALS(sizeof(DmiChassisType),                                                    1);
-        TEST_ASSERT_EQUALS(sizeof(DmiChassisTypeAndLocked),                                           1);
+        TEST_ASSERT_EQUALS(sizeof(DmiChassisTypeAndLockPresent),                                      1);
         TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceEntry),                                             14);
         TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceEntryV27),                                          15);
         TEST_ASSERT_EQUALS(sizeof(DmiCoolingDeviceStatus),                                            1);

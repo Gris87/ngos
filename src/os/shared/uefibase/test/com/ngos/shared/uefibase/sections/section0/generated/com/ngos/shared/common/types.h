@@ -18,7 +18,7 @@
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmicacheconfiguration.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachesize.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmicachesize2.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassistypeandlocked.h>
+#include <com/ngos/shared/common/dmi/lib/entry/lib/dmichassistypeandlockpresent.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmicoolingdevicetypeandstatus.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmielectricalcurrentprobelocationandstatus.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmifunctionnumberanddevicenumber.h>
@@ -996,13 +996,13 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
 
 
-    TEST_CASE("DmiChassisTypeAndLocked");
+    TEST_CASE("DmiChassisTypeAndLockPresent");
     {
-        DmiChassisTypeAndLocked temp;
+        DmiChassisTypeAndLockPresent temp;
 
 
 
-        // DmiChassisTypeAndLocked:
+        // DmiChassisTypeAndLockPresent:
         //
         // | B | AAAAAAA |
         //
@@ -1014,8 +1014,8 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // | 1 | 1000000 |
         temp.value8 = 0xC0;
 
-        TEST_ASSERT_EQUALS(temp.type,   static_cast<DmiChassisType>(64));
-        TEST_ASSERT_EQUALS(temp.locked, static_cast<u8>(1));
+        TEST_ASSERT_EQUALS(temp.type,        static_cast<DmiChassisType>(64));
+        TEST_ASSERT_EQUALS(temp.lockPresent, static_cast<u8>(1));
 
 
 
@@ -1027,7 +1027,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
 
         // | 0 | 0111111 |
-        temp.locked = static_cast<u8>(0);
+        temp.lockPresent = static_cast<u8>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x3F);
     }

@@ -952,7 +952,7 @@ src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmichassiscont
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmichassissecuritystatus.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmichassisstate.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmichassistype.h
-src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmichassistypeandlocked.h
+src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmichassistypeandlockpresent.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmicoolingdevicestatus.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmicoolingdevicetype.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmicoolingdevicetypeandstatus.h
