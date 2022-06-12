@@ -802,13 +802,18 @@ src/os/shared/common/asm/arch/x86_64/com/ngos/shared/common/memory/memset.S
 src/os/shared/common/asm/arch/x86_64/com/ngos/shared/common/memory/memzero.S
 src/os/shared/common/common.pri
 src/os/shared/common/src/com/ngos/shared/common/asm/asmutils.h
-src/os/shared/common/src/com/ngos/shared/common/asm/bitutils.h
 src/os/shared/common/src/com/ngos/shared/common/assets/assets.cpp
 src/os/shared/common/src/com/ngos/shared/common/assets/assets.h
 src/os/shared/common/src/com/ngos/shared/common/assets/lib/assetentriescount.h
 src/os/shared/common/src/com/ngos/shared/common/assets/lib/assetentry.h
 src/os/shared/common/src/com/ngos/shared/common/assets/lib/glyphdata.h
 src/os/shared/common/src/com/ngos/shared/common/assets/lib/glyphoffset.h
+src/os/shared/common/src/com/ngos/shared/common/bits/bitonoff.h
+src/os/shared/common/src/com/ngos/shared/common/bits/bitutils.h
+src/os/shared/common/src/com/ngos/shared/common/bits/bityesno.h
+src/os/shared/common/src/com/ngos/shared/common/bits/bityesnounknown.h
+src/os/shared/common/src/com/ngos/shared/common/bits/flags.h
+src/os/shared/common/src/com/ngos/shared/common/bits/macros.h
 src/os/shared/common/src/com/ngos/shared/common/bootparams/bootparams.h
 src/os/shared/common/src/com/ngos/shared/common/bootparams/lib/kernelinfo.h
 src/os/shared/common/src/com/ngos/shared/common/bootparams/lib/memorymapentry.h
@@ -1235,7 +1240,6 @@ src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32biossig
 src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32eferflags.h
 src/os/shared/common/src/com/ngos/shared/common/msr/lib/registers/msria32miscenableflags.h
 src/os/shared/common/src/com/ngos/shared/common/msr/msr.h
-src/os/shared/common/src/com/ngos/shared/common/ngos/flags.h
 src/os/shared/common/src/com/ngos/shared/common/ngos/linkage.h
 src/os/shared/common/src/com/ngos/shared/common/ngos/status.h
 src/os/shared/common/src/com/ngos/shared/common/ngos/types.h
@@ -5565,7 +5569,7 @@ src/os/shared/uefibase/src/com/ngos/shared/uefibase/uefi/uefilogfile.h
 src/os/shared/uefibase/src/com/ngos/shared/uefibase/uefi/uefipointerdevices.cpp
 src/os/shared/uefibase/src/com/ngos/shared/uefibase/uefi/uefipointerdevices.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/asmutils.h
-src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/bitutils.h
+src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bits/bitutils.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bootparams/lib/memorymapentry.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/adler.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/crc.h
