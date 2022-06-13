@@ -55,7 +55,7 @@ NgosStatus initializePageIdentity(PGD *page, u64 address, u64 end, u8 level)
 
     u8 bits = PAGE_SHIFT + (level - 1) * (PMD_SHIFT - PAGE_SHIFT);
 
-    u64 pageSize = BIT(bits);
+    u64 pageSize = SIZE_BY_BITS(bits);
     u64 pageMask = ~(pageSize - 1);
 
 

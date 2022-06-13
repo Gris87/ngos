@@ -945,7 +945,7 @@ NgosStatus lzmaDecodeProperties(XzLzma2Decoder *decoder, u8 properties)
         ++decoder->lzma.positionMask;
     }
 
-    decoder->lzma.positionMask        = BIT(decoder->lzma.positionMask) - 1;
+    decoder->lzma.positionMask        = SIZE_BY_BITS(decoder->lzma.positionMask) - 1;
     decoder->lzma.literalPositionMask = 0;
 
 
@@ -965,7 +965,7 @@ NgosStatus lzmaDecodeProperties(XzLzma2Decoder *decoder, u8 properties)
         return NgosStatus::INVALID_DATA;
     }
 
-    decoder->lzma.literalPositionMask = BIT(decoder->lzma.literalPositionMask) - 1;
+    decoder->lzma.literalPositionMask = SIZE_BY_BITS(decoder->lzma.literalPositionMask) - 1;
 
 
 

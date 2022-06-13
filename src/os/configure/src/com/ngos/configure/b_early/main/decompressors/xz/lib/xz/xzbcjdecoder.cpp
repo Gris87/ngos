@@ -126,7 +126,7 @@ u64 bcjX86(XzBcjDecoder *decoder, u8 *buffer, u64 size)
                     break;
                 }
 
-                src = dest ^ (BIT(32 - j) - 1);
+                src = dest ^ (SIZE_BY_BITS(32 - j) - 1);
             } while(true);
 
             dest &= 0x01FFFFFF;

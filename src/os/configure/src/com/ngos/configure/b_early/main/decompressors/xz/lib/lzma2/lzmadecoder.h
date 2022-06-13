@@ -36,8 +36,8 @@ struct LzmaDecoder
     // position bits)
     //
     u32 lc;
-    u32 literalPositionMask; // BIT(lp) - 1
-    u32 positionMask;        // BIT(pb) - 1
+    u32 literalPositionMask; // SIZE_BY_BITS(lp) - 1
+    u32 positionMask;        // SIZE_BY_BITS(pb) - 1
 
     // If 1, it's a match. Otherwise it's a single 8-bit literal.
     u16 isMatch[STATES][POS_STATES_MAX];
