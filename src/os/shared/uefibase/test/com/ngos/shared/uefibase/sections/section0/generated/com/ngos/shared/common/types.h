@@ -355,8 +355,8 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         TEST_ASSERT_EQUALS(temp.cacheType,                  static_cast<CpuidCacheType>(13));
         TEST_ASSERT_EQUALS(temp.cacheLevel,                 static_cast<good_U32>(5));
-        TEST_ASSERT_EQUALS(temp.selfInitializingCacheLevel, static_cast<good_U32>(0));
-        TEST_ASSERT_EQUALS(temp.fullyAssociativeCache,      static_cast<good_U32>(1));
+        TEST_ASSERT_EQUALS(temp.selfInitializingCacheLevel, static_cast<BitYesNo>(0));
+        TEST_ASSERT_EQUALS(temp.fullyAssociativeCache,      static_cast<BitYesNo>(1));
         TEST_ASSERT_EQUALS(temp._reserved,                  static_cast<good_U32>(7));
         TEST_ASSERT_EQUALS(temp.maximumNumberOfThreads,     static_cast<good_U32>(1096));
         TEST_ASSERT_EQUALS(temp.maximumNumberOfCores,       static_cast<good_U32>(16));
@@ -387,7 +387,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00010010            |
         // |  00   |     0111      | 1 | 1 |
         // |    010    |       10010       |
-        temp.selfInitializingCacheLevel = static_cast<good_U32>(1);
+        temp.selfInitializingCacheLevel = static_cast<BitYesNo>(1);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x41121F52);
 
@@ -397,7 +397,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00010010            |
         // |  00   |     0111      | 0 | 1 |
         // |    010    |       10010       |
-        temp.fullyAssociativeCache = static_cast<good_U32>(0);
+        temp.fullyAssociativeCache = static_cast<BitYesNo>(0);
 
         TEST_ASSERT_EQUALS(temp.value32, 0x41121D52);
 
@@ -1006,8 +1006,8 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         //
         // | B | AAAAAAA |
         //
-        // type   : 7  'A'
-        // locked : 1  'B'
+        // type        : 7  'A'
+        // lockPresent : 1  'B'
 
 
 
@@ -1015,7 +1015,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.value8 = 0xC0;
 
         TEST_ASSERT_EQUALS(temp.type,        static_cast<DmiChassisType>(64));
-        TEST_ASSERT_EQUALS(temp.lockPresent, static_cast<u8>(1));
+        TEST_ASSERT_EQUALS(temp.lockPresent, static_cast<BitYesNoUnknown>(1));
 
 
 
@@ -1027,7 +1027,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
 
         // | 0 | 0111111 |
-        temp.lockPresent = static_cast<u8>(0);
+        temp.lockPresent = static_cast<BitYesNoUnknown>(0);
 
         TEST_ASSERT_EQUALS(temp.value8, 0x3F);
     }
