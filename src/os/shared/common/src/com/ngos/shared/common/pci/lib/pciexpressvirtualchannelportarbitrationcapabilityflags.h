@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,12 +17,12 @@ typedef u8 pci_express_virtual_channel_port_arbitration_capability_flags;
 enum class PciExpressVirtualChannelPortArbitrationCapabilityFlag: pci_express_virtual_channel_port_arbitration_capability_flags
 {
     NONE                                                        = 0,
-    NON_CONFIGURABLE_HARDWARE_FIXED_ARBITRATION_SCHEME          = (1ULL << 0),
-    WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_32_PHASES             = (1ULL << 1),
-    WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_64_PHASES             = (1ULL << 2),
-    WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_128_PHASES            = (1ULL << 3),
-    TIME_BASED_WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_128_PHASES = (1ULL << 4),
-    WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_256_PHASES            = (1ULL << 5)
+    NON_CONFIGURABLE_HARDWARE_FIXED_ARBITRATION_SCHEME          = BIT_0,
+    WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_32_PHASES             = BIT_1,
+    WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_64_PHASES             = BIT_2,
+    WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_128_PHASES            = BIT_3,
+    TIME_BASED_WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_128_PHASES = BIT_4,
+    WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_256_PHASES            = BIT_5
 };
 
 DEFINE_FLAGS(PciExpressVirtualChannelPortArbitrationCapabilityFlags, pci_express_virtual_channel_port_arbitration_capability_flags); // TEST: NO

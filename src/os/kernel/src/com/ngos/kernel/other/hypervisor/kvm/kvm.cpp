@@ -86,7 +86,7 @@ NgosStatus KVM::setFeature(KvmFeature feature)
 
 
 
-    sFeatures |= (1ULL << (u64)feature);
+    sFeatures |= BIT(feature);
 
 
 
@@ -99,7 +99,7 @@ NgosStatus KVM::clearFeature(KvmFeature feature)
 
 
 
-    sFeatures &= ~(1ULL << (u64)feature);
+    sFeatures &= ~BIT(feature);
 
 
 
@@ -112,7 +112,7 @@ bool KVM::hasFeature(KvmFeature feature)
 
 
 
-    return sFeatures & (1ULL << (u64)feature);
+    return (sFeatures & BIT(feature)) != 0;
 }
 
 NgosStatus KVM::setFlag(KvmFeatureTypeFlag flag)

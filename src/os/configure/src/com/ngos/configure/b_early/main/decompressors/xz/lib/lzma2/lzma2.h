@@ -4,6 +4,7 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/types.h>
 
 
@@ -20,9 +21,9 @@
 // Range coder constants
 #define RC_SHIFT_BITS           8
 #define RC_TOP_BITS             24
-#define RC_TOP_VALUE            (1ULL << RC_TOP_BITS)
+#define RC_TOP_VALUE            BIT(RC_TOP_BITS)
 #define RC_BIT_MODEL_TOTAL_BITS 11
-#define RC_BIT_MODEL_TOTAL      (1ULL << RC_BIT_MODEL_TOTAL_BITS)
+#define RC_BIT_MODEL_TOTAL      BIT(RC_BIT_MODEL_TOTAL_BITS)
 #define RC_MOVE_BITS            5
 
 // Range decoder initialization eats the first five bytes of each LZMA chunk.
@@ -38,7 +39,7 @@
 // Maximum number of position states. A position state is the lowest pb
 // number of bits of the current uncompressed offset. In some places there
 // are different sets of probabilities for different position states.
-#define POS_STATES_MAX (1ULL << 4)
+#define POS_STATES_MAX BIT_4
 
 // Total number of states
 #define STATES 12
@@ -56,7 +57,7 @@
 #define LITERAL_CODER_SIZE 0x0300
 
 // Maximum number of literal coders
-#define LITERAL_CODERS_MAX (1ULL << 4)
+#define LITERAL_CODERS_MAX BIT_4
 
 // Minimum length of a match is two bytes.
 #define MATCH_LEN_MIN 2
@@ -69,11 +70,11 @@
 // 18-273   10  = Choice=1 + Choice2=1 + 8 bits
 //
 #define LEN_LOW_BITS     3
-#define LEN_LOW_SYMBOLS  (1ULL << LEN_LOW_BITS)
+#define LEN_LOW_SYMBOLS  BIT(LEN_LOW_BITS)
 #define LEN_MID_BITS     3
-#define LEN_MID_SYMBOLS  (1ULL << LEN_MID_BITS)
+#define LEN_MID_SYMBOLS  BIT(LEN_MID_BITS)
 #define LEN_HIGH_BITS    8
-#define LEN_HIGH_SYMBOLS (1ULL << LEN_HIGH_BITS)
+#define LEN_HIGH_SYMBOLS BIT(LEN_HIGH_BITS)
 
 // Different sets of probabilities are used for match distances that have
 // very Short match length: Lengths of 2, 3, and 4 bytes have a separate
@@ -86,7 +87,7 @@
 // value takes 6-36 bits, larger values taking more bits.
 //
 #define DIST_SLOT_BITS 6
-#define DIST_SLOTS     (1ULL << DIST_SLOT_BITS)
+#define DIST_SLOTS     BIT(DIST_SLOT_BITS)
 
 // Match distances up to 127 are fully encoded using probabilities. Since
 // the highest two bits (distance slot) are always encoded using six bits,
@@ -109,12 +110,12 @@
 // Distance slots that indicate a distance <= 127.
 //
 #define FULL_DISTANCES_BITS (DIST_MODEL_END / 2)
-#define FULL_DISTANCES      (1ULL << FULL_DISTANCES_BITS)
+#define FULL_DISTANCES      BIT(FULL_DISTANCES_BITS)
 
 // For match distances greater than 127, only the highest two bits and the
 // lowest four bits (alignment) is encoded using probabilities.
 #define ALIGN_BITS 4
-#define ALIGN_SIZE (1ULL << ALIGN_BITS)
+#define ALIGN_SIZE BIT(ALIGN_BITS)
 
 // Total number of all probability variables
 #define PROBS_TOTAL (1846 + LITERAL_CODERS_MAX * LITERAL_CODER_SIZE)

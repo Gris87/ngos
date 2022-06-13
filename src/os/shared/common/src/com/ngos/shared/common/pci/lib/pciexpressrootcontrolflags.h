@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,11 +17,11 @@ typedef u16 pci_express_root_control_flags;
 enum class PciExpressRootControlFlag: pci_express_root_control_flags
 {
     NONE                                     = 0,
-    SYSTEM_ERROR_ON_CORRECTABLE_ERROR_ENABLE = (1ULL << 0),
-    SYSTEM_ERROR_ON_NON_FATAL_ERROR_ENABLE   = (1ULL << 1),
-    SYSTEM_ERROR_ON_FATAL_ERROR_ENABLE       = (1ULL << 2),
-    PME_INTERRUPT_ENABLE                     = (1ULL << 3),
-    CRS_SOFTWARE_VISIBILITY_ENABLE           = (1ULL << 4)
+    SYSTEM_ERROR_ON_CORRECTABLE_ERROR_ENABLE = BIT_0,
+    SYSTEM_ERROR_ON_NON_FATAL_ERROR_ENABLE   = BIT_1,
+    SYSTEM_ERROR_ON_FATAL_ERROR_ENABLE       = BIT_2,
+    PME_INTERRUPT_ENABLE                     = BIT_3,
+    CRS_SOFTWARE_VISIBILITY_ENABLE           = BIT_4
 };
 
 DEFINE_FLAGS(PciExpressRootControlFlags, pci_express_root_control_flags); // TEST: NO

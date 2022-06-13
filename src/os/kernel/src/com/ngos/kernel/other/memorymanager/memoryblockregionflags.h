@@ -3,9 +3,10 @@
 
 
 
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
-#include <com/ngos/shared/common/ngos/flags.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -18,9 +19,9 @@ typedef u8 memory_block_region_flags;
 enum class MemoryBlockRegionFlag: memory_block_region_flags
 {
     NONE    = 0,
-    HOTPLUG = (1ULL << 0), // hotpluggable region
-    MIRROR  = (1ULL << 1), // mirrored region
-    NOMAP   = (1ULL << 2)  // don't add to kernel direct mapping
+    HOTPLUG = BIT_0, // hotpluggable region
+    MIRROR  = BIT_1, // mirrored region
+    NOMAP   = BIT_2  // don't add to kernel direct mapping
 };
 
 DEFINE_FLAGS(MemoryBlockRegionFlags, memory_block_region_flags); // TEST: NO

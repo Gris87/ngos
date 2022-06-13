@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,10 +17,10 @@ typedef u8 pci_express_completion_timeout_range_flags;
 enum class PciExpressCompletionTimeoutRangeFlag: pci_express_completion_timeout_range_flags
 {
     NONE                                     = 0,
-    FROM_50_MICROSECONDS_TO_10_MILLISECONDS  = (1ULL << 0),
-    FROM_10_MILLISECONDS_TO_250_MILLISECONDS = (1ULL << 1),
-    FROM_250_MILLISECONDS_TO_4_SECONDS       = (1ULL << 2),
-    FROM_4_SECONDS_TO_64_SECONDS             = (1ULL << 3)
+    FROM_50_MICROSECONDS_TO_10_MILLISECONDS  = BIT_0,
+    FROM_10_MILLISECONDS_TO_250_MILLISECONDS = BIT_1,
+    FROM_250_MILLISECONDS_TO_4_SECONDS       = BIT_2,
+    FROM_4_SECONDS_TO_64_SECONDS             = BIT_3
 };
 
 DEFINE_FLAGS(PciExpressCompletionTimeoutRangeFlags, pci_express_completion_timeout_range_flags); // TEST: NO

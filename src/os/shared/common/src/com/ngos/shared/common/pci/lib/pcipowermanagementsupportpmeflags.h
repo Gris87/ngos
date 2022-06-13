@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,11 +17,11 @@ typedef u8 pci_power_management_support_pme_flags;
 enum class PciPowerManagementSupportPmeFlag: pci_power_management_support_pme_flags
 {
     NONE         = 0,
-    FROM_D0      = (1ULL << 0),
-    FROM_D1      = (1ULL << 1),
-    FROM_D2      = (1ULL << 2),
-    FROM_D3_HOT  = (1ULL << 3),
-    FROM_D3_COLD = (1ULL << 4)
+    FROM_D0      = BIT_0,
+    FROM_D1      = BIT_1,
+    FROM_D2      = BIT_2,
+    FROM_D3_HOT  = BIT_3,
+    FROM_D3_COLD = BIT_4
 };
 
 DEFINE_FLAGS(PciPowerManagementSupportPmeFlags, pci_power_management_support_pme_flags); // TEST: NO

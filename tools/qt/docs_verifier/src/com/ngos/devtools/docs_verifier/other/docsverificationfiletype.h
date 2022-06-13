@@ -6,6 +6,7 @@
 #include <Qt>                                                                                                                                                                                            // Colorize: green
 #include <stdio.h>                                                                                                                                                                                       // Colorize: green
                                                                                                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/bits/macros.h>                                                                                                                                                          // Colorize: green
 #include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -17,8 +18,8 @@
 enum class DocsVerificationFileType: quint64                                                                                                                                                             // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
     NONE = 0,                                                                                                                                                                                            // Colorize: green
-    TEXT = (1ULL << 0),                                                                                                                                                                                  // Colorize: green
-    MD   = (1ULL << 1)                                                                                                                                                                                   // Colorize: green
+    TEXT = BIT_0,                                                                                                                                                                                  // Colorize: green
+    MD   = BIT_1                                                                                                                                                                                   // Colorize: green
 };                                                                                                                                                                                                       // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green

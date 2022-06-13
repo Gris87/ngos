@@ -1,5 +1,6 @@
 #include "inflate.h"
 
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/inflate/inflateblocktype.h>
 #include <com/ngos/shared/common/inflate/inflatecode.h>
 #include <com/ngos/shared/common/inflate/inflatecodetype.h>
@@ -38,7 +39,7 @@ inline u64 readBits(InflateDecoder *decoder, u8 count)
 
 
 
-    u64 res = decoder->temp.bitBuffer & ((1ULL << count) - 1);
+    u64 res = decoder->temp.bitBuffer & (SIZE_BY_BITS(count) - 1);
 
     decoder->temp.bitBuffer     >>= count;
     decoder->temp.bitsAvailable -=  count;
@@ -296,7 +297,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
     u32 curr = root;
     u32 drop = 0;
     u32 low  = -1;
-    u32 mask = (1ULL << root) - 1;
+    u32 mask = SIZE_BY_BITS(root) - 1;
 
 
 
@@ -329,8 +330,8 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
         // replicate for those indices with low len bits equal to huff
-        u32 incr = (1ULL << (len - drop));
-        u32 fill = (1ULL << curr);
+        u32 incr = SIZE_BY_BITS((len - drop));
+        u32 fill = SIZE_BY_BITS(curr);
 
         // save offset to next table
         u32 temp = fill;
@@ -345,7 +346,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
         // backwards increment the len-bit code huff
-        incr = (1ULL << (len - 1));
+        incr = SIZE_BY_BITS(len - 1);
 
         while (huff & incr)
         {
@@ -403,7 +404,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
             // determine length of next table
             curr = len - drop;
-            left = (1ULL << curr);
+            left = SIZE_BY_BITS(curr);
 
             while (curr + drop < max)
             {
@@ -469,7 +470,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
         // backwards increment the len-bit code huff
-        u32 incr = (1ULL << (len - 1));
+        u32 incr = SIZE_BY_BITS(len - 1);
 
         while (huff & incr)
         {
@@ -511,7 +512,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
         do
         {
-            codeIndex = decoder->temp.bitBuffer & ((1ULL << lengthBits) - 1);
+            codeIndex = decoder->temp.bitBuffer & (SIZE_BY_BITS(lengthBits) - 1);
             code      = lengthCodes[codeIndex];
 
             if (code.bits <= decoder->temp.bitsAvailable)
@@ -539,7 +540,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
             {
                 u8 bitsNeeded = tempCode.bits + tempCode.operation;
 
-                codeIndex = tempCode.value + ((decoder->temp.bitBuffer & ((1ULL << bitsNeeded) - 1)) >> tempCode.bits);
+                codeIndex = tempCode.value + ((decoder->temp.bitBuffer & (SIZE_BY_BITS(bitsNeeded) - 1)) >> tempCode.bits);
                 code      = lengthCodes[codeIndex];
 
                 if (tempCode.bits + code.bits <= decoder->temp.bitsAvailable)
@@ -604,7 +605,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
             do
             {
-                codeIndex = decoder->temp.bitBuffer & ((1ULL << distanceBits) - 1);
+                codeIndex = decoder->temp.bitBuffer & (SIZE_BY_BITS(distanceBits) - 1);
                 code      = distanceCodes[codeIndex];
 
                 if (code.bits <= decoder->temp.bitsAvailable)
@@ -628,7 +629,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
                 {
                     u8 bitsNeeded = tempCode.bits + tempCode.operation;
 
-                    codeIndex = tempCode.value + ((decoder->temp.bitBuffer & ((1ULL << bitsNeeded) - 1)) >> tempCode.bits);
+                    codeIndex = tempCode.value + ((decoder->temp.bitBuffer & (SIZE_BY_BITS(bitsNeeded) - 1)) >> tempCode.bits);
                     code      = distanceCodes[codeIndex];
 
                     if (tempCode.bits + code.bits <= decoder->temp.bitsAvailable)
@@ -870,7 +871,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
         do
         {
-            codeIndex = decoder->temp.bitBuffer & ((1ULL << lengthBits) - 1);
+            codeIndex = decoder->temp.bitBuffer & (SIZE_BY_BITS(lengthBits) - 1);
             code      = lengthCodes[codeIndex];
 
             if (code.bits <= decoder->temp.bitsAvailable)

@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,8 +17,8 @@ typedef u32 uefi_absolute_pointer_state_active_button_flags;
 enum class UefiAbsolutePointerStateActiveButtonFlag: uefi_absolute_pointer_state_active_button_flags
 {
     NONE             = 0,
-    TOUCH_ACTIVE     = (1ULL << 0),
-    ALTERNATE_ACTIVE = (1ULL << 1)
+    TOUCH_ACTIVE     = BIT_0,
+    ALTERNATE_ACTIVE = BIT_1
 };
 
 DEFINE_FLAGS(UefiAbsolutePointerStateActiveButtonFlags, uefi_absolute_pointer_state_active_button_flags); // TEST: NO

@@ -9,7 +9,7 @@
 
 
 // XStateHeader.xComponents[63] indicates that the extendedStateArea is in compacted format.
-#define XCOMPONENTS_COMPACTED_FORMAT (1ULL << 63)
+#define XCOMPONENTS_COMPACTED_FORMAT BIT_63
 
 
 

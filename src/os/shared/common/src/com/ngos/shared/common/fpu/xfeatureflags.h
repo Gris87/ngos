@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,8 +17,8 @@ typedef u32 x_feature_flags;
 enum class XFeatureFlag: x_feature_flags
 {
     NONE       = 0,
-    SUPERVISOR = (1ULL << 0),
-    ALIGNED    = (1ULL << 1)
+    SUPERVISOR = BIT_0,
+    ALIGNED    = BIT_1
 };
 
 DEFINE_FLAGS(XFeatureFlags, x_feature_flags); // TEST: NO

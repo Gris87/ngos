@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,22 +17,22 @@ typedef u32 pci_express_uncorrectable_error_flags;
 enum class PciExpressUncorrectableErrorFlag: pci_express_uncorrectable_error_flags
 {
     NONE                         = 0,
-    DATA_LINK_PROTOCOL_ERROR     = (1ULL << 4),
-    SURPRISE_DOWN_ERROR          = (1ULL << 5),
-    POISONED_TLP                 = (1ULL << 12),
-    FLOW_CONTROL_PROTOCOL_ERROR  = (1ULL << 13),
-    COMPLETION_TIMEOUT           = (1ULL << 14),
-    COMPLETER_ABORT              = (1ULL << 15),
-    UNEXPECTED_COMPLETION        = (1ULL << 16),
-    RECEIVER_OVERFLOW            = (1ULL << 17),
-    MALFORMED_TLP                = (1ULL << 18),
-    ECRC_ERROR                   = (1ULL << 19),
-    UNSUPPORTED_REQUEST_ERROR    = (1ULL << 20),
-    ACS_VOILATION                = (1ULL << 21),
-    UNCORRECTABLE_INTERNAL_ERROR = (1ULL << 22),
-    MC_BLOCKED_TLP               = (1ULL << 23),
-    ATOMIC_OP_EGRESS_BLOCKED     = (1ULL << 24),
-    TLP_PREFIX_BLOCKED_ERROR     = (1ULL << 25)
+    DATA_LINK_PROTOCOL_ERROR     = BIT_4,
+    SURPRISE_DOWN_ERROR          = BIT_5,
+    POISONED_TLP                 = BIT_12,
+    FLOW_CONTROL_PROTOCOL_ERROR  = BIT_13,
+    COMPLETION_TIMEOUT           = BIT_14,
+    COMPLETER_ABORT              = BIT_15,
+    UNEXPECTED_COMPLETION        = BIT_16,
+    RECEIVER_OVERFLOW            = BIT_17,
+    MALFORMED_TLP                = BIT_18,
+    ECRC_ERROR                   = BIT_19,
+    UNSUPPORTED_REQUEST_ERROR    = BIT_20,
+    ACS_VOILATION                = BIT_21,
+    UNCORRECTABLE_INTERNAL_ERROR = BIT_22,
+    MC_BLOCKED_TLP               = BIT_23,
+    ATOMIC_OP_EGRESS_BLOCKED     = BIT_24,
+    TLP_PREFIX_BLOCKED_ERROR     = BIT_25
 };
 
 DEFINE_FLAGS(PciExpressUncorrectableErrorFlags, pci_express_uncorrectable_error_flags); // TEST: NO

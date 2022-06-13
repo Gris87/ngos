@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -17,9 +18,9 @@ typedef u32 elf_program_flags;
 enum class ElfProgramFlag: elf_program_flags
 {
     NONE       = 0,
-    EXECUTABLE = (1ULL << 0),  // Execute permission
-    WRITABLE   = (1ULL << 1),  // Write permission
-    READABLE   = (1ULL << 2)   // Read permission
+    EXECUTABLE = BIT_0, // Execute permission
+    WRITABLE   = BIT_1, // Write permission
+    READABLE   = BIT_2  // Read permission
 };
 
 DEFINE_FLAGS(ElfProgramFlags, elf_program_flags); // TEST: NO

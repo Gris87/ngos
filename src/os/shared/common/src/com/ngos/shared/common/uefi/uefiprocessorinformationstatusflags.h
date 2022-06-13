@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,9 +17,9 @@ typedef u32 uefi_processor_information_status_flags;
 enum class UefiProcessorInformationStatusFlag: uefi_processor_information_status_flags
 {
     NONE          = 0,
-    BOOTSTRAP     = (1ULL << 0),
-    ENABLED       = (1ULL << 1),
-    HEALTH_STATUS = (1ULL << 2)
+    BOOTSTRAP     = BIT_0,
+    ENABLED       = BIT_1,
+    HEALTH_STATUS = BIT_2
 };
 
 DEFINE_FLAGS(UefiProcessorInformationStatusFlags, uefi_processor_information_status_flags); // TEST: NO

@@ -4,9 +4,10 @@
 
 
 #include <com/ngos/kernel/other/hypervisor/kvm/kvmfeature.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
-#include <com/ngos/shared/common/ngos/flags.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -19,18 +20,18 @@ typedef u32 kvm_feature_type_flags;
 enum class KvmFeatureTypeFlag: kvm_feature_type_flags
 {
     NONE               = 0,
-    CLOCKSOURCE        = (1ULL << (u64)KvmFeature::CLOCKSOURCE),
-    NOP_IO_DELAY       = (1ULL << (u64)KvmFeature::NOP_IO_DELAY),
-    MMU_OP             = (1ULL << (u64)KvmFeature::MMU_OP),
-    CLOCKSOURCE2       = (1ULL << (u64)KvmFeature::CLOCKSOURCE2),
-    ASYNC_PF           = (1ULL << (u64)KvmFeature::ASYNC_PF),
-    STEAL_TIME         = (1ULL << (u64)KvmFeature::STEAL_TIME),
-    PV_EOI             = (1ULL << (u64)KvmFeature::PV_EOI),
-    PV_UNHALT          = (1ULL << (u64)KvmFeature::PV_UNHALT),
-    PV_TLB_FLUSH       = (1ULL << (u64)KvmFeature::PV_TLB_FLUSH),
-    ASYNC_PF_VMEXIT    = (1ULL << (u64)KvmFeature::ASYNC_PF_VMEXIT),
-    PV_SEND_IPI        = (1ULL << (u64)KvmFeature::PV_SEND_IPI),
-    CLOCKSOURCE_STABLE = (1ULL << (u64)KvmFeature::CLOCKSOURCE_STABLE)
+    CLOCKSOURCE        = BIT(KvmFeature::CLOCKSOURCE),
+    NOP_IO_DELAY       = BIT(KvmFeature::NOP_IO_DELAY),
+    MMU_OP             = BIT(KvmFeature::MMU_OP),
+    CLOCKSOURCE2       = BIT(KvmFeature::CLOCKSOURCE2),
+    ASYNC_PF           = BIT(KvmFeature::ASYNC_PF),
+    STEAL_TIME         = BIT(KvmFeature::STEAL_TIME),
+    PV_EOI             = BIT(KvmFeature::PV_EOI),
+    PV_UNHALT          = BIT(KvmFeature::PV_UNHALT),
+    PV_TLB_FLUSH       = BIT(KvmFeature::PV_TLB_FLUSH),
+    ASYNC_PF_VMEXIT    = BIT(KvmFeature::ASYNC_PF_VMEXIT),
+    PV_SEND_IPI        = BIT(KvmFeature::PV_SEND_IPI),
+    CLOCKSOURCE_STABLE = BIT(KvmFeature::CLOCKSOURCE_STABLE)
 };
 
 DEFINE_FLAGS(KvmFeatureTypeFlags, kvm_feature_type_flags); // TEST: NO

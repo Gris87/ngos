@@ -4,9 +4,10 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
-#include <com/ngos/shared/common/ngos/flags.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -27,8 +28,8 @@ typedef u8 xz_block_flags;
 enum class XzBlockFlag: xz_block_flags // Ignore CppEnumVerifier // TODO: remove ignore after fixing union
 {
     NONE                      = 0,
-    COMPRESSED_SIZE_PRESENT   = (1ULL << 6),
-    UNCOMPRESSED_SIZE_PRESENT = (1ULL << 7)
+    COMPRESSED_SIZE_PRESENT   = BIT_6,
+    UNCOMPRESSED_SIZE_PRESENT = BIT_7
 };
 
 DEFINE_FLAGS(XzBlockFlags, xz_block_flags); // TEST: NO

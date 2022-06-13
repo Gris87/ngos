@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,13 +17,13 @@ typedef u32 uefi_variable_attribute_flags;
 enum class UefiVariableAttributeFlag: uefi_variable_attribute_flags
 {
     NONE                                  = 0,
-    NON_VOLATILE                          = (1ULL << 0),
-    BOOTSERVICE_ACCESS                    = (1ULL << 1),
-    RUNTIME_ACCESS                        = (1ULL << 2),
-    HARDWARE_ERROR_RECORD                 = (1ULL << 3),
-    RESERVED                              = (1ULL << 4),
-    TIME_BASED_AUTHENTICATED_WRITE_ACCESS = (1ULL << 5),
-    APPEND_WRITE                          = (1ULL << 6)
+    NON_VOLATILE                          = BIT_0,
+    BOOTSERVICE_ACCESS                    = BIT_1,
+    RUNTIME_ACCESS                        = BIT_2,
+    HARDWARE_ERROR_RECORD                 = BIT_3,
+    RESERVED                              = BIT_4,
+    TIME_BASED_AUTHENTICATED_WRITE_ACCESS = BIT_5,
+    APPEND_WRITE                          = BIT_6
 };
 
 DEFINE_FLAGS(UefiVariableAttributeFlags, uefi_variable_attribute_flags); // TEST: NO

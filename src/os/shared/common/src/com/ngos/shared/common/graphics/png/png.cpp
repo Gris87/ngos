@@ -1,5 +1,6 @@
 #include "png.h"
 
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/checksum/crc.h>
 #include <com/ngos/shared/common/graphics/graphics.h>
 #include <com/ngos/shared/common/graphics/png/lib/pngheader.h>
@@ -1846,11 +1847,11 @@ NgosStatus Png::setBitOfReversedStream(i64 *bitPointer, u8 *bitStream, u8 bit)
 
     if (bit)
     {
-        bitStream[(*bitPointer) >> 3] |= (1ULL << (7 - ((*bitPointer) & 7)));
+        bitStream[(*bitPointer) >> 3] |= BIT(7 - ((*bitPointer) & 7));
     }
     else
     {
-        bitStream[(*bitPointer) >> 3] &= (u8)(~(1ULL << (7 - ((*bitPointer) & 7))));
+        bitStream[(*bitPointer) >> 3] &= (u8)(~BIT(7 - ((*bitPointer) & 7)));
     }
 
     ++(*bitPointer);

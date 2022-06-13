@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,16 +17,16 @@ typedef u16 pci_card_bus_control_flags;
 enum class PciCardBusControlFlag: pci_card_bus_control_flags
 {
     NONE                         = 0,
-    PARITY_ERROR_RESPONSE_ENABLE = (1ULL << 0),
-    SYSTEM_ERROR_ENABLE          = (1ULL << 1),
-    ISA_ENABLE                   = (1ULL << 2),
-    VGA_ENABLE                   = (1ULL << 3),
-    MASTER_ABORT_MODE            = (1ULL << 5),
-    CARD_BUS_RESET               = (1ULL << 6),
-    IREQ_ENABLE                  = (1ULL << 7),
-    MEMORY_BASE0_PREFETCHABLE    = (1ULL << 8),
-    MEMORY_BASE1_PREFETCHABLE    = (1ULL << 9),
-    WRITE_POSTING_ENABLE         = (1ULL << 10)
+    PARITY_ERROR_RESPONSE_ENABLE = BIT_0,
+    SYSTEM_ERROR_ENABLE          = BIT_1,
+    ISA_ENABLE                   = BIT_2,
+    VGA_ENABLE                   = BIT_3,
+    MASTER_ABORT_MODE            = BIT_5,
+    CARD_BUS_RESET               = BIT_6,
+    IREQ_ENABLE                  = BIT_7,
+    MEMORY_BASE0_PREFETCHABLE    = BIT_8,
+    MEMORY_BASE1_PREFETCHABLE    = BIT_9,
+    WRITE_POSTING_ENABLE         = BIT_10
 };
 
 DEFINE_FLAGS(PciCardBusControlFlags, pci_card_bus_control_flags); // TEST: NO

@@ -40,14 +40,14 @@
 
 
 
-#define PGD_SIZE    (1ULL << PGD_SHIFT)
+#define PGD_SIZE    SIZE_BY_BITS(PGD_SHIFT)
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-#define P4D_SIZE    (1ULL << P4D_SHIFT)
+#define P4D_SIZE    SIZE_BY_BITS(P4D_SHIFT)
 #endif
 
-#define PUD_SIZE    (1ULL << PUD_SHIFT)
-#define PMD_SIZE    (1ULL << PMD_SHIFT)
+#define PUD_SIZE    SIZE_BY_BITS(PUD_SHIFT)
+#define PMD_SIZE    SIZE_BY_BITS(PMD_SHIFT)
 
 
 
@@ -80,7 +80,7 @@
 
 
 
-#define __PHYSICAL_MASK     ((1ULL << __PHYSICAL_MASK_SHIFT) - 1)
+#define __PHYSICAL_MASK     (SIZE_BY_BITS(__PHYSICAL_MASK_SHIFT) - 1)
 
 
 

@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,11 +17,11 @@ typedef u32 uefi_simple_network_receive_filter_flags;
 enum class UefiSimpleNetworkReceiveFilterFlag: uefi_simple_network_receive_filter_flags
 {
     NONE                  = 0,
-    UNICAST               = (1ULL << 0),
-    MULTICAST             = (1ULL << 1),
-    BROADCAST             = (1ULL << 2),
-    PROMISCUOUS           = (1ULL << 3),
-    PROMISCUOUS_MULTICAST = (1ULL << 4)
+    UNICAST               = BIT_0,
+    MULTICAST             = BIT_1,
+    BROADCAST             = BIT_2,
+    PROMISCUOUS           = BIT_3,
+    PROMISCUOUS_MULTICAST = BIT_4
 };
 
 DEFINE_FLAGS(UefiSimpleNetworkReceiveFilterFlags, uefi_simple_network_receive_filter_flags); // TEST: NO

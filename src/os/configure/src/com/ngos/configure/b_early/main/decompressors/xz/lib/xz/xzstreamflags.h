@@ -4,9 +4,10 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
-#include <com/ngos/shared/common/ngos/flags.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -27,9 +28,9 @@ typedef u16 xz_stream_flags;
 enum class XzStreamFlag: xz_stream_flags
 {
     NONE                 = 0,
-    TYPE_OF_CHECK_CRC32  = (1ULL << 8),
-    TYPE_OF_CHECK_CRC64  = (1ULL << 10),
-    TYPE_OF_CHECK_SHA256 = (1ULL << 9) | (1ULL << 11)
+    TYPE_OF_CHECK_CRC32  = BIT_8,
+    TYPE_OF_CHECK_CRC64  = BIT_10,
+    TYPE_OF_CHECK_SHA256 = BIT_9 | BIT_11
 };
 
 DEFINE_FLAGS(XzStreamFlags, xz_stream_flags); // TEST: NO

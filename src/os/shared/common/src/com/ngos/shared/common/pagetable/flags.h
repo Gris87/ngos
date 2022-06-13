@@ -3,17 +3,17 @@
 
 
 
-#define PAGE_FLAG_PRESENT             (1ULL << 0)
-#define PAGE_FLAG_READ_WRITE          (1ULL << 1)
-#define PAGE_FLAG_USER                (1ULL << 2)
-#define PAGE_FLAG_WRITE_THROUGH       (1ULL << 3)
-#define PAGE_FLAG_CACHE_DISABLED      (1ULL << 4)
-#define PAGE_FLAG_ACCESSED            (1ULL << 5)
-#define PAGE_FLAG_DIRTY               (1ULL << 6)
-#define PAGE_FLAG_PAGE_SIZE_EXTENSION (1ULL << 7)
-#define PAGE_FLAG_GLOBAL              (1ULL << 8)
-#define PAGE_FLAG_LARGE_EXTENSTION    (1ULL << 12)
-#define PAGE_FLAG_NX                  (1ULL << 63)
+#define PAGE_FLAG_PRESENT             BIT_0
+#define PAGE_FLAG_READ_WRITE          BIT_1
+#define PAGE_FLAG_USER                BIT_2
+#define PAGE_FLAG_WRITE_THROUGH       BIT_3
+#define PAGE_FLAG_CACHE_DISABLED      BIT_4
+#define PAGE_FLAG_ACCESSED            BIT_5
+#define PAGE_FLAG_DIRTY               BIT_6
+#define PAGE_FLAG_PAGE_SIZE_EXTENSION BIT_7
+#define PAGE_FLAG_GLOBAL              BIT_8
+#define PAGE_FLAG_LARGE_EXTENSTION    BIT_12
+#define PAGE_FLAG_NX                  BIT_63
 
 
 

@@ -440,7 +440,7 @@ inline NgosStatus rcDecodeBitTreeReverse(LzmaRcDecoder *rc, u16 *probs, u32 *des
         if (rcDecodeBit(rc, &probs[symbol]))
         {
             symbol =  (symbol << 1) + 1;
-            *dest  += (1ULL << i);
+            *dest  += BIT(i);
         }
         else
         {
@@ -945,7 +945,7 @@ NgosStatus lzmaDecodeProperties(XzLzma2Decoder *decoder, u8 properties)
         ++decoder->lzma.positionMask;
     }
 
-    decoder->lzma.positionMask        = (1ULL << decoder->lzma.positionMask) - 1;
+    decoder->lzma.positionMask        = BIT(decoder->lzma.positionMask) - 1;
     decoder->lzma.literalPositionMask = 0;
 
 
@@ -965,7 +965,7 @@ NgosStatus lzmaDecodeProperties(XzLzma2Decoder *decoder, u8 properties)
         return NgosStatus::INVALID_DATA;
     }
 
-    decoder->lzma.literalPositionMask = (1ULL << decoder->lzma.literalPositionMask) - 1;
+    decoder->lzma.literalPositionMask = BIT(decoder->lzma.literalPositionMask) - 1;
 
 
 

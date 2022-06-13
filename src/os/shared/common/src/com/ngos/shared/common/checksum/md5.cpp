@@ -1,6 +1,6 @@
 #include "md5.h"                                                                                                                                                                                         // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#include <com/ngos/shared/common/asm/bitutils.h>                                                                                                                                                                  // Colorize: green
+#include <com/ngos/shared/common/bits/bitutils.h>                                                                                                                                                                  // Colorize: green
 #include <com/ngos/shared/common/log/assert.h>                                                                                                                                                           // Colorize: green
 #include <com/ngos/shared/common/log/log.h>                                                                                                                                                              // Colorize: green
                                                                                                                                                                                                          // Colorize: green

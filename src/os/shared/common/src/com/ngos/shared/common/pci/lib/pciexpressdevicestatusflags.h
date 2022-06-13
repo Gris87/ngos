@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,12 +17,12 @@ typedef u16 pci_express_device_status_flags;
 enum class PciExpressDeviceStatusFlag: pci_express_device_status_flags
 {
     NONE                         = 0,
-    CORRECTABLE_ERROR_DETECTED   = (1ULL << 0),
-    NON_FATAL_ERROR_DETECTED     = (1ULL << 1),
-    FATAL_ERROR_DETECTED         = (1ULL << 2),
-    UNSUPPORTED_REQUEST_DETECTED = (1ULL << 3),
-    AUX_POWER_DETECTED           = (1ULL << 4),
-    TRANSACTIONS_PENDING         = (1ULL << 5)
+    CORRECTABLE_ERROR_DETECTED   = BIT_0,
+    NON_FATAL_ERROR_DETECTED     = BIT_1,
+    FATAL_ERROR_DETECTED         = BIT_2,
+    UNSUPPORTED_REQUEST_DETECTED = BIT_3,
+    AUX_POWER_DETECTED           = BIT_4,
+    TRANSACTIONS_PENDING         = BIT_5
 };
 
 DEFINE_FLAGS(PciExpressDeviceStatusFlags, pci_express_device_status_flags); // TEST: NO

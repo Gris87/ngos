@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -15,14 +16,14 @@ typedef u16 pci_express_access_control_services_acs_control_flags;
 
 enum class PciExpressAccessControlServicesAcsControlFlag: pci_express_access_control_services_acs_control_flags
 {
-    NONE = 0,
-    ACS_SOURCE_VALIDATION_ENABLE       = (1ULL << 0),
-    ACS_TRANSLATION_BLOCKING_ENABLE    = (1ULL << 1),
-    ACS_P2P_REQUEST_REDIRECT_ENABLE    = (1ULL << 2),
-    ACS_P2P_COMPLETION_REDIRECT_ENABLE = (1ULL << 3),
-    ACS_UPSTREAM_FORWARDING_ENABLE     = (1ULL << 4),
-    ACS_P2P_EGRESS_CONTROL_ENABLE      = (1ULL << 5),
-    ACS_DIRECT_TRANSLATED_P2P_ENABLE   = (1ULL << 6)
+    NONE                               = 0,
+    ACS_SOURCE_VALIDATION_ENABLE       = BIT_0,
+    ACS_TRANSLATION_BLOCKING_ENABLE    = BIT_1,
+    ACS_P2P_REQUEST_REDIRECT_ENABLE    = BIT_2,
+    ACS_P2P_COMPLETION_REDIRECT_ENABLE = BIT_3,
+    ACS_UPSTREAM_FORWARDING_ENABLE     = BIT_4,
+    ACS_P2P_EGRESS_CONTROL_ENABLE      = BIT_5,
+    ACS_DIRECT_TRANSLATED_P2P_ENABLE   = BIT_6
 };
 
 DEFINE_FLAGS(PciExpressAccessControlServicesAcsControlFlags, pci_express_access_control_services_acs_control_flags); // TEST: NO

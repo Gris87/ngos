@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,15 +17,15 @@ typedef u16 pci_express_slot_status_flags;
 enum class PciExpressSlotStatusFlag: pci_express_slot_status_flags
 {
     NONE                                = 0,
-    ATTENTION_BUTTON_PRESSED            = (1ULL << 0),
-    POWER_FAULT_DETECTED                = (1ULL << 1),
-    MRL_SENSOR_CHANGED                  = (1ULL << 2),
-    PRESENCE_DETECT_CHANGED             = (1ULL << 3),
-    COMMAND_COMPLETED                   = (1ULL << 4),
-    MRL_SENSOR_OPENNED                  = (1ULL << 5),
-    PRESENCE_DETECT                     = (1ULL << 6),
-    ELECTROMECHANICAL_INTERLOCK_ENGAGED = (1ULL << 7),
-    DATA_LINK_LAYER_STATE_CHANGED       = (1ULL << 8)
+    ATTENTION_BUTTON_PRESSED            = BIT_0,
+    POWER_FAULT_DETECTED                = BIT_1,
+    MRL_SENSOR_CHANGED                  = BIT_2,
+    PRESENCE_DETECT_CHANGED             = BIT_3,
+    COMMAND_COMPLETED                   = BIT_4,
+    MRL_SENSOR_OPENNED                  = BIT_5,
+    PRESENCE_DETECT                     = BIT_6,
+    ELECTROMECHANICAL_INTERLOCK_ENGAGED = BIT_7,
+    DATA_LINK_LAYER_STATE_CHANGED       = BIT_8
 };
 
 DEFINE_FLAGS(PciExpressSlotStatusFlags, pci_express_slot_status_flags); // TEST: NO

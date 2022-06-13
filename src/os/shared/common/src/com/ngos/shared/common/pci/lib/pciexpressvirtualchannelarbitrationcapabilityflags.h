@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,10 +17,10 @@ typedef u8 pci_express_virtual_channel_arbitration_capability_flags;
 enum class PciExpressVirtualChannelArbitrationCapabilityFlag: pci_express_virtual_channel_arbitration_capability_flags
 {
     NONE                                             = 0,
-    HARDWARE_FIXED_ARBITRATION_SCHEME                = (1ULL << 0),
-    WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_32_PHASES  = (1ULL << 1),
-    WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_64_PHASES  = (1ULL << 2),
-    WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_128_PHASES = (1ULL << 3)
+    HARDWARE_FIXED_ARBITRATION_SCHEME                = BIT_0,
+    WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_32_PHASES  = BIT_1,
+    WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_64_PHASES  = BIT_2,
+    WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_128_PHASES = BIT_3
 };
 
 DEFINE_FLAGS(PciExpressVirtualChannelArbitrationCapabilityFlags, pci_express_virtual_channel_arbitration_capability_flags); // TEST: NO

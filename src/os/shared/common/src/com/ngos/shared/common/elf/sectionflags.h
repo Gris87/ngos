@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -17,18 +18,18 @@ typedef u64 elf_section_flags;
 enum class ElfSectionFlag: elf_section_flags
 {
     NONE             = 0,
-    WRITE            = (1ULL << 0),  // Section contains writable data
-    ALLOC            = (1ULL << 1),  // Section is allocated in memory image of program
-    EXECINSTR        = (1ULL << 2),  // Section contains executable instructions
-    MERGE            = (1ULL << 4),
-    STRINGS          = (1ULL << 5),
-    INFO_LINK        = (1ULL << 6),
-    LINK_ORDER       = (1ULL << 7),
-    OS_NONCONFORMING = (1ULL << 8),
-    GROUP            = (1ULL << 9),
-    TLS              = (1ULL << 10),
-    ORDERED          = (1ULL << 26),
-    EXCLUDE          = (1ULL << 27)
+    WRITE            = BIT_0,  // Section contains writable data
+    ALLOC            = BIT_1,  // Section is allocated in memory image of program
+    EXECINSTR        = BIT_2,  // Section contains executable instructions
+    MERGE            = BIT_4,
+    STRINGS          = BIT_5,
+    INFO_LINK        = BIT_6,
+    LINK_ORDER       = BIT_7,
+    OS_NONCONFORMING = BIT_8,
+    GROUP            = BIT_9,
+    TLS              = BIT_10,
+    ORDERED          = BIT_26,
+    EXCLUDE          = BIT_27
 };
 
 DEFINE_FLAGS(ElfSectionFlags, elf_section_flags); // TEST: NO

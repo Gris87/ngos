@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,8 +17,8 @@ typedef u8 pci_accelerated_graphics_port_rate_flags;
 enum class PciAcceleratedGraphicsPortRateFlag: pci_accelerated_graphics_port_rate_flags
 {
     NONE = 0,
-    _1X  = (1ULL << 0),
-    _2X  = (1ULL << 1)
+    _1X  = BIT_0,
+    _2X  = BIT_1
 };
 
 DEFINE_FLAGS(PciAcceleratedGraphicsPortRateFlags, pci_accelerated_graphics_port_rate_flags); // TEST: NO

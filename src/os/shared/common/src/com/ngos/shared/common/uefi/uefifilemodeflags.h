@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,9 +17,9 @@ typedef u64 uefi_file_mode_flags;
 enum class UefiFileModeFlag: uefi_file_mode_flags
 {
     NONE   = 0,
-    READ   = (1ULL << 0),
-    WRITE  = (1ULL << 1),
-    CREATE = (1ULL << 63)
+    READ   = BIT_0,
+    WRITE  = BIT_1,
+    CREATE = BIT_63
 };
 
 DEFINE_FLAGS(UefiFileModeFlags, uefi_file_mode_flags); // TEST: NO

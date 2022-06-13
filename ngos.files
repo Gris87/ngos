@@ -5570,6 +5570,7 @@ src/os/shared/uefibase/src/com/ngos/shared/uefibase/uefi/uefipointerdevices.cpp
 src/os/shared/uefibase/src/com/ngos/shared/uefibase/uefi/uefipointerdevices.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/asmutils.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bits/bitutils.h
+src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bits/macros.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bootparams/lib/memorymapentry.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/adler.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/crc.h

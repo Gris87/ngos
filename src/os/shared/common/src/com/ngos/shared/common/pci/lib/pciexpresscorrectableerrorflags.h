@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,14 +17,14 @@ typedef u32 pci_express_correctable_error_flags;
 enum class PciExpressCorrectableErrorFlag: pci_express_correctable_error_flags
 {
     NONE                     = 0,
-    RECEIVER_ERROR           = (1ULL << 0),
-    BAD_TLP                  = (1ULL << 6),
-    BAD_DLLP                 = (1ULL << 7),
-    REPLAY_NUM_ROLLOVER      = (1ULL << 8),
-    REPLAY_TIMER_TIMEOUT     = (1ULL << 12),
-    ADVISORY_NON_FATAL_ERROR = (1ULL << 13),
-    CORRECTED_INTERNAL_ERROR = (1ULL << 14),
-    HEADER_LOG_OVERFLOW      = (1ULL << 15)
+    RECEIVER_ERROR           = BIT_0,
+    BAD_TLP                  = BIT_6,
+    BAD_DLLP                 = BIT_7,
+    REPLAY_NUM_ROLLOVER      = BIT_8,
+    REPLAY_TIMER_TIMEOUT     = BIT_12,
+    ADVISORY_NON_FATAL_ERROR = BIT_13,
+    CORRECTED_INTERNAL_ERROR = BIT_14,
+    HEADER_LOG_OVERFLOW      = BIT_15
 };
 
 DEFINE_FLAGS(PciExpressCorrectableErrorFlags, pci_express_correctable_error_flags); // TEST: NO

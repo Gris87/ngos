@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,8 +17,8 @@ typedef u8 pci_express_tph_completer_flags;
 enum class PciExpressTphCompleterFlag: pci_express_tph_completer_flags
 {
     NONE         = 0,
-    TPH          = (1ULL << 0),
-    EXTENDED_TPH = (1ULL << 1)
+    TPH          = BIT_0,
+    EXTENDED_TPH = BIT_1
 };
 
 DEFINE_FLAGS(PciExpressTphCompleterFlags, pci_express_tph_completer_flags); // TEST: NO

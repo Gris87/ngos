@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,7 +17,7 @@ typedef u8 pci_express_power_budgeting_capability_flags;
 enum class PciExpressPowerBudgetingCapabilityFlag: pci_express_power_budgeting_capability_flags
 {
     NONE             = 0,
-    SYSTEM_ALLOCATED = (1ULL << 0)
+    SYSTEM_ALLOCATED = BIT_0
 };
 
 DEFINE_FLAGS(PciExpressPowerBudgetingCapabilityFlags, pci_express_power_budgeting_capability_flags); // TEST: NO

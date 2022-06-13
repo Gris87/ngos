@@ -4,9 +4,10 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
-#include <com/ngos/shared/common/ngos/flags.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -23,11 +24,11 @@ typedef u8 gzip_member_flags;
 enum class GzipMemberFlag: gzip_member_flags
 {
     NONE        = 0,
-    TEXT        = (1ULL << 0),
-    HEADER_CRC  = (1ULL << 1),
-    EXTRA       = (1ULL << 2),
-    NAME        = (1ULL << 3),
-    COMMENT     = (1ULL << 4)
+    TEXT        = BIT_0,
+    HEADER_CRC  = BIT_1,
+    EXTRA       = BIT_2,
+    NAME        = BIT_3,
+    COMMENT     = BIT_4
 };
 
 DEFINE_FLAGS(GzipMemberFlags, gzip_member_flags); // TEST: NO

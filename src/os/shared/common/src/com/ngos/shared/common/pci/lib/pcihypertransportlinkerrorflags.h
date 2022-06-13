@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,10 +17,10 @@ typedef u8 pci_hyper_transport_link_error_flags;
 enum class PciHyperTransportLinkErrorFlag: pci_hyper_transport_link_error_flags
 {
     NONE               = 0,
-    PROTOCOL_ERROR     = (1ULL << 0),
-    OVERFLOW_ERROR     = (1ULL << 1),
-    END_OF_CHAIN_ERROR = (1ULL << 2),
-    CTL_TIMEOUT        = (1ULL << 3)
+    PROTOCOL_ERROR     = BIT_0,
+    OVERFLOW_ERROR     = BIT_1,
+    END_OF_CHAIN_ERROR = BIT_2,
+    CTL_TIMEOUT        = BIT_3
 };
 
 DEFINE_FLAGS(PciHyperTransportLinkErrorFlags, pci_hyper_transport_link_error_flags); // TEST: NO

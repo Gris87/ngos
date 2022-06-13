@@ -1,5 +1,6 @@
 #include "jpeg.h"
 
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/graphics/jpeg/lib/jpegdefinehuffmantablemarker.h>
 #include <com/ngos/shared/common/graphics/jpeg/lib/jpegdefinequantizationtablemarker.h>
 #include <com/ngos/shared/common/graphics/jpeg/lib/jpegdefinerestartintervalmarker.h>
@@ -1384,7 +1385,7 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, i64 *v
 
 
 
-    if (valueTemp < (i64)(1ULL << (bits - 1)))
+    if (valueTemp < static_cast<good_I64>(SIZE_BY_BITS(bits - 1)))
     {
         valueTemp += (0xFFFFFFFFFFFFFFFF << bits) + 1;
 
@@ -1930,7 +1931,7 @@ NgosStatus Jpeg::getBits(JpegDecoder *decoder, u8 count, u64 *res)
 
 
 
-    *res = (decoder->bitBuffer >> (decoder->bitsAvailable - count)) & ((1ULL << count) - 1);
+    *res = (decoder->bitBuffer >> (decoder->bitsAvailable - count)) & (SIZE_BY_BITS(count) - 1);
 
 
 

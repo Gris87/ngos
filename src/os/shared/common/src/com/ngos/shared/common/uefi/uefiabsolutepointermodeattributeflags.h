@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,8 +17,8 @@ typedef u32 uefi_absolute_pointer_mode_attribute_flags;
 enum class UefiAbsolutePointerModeAttributeFlag: uefi_absolute_pointer_mode_attribute_flags
 {
     NONE                      = 0,
-    SUPPORTS_ALTERNATE_BUTTON = (1ULL << 0),
-    SUPPORTS_PRESSURE_AS_Z    = (1ULL << 1)
+    SUPPORTS_ALTERNATE_BUTTON = BIT_0,
+    SUPPORTS_PRESSURE_AS_Z    = BIT_1
 };
 
 DEFINE_FLAGS(UefiAbsolutePointerModeAttributeFlags, uefi_absolute_pointer_mode_attribute_flags); // TEST: NO

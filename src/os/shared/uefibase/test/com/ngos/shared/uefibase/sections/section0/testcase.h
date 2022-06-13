@@ -4,8 +4,9 @@
 
 
 #include <buildconfig.h>
-#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/bitutils.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/asm/asmutils.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bits/bitutils.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bootparams/lib/memorymapentry.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/adler.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/checksum/crc.h>
@@ -101,8 +102,9 @@ NgosStatus startTestSection0()
 
     INIT_TEST_SECTION();
 
-    CALL_TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
     CALL_TEST_CASES(section0, com_ngos_shared_common_asm_instructions);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_bits_bitutils);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_bits_macros);
     CALL_TEST_CASES(section0, com_ngos_shared_common_bootparams_lib_memorymapentry);
     CALL_TEST_CASES(section0, com_ngos_shared_common_checksum_adler);
     CALL_TEST_CASES(section0, com_ngos_shared_common_checksum_crc);

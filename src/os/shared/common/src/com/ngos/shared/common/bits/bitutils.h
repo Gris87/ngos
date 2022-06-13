@@ -1,5 +1,5 @@
-#ifndef COM_NGOS_SHARED_COMMON_ASM_BITUTILS_H                                                                                                                                                            // Colorize: green
-#define COM_NGOS_SHARED_COMMON_ASM_BITUTILS_H                                                                                                                                                            // Colorize: green
+#ifndef COM_NGOS_SHARED_COMMON_BITS_BITUTILS_H                                                                                                                                                            // Colorize: green
+#define COM_NGOS_SHARED_COMMON_BITS_BITUTILS_H                                                                                                                                                            // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -12,7 +12,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 #define CONST_BIT_ADDRESS(address, bit) (reinterpret_cast<good_U8 *>(address) + (bit) / 8)                                                                                                                    // Colorize: green
-#define CONST_BIT_IN_U8(bit)            (1ULL << (7 - ((bit) & 7)))                                                                                                                                      // Colorize: green
+#define CONST_BIT_IN_U8(bit)            BIT(7 - ((bit) & 7))                                                                                                                                      // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -644,4 +644,4 @@ public:                                                                         
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#endif // COM_NGOS_SHARED_COMMON_ASM_BITUTILS_H                                                                                                                                                          // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_BITS_BITUTILS_H                                                                                                                                                          // Colorize: green

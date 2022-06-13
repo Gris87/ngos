@@ -3,6 +3,7 @@
 
 
 
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/types.h>
 
 
@@ -26,7 +27,7 @@ struct PciExpressRootComplexLinkDeclarationLinkAndressConfigurationSpace
 
         u8 numberOfBits = encodedNumberOfBusNumberBitsReal();
 
-        return (value64 >> 20) & ((1ULL << numberOfBits) - 1);
+        return (value64 >> 20) & (SIZE_BY_BITS(numberOfBits) - 1);
     }
 
     u64 configurationSpaceBaseAddressReal()

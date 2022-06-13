@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,22 +17,22 @@ typedef u16 pci_hyper_transport_link_frequency_capability_flags;
 enum class PciHyperTransportLinkFrequencyCapabilityFlag: pci_hyper_transport_link_frequency_capability_flags
 {
     NONE                              = 0,
-    SUPPORT_200_MHZ                   = (1ULL << 0),
-    SUPPORT_300_MHZ                   = (1ULL << 1),
-    SUPPORT_400_MHZ                   = (1ULL << 2),
-    SUPPORT_500_MHZ                   = (1ULL << 3),
-    SUPPORT_600_MHZ                   = (1ULL << 4),
-    SUPPORT_800_MHZ                   = (1ULL << 5),
-    SUPPORT_1000_MHZ                  = (1ULL << 6),
-    SUPPORT_1200_MHZ                  = (1ULL << 7),
-    SUPPORT_1400_MHZ                  = (1ULL << 8),
-    SUPPORT_1600_MHZ                  = (1ULL << 9),
-    SUPPORT_1800_MHZ                  = (1ULL << 10),
-    SUPPORT_2000_MHZ                  = (1ULL << 11),
-    SUPPORT_2200_MHZ                  = (1ULL << 12),
-    SUPPORT_2400_MHZ                  = (1ULL << 13),
-    SUPPORT_2600_MHZ                  = (1ULL << 14),
-    SUPPORT_VENDOR_SPECIFIC_FREQUENCY = (1ULL << 15)
+    SUPPORT_200_MHZ                   = BIT_0,
+    SUPPORT_300_MHZ                   = BIT_1,
+    SUPPORT_400_MHZ                   = BIT_2,
+    SUPPORT_500_MHZ                   = BIT_3,
+    SUPPORT_600_MHZ                   = BIT_4,
+    SUPPORT_800_MHZ                   = BIT_5,
+    SUPPORT_1000_MHZ                  = BIT_6,
+    SUPPORT_1200_MHZ                  = BIT_7,
+    SUPPORT_1400_MHZ                  = BIT_8,
+    SUPPORT_1600_MHZ                  = BIT_9,
+    SUPPORT_1800_MHZ                  = BIT_10,
+    SUPPORT_2000_MHZ                  = BIT_11,
+    SUPPORT_2200_MHZ                  = BIT_12,
+    SUPPORT_2400_MHZ                  = BIT_13,
+    SUPPORT_2600_MHZ                  = BIT_14,
+    SUPPORT_VENDOR_SPECIFIC_FREQUENCY = BIT_15
 };
 
 DEFINE_FLAGS(PciHyperTransportLinkFrequencyCapabilityFlags, pci_hyper_transport_link_frequency_capability_flags); // TEST: NO

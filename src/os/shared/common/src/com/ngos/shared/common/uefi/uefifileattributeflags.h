@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,12 +17,12 @@ typedef u64 uefi_file_attribute_flags;
 enum class UefiFileAttributeFlag: uefi_file_attribute_flags
 {
     NONE      = 0,
-    READ_ONLY = (1ULL << 0),
-    HIDDEN    = (1ULL << 1),
-    SYSTEM    = (1ULL << 2),
-    RESERVED  = (1ULL << 3),
-    DIRECTORY = (1ULL << 4),
-    ARCHIVE   = (1ULL << 5)
+    READ_ONLY = BIT_0,
+    HIDDEN    = BIT_1,
+    SYSTEM    = BIT_2,
+    RESERVED  = BIT_3,
+    DIRECTORY = BIT_4,
+    ARCHIVE   = BIT_5
 };
 
 DEFINE_FLAGS(UefiFileAttributeFlags, uefi_file_attribute_flags); // TEST: NO

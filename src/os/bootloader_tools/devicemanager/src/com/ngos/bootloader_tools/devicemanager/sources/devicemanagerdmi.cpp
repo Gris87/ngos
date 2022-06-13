@@ -1,5 +1,6 @@
 #include "devicemanagerdmi.h"
 
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/dmi/dmi.h>
 #include <com/ngos/shared/common/hex/hex.h>
 #include <com/ngos/shared/common/string/utils.h>
@@ -13,13 +14,13 @@
     { \
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(name, mprintf(format, flagsVar.flags), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION); \
         \
-        for (good_I64 _ = 0; _ < (i64)(sizeof(flagsVar) * 8); ++_) \
+        for (good_I64 _ = 0; _ < static_cast<good_I64>(sizeof(flagsVar) * 8); ++_) \
         { \
-            u64 flag = (1ULL << _); \
+            u64 flag = BIT(_); \
             \
-            if (flagsVar.flags & flag) \
+            if ((flagsVar.flags & flag) != 0) \
             { \
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf(name ": %s", flagToString((flagType)flag)), "Yes", mode), NgosStatus::ASSERTION); \
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf(name ": %s", flagToString(static_cast<flagType>(flag))), "Yes", mode), NgosStatus::ASSERTION); \
             } \
         } \
     }

@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,10 +17,10 @@ typedef u32 uefi_simple_network_interrupt_flags;
 enum class UefiSimpleNetworkInterruptFlag: uefi_simple_network_interrupt_flags
 {
     NONE     = 0,
-    RECEIVE  = (1ULL << 0),
-    TRANSMIT = (1ULL << 1),
-    COMMAND  = (1ULL << 2),
-    SOFTWARE = (1ULL << 3)
+    RECEIVE  = BIT_0,
+    TRANSMIT = BIT_1,
+    COMMAND  = BIT_2,
+    SOFTWARE = BIT_3
 };
 
 DEFINE_FLAGS(UefiSimpleNetworkInterruptFlags, uefi_simple_network_interrupt_flags); // TEST: NO

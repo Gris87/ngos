@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,26 +17,26 @@ typedef u32 pci_express_resizable_base_address_capability_flags;
 enum class PciExpressResizableBaseAddressCapabilityFlag: pci_express_resizable_base_address_capability_flags
 {
     NONE    = 0,
-    _1_MB   = (1ULL << 4),
-    _2_MB   = (1ULL << 5),
-    _4_MB   = (1ULL << 6),
-    _8_MB   = (1ULL << 7),
-    _16_MB  = (1ULL << 8),
-    _32_MB  = (1ULL << 9),
-    _64_MB  = (1ULL << 10),
-    _128_MB = (1ULL << 11),
-    _256_MB = (1ULL << 12),
-    _512_MB = (1ULL << 13),
-    _1_GB   = (1ULL << 14),
-    _2_GB   = (1ULL << 15),
-    _4_GB   = (1ULL << 16),
-    _8_GB   = (1ULL << 17),
-    _16_GB  = (1ULL << 18),
-    _32_GB  = (1ULL << 19),
-    _64_GB  = (1ULL << 20),
-    _128_GB = (1ULL << 21),
-    _256_GB = (1ULL << 22),
-    _512_GB = (1ULL << 23)
+    _1_MB   = BIT_4,
+    _2_MB   = BIT_5,
+    _4_MB   = BIT_6,
+    _8_MB   = BIT_7,
+    _16_MB  = BIT_8,
+    _32_MB  = BIT_9,
+    _64_MB  = BIT_10,
+    _128_MB = BIT_11,
+    _256_MB = BIT_12,
+    _512_MB = BIT_13,
+    _1_GB   = BIT_14,
+    _2_GB   = BIT_15,
+    _4_GB   = BIT_16,
+    _8_GB   = BIT_17,
+    _16_GB  = BIT_18,
+    _32_GB  = BIT_19,
+    _64_GB  = BIT_20,
+    _128_GB = BIT_21,
+    _256_GB = BIT_22,
+    _512_GB = BIT_23
 };
 
 DEFINE_FLAGS(PciExpressResizableBaseAddressCapabilityFlags, pci_express_resizable_base_address_capability_flags); // TEST: NO

@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,7 +17,7 @@ typedef u16 pci_express_virtual_channel_port_virtual_channel_status_flags;
 enum class PciExpressVirtualChannelPortVirtualChannelStatusFlag: pci_express_virtual_channel_port_virtual_channel_status_flags
 {
     NONE                                     = 0,
-    VIRTUAL_CHANNEL_ARBITRATION_TABLE_STATUS = (1ULL << 0)
+    VIRTUAL_CHANNEL_ARBITRATION_TABLE_STATUS = BIT_0
 };
 
 DEFINE_FLAGS(PciExpressVirtualChannelPortVirtualChannelStatusFlags, pci_express_virtual_channel_port_virtual_channel_status_flags); // TEST: NO

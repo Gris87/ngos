@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,13 +17,13 @@ typedef u8 pci_hyper_transport_slave_primary_interface_feature_flags;
 enum class PciHyperTransportSlavePrimaryInterfaceFeatureFlag: pci_hyper_transport_slave_primary_interface_feature_flags
 {
     NONE                       = 0,
-    ISOCHRONOUS_FLOW_CONTROL   = (1ULL << 0),
-    LDTSTOP                    = (1ULL << 1),
-    CRC_TEST_MODE              = (1ULL << 2),
-    EXTENDED_CTL_TIME_REQUIRED = (1ULL << 3),
-    _64_BIT_ADDRESSING         = (1ULL << 4),
-    DISABLE_UNIT_ID_REORDER    = (1ULL << 5),
-    SOURCE_ID                  = (1ULL << 6)
+    ISOCHRONOUS_FLOW_CONTROL   = BIT_0,
+    LDTSTOP                    = BIT_1,
+    CRC_TEST_MODE              = BIT_2,
+    EXTENDED_CTL_TIME_REQUIRED = BIT_3,
+    _64_BIT_ADDRESSING         = BIT_4,
+    DISABLE_UNIT_ID_REORDER    = BIT_5,
+    SOURCE_ID                  = BIT_6
 };
 
 DEFINE_FLAGS(PciHyperTransportSlavePrimaryInterfaceFeatureFlags, pci_hyper_transport_slave_primary_interface_feature_flags); // TEST: NO

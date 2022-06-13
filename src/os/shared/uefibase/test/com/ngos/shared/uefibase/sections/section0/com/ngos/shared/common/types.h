@@ -4,7 +4,7 @@
 
 
 #include <buildconfig.h>
-#include <com/ngos/shared/common/asm/bitutils.h>
+#include <com/ngos/shared/common/bits/bitutils.h>
 #include <com/ngos/shared/common/assets/assets.h>
 #include <com/ngos/shared/common/assets/lib/assetentry.h>
 #include <com/ngos/shared/common/assets/lib/glyphdata.h>

@@ -57,3 +57,4 @@ tools/qt/tests_verifier/build/gen/
 tools/qt/tests_verifier/src/
 tools/qt/usb_boot_maker/build/gen/
 tools/qt/usb_boot_maker/src/
+src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/bits

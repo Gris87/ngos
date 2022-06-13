@@ -3,6 +3,7 @@
 
 
 
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/types.h>
 
 
@@ -15,7 +16,7 @@ struct PciMessageSignaledInterruptsMessageControl
 
 
 
-        return (1ULL << supportMultipleMessage);
+        return SIZE_BY_BITS(supportMultipleMessage);
     }
 
     u16 enableMultipleMessageReal()
@@ -24,7 +25,7 @@ struct PciMessageSignaledInterruptsMessageControl
 
 
 
-        return (1ULL << enableMultipleMessage);
+        return SIZE_BY_BITS(enableMultipleMessage);
     }
 
 

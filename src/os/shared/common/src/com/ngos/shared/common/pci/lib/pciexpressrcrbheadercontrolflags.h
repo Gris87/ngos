@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,7 +17,7 @@ typedef u32 pci_express_rcrb_header_control_flags;
 enum class PciExpressRcrbHeaderControlFlag: pci_express_rcrb_header_control_flags
 {
     NONE                            = 0,
-    CRS_SOFTWARE_VISIBILITY_ENABLED = (1ULL << 0)
+    CRS_SOFTWARE_VISIBILITY_ENABLED = BIT_0
 };
 
 DEFINE_FLAGS(PciExpressRcrbHeaderControlFlags, pci_express_rcrb_header_control_flags); // TEST: NO

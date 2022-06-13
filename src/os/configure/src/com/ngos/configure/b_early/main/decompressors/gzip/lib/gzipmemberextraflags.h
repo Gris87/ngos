@@ -4,9 +4,10 @@
 
 
 #include <buildconfig.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/early/earlyassert.h>
 #include <com/ngos/shared/common/early/earlylog.h>
-#include <com/ngos/shared/common/ngos/flags.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -23,8 +24,8 @@ typedef u8 gzip_member_extra_flags;
 enum class GzipMemberExtraFlag: gzip_member_extra_flags
 {
     NONE         = 0,
-    DEFLATE_SLOW = (1ULL << 1),
-    DEFLATE_FAST = (1ULL << 2)
+    DEFLATE_SLOW = BIT_1,
+    DEFLATE_FAST = BIT_2
 };
 
 DEFINE_FLAGS(GzipMemberExtraFlags, gzip_member_extra_flags); // TEST: NO

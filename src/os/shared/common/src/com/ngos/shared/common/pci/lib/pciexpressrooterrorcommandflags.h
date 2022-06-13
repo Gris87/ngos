@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,9 +17,9 @@ typedef u32 pci_express_root_error_command_flags;
 enum class PciExpressRootErrorCommandFlag: pci_express_root_error_command_flags
 {
     NONE                        = 0,
-    CORRECTABLE_ERROR_REPORTING = (1ULL << 0),
-    NON_FATAL_ERROR_REPORTING   = (1ULL << 1),
-    FATAL_ERROR_REPORTING       = (1ULL << 2)
+    CORRECTABLE_ERROR_REPORTING = BIT_0,
+    NON_FATAL_ERROR_REPORTING   = BIT_1,
+    FATAL_ERROR_REPORTING       = BIT_2
 };
 
 DEFINE_FLAGS(PciExpressRootErrorCommandFlags, pci_express_root_error_command_flags); // TEST: NO

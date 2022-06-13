@@ -3,8 +3,9 @@
 
 
 
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/fpu/xfeature.h>
-#include <com/ngos/shared/common/ngos/flags.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -22,16 +23,16 @@ typedef u64 x_feature_type_flags;
 enum class XFeatureTypeFlag: x_feature_type_flags
 {
     NONE                                  = 0,
-    FPU                                   = (1ULL << (enum_t)XFeature::FPU),
-    SSE                                   = (1ULL << (enum_t)XFeature::SSE),
-    AVX                                   = (1ULL << (enum_t)XFeature::AVX),
-    MPX_BOUND_REGISTERS                   = (1ULL << (enum_t)XFeature::MPX_BOUND_REGISTERS),
-    MPX_BOUND_CONFIG_AND_STATUS_REGISTERS = (1ULL << (enum_t)XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS),
-    AVX512_OPMASK                         = (1ULL << (enum_t)XFeature::AVX512_OPMASK),
-    AVX512_ZMM_FROM_0_TO_15               = (1ULL << (enum_t)XFeature::AVX512_ZMM_FROM_0_TO_15),
-    AVX512_ZMM_FROM_16_TO_31              = (1ULL << (enum_t)XFeature::AVX512_ZMM_FROM_16_TO_31),
-    PT                                    = (1ULL << (enum_t)XFeature::PT),
-    PKRU                                  = (1ULL << (enum_t)XFeature::PKRU)
+    FPU                                   = BIT(XFeature::FPU),
+    SSE                                   = BIT(XFeature::SSE),
+    AVX                                   = BIT(XFeature::AVX),
+    MPX_BOUND_REGISTERS                   = BIT(XFeature::MPX_BOUND_REGISTERS),
+    MPX_BOUND_CONFIG_AND_STATUS_REGISTERS = BIT(XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS),
+    AVX512_OPMASK                         = BIT(XFeature::AVX512_OPMASK),
+    AVX512_ZMM_FROM_0_TO_15               = BIT(XFeature::AVX512_ZMM_FROM_0_TO_15),
+    AVX512_ZMM_FROM_16_TO_31              = BIT(XFeature::AVX512_ZMM_FROM_16_TO_31),
+    PT                                    = BIT(XFeature::PT),
+    PKRU                                  = BIT(XFeature::PKRU)
 };
 
 DEFINE_FLAGS(XFeatureTypeFlags, x_feature_type_flags); // TEST: NO

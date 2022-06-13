@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,17 +17,17 @@ typedef u16 pci_command_flags;
 enum class PciCommandFlag: pci_command_flags
 {
     NONE                               = 0,
-    IO_SPACE_ENABLE                    = (1ULL << 0),
-    MEMORY_SPACE_ENABLE                = (1ULL << 1),
-    BUS_MASTER_ENABLE                  = (1ULL << 2),
-    SPECIAL_CYCLE_ENABLE               = (1ULL << 3),
-    MEMORY_WRITE_AND_INVALIDATE_ENABLE = (1ULL << 4),
-    VGA_PALETTE_SNOOP_ENABLE           = (1ULL << 5),
-    PARITY_ERROR_RESPONSE              = (1ULL << 6),
-    WAIT_CYCLE_CONTROL                 = (1ULL << 7),
-    SYSTEM_ERROR_ENABLE                = (1ULL << 8),
-    FAST_BACK_TO_BACK_ENABLE           = (1ULL << 9),
-    INTERRUPT_DISABLE                  = (1ULL << 10)
+    IO_SPACE_ENABLE                    = BIT_0,
+    MEMORY_SPACE_ENABLE                = BIT_1,
+    BUS_MASTER_ENABLE                  = BIT_2,
+    SPECIAL_CYCLE_ENABLE               = BIT_3,
+    MEMORY_WRITE_AND_INVALIDATE_ENABLE = BIT_4,
+    VGA_PALETTE_SNOOP_ENABLE           = BIT_5,
+    PARITY_ERROR_RESPONSE              = BIT_6,
+    WAIT_CYCLE_CONTROL                 = BIT_7,
+    SYSTEM_ERROR_ENABLE                = BIT_8,
+    FAST_BACK_TO_BACK_ENABLE           = BIT_9,
+    INTERRUPT_DISABLE                  = BIT_10
 };
 
 DEFINE_FLAGS(PciCommandFlags, pci_command_flags); // TEST: NO

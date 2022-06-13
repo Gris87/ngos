@@ -593,7 +593,7 @@ bool FPU::isXFeatureSupervisor(XFeature xFeature)
 
     bool res = !!(ecx & FLAGS(XFeatureFlag::SUPERVISOR));
 
-    COMMON_TEST_ASSERT(!!((1ULL << (u64)xFeature) & XFEATURE_MASK_SUPERVISOR) == res, false);
+    COMMON_TEST_ASSERT(!!(BIT(xFeature) & XFEATURE_MASK_SUPERVISOR) == res, false);
 
     return res;
 }
@@ -621,7 +621,7 @@ bool FPU::isXFeatureUser(XFeature xFeature)
 
     bool res = !(ecx & FLAGS(XFeatureFlag::SUPERVISOR));
 
-    COMMON_TEST_ASSERT(!!((1ULL << (u64)xFeature) & XFEATURE_MASK_SUPERVISOR) != res, false);
+    COMMON_TEST_ASSERT(!!(BIT(xFeature) & XFEATURE_MASK_SUPERVISOR) != res, false);
 
     return res;
 }
@@ -657,7 +657,7 @@ NgosStatus FPU::setFeature(XFeature xFeature)
 
 
 
-    sXFeatures |= (1ULL << (u64)xFeature);
+    sXFeatures |= BIT(xFeature);
 
 
 
@@ -670,7 +670,7 @@ NgosStatus FPU::clearFeature(XFeature xFeature)
 
 
 
-    sXFeatures &= ~(1ULL << (u64)xFeature);
+    sXFeatures &= ~BIT(xFeature);
 
 
 
@@ -683,7 +683,7 @@ bool FPU::hasFeature(XFeature xFeature)
 
 
 
-    return sXFeatures & (1ULL << (u64)xFeature);
+    return sXFeatures & BIT(xFeature);
 }
 
 NgosStatus FPU::setFlag(XFeatureTypeFlag flag)

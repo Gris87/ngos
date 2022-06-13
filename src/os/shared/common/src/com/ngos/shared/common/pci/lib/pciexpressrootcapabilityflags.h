@@ -3,7 +3,8 @@
 
 
 
-#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/bits/flags.h>
+#include <com/ngos/shared/common/bits/macros.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -16,7 +17,7 @@ typedef u16 pci_express_root_capability_flags;
 enum class PciExpressRootCapabilityFlag: pci_express_root_capability_flags
 {
     NONE                    = 0,
-    CRS_SOFTWARE_VISIBILITY = (1ULL << 0)
+    CRS_SOFTWARE_VISIBILITY = BIT_0
 };
 
 DEFINE_FLAGS(PciExpressRootCapabilityFlags, pci_express_root_capability_flags); // TEST: NO
