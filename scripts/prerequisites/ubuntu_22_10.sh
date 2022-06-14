@@ -1,8 +1,8 @@
 #!/bin/bash
                                                                                                                                                                                                          # Colorize: green
-# This script helps to install prerequisites on Ubuntu 19.10                                                                                                                                             # Colorize: green
+# This script helps to install prerequisites on Ubuntu 22.10                                                                                                                                             # Colorize: green
 # Author: Maxim Shvetsov                                                                                                                                                                                  # Colorize: green
-# Usage: sudo ./ubuntu_19_10.sh                                                                                                                                                                          # Colorize: green
+# Usage: sudo ./ubuntu_22_10.sh                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -14,9 +14,9 @@
                                                                                                                                                                                                          # Colorize: green
 CURRENT_PATH=`pwd`                                                                                                                                                                                       # Colorize: green
 BINUTILS_VERSION=2.38                                                                                                                                                                                    # Colorize: green
-GCC_VERSION=11.2.0                                                                                                                                                                                       # Colorize: green
+GCC_VERSION=12.1.0                                                                                                                                                                                       # Colorize: green
 VIRTUALBOX_VERSION=6.1                                                                                                                                                                                   # Colorize: green
-QT_VERSION=6.2.4                                                                                                                                                                                         # Colorize: green
+QT_VERSION=6.3.1                                                                                                                                                                                         # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -34,8 +34,8 @@ fi                                                                              
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-if [[ `lsb_release -rs` != 19.10 ]]; then                                                                                                                                                                # Colorize: green
-    echo "This script should be called on Ubuntu 19.10"                                                                                                                                                  # Colorize: green
+if [[ `lsb_release -rs` != 22.10 ]]; then                                                                                                                                                                # Colorize: green
+    echo "This script should be called on Ubuntu 22.10"                                                                                                                                                  # Colorize: green
                                                                                                                                                                                                          # Colorize: green
     exit 1                                                                                                                                                                                               # Colorize: green
 fi                                                                                                                                                                                                       # Colorize: green
