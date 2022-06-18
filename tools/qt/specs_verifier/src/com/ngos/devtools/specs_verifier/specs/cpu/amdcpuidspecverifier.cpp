@@ -679,7 +679,7 @@ void AmdCpuidSpecVerifier::checkCpuid80000008Ecx(SpecVerifyThread *thread, const
             "CPUID Fn8000_0008_ECX Size Identifiers\n"                                                                                                                                                   // Colorize: green
             "\n"                                                                                                                                                                                         // Colorize: green
             "The value returned in ECX provides information about the number of cores supported by the\n"                                                                                                // Colorize: green
-            "processor, the width of the APIC ID, and the width of the performance time-stamp counter.\n"
+            "processor, the width of the APIC ID, and the width of the performance time-stamp counter.\n"                                                                                                // Colorize: green
             "";                                                                                                 // Colorize: green
                                                                                                                                                                                                          // Colorize: green
         cpuidText2 =                                                                                                                                                                                     // Colorize: green
@@ -3741,7 +3741,7 @@ void AmdCpuidSpecVerifier::checkX86Feature(SpecVerifyThread *thread, const QStri
                                                                                                                                                                                                                  // Colorize: green
             // Skip lines                                                                                                                                                                                        // Colorize: green
             {                                                                                                                                                                                                    // Colorize: green
-                if (
+                if (                                                                                                                                                                                     // Colorize: green
                     lines.at(0) != "CPUID Fn8000_0021_EAX Extended Feature 2"                                                                                                                            // Colorize: green
                     ||                                                                                                                                                                                   // Colorize: green
                     lines.at(1) != "Bits Field Name"                                                                                                                            // Colorize: green

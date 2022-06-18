@@ -3816,7 +3816,7 @@ void ElfSpecVerifier::checkElfProgramTypes(SpecVerifyThread *thread, const QStri
                                                                                                                                                                                                          // Colorize: green
                 field = lines.at(i);                                                                                                                                                                     // Colorize: green
             }                                                                                                                                                                                            // Colorize: green
-            else
+            else                                                                                                                                                                                         // Colorize: green
             if (field == "PT_LOOS")                                                                                                                                                                      // Colorize: green
             {                                                                                                                                                                                            // Colorize: green
                 break;                                                                                                                                                                                   // Colorize: green

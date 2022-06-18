@@ -381,7 +381,7 @@ void IntelCpuidSpecVerifier::checkCpuidVendor(SpecVerifyThread *thread, const QS
             "\n"                                                                                                                                                                                         // Colorize: green
             "EDX\n"                                                                                                                                                                                      // Colorize: green
             "\n"                                                                                                                                                                                         // Colorize: green
-            "\"ineI\"\n"
+            "\"ineI\"\n"                                                                                                                                                                                 // Colorize: green
             "";                                                                                                                                                                                  // Colorize: green
                                                                                                                                                                                                          // Colorize: green
         cpuidText2 =                                                                                                                                                                                      // Colorize: green
