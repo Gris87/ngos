@@ -7,12 +7,12 @@ README.md
 TODO.md
 docs/.spelling
 docs/0. Intro/1. Project structure/README.md
-docs/0. Intro/2. Getting started/1. Install prerequisites on Ubuntu 21.10/README.md
-docs/0. Intro/2. Getting started/2. Install prerequisites on Ubuntu 21.04/README.md
-docs/0. Intro/2. Getting started/3. Install prerequisites on Ubuntu 20.10/README.md
-docs/0. Intro/2. Getting started/4. Install prerequisites on Ubuntu 20.04/README.md
-docs/0. Intro/2. Getting started/5. Install prerequisites on Ubuntu 19.10/README.md
-docs/0. Intro/2. Getting started/6. Install prerequisites on Ubuntu 19.04/README.md
+docs/0. Intro/2. Getting started/1. Install prerequisites on Ubuntu 22.10/README.md
+docs/0. Intro/2. Getting started/2. Install prerequisites on Ubuntu 22.04/README.md
+docs/0. Intro/2. Getting started/3. Install prerequisites on Ubuntu 21.10/README.md
+docs/0. Intro/2. Getting started/4. Install prerequisites on Ubuntu 21.04/README.md
+docs/0. Intro/2. Getting started/5. Install prerequisites on Ubuntu 20.10/README.md
+docs/0. Intro/2. Getting started/6. Install prerequisites on Ubuntu 20.04/README.md
 docs/0. Intro/2. Getting started/7. Install prerequisites on CentOS 8.2/README.md
 docs/0. Intro/2. Getting started/8. Install prerequisites on CentOS 7.6/README.md
 docs/0. Intro/2. Getting started/Configuring Qt Creator 01.png
@@ -99,12 +99,12 @@ scripts/non_verified_files.sh
 scripts/prerequisites/centos_7_6.sh
 scripts/prerequisites/centos_8_2.sh
 scripts/prerequisites/install.sh
-scripts/prerequisites/ubuntu_19_04.sh
-scripts/prerequisites/ubuntu_19_10.sh
 scripts/prerequisites/ubuntu_20_04.sh
 scripts/prerequisites/ubuntu_20_10.sh
 scripts/prerequisites/ubuntu_21_04.sh
 scripts/prerequisites/ubuntu_21_10.sh
+scripts/prerequisites/ubuntu_22_04.sh
+scripts/prerequisites/ubuntu_22_10.sh
 scripts/pull.sh
 scripts/push.sh
 scripts/sign_uefi_application.sh
@@ -6412,9 +6412,9 @@ webapps/ngos/setup.sh
 webapps/prerequisites/centos_7_6.sh
 webapps/prerequisites/centos_8_2.sh
 webapps/prerequisites/install.sh
-webapps/prerequisites/ubuntu_19_04.sh
-webapps/prerequisites/ubuntu_19_10.sh
 webapps/prerequisites/ubuntu_20_04.sh
 webapps/prerequisites/ubuntu_20_10.sh
 webapps/prerequisites/ubuntu_21_04.sh
 webapps/prerequisites/ubuntu_21_10.sh
+webapps/prerequisites/ubuntu_22_04.sh
+webapps/prerequisites/ubuntu_22_10.sh
