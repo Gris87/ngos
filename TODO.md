@@ -70,6 +70,7 @@ Code verifier:                                                                  
 - Verify that we have same function order in cpp and h file                                                                                                                                              // Colorize: green
 - Verify for asm volatile                                                                                                                                                                                // Colorize: green
 - Verify for LVVV() arguments                                                                                                                                                                              // Colorize: green
+- Verify for enum values uppercase
 - Upgrade verifier for trace arguments (Check format with the types)                                                                                                                                     // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
