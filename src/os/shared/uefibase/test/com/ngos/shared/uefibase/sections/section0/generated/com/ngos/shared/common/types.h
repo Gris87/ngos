@@ -29,7 +29,6 @@
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmionboarddevicesdevicetypeandenabled.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmionboarddevicesextendeddevicetypeandenabled.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmiportablebatterymanufacturedate.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorsignature.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorstatusandsocketpopulated.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystempowersupplycharacteristics.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmisystemresetcapabilities.h>
@@ -1468,129 +1467,6 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.year = static_cast<u16>(94);
 
         TEST_ASSERT_EQUALS(temp.value16, 0xBDDC);
-    }
-    TEST_CASE_END();
-
-
-
-    TEST_CASE("DmiProcessorSignature");
-    {
-        DmiProcessorSignature temp;
-
-
-
-        // DmiProcessorSignature:
-        //
-        // |     HHHH      |     GGGG      |
-        // |     GGGG      |     FFFF      |
-        // |  EE   |  DD   |     CCCC      |
-        // |     BBBB      |     AAAA      |
-        //
-        // stepping       : 4  'A'
-        // model          : 4  'B'
-        // family         : 4  'C'
-        // type           : 2  'D'
-        // __reserved     : 2  'E'
-        // extendedModel  : 4  'F'
-        // extendedFamily : 8  'G'
-        // __reserved2    : 4  'H'
-
-
-
-        // |     1101      |     1001      |
-        // |     1000      |     1011      |
-        // |  10   |  10   |     0000      |
-        // |     1110      |     1001      |
-        temp.value32 = 0xD98BA0E9;
-
-        TEST_ASSERT_EQUALS(temp.stepping,       static_cast<u32>(9));
-        TEST_ASSERT_EQUALS(temp.model,          static_cast<u32>(14));
-        TEST_ASSERT_EQUALS(temp.family,         static_cast<u32>(0));
-        TEST_ASSERT_EQUALS(temp.type,           static_cast<u32>(2));
-        TEST_ASSERT_EQUALS(temp.__reserved,     static_cast<u32>(2));
-        TEST_ASSERT_EQUALS(temp.extendedModel,  static_cast<u32>(11));
-        TEST_ASSERT_EQUALS(temp.extendedFamily, static_cast<u32>(152));
-        TEST_ASSERT_EQUALS(temp.__reserved2,    static_cast<u32>(13));
-
-
-
-        // |     1101      |     1001      |
-        // |     1000      |     1011      |
-        // |  10   |  10   |     0000      |
-        // |     1110      |     0110      |
-        temp.stepping = static_cast<u32>(6);
-
-        TEST_ASSERT_EQUALS(temp.value32, 0xD98BA0E6);
-
-
-
-        // |     1101      |     1001      |
-        // |     1000      |     1011      |
-        // |  10   |  10   |     0000      |
-        // |     0001      |     0110      |
-        temp.model = static_cast<u32>(1);
-
-        TEST_ASSERT_EQUALS(temp.value32, 0xD98BA016);
-
-
-
-        // |     1101      |     1001      |
-        // |     1000      |     1011      |
-        // |  10   |  10   |     1111      |
-        // |     0001      |     0110      |
-        temp.family = static_cast<u32>(15);
-
-        TEST_ASSERT_EQUALS(temp.value32, 0xD98BAF16);
-
-
-
-        // |     1101      |     1001      |
-        // |     1000      |     1011      |
-        // |  10   |  01   |     1111      |
-        // |     0001      |     0110      |
-        temp.type = static_cast<u32>(1);
-
-        TEST_ASSERT_EQUALS(temp.value32, 0xD98B9F16);
-
-
-
-        // |     1101      |     1001      |
-        // |     1000      |     1011      |
-        // |  01   |  01   |     1111      |
-        // |     0001      |     0110      |
-        temp.__reserved = static_cast<u32>(1);
-
-        TEST_ASSERT_EQUALS(temp.value32, 0xD98B5F16);
-
-
-
-        // |     1101      |     1001      |
-        // |     1000      |     0100      |
-        // |  01   |  01   |     1111      |
-        // |     0001      |     0110      |
-        temp.extendedModel = static_cast<u32>(4);
-
-        TEST_ASSERT_EQUALS(temp.value32, 0xD9845F16);
-
-
-
-        // |     1101      |     0110      |
-        // |     0111      |     0100      |
-        // |  01   |  01   |     1111      |
-        // |     0001      |     0110      |
-        temp.extendedFamily = static_cast<u32>(103);
-
-        TEST_ASSERT_EQUALS(temp.value32, 0xD6745F16);
-
-
-
-        // |     0010      |     0110      |
-        // |     0111      |     0100      |
-        // |  01   |  01   |     1111      |
-        // |     0001      |     0110      |
-        temp.__reserved2 = static_cast<u32>(2);
-
-        TEST_ASSERT_EQUALS(temp.value32, 0x26745F16);
     }
     TEST_CASE_END();
 

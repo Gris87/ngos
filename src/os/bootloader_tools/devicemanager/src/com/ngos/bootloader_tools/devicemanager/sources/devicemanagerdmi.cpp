@@ -1282,9 +1282,11 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
             UEFI_LVVV(("entry->processorId.signature.stepping       = %u",     entry->processorId.signature.stepping));
             UEFI_LVVV(("entry->processorId.signature.model          = %u",     entry->processorId.signature.model));
             UEFI_LVVV(("entry->processorId.signature.family         = %u",     entry->processorId.signature.family));
-            UEFI_LVVV(("entry->processorId.signature.type           = %u",     entry->processorId.signature.type));
+            UEFI_LVVV(("entry->processorId.signature.processorType  = %s",     enumToFullString(entry->processorId.signature.processorType)));
+            UEFI_LVVV(("entry->processorId.signature._reserved      = %u",     entry->processorId.signature._reserved));
             UEFI_LVVV(("entry->processorId.signature.extendedModel  = %u",     entry->processorId.signature.extendedModel));
             UEFI_LVVV(("entry->processorId.signature.extendedFamily = %u",     entry->processorId.signature.extendedFamily));
+            UEFI_LVVV(("entry->processorId.signature._reserved2     = %u",     entry->processorId.signature._reserved2));
             UEFI_LVVV(("entry->processorId.signature.value32        = 0x%08X", entry->processorId.signature.value32));
             UEFI_LVVV(("entry->processorId.featureFlags             = %s",     flagsToFullString(entry->processorId.featureFlags)));
             UEFI_LVVV(("entry->processorVersion.id                  = %u",     entry->processorVersion.id));
@@ -1356,17 +1358,19 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         // Check variables
         {
             // Ignore CppAlignmentVerifier [BEGIN]
-            // UEFI_TEST_ASSERT(entry->socketDesignation.id                              == 1,                                                 NgosStatus::ASSERTION); // Commented due to value variation
-            UEFI_TEST_ASSERT(entry->processorType                                        == DmiProcessorType::CENTRAL_PROCESSOR,               NgosStatus::ASSERTION);
-            // UEFI_TEST_ASSERT(entry->processorFamily                                   == DmiProcessorFamily::OTHER,                         NgosStatus::ASSERTION); // Commented due to value variation
-            UEFI_TEST_ASSERT(entry->processorManufacturer.id                             == 2,                                                 NgosStatus::ASSERTION);
-            // UEFI_TEST_ASSERT(entry->processorId.signature.stepping                    == 1,                                                 NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->processorId.signature.model                       == 12,                                                NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->processorId.signature.family                      == 6,                                                 NgosStatus::ASSERTION); // Commented due to value variation
-            UEFI_TEST_ASSERT(entry->processorId.signature.type                           == 0,                                                 NgosStatus::ASSERTION);
-            // UEFI_TEST_ASSERT(entry->processorId.signature.extendedModel               == 3,                                                 NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->processorId.signature.extendedFamily              == 0,                                                 NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->processorId.signature.value32                     == 0x00000000,                                        NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->socketDesignation.id                              == 1,                                                             NgosStatus::ASSERTION); // Commented due to value variation
+            UEFI_TEST_ASSERT(entry->processorType                                        == DmiProcessorType::CENTRAL_PROCESSOR,                           NgosStatus::ASSERTION);
+            // UEFI_TEST_ASSERT(entry->processorFamily                                   == DmiProcessorFamily::OTHER,                                     NgosStatus::ASSERTION); // Commented due to value variation
+            UEFI_TEST_ASSERT(entry->processorManufacturer.id                             == 2,                                                             NgosStatus::ASSERTION);
+            // UEFI_TEST_ASSERT(entry->processorId.signature.stepping                    == 1,                                                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->processorId.signature.model                       == 12,                                                            NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->processorId.signature.family                      == 6,                                                             NgosStatus::ASSERTION); // Commented due to value variation
+            UEFI_TEST_ASSERT(entry->processorId.signature.processorType                  == CpuidProcessorType::ORIGINAL_EQUIPMENT_MANUFACTURER_PROCESSOR, NgosStatus::ASSERTION);
+            // UEFI_TEST_ASSERT(entry->processorId.signature._reserved                   == 0,                                                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->processorId.signature.extendedModel               == 3,                                                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->processorId.signature.extendedFamily              == 0,                                                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->processorId.signature._reserved2                  == 0,                                                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->processorId.signature.value32                     == 0x00000000,                                                    NgosStatus::ASSERTION); // Commented due to value variation
             // UEFI_TEST_ASSERT(entry->processorId.featureFlags                          == FLAGS(DmiProcessorFeatureFlag::FPU                                         // Commented due to value variation
             //                                                                                    , DmiProcessorFeatureFlag::VME                                       // Commented due to value variation
             //                                                                                    , DmiProcessorFeatureFlag::DE                                        // Commented due to value variation
@@ -1802,19 +1806,19 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
     {
         DeviceManagerEntryDMI *deviceManagerEntry = new DeviceManagerEntryDMI(entry->header.type, entry->header.handle, deviceManagerImageFromDmiEntryType(entry->header.type), entryName);
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",         strdup(enumToFullString(entry->header.type)),               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",             mprintf("0x%04X", entry->header.handle),                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket designation", socketDesignation,                                          DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Processor type",     strdup(enumToFullString(entry->processorType)),             DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",             processorFamily,                                            DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",             mprintf("0x%02X", entry->processorFamily),                  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",       processorManufacturer,                                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Stepping",           mprintf("%u", entry->processorId.signature.stepping),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Model",              mprintf("%u", entry->processorId.signature.model),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",             mprintf("%u", entry->processorId.signature.family),         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",               mprintf("%u", entry->processorId.signature.type),           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended model",     mprintf("%u", entry->processorId.signature.extendedModel),  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended family",    mprintf("%u", entry->processorId.signature.extendedFamily), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Entry type",         strdup(enumToFullString(entry->header.type)),                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Handle",             mprintf("0x%04X", entry->header.handle),                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Socket designation", socketDesignation,                                                    DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Processor type",     strdup(enumToFullString(entry->processorType)),                       DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",             processorFamily,                                                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",             mprintf("0x%02X", entry->processorFamily),                            DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Manufacturer",       processorManufacturer,                                                DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Stepping",           mprintf("%u", entry->processorId.signature.stepping),                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Model",              mprintf("%u", entry->processorId.signature.model),                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Family",             mprintf("%u", entry->processorId.signature.family),                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Type",               strdup(enumToFullString(entry->processorId.signature.processorType)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended model",     mprintf("%u", entry->processorId.signature.extendedModel),            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended family",    mprintf("%u", entry->processorId.signature.extendedFamily),           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
 
 
 

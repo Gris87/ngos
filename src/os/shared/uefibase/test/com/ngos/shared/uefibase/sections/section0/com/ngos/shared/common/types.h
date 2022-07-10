@@ -121,7 +121,6 @@
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorfamily2.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorfeatureflags.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorid.h>
-#include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorsignature.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorstatus.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessortype.h>
 #include <com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorupgrade.h>
@@ -1451,7 +1450,6 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorFamily2),                                               2);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorFeatureFlag),                                           4);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorId),                                                    8);
-        TEST_ASSERT_EQUALS(sizeof(DmiProcessorSignature),                                             4);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorStatus),                                                1);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorStatusAndSocketPopulated),                              1);
         TEST_ASSERT_EQUALS(sizeof(DmiProcessorType),                                                  1);

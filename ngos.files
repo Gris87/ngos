@@ -1000,7 +1000,6 @@ src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorfa
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorfamily2.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorfeatureflags.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorid.h
-src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorsignature.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorstatus.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessorstatusandsocketpopulated.h
 src/os/shared/common/src/com/ngos/shared/common/dmi/lib/entry/lib/dmiprocessortype.h
