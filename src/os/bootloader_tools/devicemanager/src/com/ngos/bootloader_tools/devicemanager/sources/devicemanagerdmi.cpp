@@ -1393,18 +1393,18 @@ NgosStatus DeviceManagerDMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
             //                                                                                    , DmiProcessorFeatureFlag::FXSR                                      // Commented due to value variation
             //                                                                                    , DmiProcessorFeatureFlag::SSE                                       // Commented due to value variation
             //                                                                                    , DmiProcessorFeatureFlag::SSE2                                      // Commented due to value variation
-            //                                                                                    , DmiProcessorFeatureFlag::SS),              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->processorVersion.id                               == 3,                                                 NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->voltage.modeType                                  == DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE, NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->voltage.value                                     == 18,                                                NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->voltage.value8                                    == 0x92,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->externalClock                                     == 100,                                               NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->maxSpeed                                          == 2000,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->currentSpeed                                      == 2000,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->processorStatusAndSocketPopulated.status          == DmiProcessorStatus::ENABLED,                       NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->processorStatusAndSocketPopulated.socketPopulated == 1,                                                 NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->processorStatusAndSocketPopulated.value8          == 0x41,                                              NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->processorUpgrade                                  == DmiProcessorUpgrade::OTHER,                        NgosStatus::ASSERTION); // Commented due to value variation
+            //                                                                                    , DmiProcessorFeatureFlag::SS),                          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->processorVersion.id                               == 3,                                                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->voltage.modeType                                  == DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE,             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->voltage.value                                     == 18,                                                            NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->voltage.value8                                    == 0x92,                                                          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->externalClock                                     == 100,                                                           NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->maxSpeed                                          == 2000,                                                          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->currentSpeed                                      == 2000,                                                          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->processorStatusAndSocketPopulated.status          == DmiProcessorStatus::ENABLED,                                   NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->processorStatusAndSocketPopulated.socketPopulated == 1,                                                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->processorStatusAndSocketPopulated.value8          == 0x41,                                                          NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->processorUpgrade                                  == DmiProcessorUpgrade::OTHER,                                    NgosStatus::ASSERTION); // Commented due to value variation
             // Ignore CppAlignmentVerifier [END]
 
             if (entryV21)
